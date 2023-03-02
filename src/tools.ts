@@ -25,6 +25,10 @@ export function isIterable(input: unknown): boolean {
 }
 
 export function isIterator(input: unknown): boolean {
+  if (input === null || input === undefined) {
+    return false;
+  }
+
   return (input as Record<string, unknown>).hasOwnProperty('next')
     && typeof (input as Record<string, unknown>).next === 'function';
 }
