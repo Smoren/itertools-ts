@@ -7,6 +7,8 @@
 
 Inspired by Python — designed for TypeScript.
 
+**Warning**: This library is an active work in progress, and is not yet ready for production use.
+
 ## Setup
 
 ```bash
