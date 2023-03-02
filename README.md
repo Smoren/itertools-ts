@@ -33,10 +33,10 @@ Map a function onto each element.
 import { map } from './single';
 
 const grades = [100, 99, 95, 98, 100];
-const strictParentsOpinion = ($g) => ($g === 100) ? 'A' : 'F';
+const strictParentsOpinion = (g) => (g === 100) ? 'A' : 'F';
 
 for(const actualGrade of map(grades, strictParentsOpinion)) {
-  console.log($actualGrade);
+  console.log(actualGrade);
 }
 // A, F, F, F, A
 ```
