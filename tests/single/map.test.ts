@@ -7,6 +7,8 @@ describe.each([
   ...dataProviderForGenerators(),
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
 ])("Map test", (input, mapper, expected) => {
   it("", () => {
     // Given
@@ -183,6 +185,96 @@ function dataProviderForStrings(): Array<unknown> {
       'aBcD',
       (x: string) => x.toUpperCase(),
       ['A', 'B', 'C', 'D'],
+    ],
+  ];
+}
+
+function dataProviderForSets(): Array<unknown> {
+  return [
+    [
+      new Set([]),
+      (x: number) => x + 1,
+      [],
+    ],
+    [
+      new Set([]),
+      (x: number) => Math.sqrt(x),
+      [],
+    ],
+    [
+      new Set([0, 1, 2, 3, 4, 5]),
+      (x: number) => x,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      new Set([0, 1, 2, 3, 4, 5]),
+      (x: number) => x + 1,
+      [1, 2, 3, 4, 5, 6],
+    ],
+    [
+      new Set(["IterToolsTS", "MathTS", "SubnetCalculator"]),
+      (x: string) => `${x} is great!`,
+      ["IterToolsTS is great!", "MathTS is great!", "SubnetCalculator is great!"],
+    ],
+    [
+      new Set([1, 4, 9, 16, 25]),
+      (x: number) => Math.sqrt(x),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      new Set([1, -2, 3, -4, 5]),
+      (x: number) => Math.abs(x),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      new Set(['one', 'Two', 'ThReE', 'FOUR']),
+      (x: string) => x.toUpperCase(),
+      ['ONE', 'TWO', 'THREE', 'FOUR'],
+    ],
+  ];
+}
+
+function dataProviderForMaps(): Array<unknown> {
+  return [
+    [
+      new Map([]),
+      (x: [string, number]) => x[1] + 1,
+      [],
+    ],
+    [
+      new Map([]),
+      (x: [string, number]) => Math.sqrt(x[1]),
+      [],
+    ],
+    [
+      new Map([['a', 1], ['b', 2], ['c', 3]]),
+      (x: [string, number]) => x[1],
+      [1, 2, 3],
+    ],
+    [
+      new Map([['a', 1], ['b', 2], ['c', 3]]),
+      (x: [string, number]) => x[1] + 1,
+      [2, 3, 4],
+    ],
+    [
+      new Map([[1, "IterToolsTS"], [2, "MathTS"], [3, "SubnetCalculator"]]),
+      (x: [string, number]) => `${x[1]} is great!`,
+      ["IterToolsTS is great!", "MathTS is great!", "SubnetCalculator is great!"],
+    ],
+    [
+      new Map([[0, 1], [1, 4], [2, 9], [3, 16], [4, 25]]),
+      (x: [string, number]) => Math.sqrt(x[1]),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      new Map([['a', 1], ['b', -2], ['c', 3], ['d', -4], ['e', 5]]),
+      (x: [string, number]) => Math.abs(x[1]),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      new Map([['one', 'one'], ['Two', 'Two'], ['ThReE', 'ThReE'], ['FOUR', 'FOUR']]),
+      (x: [string, string]) => x[1].toUpperCase(),
+      ['ONE', 'TWO', 'THREE', 'FOUR'],
     ],
   ];
 }

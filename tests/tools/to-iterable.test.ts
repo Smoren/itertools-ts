@@ -61,6 +61,30 @@ function dataProviderForSuccess(): Array<unknown> {
       createIterableFixture([1, 2, 3]),
       [1, 2, 3],
     ],
+    [
+      new Set(),
+      [],
+    ],
+    [
+      new Set([1]),
+      [1],
+    ],
+    [
+      new Set([1, 2, 3]),
+      [1, 2, 3],
+    ],
+    [
+      new Map(),
+      [],
+    ],
+    [
+      new Map([['a', 1]]),
+      [['a', 1]],
+    ],
+    [
+      new Map([['a', 1], ['b', 2], ['c', 3]]),
+      [['a', 1], ['b', 2], ['c', 3]],
+    ],
   ];
 }
 
