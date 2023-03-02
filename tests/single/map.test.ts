@@ -1,9 +1,12 @@
-import { map } from '../../src/single';
+// @ts-ignore
+import { createGeneratorFixture, createIteratorFixture } from "../fixture";
+import { map } from "../../src/single";
 
 describe.each([
   ...dataProviderForArrays(),
   ...dataProviderForGenerators(),
   ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
 ])("Map test", (input, mapper, expected) => {
   it("", () => {
     // Given
@@ -28,7 +31,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [],
-      'sqrt',
+      (x: number) => Math.sqrt(x),
       [],
     ],
     [
@@ -65,50 +68,44 @@ function dataProviderForArrays(): Array<unknown> {
 }
 
 function dataProviderForGenerators(): Array<unknown> {
-  function *wrap(data: Array<unknown>) {
-    for (const datum of data) {
-      yield datum;
-    }
-  }
-
   return [
     [
-      wrap([]),
+      createGeneratorFixture([]),
       (x: number) => x + 1,
       [],
     ],
     [
-      wrap([]),
-      'sqrt',
+      createGeneratorFixture([]),
+      (x: number) => Math.sqrt(x),
       [],
     ],
     [
-      wrap([0, 1, 2, 3, 4, 5]),
+      createGeneratorFixture([0, 1, 2, 3, 4, 5]),
       (x: number) => x,
       [0, 1, 2, 3, 4, 5],
     ],
     [
-      [0, 1, 2, 3, 4, 5],
+      createGeneratorFixture([0, 1, 2, 3, 4, 5]),
       (x: number) => x + 1,
       [1, 2, 3, 4, 5, 6],
     ],
     [
-      wrap(["IterToolsTS", "MathTS", "SubnetCalculator"]),
+      createGeneratorFixture(["IterToolsTS", "MathTS", "SubnetCalculator"]),
       (x: string) => `${x} is great!`,
       ["IterToolsTS is great!", "MathTS is great!", "SubnetCalculator is great!"],
     ],
     [
-      wrap([1, 4, 9, 16, 25]),
+      createGeneratorFixture([1, 4, 9, 16, 25]),
       (x: number) => Math.sqrt(x),
       [1, 2, 3, 4, 5],
     ],
     [
-      wrap([1, -2, 3, -4, 5]),
+      createGeneratorFixture([1, -2, 3, -4, 5]),
       (x: number) => Math.abs(x),
       [1, 2, 3, 4, 5],
     ],
     [
-      wrap(['one', 'Two', 'ThReE', 'FOUR']),
+      createGeneratorFixture(['one', 'Two', 'ThReE', 'FOUR']),
       (x: string) => x.toUpperCase(),
       ['ONE', 'TWO', 'THREE', 'FOUR'],
     ],
@@ -116,59 +113,76 @@ function dataProviderForGenerators(): Array<unknown> {
 }
 
 function dataProviderForIterators(): Array<unknown> {
-  function wrap<T>(data: Array<T>): Iterator<T> {
-    let nextIndex = 0;
-    return {
-      next(): IteratorResult<T> {
-        if (nextIndex < data.length) {
-          return { value: data[nextIndex++], done: false };
-        } else {
-          return { value: nextIndex, done: true };
-        }
-      },
-    };
-  }
-
   return [
     [
-      wrap([]),
+      createIteratorFixture([]),
       (x: number) => x + 1,
       [],
     ],
     [
-      wrap([]),
-      'sqrt',
+      createIteratorFixture([]),
+      (x: number) => Math.sqrt(x),
       [],
     ],
     [
-      wrap([0, 1, 2, 3, 4, 5]),
+      createIteratorFixture([0, 1, 2, 3, 4, 5]),
       (x: number) => x,
       [0, 1, 2, 3, 4, 5],
     ],
     [
-      [0, 1, 2, 3, 4, 5],
+      createIteratorFixture([0, 1, 2, 3, 4, 5]),
       (x: number) => x + 1,
       [1, 2, 3, 4, 5, 6],
     ],
     [
-      wrap(["IterToolsTS", "MathTS", "SubnetCalculator"]),
+      createIteratorFixture(["IterToolsTS", "MathTS", "SubnetCalculator"]),
       (x: string) => `${x} is great!`,
       ["IterToolsTS is great!", "MathTS is great!", "SubnetCalculator is great!"],
     ],
     [
-      wrap([1, 4, 9, 16, 25]),
+      createIteratorFixture([1, 4, 9, 16, 25]),
       (x: number) => Math.sqrt(x),
       [1, 2, 3, 4, 5],
     ],
     [
-      wrap([1, -2, 3, -4, 5]),
+      createIteratorFixture([1, -2, 3, -4, 5]),
       (x: number) => Math.abs(x),
       [1, 2, 3, 4, 5],
     ],
     [
-      wrap(['one', 'Two', 'ThReE', 'FOUR']),
+      createIteratorFixture(['one', 'Two', 'ThReE', 'FOUR']),
       (x: string) => x.toUpperCase(),
       ['ONE', 'TWO', 'THREE', 'FOUR'],
+    ],
+  ];
+}
+
+function dataProviderForStrings(): Array<unknown> {
+  return [
+    [
+      '',
+      (x: number) => x + 1,
+      [],
+    ],
+    [
+      '',
+      (x: number) => Math.sqrt(x),
+      [],
+    ],
+    [
+      '012345',
+      (x: string) => x,
+      ['0', '1', '2', '3', '4', '5'],
+    ],
+    [
+      '012345',
+      (x: string) => parseInt(x) + 1,
+      [1, 2, 3, 4, 5, 6],
+    ],
+    [
+      'aBcD',
+      (x: string) => x.toUpperCase(),
+      ['A', 'B', 'C', 'D'],
     ],
   ];
 }
