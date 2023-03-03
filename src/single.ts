@@ -1,7 +1,7 @@
 import { isIterable, toIterable } from "./tools";
 import { InvalidArgumentError } from "./exceptions";
 
-export function* map<TInput, TOutput>(
+export function *map<TInput, TOutput>(
   data: Iterable<TInput>|Iterator<TInput>,
   mapper: (datum: TInput) => TOutput,
 ): Iterable<TOutput> {

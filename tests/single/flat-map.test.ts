@@ -1,11 +1,12 @@
 // @ts-ignore
-import { createGeneratorFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
 import { flatMap, FlatMapper, repeat } from "../../src/single";
 import { isIterable } from "../../src/tools";
 
 describe.each([
   ...dataProviderForArrays(),
   ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
@@ -267,6 +268,130 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([5, 4, -3, 20, 17, -33, -4, 18]),
+      (x: number) => x < 0 ? [] : (x % 2 === 0 ? [x] : [x - 1, 1]),
+      [4, 1, 4, 20, 16, 1, 18],
+    ],
+  ];
+}
+
+function dataProviderForIterables(): Array<unknown> {
+  return [
+    [
+      createIterableFixture([]),
+      (item: number) => [item],
+      [],
+    ],
+    [
+      createIterableFixture([0]),
+      (item: number) => [item],
+      [0],
+    ],
+    [
+      createIterableFixture([1]),
+      (item: number) => [item],
+      [1],
+    ],
+    [
+      createIterableFixture([2]),
+      (item: number) => [item],
+      [2],
+    ],
+    [
+      createIterableFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item],
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createIterableFixture([2]),
+      (item: number) => [item, item],
+      [2, 2],
+    ],
+    [
+      createIterableFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, item],
+      [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
+    ],
+    [
+      createIterableFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, -item],
+      [0, -0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5],
+    ],
+    [
+      createIterableFixture([]),
+      (item: number) => repeat(item, item),
+      [],
+    ],
+    [
+      createIterableFixture([0]),
+      (item: number) => repeat(item, item),
+      [],
+    ],
+    [
+      createIterableFixture([1]),
+      (item: number) => repeat(item, item),
+      [1],
+    ],
+    [
+      createIterableFixture([2]),
+      (item: number) => repeat(item, item),
+      [2, 2],
+    ],
+    [
+      createIterableFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => repeat(item, item),
+      [1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5],
+    ],
+    [
+      createIterableFixture([
+        { 'name': 'bird', 'eggs': 2},
+        { 'name': 'lizard', 'eggs': 3},
+        { 'name': 'echidna', 'eggs': 1},
+        { 'name': 'tyrannosaur', 'eggs': 0},
+      ]),
+      (animal: Record<string, string|number>) => repeat(animal['name'], animal['eggs'] as number),
+      ['bird', 'bird', 'lizard', 'lizard', 'lizard', 'echidna'],
+    ],
+    [
+      createIterableFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      (item: Array<number>|number, func: FlatMapper<number, number>) => isIterable(item)
+        ? flatMap(item as Array<number>, func)
+        : [item],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ],
+    [
+      createIterableFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      (item: Array<number>|number, func: FlatMapper<number, number>) => isIterable(item)
+        ? flatMap(item as Array<number>, func)
+        : item,
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ],
+    [
+      createIterableFixture([1, 2, 3, 4, 5]),
+      (item: number) => item + 1,
+      [2, 3, 4, 5, 6]
+    ],
+    [
+      createIterableFixture([1, 2, 3, 4, 5]),
+      (item: number) => (item % 2 === 0) ? [item, item] : item,
+      [1, 2, 2, 3, 4, 4, 5]
+    ],
+    [
+      createIterableFixture([1, 2, [3], [4, 5], 6, []]),
+      (x: number|Array<number>) => x,
+      [1, 2, 3, 4, 5, 6],
+    ],
+    [
+      createIterableFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, item, [item]],
+      [0, 0, [0], 1, 1, [1], 2, 2, [2], 3, 3, [3], 4, 4, [4], 5, 5, [5]],
+    ],
+    [
+      createIterableFixture(["it's Sunny in", "", "California"]),
+      (words: string) => words.split(' '),
+      ["it's", "Sunny", "in", "", "California"],
+    ],
+    [
+      createIterableFixture([5, 4, -3, 20, 17, -33, -4, 18]),
       (x: number) => x < 0 ? [] : (x % 2 === 0 ? [x] : [x - 1, 1]),
       [4, 1, 4, 20, 16, 1, 18],
     ],

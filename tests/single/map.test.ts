@@ -1,10 +1,11 @@
 // @ts-ignore
-import { createGeneratorFixture, createIteratorFixture } from "../fixture";
+import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from "../fixture";
 import { map } from "../../src/single";
 
 describe.each([
   ...dataProviderForArrays(),
   ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
@@ -108,6 +109,51 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture(['one', 'Two', 'ThReE', 'FOUR']),
+      (x: string) => x.toUpperCase(),
+      ['ONE', 'TWO', 'THREE', 'FOUR'],
+    ],
+  ];
+}
+
+function dataProviderForIterables(): Array<unknown> {
+  return [
+    [
+      createIterableFixture([]),
+      (x: number) => x + 1,
+      [],
+    ],
+    [
+      createIterableFixture([]),
+      (x: number) => Math.sqrt(x),
+      [],
+    ],
+    [
+      createIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x + 1,
+      [1, 2, 3, 4, 5, 6],
+    ],
+    [
+      createIterableFixture(["IterToolsTS", "MathTS", "SubnetCalculator"]),
+      (x: string) => `${x} is great!`,
+      ["IterToolsTS is great!", "MathTS is great!", "SubnetCalculator is great!"],
+    ],
+    [
+      createIterableFixture([1, 4, 9, 16, 25]),
+      (x: number) => Math.sqrt(x),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createIterableFixture([1, -2, 3, -4, 5]),
+      (x: number) => Math.abs(x),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createIterableFixture(['one', 'Two', 'ThReE', 'FOUR']),
       (x: string) => x.toUpperCase(),
       ['ONE', 'TWO', 'THREE', 'FOUR'],
     ],
