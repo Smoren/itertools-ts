@@ -39,12 +39,12 @@ function *flatMap<TInput, TOutput>(
 ```
 
 ```typescript
-import { flatMap } from './single';
+import { single } from 'itertools-ts';
 
 const data = [1, 2, 3, 4, 5];
 const mapper = ($item) => [$item, -$item];
 
-for (number of flatMap(data, mapper)) {
+for (number of single.flatMap(data, mapper)) {
     console.log(`${number} `);
 }
 // 1 -1 2 -2 3 -3 4 -4 5 -5
@@ -61,12 +61,12 @@ function* map<TInput, TOutput>(
 ```
 
 ```typescript
-import { map } from './single';
+import { single } from 'itertools-ts';
 
 const grades = [100, 99, 95, 98, 100];
 const strictParentsOpinion = (g) => (g === 100) ? 'A' : 'F';
 
-for(const actualGrade of map(grades, strictParentsOpinion)) {
+for(const actualGrade of single.map(grades, strictParentsOpinion)) {
   console.log(actualGrade);
 }
 // A, F, F, F, A
@@ -80,12 +80,12 @@ function *repeat<T>(item: T, repetitions: number): Iterable<T>
 ```
 
 ```typescript
-import { repeat } from './single';
+import { single } from 'itertools-ts';
 
 data = 'Beetlejuice';
 repetitions = 3;
 
-for (const repeated of repeat(data, repetitions)) {
+for (const repeated of single.repeat(data, repetitions)) {
     console.log(repeated);
 }
 // 'Beetlejuice', 'Beetlejuice', 'Beetlejuice'
