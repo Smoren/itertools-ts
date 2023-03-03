@@ -22,6 +22,7 @@ npm i itertools-ts
 #### Multi Iteration
 | Iterator                    | Description                                                                             | Code Snippet               |
 |-----------------------------|-----------------------------------------------------------------------------------------|----------------------------|
+| [`chain`](#Chain)           | Chain multiple iterables together                                                       | `chain(list1, list2)`      |
 | [`zip`](#Zip)               | Iterate multiple collections simultaneously until the shortest iterator completes       | `zip(list1, list2)`        |
 | [`zipEqual`](#ZipEqual)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `zipEqual(list1, list2)`   |
 | [`zipLongest`](#ZipLongest) | Iterate multiple collections simultaneously until the longest iterator completes        | `zipLongest(list1, list2)` |
@@ -36,6 +37,26 @@ npm i itertools-ts
 ## Usage
 
 ## Multi Iteration
+### Chain
+Chain multiple iterables together into a single continuous sequence.
+
+```
+function *chain(
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Iterable<unknown>
+```
+```typescript
+import { multi } from 'itertools-ts';
+
+const prequels = ['Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith'];
+const originals = ['A New Hope', 'Empire Strikes Back', 'Return of the Jedi'];
+
+for (const movie of multi.chain(prequels, originals)) {
+  console.log(movie);
+}
+// 'Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith', 'A New Hope', 'Empire Strikes Back', 'Return of the Jedi'
+```
+
 ### Zip
 Iterate multiple iterable collections simultaneously.
 

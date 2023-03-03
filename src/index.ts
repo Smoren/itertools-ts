@@ -6,6 +6,7 @@ import {
 } from "./single";
 
 import {
+  chain,
   zip,
   zipLongest,
   zipEqual,
@@ -34,6 +35,7 @@ export const single = {
 }
 
 export const multi = {
+  chain,
   zip,
   zipLongest,
   zipEqual,

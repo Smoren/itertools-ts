@@ -1,4 +1,4 @@
-import { createMultipleIterator, MultipleIterationMode } from "./tools";
+import { createMultipleIterator, MultipleIterationMode, toIterable } from "./tools";
 
 export function *zip(
   ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
@@ -21,5 +21,15 @@ export function *zipEqual(
 ): Iterable<Array<unknown>> {
   for (const values of createMultipleIterator(MultipleIterationMode.STRICT_EQUAL, ...iterables)) {
     yield values;
+  }
+}
+
+export function *chain(
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Iterable<unknown> {
+  for (const iterable of iterables) {
+    for (const item of toIterable(iterable)) {
+      yield item;
+    }
   }
 }
