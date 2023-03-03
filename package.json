@@ -1,8 +1,8 @@
 {
   "name": "itertools-ts",
-  "version": "0.1.0",
+  "version": "0.1.22",
   "description": "Provides a huge set of functions for working with iterable collections",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
     "test": "jest --coverage",
