@@ -38,9 +38,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Smoren/nested-accessor-ts/issues"
+    "url": "https://github.com/Smoren/itertools-ts/issues"
   },
-  "homepage": "https://github.com/Smoren/nested-accessor-ts#readme",
+  "homepage": "https://github.com/Smoren/itertools-ts#readme",
   "devDependencies": {
     "@types/jest": "^29.2.4",
     "jest": "^29.3.1",
