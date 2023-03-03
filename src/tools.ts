@@ -71,40 +71,40 @@ export function *createMultipleIterator(
 
   iterate:
 
-  while (true) {
-    const statuses = single.map(iterators, (it: Iterator<unknown>) => it.next());
-    const values = [];
+    while (true) {
+      const statuses = single.map(iterators, (it: Iterator<unknown>) => it.next());
+      const values = [];
 
-    let allValid = true;
-    let anyValid = false;
+      let allValid = true;
+      let anyValid = false;
 
-    for (const status of statuses) {
-      let value;
+      for (const status of statuses) {
+        let value;
 
-      if (status.done) {
-        allValid = false;
-        value = undefined;
-      } else {
-        anyValid = true;
-        value = status.value;
+        if (status.done) {
+          allValid = false;
+          value = undefined;
+        } else {
+          anyValid = true;
+          value = status.value;
+        }
+
+        values.push(value);
       }
 
-      values.push(value);
-    }
-
-    if (!allValid && anyValid) {
-      switch (mode) {
-        case MultipleIterationMode.SHORTEST:
-          break iterate;
-        case MultipleIterationMode.STRICT_EQUAL:
-          throw new LengthError("Iterators must have equal lengths");
+      if (!allValid && anyValid) {
+        switch (mode) {
+          case MultipleIterationMode.SHORTEST:
+            break iterate;
+          case MultipleIterationMode.STRICT_EQUAL:
+            throw new LengthError("Iterators must have equal lengths");
+        }
       }
-    }
 
-    if (!anyValid) {
-      break;
-    }
+      if (!anyValid) {
+        break;
+      }
 
-    yield values;
-  }
+      yield values;
+    }
 }

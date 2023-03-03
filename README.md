@@ -19,6 +19,13 @@ npm i itertools-ts
 
 ### Loop Iteration Tools
 
+#### Multi Iteration
+| Iterator                    | Description                                                                             | Code Snippet               |
+|-----------------------------|-----------------------------------------------------------------------------------------|----------------------------|
+| [`zip`](#Zip)               | Iterate multiple collections simultaneously until the shortest iterator completes       | `zip(list1, list2)`        |
+| [`zipEqual`](#ZipEqual)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `zipEqual(list1, list2)`   |
+| [`zipLongest`](#ZipLongest) | Iterate multiple collections simultaneously until the longest iterator completes        | `zipLongest(list1, list2)` |
+
 #### Single Iteration
 | Iterator               | Description                                | Code Snippet                |
 |------------------------|--------------------------------------------|-----------------------------|
@@ -28,6 +35,88 @@ npm i itertools-ts
 
 ## Usage
 
+## Multi Iteration
+### Zip
+Iterate multiple iterable collections simultaneously.
+
+```
+function *zip(
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Iterable<Array<unknown>>
+```
+
+```typescript
+import { multi } from 'itertools-ts';
+
+const languages = ['PHP', 'Python', 'Java', 'Go'];
+const mascots = ['elephant', 'snake', 'bean', 'gopher'];
+
+for (const [language, mascot] of multi.zip(languages, mascots)) {
+  console.log(`The ${language} language mascot is an ${mascot}.`);
+}
+// The PHP language mascot is an elephant.
+// ...
+```
+
+Zip works with multiple iterable inputs--not limited to just two.
+```typescript
+import { multi } from 'itertools-ts';
+
+const names          = ['Ryu', 'Ken', 'Chun Li', 'Guile'];
+const countries      = ['Japan', 'USA', 'China', 'USA'];
+const signatureMoves = ['hadouken', 'shoryuken', 'spinning bird kick', 'sonic boom'];
+
+for (const [name, country, signatureMove] of multi.zip(names, countries, signatureMoves)) {
+  const streetFighter = new StreetFighter(name, country, signatureMove);
+}
+```
+Note: For uneven lengths, iteration stops when the shortest iterable is exhausted.
+
+### ZipLongest
+Iterate multiple iterable collections simultaneously.
+
+```
+function *zipLongest(
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Iterable<Array<unknown>>
+```
+
+For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
+
+```typescript
+import { multi } from 'itertools-ts';
+
+const letters = ['A', 'B', 'C'];
+const numbers = [1, 2];
+
+for (const [letter, number] of multi.zipLongest(letters, numbers)) {
+  // ['A', 1], ['B', 2], ['C', undefined]
+}
+```
+
+### ZipEqual
+Iterate multiple iterable collections with equal lengths simultaneously.
+
+Throws `LengthException` if lengths are not equal, meaning that at least one iterator ends before the others.
+
+```
+function *zipEqual(
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Iterable<Array<unknown>>
+```
+
+```typescript
+import { multi } from 'itertools-ts';
+
+const letters = ['A', 'B', 'C'];
+const numbers = [1, 2, 3];
+
+for (const [letter, number] of multi.zipEqual(letters, numbers)) {
+    // ['A', 1], ['B', 2], ['C', 3]
+}
+```
+
+## Single Iteration
 ### Flat Map
 Map a function only the elements of the iterable and then flatten the results.
 
@@ -45,7 +134,7 @@ const data = [1, 2, 3, 4, 5];
 const mapper = ($item) => [$item, -$item];
 
 for (number of single.flatMap(data, mapper)) {
-    console.log(number);
+  console.log(number);
 }
 // 1 -1 2 -2 3 -3 4 -4 5 -5
 ```
@@ -86,7 +175,7 @@ data = 'Beetlejuice';
 repetitions = 3;
 
 for (const repeated of single.repeat(data, repetitions)) {
-    console.log(repeated);
+  console.log(repeated);
 }
 // 'Beetlejuice', 'Beetlejuice', 'Beetlejuice'
 ```
