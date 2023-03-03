@@ -1,9 +1,10 @@
-import { isIterator } from '../../src/tools';
+// @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from '../fixture';
+import { tools } from '../../src';
 
 describe.each(dataProviderForTrue())("Tools Is Iterator Test True", (input) => {
   it("", () => {
-    expect(isIterator(input)).toBeTruthy();
+    expect(tools.isIterator(input)).toBeTruthy();
   });
 });
 
@@ -12,12 +13,15 @@ function dataProviderForTrue(): Array<unknown> {
     [createIteratorFixture([])],
     [createIteratorFixture([1])],
     [createIteratorFixture([1, 2, 3])],
+    [createGeneratorFixture([])],
+    [createGeneratorFixture([1])],
+    [createGeneratorFixture([1, 2, 3])],
   ];
 }
 
 describe.each(dataProviderForFalse())("Tools Is Iterator Test False", (input) => {
   it("", () => {
-    expect(isIterator(input)).toBeFalsy();
+    expect(tools.isIterator(input)).toBeFalsy();
   });
 });
 
@@ -39,9 +43,6 @@ function dataProviderForFalse(): Array<unknown> {
     [new Map()],
     [new Map([['a', 1]])],
     [new Map([['a', 1], ['b', 2], ['c', 3]])],
-    [createGeneratorFixture([])],
-    [createGeneratorFixture([1])],
-    [createGeneratorFixture([1, 2, 3])],
     [createIterableFixture([])],
     [createIterableFixture([1])],
     [createIterableFixture([1, 2, 3])],

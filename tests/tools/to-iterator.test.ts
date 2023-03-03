@@ -2,19 +2,21 @@
 import { createGeneratorFixture, createIterableFixture } from '../fixture';
 import { tools, InvalidArgumentError } from '../../src';
 
-describe.each(dataProviderForSuccess())("Tools To Iterable Test Success", (input, expected) => {
+describe.each(dataProviderForSuccess())("Tools To Iterator Test Success", (input, expected) => {
   it("", () => {
     // Given
-    const iterable = tools.toIterable(input as Iterable<unknown>|Iterator<unknown>);
+    const iterator = tools.toIterator(input as Iterable<unknown>|Iterator<unknown>);
     const result = [];
 
-    // When
-    for (const item of iterable) {
+    // Then
+    expect(tools.isIterator(iterator)).toBeTruthy();
+
+    // And when
+    for (const item of tools.toIterable(iterator)) {
       result.push(item);
     }
 
     // Then
-    expect(tools.isIterable(iterable)).toBeTruthy();
     expect(result).toEqual(expected);
   });
 });
@@ -91,7 +93,7 @@ function dataProviderForSuccess(): Array<unknown> {
 describe.each(dataProviderForError())("Tools To Iterable Test Error", (input) => {
   it("", () => {
     expect(() => {
-      tools.toIterable(input as Iterable<unknown>|Iterator<unknown>);
+      tools.toIterator(input as Iterable<unknown>|Iterator<unknown>);
     }).toThrow(InvalidArgumentError);
   });
 });

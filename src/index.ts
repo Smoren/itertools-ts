@@ -1,7 +1,31 @@
-import { map, flatMap, repeat, FlatMapper } from "./single";
-import { Stream } from "./stream";
-import { toIterable, isIterable, isIterator } from "./tools";
-import { InvalidArgumentError } from "./exceptions";
+import {
+  map,
+  flatMap,
+  repeat,
+  FlatMapper,
+} from "./single";
+
+import {
+  zip,
+  zipLongest,
+  zipEqual,
+} from "./multi";
+
+import {
+  Stream,
+} from "./stream";
+
+import {
+  toIterable,
+  toIterator,
+  isIterable,
+  isIterator,
+} from "./tools";
+
+import {
+  InvalidArgumentError,
+  LengthError,
+} from "./exceptions";
 
 export const single = {
   map,
@@ -9,14 +33,28 @@ export const single = {
   repeat,
 }
 
-export { Stream };
+export const multi = {
+  zip,
+  zipLongest,
+  zipEqual,
+}
+
+export {
+  Stream
+}
 
 export const tools = {
   toIterable,
+  toIterator,
   isIterable,
   isIterator,
 }
 
-export type { FlatMapper };
+export type {
+  FlatMapper,
+}
 
-export { InvalidArgumentError };
+export {
+  InvalidArgumentError,
+  LengthError,
+}

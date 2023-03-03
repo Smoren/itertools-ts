@@ -1,6 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from "../fixture";
-import { map } from "../../src/single";
+import { single } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
@@ -16,7 +16,7 @@ describe.each([
     const result = [];
 
     // When
-    for (const item of map(input as Iterable<unknown>, mapper as (datum: unknown) => unknown)) {
+    for (const item of single.map(input as Iterable<unknown>, mapper as (datum: unknown) => unknown)) {
       result.push(item);
     }
 

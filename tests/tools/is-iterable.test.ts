@@ -1,9 +1,10 @@
-import { isIterable } from '../../src/tools';
+// @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from '../fixture';
+import { tools } from '../../src';
 
 describe.each(dataProviderForTrue())("Tools Is Iterable Tst True", (input) => {
   it("", () => {
-    expect(isIterable(input)).toBeTruthy();
+    expect(tools.isIterable(input)).toBeTruthy();
   });
 });
 
@@ -30,7 +31,7 @@ function dataProviderForTrue(): Array<unknown> {
 
 describe.each(dataProviderForFalse())("Tools Is Iterable Tst False", (input) => {
   it("", () => {
-    expect(isIterable(input)).toBeFalsy();
+    expect(tools.isIterable(input)).toBeFalsy();
   });
 });
 

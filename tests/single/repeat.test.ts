@@ -1,7 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIteratorFixture } from "../fixture";
-import { repeat } from "../../src/single";
-import { InvalidArgumentError } from '../../src/exceptions';
+import { single, InvalidArgumentError } from "../../src";
 
 describe.each([
   ...dataProviderForIntegers(),
@@ -18,7 +17,7 @@ describe.each([
     const result = [];
 
     // When
-    for (const item of repeat(input, repetitions as number)) {
+    for (const item of single.repeat(input, repetitions as number)) {
       result.push(item);
     }
 
@@ -30,7 +29,7 @@ describe.each([
 describe.each(dataProviderForError())("Single Repeat Error Test", (input) => {
   it("", () => {
     expect(() => {
-      const repetitions = repeat(input, -1);
+      const repetitions = single.repeat(input, -1);
 
       for (const _ of repetitions) {
         break;

@@ -1,6 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { Stream } from '../../src/stream';
+import { Stream } from '../../src';
 
 describe.each([
   ...dataProviderForArrays(),
