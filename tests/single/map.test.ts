@@ -9,7 +9,7 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Map test", (input, mapper, expected) => {
+])("Single Map Test", (input, mapper, expected) => {
   it("", () => {
     // Given
     const result = [];

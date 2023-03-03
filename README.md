@@ -20,16 +20,45 @@ npm i itertools-ts
 ### Loop Iteration Tools
 
 #### Single Iteration
-| Iterator      | Description                 | Code Snippet          |
-|---------------|-----------------------------|-----------------------|
-| [`map`](#Map) | Map function onto each item | `map(data, function)` |
+| Iterator               | Description                                | Code Snippet                |
+|------------------------|--------------------------------------------|-----------------------------|
+| [`flatMap`](#Flat-Map) | Map function onto items and flatten result | `flatMap(data, mapper)`     |
+| [`map`](#Map)          | Map function onto each item                | `map(data, mapper)`         |
+| [`repeat`](#Repeat)    | Repeat an item a number of times           | `repeat(item, repetitions)` |
 
 ## Usage
+
+### Flat Map
+Map a function only the elements of the iterable and then flatten the results.
+
+```
+function *flatMap<TInput, TOutput>(
+  data: Iterable<TInput>|Iterator<TInput>,
+  mapper: FlatMapper<TInput, TOutput>,
+): Iterable<TOutput>
+```
+
+```typescript
+import { flatMap } from './single';
+
+const data = [1, 2, 3, 4, 5];
+const mapper = ($item) => [$item, -$item];
+
+for (number of flatMap(data, mapper)) {
+    console.log(`${number} `);
+}
+// 1 -1 2 -2 3 -3 4 -4 5 -5
+```
 
 ### Map
 Map a function onto each element.
 
-```Single::map(iterable $data, callable $function)```
+```
+function* map<TInput, TOutput>(
+  data: Iterable<TInput>|Iterator<TInput>,
+  mapper: (datum: TInput) => TOutput,
+): Iterable<TOutput>
+```
 
 ```typescript
 import { map } from './single';
@@ -41,6 +70,25 @@ for(const actualGrade of map(grades, strictParentsOpinion)) {
   console.log(actualGrade);
 }
 // A, F, F, F, A
+```
+
+### Repeat
+Repeat an item.
+
+```
+function *repeat<T>(item: T, repetitions: number): Iterable<T>
+```
+
+```typescript
+import { repeat } from './single';
+
+data = 'Beetlejuice';
+repetitions = 3;
+
+for (const repeated of repeat(data, repetitions)) {
+    console.log(repeated);
+}
+// 'Beetlejuice', 'Beetlejuice', 'Beetlejuice'
 ```
 
 ## Unit testing

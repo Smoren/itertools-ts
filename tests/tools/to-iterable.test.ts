@@ -2,7 +2,7 @@ import { isIterable, toIterable } from '../../src/tools';
 import { createGeneratorFixture, createIterableFixture } from '../fixture';
 import { InvalidArgumentError } from '../../src/exceptions';
 
-describe.each(dataProviderForSuccess())("To Iterable test success", (input, expected) => {
+describe.each(dataProviderForSuccess())("Tools To Iterable Test Success", (input, expected) => {
   it("", () => {
     // Given
     const iterable = toIterable(input as Iterable<unknown>|Iterator<unknown>);
@@ -88,7 +88,7 @@ function dataProviderForSuccess(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForError())("To Iterable test error", (input) => {
+describe.each(dataProviderForError())("Tools To Iterable Test Error", (input) => {
   it("", () => {
     expect(() => {
       toIterable(input as Iterable<unknown>|Iterator<unknown>);

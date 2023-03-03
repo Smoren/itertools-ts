@@ -24,3 +24,13 @@ export function createIterableFixture<T>(data: Array<T>): Iterable<T> {
     }
   };
 }
+
+export function createMapFixture<T>(data: Array<T>): Map<number, T> {
+  const result = new Map();
+
+  for (let i = 0; i < data.length; ++i) {
+    result.set(i, data[i]);
+  }
+
+  return result;
+}

@@ -1,7 +1,7 @@
 import { isIterator } from '../../src/tools';
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from '../fixture';
 
-describe.each(dataProviderForTrue())("Is Iterator test true", (input) => {
+describe.each(dataProviderForTrue())("Tools Is Iterator Test True", (input) => {
   it("", () => {
     expect(isIterator(input)).toBeTruthy();
   });
@@ -15,7 +15,7 @@ function dataProviderForTrue(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForFalse())("Is Iterator test false", (input) => {
+describe.each(dataProviderForFalse())("Tools Is Iterator Test False", (input) => {
   it("", () => {
     expect(isIterator(input)).toBeFalsy();
   });
