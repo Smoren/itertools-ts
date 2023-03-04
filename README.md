@@ -34,6 +34,29 @@ npm i itertools-ts
 | [`map`](#Map)          | Map function onto each item                | `map(data, mapper)`         |
 | [`repeat`](#Repeat)    | Repeat an item a number of times           | `repeat(item, repetitions)` |
 
+### Stream Iteration Tools
+#### Stream Sources
+| Source                 | Description                      | Code Snippet          |
+|------------------------|----------------------------------|-----------------------|
+| [`of`](#Of)            | Create a stream from an iterable | `Stream.of(iterable)` |
+| [`ofEmpty`](#Of-Empty) | Create an empty stream           | `Stream.ofEmpty()`    |
+
+#### Stream Operations
+| Operation                             | Description                                                                               | Code Snippet                          |
+|---------------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------|
+| [`chainWith`](#Chain-With)            | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`      |
+| [`flatMap`](#Flat-Map-1)              | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`              |
+| [`map`](#Map-1)                       | Map function onto elements                                                                | `stream.map(mapper)`                  |
+| [`zipWith`](#Zip-With)                | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`        |
+| [`zipLongestWith`](#Zip-Longest-With) | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)` |
+| [`zipEqualWith`](#Zip-Equal-With)     | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`   |
+
+#### Stream Terminal Operations
+##### Transformation Terminal Operations
+| Terminal Operation     | Description                      | Code Snippet       |
+|------------------------|----------------------------------|--------------------|
+| [`toArray`](#To-Array) | Returns array of stream elements | `stream.toArray()` |
+
 ## Usage
 
 ## Multi Iteration
@@ -79,7 +102,7 @@ for (const [language, mascot] of multi.zip(languages, mascots)) {
 // ...
 ```
 
-Zip works with multiple iterable inputs--not limited to just two.
+Zip works with multiple iterable inputs - not limited to just two.
 ```typescript
 import { multi } from 'itertools-ts';
 
@@ -199,6 +222,191 @@ for (const repeated of single.repeat(data, repetitions)) {
   console.log(repeated);
 }
 // 'Beetlejuice', 'Beetlejuice', 'Beetlejuice'
+```
+
+### Stream Sources
+#### Of
+Creates stream from an iterable.
+
+```
+Stream.of(data: Iterable<unknown>|Iterator<unknown>): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const iterable = [1, 2, 3];
+
+const result = Stream.of(iterable)
+  .chainWith([4, 5, 6], [7, 8, 9])
+  .zipEqualWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
+  .toArray();
+// [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7], [8, 8], [9, 9]]
+```
+
+#### Of Empty
+Creates stream of nothing.
+
+```
+Stream.ofEmpty(): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.ofEmpty()
+  .chainWith([1, 2, 3])
+  .toArray();
+// 1, 2, 3
+```
+
+### Stream Operations
+#### Chain With
+Return a stream chaining additional sources together into a single consecutive stream.
+
+```
+stream.chainWith(
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3];
+
+const result = Stream.of($input)
+  .chainWith([4, 5, 6])
+  .chainWith([7, 8, 9])
+  .toArray();
+// 1, 2, 3, 4, 5, 6, 7, 8, 9
+```
+
+#### Flat Map
+Map a function onto the elements of the stream and flatten the results.
+
+```
+stream.flatMap(mapper: (datum: unknown) => unknown): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const data = [1, 2, 3, 4, 5];
+const mapper = (item) => (item % 2 === 0) ? [item, item] : item;
+
+const result = Stream.of(data)
+  .flatMap(mapper)
+  .toArray();
+// [1, 2, 2, 3, 4, 4, 5]
+```
+
+#### Map
+Return a stream containing the result of mapping a function onto each element of the stream.
+
+```
+stream.map(mapper: (datum: unknown) => unknown): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const grades = [100, 95, 98, 89, 100];
+
+const result = Stream.of(grades)
+  .map((grade) => grade === 100 ? 'A' : 'F')
+  .toArray();
+// A, F, F, F, A
+```
+
+#### Zip With
+Return a stream consisting of multiple iterable collections streamed simultaneously.
+
+```
+stream.zipWith(
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Stream
+```
+
+For uneven lengths, iterations stops when the shortest iterable is exhausted.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3];
+
+const stream = Stream.of(input)
+  .zipWith([4, 5, 6])
+  .toArray();
+// [1, 4], [2, 5], [3, 6]
+```
+
+#### Zip Longest With
+Return a stream consisting of multiple iterable collections streamed simultaneously.
+
+```
+stream.zipLongestWith(
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Stream
+```
+
+* Iteration continues until the longest iterable is exhausted.
+* For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const stream = Stream.of(input)
+  .zipLongestWith([4, 5, 6]);
+
+for (const zipped of stream) {
+  // [1, 4], [2, 5], [3, 6], [4, undefined], [5, undefined]
+}
+```
+
+#### Zip Equal With
+Return a stream consisting of multiple iterable collections of equal lengths streamed simultaneously.
+
+```
+zipEqualWith(
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Stream
+```
+
+Works like `Stream.zipWith()` method but throws `LengthException` if lengths not equal,
+i.e., at least one iterator ends before the others.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3];
+
+const stream = Stream.of(input)
+  .zipEqualWith([4, 5, 6]);
+
+for (const zipped of stream) {
+    // [1, 4], [2, 5], [3, 6]
+}
+```
+
+### Terminal operations
+#### Transformation Terminal Operations
+##### To Array
+Returns an array of stream elements.
+
+```
+stream.toArray(): Array<unknown>
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.of([1, 2, 3, 4, 5])
+  .map((x) => x**2)
+  .toArray();
+// [1, 4, 9, 16, 25]
 ```
 
 ## Unit testing
