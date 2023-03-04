@@ -1,5 +1,6 @@
 import { toIterable } from './tools';
 import { flatMap, map } from './single';
+import { chain, zip, zipEqual, zipLongest } from "./multi";
 
 export class Stream {
   protected data: Iterable<unknown>;
@@ -10,6 +11,26 @@ export class Stream {
 
   static ofEmpty(): Stream {
     return new Stream([]);
+  }
+
+  zipWith(...iterables: Array<Iterable<unknown>|Iterator<unknown>>): Stream {
+    this.data = zip(this.data, ...iterables);
+    return this;
+  }
+
+  zipLongestWith(...iterables: Array<Iterable<unknown>|Iterator<unknown>>): Stream {
+    this.data = zipLongest(this.data, ...iterables);
+    return this;
+  }
+
+  zipEqualWith(...iterables: Array<Iterable<unknown>|Iterator<unknown>>): Stream {
+    this.data = zipEqual(this.data, ...iterables);
+    return this;
+  }
+
+  chainWith(...iterables: Array<Iterable<unknown>|Iterator<unknown>>): Stream {
+    this.data = chain(this.data, ...iterables);
+    return this;
   }
 
   map(mapper: (datum: unknown) => unknown): Stream {
