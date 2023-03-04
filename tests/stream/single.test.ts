@@ -1,6 +1,7 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
 import { Stream } from '../../src';
+import { repeat } from "../../src/single";
 
 describe.each([
   ...dataProviderForArrays(),
@@ -64,6 +65,20 @@ function dataProviderForArrays(): Array<unknown> {
         .toArray(),
       [1, 2, 3],
     ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => repeat(item, (item as number) + 1))
+        .toArray(),
+      [1, 1, 2, 2, 2, 3, 3, 3, 3],
+    ],
+    [
+      [1, 2, [3, 4], [5, 6], 7, 8],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => item)
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
   ];
 }
 
@@ -110,6 +125,20 @@ function dataProviderForGenerators(): Array<unknown> {
         .map((item) => (item as Array<number>)[0])
         .toArray(),
       [1, 2, 3],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => repeat(item, (item as number) + 1))
+        .toArray(),
+      [1, 1, 2, 2, 2, 3, 3, 3, 3],
+    ],
+    [
+      createGeneratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => item)
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7, 8],
     ],
   ];
 }
@@ -158,6 +187,20 @@ function dataProviderForIterables(): Array<unknown> {
         .toArray(),
       [1, 2, 3],
     ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => repeat(item, (item as number) + 1))
+        .toArray(),
+      [1, 1, 2, 2, 2, 3, 3, 3, 3],
+    ],
+    [
+      createIterableFixture([1, 2, [3, 4], [5, 6], 7, 8]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => item)
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
   ];
 }
 
@@ -205,6 +248,20 @@ function dataProviderForIterators(): Array<unknown> {
         .toArray(),
       [1, 2, 3],
     ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => repeat(item, (item as number) + 1))
+        .toArray(),
+      [1, 1, 2, 2, 2, 3, 3, 3, 3],
+    ],
+    [
+      createIteratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => item)
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
   ];
 }
 
@@ -244,6 +301,13 @@ function dataProviderForStrings(): Array<unknown> {
         .map((item) => `[${item}]`)
         .toArray(),
       ['[a]', '[b]', '[c]'],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => repeat(parseInt(item as string), parseInt(item as string) + 1))
+        .toArray(),
+      [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
   ];
 }
@@ -292,6 +356,20 @@ function dataProviderForSets(): Array<unknown> {
         .toArray(),
       [1, 2, 3],
     ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => repeat(item, (item as number) + 1))
+        .toArray(),
+      [1, 1, 2, 2, 2, 3, 3, 3, 3],
+    ],
+    [
+      new Set([1, 2, [3, 4], [5, 6], 7, 8]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => item)
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
   ];
 }
 
@@ -338,6 +416,20 @@ function dataProviderForMaps(): Array<unknown> {
         .map((item) => (item as Array<Array<number>>)[1][0])
         .toArray(),
       [1, 2, 3],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => repeat((item as Array<unknown>)[1], ((item as Array<unknown>)[1] as number) + 1))
+        .toArray(),
+      [1, 1, 2, 2, 2, 3, 3, 3, 3],
+    ],
+    [
+      createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .flatMap((item) => (item as Array<unknown>)[1])
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7, 8],
     ],
   ];
 }

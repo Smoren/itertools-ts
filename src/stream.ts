@@ -1,5 +1,5 @@
 import { toIterable } from './tools';
-import { map } from './single';
+import { flatMap, map } from './single';
 
 export class Stream {
   protected data: Iterable<unknown>;
@@ -14,6 +14,11 @@ export class Stream {
 
   map(mapper: (datum: unknown) => unknown): Stream {
     this.data = map(this.data, mapper);
+    return this;
+  }
+
+  flatMap(mapper: (datum: unknown) => unknown): Stream {
+    this.data = flatMap(this.data, mapper);
     return this;
   }
 
