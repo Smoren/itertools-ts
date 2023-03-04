@@ -20,12 +20,12 @@ npm i itertools-ts
 ### Loop Iteration Tools
 
 #### Multi Iteration
-| Iterator                    | Description                                                                             | Code Snippet               |
-|-----------------------------|-----------------------------------------------------------------------------------------|----------------------------|
-| [`chain`](#Chain)           | Chain multiple iterables together                                                       | `chain(list1, list2)`      |
-| [`zip`](#Zip)               | Iterate multiple collections simultaneously until the shortest iterator completes       | `zip(list1, list2)`        |
-| [`zipEqual`](#ZipEqual)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `zipEqual(list1, list2)`   |
-| [`zipLongest`](#ZipLongest) | Iterate multiple collections simultaneously until the longest iterator completes        | `zipLongest(list1, list2)` |
+| Iterator                     | Description                                                                             | Code Snippet               |
+|------------------------------|-----------------------------------------------------------------------------------------|----------------------------|
+| [`chain`](#Chain)            | Chain multiple iterables together                                                       | `chain(list1, list2)`      |
+| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes       | `zip(list1, list2)`        |
+| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `zipEqual(list1, list2)`   |
+| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes        | `zipLongest(list1, list2)` |
 
 #### Single Iteration
 | Iterator               | Description                                | Code Snippet                |
@@ -122,7 +122,7 @@ for (const [name, country, signatureMove] of multi.zip(names, countries, signatu
 ```
 Note: For uneven lengths, iteration stops when the shortest iterable is exhausted.
 
-### ZipLongest
+### Zip Longest
 Iterate multiple iterable collections simultaneously.
 
 ```
@@ -144,7 +144,7 @@ for (const [letter, number] of multi.zipLongest(letters, numbers)) {
 }
 ```
 
-### ZipEqual
+### Zip Equal
 Iterate multiple iterable collections with equal lengths simultaneously.
 
 Throws `LengthException` if lengths are not equal, meaning that at least one iterator ends before the others.
