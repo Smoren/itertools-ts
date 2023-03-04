@@ -13,6 +13,10 @@ import {
 } from "./multi";
 
 import {
+  distinct,
+} from "./set"
+
+import {
   Stream,
 } from "./stream";
 
@@ -39,6 +43,10 @@ export const multi = {
   zip,
   zipLongest,
   zipEqual,
+}
+
+export const set = {
+  distinct,
 }
 
 export {

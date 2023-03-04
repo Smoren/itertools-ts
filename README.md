@@ -34,6 +34,11 @@ npm i itertools-ts
 | [`map`](#Map)          | Map function onto each item                | `map(data, mapper)`         |
 | [`repeat`](#Repeat)    | Repeat an item a number of times           | `repeat(item, repetitions)` |
 
+#### Set and multiset Iteration
+| Iterator                | Description                 | Code Snippet     |
+|-------------------------|-----------------------------|------------------|
+| [`distinct`](#Distinct) | Iterate only distinct items | `distinct(data)` |
+
 ### Stream Iteration Tools
 #### Stream Sources
 | Source                 | Description                      | Code Snippet          |
@@ -175,7 +180,7 @@ function *flatMap<TInput, TOutput>(
 import { single } from 'itertools-ts';
 
 const data = [1, 2, 3, 4, 5];
-const mapper = ($item) => [$item, -$item];
+const mapper = (item) => [item, -item];
 
 for (number of single.flatMap(data, mapper)) {
   console.log(number);
@@ -222,6 +227,25 @@ for (const repeated of single.repeat(data, repetitions)) {
   console.log(repeated);
 }
 // 'Beetlejuice', 'Beetlejuice', 'Beetlejuice'
+```
+
+## Set and multiset
+### Distinct
+Filter out elements from the iterable only returning distinct elements.
+
+```
+function *distinct<T>(data: Iterable<T>|Iterator<T>): Iterable<T>
+```
+
+```typescript
+import { set } from 'itertools-ts';
+
+const chessSet = ['rook', 'rook', 'knight', 'knight', 'bishop', 'bishop', 'king', 'queen', 'pawn', 'pawn'];
+
+for (const chessPiece of set.distinct(chessSet)) {
+  console.log(chessPiece);
+}
+// rook, knight, bishop, king, queen, pawn
 ```
 
 ### Stream Sources
@@ -275,7 +299,7 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3];
 
-const result = Stream.of($input)
+const result = Stream.of(input)
   .chainWith([4, 5, 6])
   .chainWith([7, 8, 9])
   .toArray();
