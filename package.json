@@ -1,6 +1,6 @@
 {
   "name": "itertools-ts",
-  "version": "0.1.25",
+  "version": "0.2.0",
   "description": "Provides a huge set of functions for working with iterable collections",
   "main": "src/index.ts",
   "scripts": {
