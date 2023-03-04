@@ -1,6 +1,7 @@
 import { toIterable } from './tools';
 import { flatMap, map } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
+import { distinct } from "./set";
 
 export class Stream {
   protected data: Iterable<unknown>;
@@ -40,6 +41,11 @@ export class Stream {
 
   flatMap(mapper: (datum: unknown) => unknown): Stream {
     this.data = flatMap(this.data, mapper);
+    return this;
+  }
+
+  distinct(): Stream {
+    this.data = distinct(this.data);
     return this;
   }
 

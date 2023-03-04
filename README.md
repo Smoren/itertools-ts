@@ -50,6 +50,7 @@ npm i itertools-ts
 | Operation                             | Description                                                                               | Code Snippet                          |
 |---------------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------|
 | [`chainWith`](#Chain-With)            | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`      |
+| [`distinct`](#Distinct-1)             | Filter out elements: iterate only unique items                                            | `stream.distinct()`                   |
 | [`flatMap`](#Flat-Map-1)              | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`              |
 | [`map`](#Map-1)                       | Map function onto elements                                                                | `stream.map(mapper)`                  |
 | [`zipWith`](#Zip-With)                | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`        |
@@ -304,6 +305,23 @@ const result = Stream.of(input)
   .chainWith([7, 8, 9])
   .toArray();
 // 1, 2, 3, 4, 5, 6, 7, 8, 9
+```
+
+#### Distinct
+Return a stream filtering out elements from the stream only returning distinct elements.
+
+```
+stream.distinct(): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 1, 2, 3, 3, '1', '1', '2', '3'];
+const stream = Stream.of(input)
+  .distinct()
+  .toArray();
+// 1, 2, 3, '1', '2', '3'
 ```
 
 #### Flat Map
