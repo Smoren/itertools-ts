@@ -33,6 +33,10 @@ import {
   LengthError,
 } from "./exceptions";
 
+import {
+	reduceFunc
+} from "./reduce";
+
 export const single = {
   map,
   flatMap,
@@ -69,4 +73,8 @@ export type {
 export {
   InvalidArgumentError,
   LengthError,
+}
+
+export const reduce = {
+	reduceFunc
 }
