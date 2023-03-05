@@ -1,5 +1,5 @@
 // @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from "../fixture";
+import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
 import { set } from "../../src";
 
 describe.each([
@@ -9,6 +9,7 @@ describe.each([
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
+  ...dataProviderForMaps(),
 ])("Single Distinct Test", (input, expected) => {
   it("", () => {
     // Given
@@ -289,6 +290,55 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([true, 1, '1', 1.1, '1.1']),
+      [true, 1, '1', 1.1, '1.1'],
+    ],
+  ];
+}
+
+function dataProviderForMaps(): Array<unknown> {
+  return [
+    [
+      createMapFixture([]),
+      [],
+    ],
+    [
+      createMapFixture([1]),
+      [1],
+    ],
+    [
+      createMapFixture([1, 1]),
+      [1],
+    ],
+    [
+      createMapFixture([1, '1']),
+      [1, '1'],
+    ],
+    [
+      createMapFixture(['1', 1]),
+      ['1', 1],
+    ],
+    [
+      createMapFixture(['aa', 'bb', 'aa']),
+      ['aa', 'bb'],
+    ],
+    [
+      createMapFixture([1, 2, 1, 2, 3]),
+      [1, 2, 3],
+    ],
+    [
+      createMapFixture(['1', 2, '1', '2', 3]),
+      ['1', 2, '2', 3],
+    ],
+    [
+      createMapFixture([false, null, undefined, 0, 0.0, '']),
+      [false, null, undefined, 0, ''],
+    ],
+    [
+      createMapFixture([true, 1, '1', 1.0, '1.0']),
+      [true, 1, '1', '1.0'],
+    ],
+    [
+      createMapFixture([true, 1, '1', 1.1, '1.1']),
       [true, 1, '1', 1.1, '1.1'],
     ],
   ];

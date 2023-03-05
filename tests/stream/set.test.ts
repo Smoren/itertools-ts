@@ -8,7 +8,8 @@ describe.each([
   ...dataProviderForIterables(),
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
-  ...dataProviderForSets()
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
 ])("Stream Set Test", (input, streamFactory, expected) => {
   it("", () => {
     // Given
@@ -118,6 +119,25 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1, 2, 3, '1', '2', '3', 1, '1']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .distinct()
+        .toArray(),
+      [1, 2, 3, '1', '2', '3'],
+    ],
+  ];
+}
+
+function dataProviderForMaps(): Array<unknown> {
+  return [
+    [
+      createMapFixture([1, 2, 3, '1', '2', '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .distinct()
+        .toArray(),
+      [1, 2, 3, '1', '2', '3'],
+    ],
+    [
+      createMapFixture([1, 2, 3, '1', '2', '3', 1, '1']),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .distinct()
         .toArray(),
