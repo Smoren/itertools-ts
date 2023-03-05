@@ -1,6 +1,6 @@
 {
   "name": "itertools-ts",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Provides a huge set of functions for working with iterable collections",
   "main": "src/index.ts",
   "scripts": {
@@ -13,16 +13,18 @@
     "url": "git+https://github.com/Smoren/itertools-ts.git"
   },
   "keywords": [
+    "itertools",
+    "itertools-library",
+    "iterable",
     "generator",
     "stream",
+    "streams",
+    "fluentinterface",
     "zip",
     "iterator",
-    "looping",
-    "streams",
     "loops",
-    "iterable",
+    "looping",
     "random-iteration",
-    "fluentinterface",
     "infinite-iteration"
   ],
   "author": {
