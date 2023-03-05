@@ -39,3 +39,14 @@ export function *flatMap<TInput, TOutput>(
     }
   }
 }
+
+export function *filter<T>(
+  data: Iterable<T>|Iterator<T>,
+  predicate: (datum: T) => boolean,
+): Iterable<T> {
+  for (const datum of toIterable(data)) {
+    if (predicate(datum)) {
+      yield datum;
+    }
+  }
+}

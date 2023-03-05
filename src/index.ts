@@ -2,6 +2,7 @@ import {
   map,
   flatMap,
   repeat,
+  filter,
   FlatMapper,
 } from "./single";
 
@@ -36,6 +37,7 @@ export const single = {
   map,
   flatMap,
   repeat,
+  filter,
 }
 
 export const multi = {

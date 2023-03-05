@@ -28,11 +28,12 @@ npm i itertools-ts
 | [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes        | `zipLongest(list1, list2)` |
 
 #### Single Iteration
-| Iterator               | Description                                | Code Snippet                |
-|------------------------|--------------------------------------------|-----------------------------|
-| [`flatMap`](#Flat-Map) | Map function onto items and flatten result | `flatMap(data, mapper)`     |
-| [`map`](#Map)          | Map function onto each item                | `map(data, mapper)`         |
-| [`repeat`](#Repeat)    | Repeat an item a number of times           | `repeat(item, repetitions)` |
+| Iterator               | Description                                 | Code Snippet                |
+|------------------------|---------------------------------------------|-----------------------------|
+| [`filter`](#Filter)    | Filter for elements where predicate is true | `filter(data, predicate)`   |
+| [`flatMap`](#Flat-Map) | Map function onto items and flatten result  | `flatMap(data, mapper)`     |
+| [`map`](#Map)          | Map function onto each item                 | `map(data, mapper)`         |
+| [`repeat`](#Repeat)    | Repeat an item a number of times            | `repeat(item, repetitions)` |
 
 #### Set and multiset Iteration
 | Iterator                | Description                 | Code Snippet     |
@@ -167,6 +168,28 @@ for (const [letter, number] of multi.zipEqual(letters, numbers)) {
 ```
 
 ## Single Iteration
+### Filter
+Filter out elements from the iterable only returning elements where the predicate function is true.
+
+```
+function *filter<T>(
+  data: Iterable<T>|Iterator<T>,
+  predicate: (datum: T) => boolean,
+): Iterable<T>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const starWarsEpisodes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+const goodMoviePredicate = (episode) => episode > 3 && episode < 8;
+
+for (const goodMovie of single.filter(starWarsEpisodes, goodMoviePredicate)) {
+  console.log(goodMovie);
+}
+// 4, 5, 6, 7
+```
+
 ### Flat Map
 Map a function only the elements of the iterable and then flatten the results.
 
