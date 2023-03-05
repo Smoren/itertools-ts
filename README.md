@@ -52,6 +52,7 @@ npm i itertools-ts
 |---------------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------|
 | [`chainWith`](#Chain-With)            | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`      |
 | [`distinct`](#Distinct-1)             | Filter out elements: iterate only unique items                                            | `stream.distinct()`                   |
+| [`filter`](#Filter-1)                 | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`            |
 | [`flatMap`](#Flat-Map-1)              | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`              |
 | [`map`](#Map-1)                       | Map function onto elements                                                                | `stream.map(mapper)`                  |
 | [`zipWith`](#Zip-With)                | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`        |
@@ -345,6 +346,24 @@ const stream = Stream.of(input)
   .distinct()
   .toArray();
 // 1, 2, 3, '1', '2', '3'
+```
+
+#### Filter
+Filter out elements from the stream only keeping elements where there predicate function is true.
+
+```
+filter(predicate: (item: unknown) => boolean): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, -1, 2, -2, 3, -3];
+
+const result = Stream.of(input)
+  .filter((value) => value > 0)
+  .toArray();
+// 1, 2, 3
 ```
 
 #### Flat Map

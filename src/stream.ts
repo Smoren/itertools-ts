@@ -1,5 +1,5 @@
 import { toIterable } from './tools';
-import { flatMap, map } from './single';
+import { filter, flatMap, map } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
 
@@ -31,6 +31,11 @@ export class Stream {
 
   chainWith(...iterables: Array<Iterable<unknown>|Iterator<unknown>>): Stream {
     this.data = chain(this.data, ...iterables);
+    return this;
+  }
+
+  filter(predicate: (item: unknown) => boolean): Stream {
+    this.data = filter(this.data, predicate);
     return this;
   }
 

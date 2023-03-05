@@ -25,6 +25,20 @@ function dataProviderForArrays(): Array<unknown> {
   return [
     [
       [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      [],
       () => Stream.ofEmpty()
         .map((item) => (item as number) + 1)
         .toArray(),
@@ -84,6 +98,20 @@ function dataProviderForArrays(): Array<unknown> {
 
 function dataProviderForGenerators(): Array<unknown> {
   return [
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [1, 2, 3],
+    ],
     [
       createGeneratorFixture([]),
       () => Stream.ofEmpty()
@@ -147,6 +175,20 @@ function dataProviderForIterables(): Array<unknown> {
   return [
     [
       createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createIterableFixture([]),
       () => Stream.ofEmpty()
         .map((item) => (item as number) + 1)
         .toArray(),
@@ -206,6 +248,20 @@ function dataProviderForIterables(): Array<unknown> {
 
 function dataProviderForIterators(): Array<unknown> {
   return [
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [1, 2, 3],
+    ],
     [
       createIteratorFixture([]),
       () => Stream.ofEmpty()
@@ -269,6 +325,20 @@ function dataProviderForStrings(): Array<unknown> {
   return [
     [
       '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => parseInt(value as string) > 0)
+        .toArray(),
+      [],
+    ],
+    [
+      '123456',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => parseInt(value as string) % 2 === 0)
+        .toArray(),
+      ['2', '4', '6'],
+    ],
+    [
+      '',
       () => Stream.ofEmpty()
         .map((item) => `[${item}]`)
         .toArray(),
@@ -314,6 +384,20 @@ function dataProviderForStrings(): Array<unknown> {
 
 function dataProviderForSets(): Array<unknown> {
   return [
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [1, 2, 3],
+    ],
     [
       new Set([]),
       () => Stream.ofEmpty()
@@ -375,6 +459,22 @@ function dataProviderForSets(): Array<unknown> {
 
 function dataProviderForMaps(): Array<unknown> {
   return [
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as Array<number>)[1])
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as Array<number>)[1])
+        .filter((value) => (value as number) > 0)
+        .toArray(),
+      [1, 2, 3],
+    ],
     [
       createMapFixture([]),
       () => Stream.ofEmpty()
