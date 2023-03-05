@@ -134,14 +134,14 @@ function dataProviderForMaps(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .distinct()
         .toArray(),
-      [1, 2, 3, '1', '2', '3'],
+      [[0, 1], [1, 2], [2, 3], [3, '1'], [4, '2'], [5, '3']],
     ],
     [
       createMapFixture([1, 2, 3, '1', '2', '3', 1, '1']),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .distinct()
         .toArray(),
-      [1, 2, 3, '1', '2', '3'],
+      [[0, 1], [1, 2], [2, 3], [3, '1'], [4, '2'], [5, '3']],
     ],
   ];
 }

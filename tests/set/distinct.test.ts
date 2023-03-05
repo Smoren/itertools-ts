@@ -303,43 +303,43 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1]),
-      [1],
+      [[0, 1]],
     ],
     [
       createMapFixture([1, 1]),
-      [1],
+      [[0, 1]],
     ],
     [
       createMapFixture([1, '1']),
-      [1, '1'],
+      [[0, 1], [1, '1']],
     ],
     [
       createMapFixture(['1', 1]),
-      ['1', 1],
+      [[0, '1'], [1, 1]],
     ],
     [
       createMapFixture(['aa', 'bb', 'aa']),
-      ['aa', 'bb'],
+      [[0, 'aa'], [1, 'bb']],
     ],
     [
       createMapFixture([1, 2, 1, 2, 3]),
-      [1, 2, 3],
+      [[0, 1], [1, 2], [4, 3]],
     ],
     [
       createMapFixture(['1', 2, '1', '2', 3]),
-      ['1', 2, '2', 3],
+      [[0, '1'], [1, 2], [3, '2'], [4, 3]],
     ],
     [
       createMapFixture([false, null, undefined, 0, 0.0, '']),
-      [false, null, undefined, 0, ''],
+      [[0, false], [1, null], [2, undefined], [3, 0], [5, '']],
     ],
     [
       createMapFixture([true, 1, '1', 1.0, '1.0']),
-      [true, 1, '1', '1.0'],
+      [[0, true], [1, 1], [2, '1'], [4, '1.0']],
     ],
     [
       createMapFixture([true, 1, '1', 1.1, '1.1']),
-      [true, 1, '1', 1.1, '1.1'],
+      [[0, true], [1, 1], [2, '1'], [3, 1.1], [4, '1.1']],
     ],
   ];
 }
