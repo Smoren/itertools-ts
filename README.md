@@ -35,6 +35,11 @@ npm i itertools-ts
 | [`map`](#Map)          | Map function onto each item                 | `map(data, mapper)`         |
 | [`repeat`](#Repeat)    | Repeat an item a number of times            | `repeat(item, repetitions)` |
 
+#### Reduce
+| Reducer                | Description                            | Code Snippet                           |
+|------------------------|----------------------------------------|----------------------------------------|
+| [`toValue`](#To-Value) | Reduce to value using callable reducer | `toValue(data, reducer, initialValue)` |
+
 #### Set and multiset Iteration
 | Iterator                | Description                 | Code Snippet     |
 |-------------------------|-----------------------------|------------------|
@@ -253,6 +258,29 @@ for (const repeated of single.repeat(data, repetitions)) {
 }
 // 'Beetlejuice', 'Beetlejuice', 'Beetlejuice'
 ```
+
+## Reduce
+### To Value
+Reduce elements to a single value using reducer function.
+
+```
+function toValue<TInput, TOutput>(
+  data: Iterable<TInput>|Iterator<TInput>,
+  reducer: (carry: TOutput|undefined, datum: TInput) => TOutput,
+  initialValue?: TOutput,
+): TOutput|undefined
+```
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const input = [1, 2, 3, 4, 5];
+const sum = (carry, item) => carry + item;
+
+const result = reduce.toValue(input, sum, 0);
+// 15
+```
+
 
 ## Set and multiset
 ### Distinct
