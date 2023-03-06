@@ -1,8 +1,9 @@
 import {
   map,
+  filter,
   flatMap,
   repeat,
-  filter,
+  chunkwiseOverlap,
   FlatMapper,
 } from "./single";
 
@@ -38,10 +39,11 @@ import {
 } from "./exceptions";
 
 export const single = {
-  map,
-  flatMap,
-  repeat,
+  chunkwiseOverlap,
   filter,
+  flatMap,
+  map,
+  repeat,
 }
 
 export const multi = {

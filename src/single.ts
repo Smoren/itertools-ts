@@ -50,3 +50,36 @@ export function *filter<T>(
     }
   }
 }
+
+export function *chunkwiseOverlap<T>(
+  data: Iterable<T>|Iterator<T>,
+  chunkSize: number,
+  overlapSize: number,
+  includeIncompleteTail: boolean = true,
+): Iterable<Array<T>> {
+  if (chunkSize < 1) {
+    throw new InvalidArgumentError(`Chunk size must be ≥ 1. Got ${chunkSize}`);
+  }
+
+  if (overlapSize >= chunkSize) {
+    throw new InvalidArgumentError('Overlap size must be less than chunk size');
+  }
+
+  let chunk: Array<T> = [];
+  let isLastIterationYielded = false;
+
+  for (const datum of toIterable(data)) {
+    isLastIterationYielded = false;
+    chunk.push(datum);
+
+    if (chunk.length === chunkSize) {
+      yield chunk;
+      chunk = chunk.slice(chunkSize-overlapSize);
+      isLastIterationYielded = true;
+    }
+  }
+
+  if (!isLastIterationYielded && chunk.length > 0 && includeIncompleteTail) {
+    yield chunk;
+  }
+}

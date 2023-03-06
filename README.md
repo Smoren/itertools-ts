@@ -28,12 +28,13 @@ npm i itertools-ts
 | [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes        | `zipLongest(list1, list2)` |
 
 #### Single Iteration
-| Iterator               | Description                                 | Code Snippet                |
-|------------------------|---------------------------------------------|-----------------------------|
-| [`filter`](#Filter)    | Filter for elements where predicate is true | `filter(data, predicate)`   |
-| [`flatMap`](#Flat-Map) | Map function onto items and flatten result  | `flatMap(data, mapper)`     |
-| [`map`](#Map)          | Map function onto each item                 | `map(data, mapper)`         |
-| [`repeat`](#Repeat)    | Repeat an item a number of times            | `repeat(item, repetitions)` |
+| Iterator                                 | Description                                 | Code Snippet                                     |
+|------------------------------------------|---------------------------------------------|--------------------------------------------------|
+| [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `chunkwiseOverlap(data, chunkSize, overlapSize)` |
+| [`filter`](#Filter)                      | Filter for elements where predicate is true | `filter(data, predicate)`                        |
+| [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `flatMap(data, mapper)`                          |
+| [`map`](#Map)                            | Map function onto each item                 | `map(data, mapper)`                              |
+| [`repeat`](#Repeat)                      | Repeat an item a number of times            | `repeat(item, repetitions)`                      |
 
 #### Reduce
 | Reducer                | Description                            | Code Snippet                           |
@@ -179,6 +180,31 @@ for (const [letter, number] of multi.zipEqual(letters, numbers)) {
 ```
 
 ## Single Iteration
+### Chunkwise Overlap
+Return overlapped chunks of elements.
+
+```
+function *chunkwiseOverlap<T>(
+  data: Iterable<T>|Iterator<T>,
+  chunkSize: number,
+  overlapSize: number,
+  includeIncompleteTail: boolean = true,
+): Iterable<Array<T>>
+```
+
+* Chunk size must be at least 1.
+* Overlap size must be less than chunk size.
+
+```typescript
+import { single } from 'itertools-ts';
+
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+for (const chunk of single.chunkwiseOverlap(numbers, 3, 1)) {
+  // [1, 2, 3], [3, 4, 5], [5, 6, 7], [7, 8, 9], [9, 10]
+}
+```
+
 ### Filter
 Filter out elements from the iterable only returning elements where the predicate function is true.
 
