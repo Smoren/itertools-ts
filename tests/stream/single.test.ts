@@ -93,6 +93,166 @@ function dataProviderForArrays(): Array<unknown> {
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[-1, -2], [-3]],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[-1, -2]],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[-1, -2], [-2, -3]],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[-1, -2], [-2, -3]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[1, 2], [3, 4], [5]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[1, 2], [3, 4]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 1)
+        .toArray(),
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 1, false)
+        .toArray(),
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 2)
+        .toArray(),
+      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 2, false)
+        .toArray(),
+      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
+    ],
   ];
 }
 
@@ -167,6 +327,166 @@ function dataProviderForGenerators(): Array<unknown> {
         .flatMap((item) => item)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[-1, -2], [-3]],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[-1, -2]],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[-1, -2], [-2, -3]],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[-1, -2], [-2, -3]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[1, 2], [3, 4], [5]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[1, 2], [3, 4]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 1)
+        .toArray(),
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 1, false)
+        .toArray(),
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 2)
+        .toArray(),
+      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 2, false)
+        .toArray(),
+      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
     ],
   ];
 }
@@ -243,6 +563,166 @@ function dataProviderForIterables(): Array<unknown> {
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[-1, -2], [-3]],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[-1, -2]],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[-1, -2], [-2, -3]],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[-1, -2], [-2, -3]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[1, 2], [3, 4], [5]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[1, 2], [3, 4]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 1)
+        .toArray(),
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 1, false)
+        .toArray(),
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 2)
+        .toArray(),
+      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 2, false)
+        .toArray(),
+      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
+    ],
   ];
 }
 
@@ -318,6 +798,166 @@ function dataProviderForIterators(): Array<unknown> {
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[-1, -2], [-3]],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[-1, -2]],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[-1, -2], [-2, -3]],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[-1, -2], [-2, -3]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[1, 2], [3, 4], [5]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[1, 2], [3, 4]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 1)
+        .toArray(),
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 1, false)
+        .toArray(),
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 2)
+        .toArray(),
+      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 2, false)
+        .toArray(),
+      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
+    ],
   ];
 }
 
@@ -378,6 +1018,164 @@ function dataProviderForStrings(): Array<unknown> {
         .flatMap((item) => repeat(parseInt(item as string), parseInt(item as string) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [],
+    ],
+    [
+      'abc',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [['a', 'b'], ['c']],
+    ],
+    [
+      'abc',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [['a', 'b']],
+    ],
+    [
+      'abc',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [['a', 'b'], ['b', 'c']],
+    ],
+    [
+      'abc',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [['a', 'b'], ['b', 'c']],
+    ],
+    [
+      'abcde',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [['a', 'b'], ['c', 'd'], ['e']],
+    ],
+    [
+      'abcde',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [['a', 'b'], ['c', 'd']],
+    ],
+    [
+      'abcde',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'e']],
+    ],
+    [
+      'abcde',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'e']],
+    ],
+    [
+      'abcdef',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [['a', 'b'], ['c', 'd'], ['e', 'f']],
+    ],
+    [
+      'abcdef',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [['a', 'b'], ['c', 'd'], ['e', 'f']],
+    ],
+    [
+      'abcdef',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'e'], ['e', 'f']],
+    ],
+    [
+      'abcdef',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'e'], ['e', 'f']],
+    ],
+    [
+      'abcdefghij',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(3, 1)
+        .toArray(),
+      [['a', 'b', 'c'], ['c', 'd', 'e'], ['e', 'f', 'g'], ['g', 'h', 'i'], ['i', 'j']],
+    ],
+    [
+      'abcdefghij',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(3, 1, false)
+        .toArray(),
+      [['a', 'b', 'c'], ['c', 'd', 'e'], ['e', 'f', 'g'], ['g', 'h', 'i']],
+    ],
+    [
+      'abcdefghij',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(3, 2)
+        .toArray(),
+      [
+        ['a', 'b', 'c'],
+        ['b', 'c', 'd'],
+        ['c', 'd', 'e'],
+        ['d', 'e', 'f'],
+        ['e', 'f', 'g'],
+        ['f', 'g', 'h'],
+        ['g', 'h', 'i'],
+        ['h', 'i', 'j'],
+      ],
+    ],
+    [
+      'abcdefghij',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwiseOverlap(3, 2, false)
+        .toArray(),
+      [
+        ['a', 'b', 'c'],
+        ['b', 'c', 'd'],
+        ['c', 'd', 'e'],
+        ['d', 'e', 'f'],
+        ['e', 'f', 'g'],
+        ['f', 'g', 'h'],
+        ['g', 'h', 'i'],
+        ['h', 'i', 'j'],
+      ],
     ],
   ];
 }
@@ -453,6 +1251,166 @@ function dataProviderForSets(): Array<unknown> {
         .flatMap((item) => item)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[-1, -2], [-3]],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[-1, -2]],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[-1, -2], [-2, -3]],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as number) > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[-1, -2], [-2, -3]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[1, 2], [3, 4], [5]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[1, 2], [3, 4]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 1)
+        .toArray(),
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 1, false)
+        .toArray(),
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 2)
+        .toArray(),
+      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwiseOverlap(3, 2, false)
+        .toArray(),
+      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
     ],
   ];
 }
@@ -530,6 +1488,196 @@ function dataProviderForMaps(): Array<unknown> {
         .flatMap((item) => (item as Array<unknown>)[1])
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as Array<number>)[1] > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as Array<number>)[1] > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as Array<number>)[1] > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as Array<number>)[1] > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as Array<number>)[1] > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[[1, -1], [3, -2]], [[5, -3]]],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as Array<number>)[1] > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[[1, -1], [3, -2]]],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as Array<number>)[1] > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => !((value as Array<number>)[1] > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] > 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[[4, 1], [5, 2]], [[6, 3], [7, 4]], [[8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] > 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[[4, 1], [5, 2]], [[6, 3], [7, 4]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] > 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] > 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] >= 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] >= 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] >= 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[[3, 0], [4, 1]], [[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] >= 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[[3, 0], [4, 1]], [[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] >= 0)
+        .chunkwiseOverlap(3, 1)
+        .toArray(),
+      [
+        [[3, 0], [4, 1], [5, 2]],
+        [[5, 2], [6, 3], [7, 4]],
+        [[7, 4], [8, 5], [9, 6]],
+        [[9, 6], [10, 7], [11, 8]],
+        [[11, 8], [12, 9]],
+      ],
+      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] >= 0)
+        .chunkwiseOverlap(3, 1, false)
+        .toArray(),
+      [
+        [[3, 0], [4, 1], [5, 2]],
+        [[5, 2], [6, 3], [7, 4]],
+        [[7, 4], [8, 5], [9, 6]],
+        [[9, 6], [10, 7], [11, 8]],
+      ],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] >= 0)
+        .chunkwiseOverlap(3, 2)
+        .toArray(),
+      [
+        [[3, 0], [4, 1], [5, 2]],
+        [[4, 1], [5, 2], [6, 3]],
+        [[5, 2], [6, 3], [7, 4]],
+        [[6, 3], [7, 4], [8, 5]],
+        [[7, 4], [8, 5], [9, 6]],
+        [[8, 5], [9, 6], [10, 7]],
+        [[9, 6], [10, 7], [11, 8]],
+        [[10, 7], [11, 8], [12, 9]],
+      ],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] >= 0)
+        .chunkwiseOverlap(3, 2, false)
+        .toArray(),
+      [
+        [[3, 0], [4, 1], [5, 2]],
+        [[4, 1], [5, 2], [6, 3]],
+        [[5, 2], [6, 3], [7, 4]],
+        [[6, 3], [7, 4], [8, 5]],
+        [[7, 4], [8, 5], [9, 6]],
+        [[8, 5], [9, 6], [10, 7]],
+        [[9, 6], [10, 7], [11, 8]],
+        [[10, 7], [11, 8], [12, 9]],
+      ],
     ],
   ];
 }

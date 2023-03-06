@@ -1,5 +1,5 @@
 import { toIterable } from './tools';
-import { filter, flatMap, map } from './single';
+import { chunkwiseOverlap, filter, flatMap, map } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
 import { toValue } from "./reduce";
@@ -32,6 +32,15 @@ export class Stream {
 
   chainWith(...iterables: Array<Iterable<unknown>|Iterator<unknown>>): Stream {
     this.data = chain(this.data, ...iterables);
+    return this;
+  }
+
+  chunkwiseOverlap(
+    chunkSize: number,
+    overlapSize: number,
+    includeIncompleteTail: boolean = true,
+  ): Stream {
+    this.data = chunkwiseOverlap(this.data, chunkSize, overlapSize, includeIncompleteTail);
     return this;
   }
 
