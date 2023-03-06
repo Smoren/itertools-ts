@@ -2,6 +2,7 @@ import { toIterable } from './tools';
 import { filter, flatMap, map } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
+import { toValue } from "./reduce";
 
 export class Stream {
   protected data: Iterable<unknown>;
@@ -52,6 +53,13 @@ export class Stream {
   distinct(): Stream {
     this.data = distinct(this.data);
     return this;
+  }
+
+  toValue<T>(
+    reducer: (carry: T|undefined, datum: unknown) => T,
+    initialValue?: T,
+  ): T|undefined {
+    return toValue(this.data, reducer, initialValue);
   }
 
   toArray(): Array<unknown> {

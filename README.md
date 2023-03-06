@@ -70,6 +70,11 @@ npm i itertools-ts
 |------------------------|----------------------------------|--------------------|
 | [`toArray`](#To-Array) | Returns array of stream elements | `stream.toArray()` |
 
+##### Reduction Terminal Operations
+| Terminal Operation       | Description                                 | Code Snippet                            |
+|--------------------------|---------------------------------------------|-----------------------------------------|
+| [`toValue`](#To-Value-1) | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
+
 ## Usage
 
 ## Multi Iteration
@@ -519,6 +524,29 @@ const result = Stream.of([1, 2, 3, 4, 5])
   .map((x) => x**2)
   .toArray();
 // [1, 4, 9, 16, 25]
+```
+
+#### Reduce Terminal Operations
+##### To Value
+Reduces iterable source like array_reduce() function.
+
+But unlike `array.reduce()`, it works with all `Iterable` types.
+
+```
+toValue<T>(
+  reducer: (carry: T|undefined, datum: unknown) => T,
+  initialValue?: T,
+): T|undefined
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = Stream.of(input)
+  .toValue((carry, item) => carry + item);
+// 15
 ```
 
 ## Unit testing
