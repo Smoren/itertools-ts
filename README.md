@@ -54,16 +54,17 @@ npm i itertools-ts
 | [`ofEmpty`](#Of-Empty) | Create an empty stream           | `Stream.ofEmpty()`    |
 
 #### Stream Operations
-| Operation                             | Description                                                                               | Code Snippet                          |
-|---------------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------|
-| [`chainWith`](#Chain-With)            | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`      |
-| [`distinct`](#Distinct-1)             | Filter out elements: iterate only unique items                                            | `stream.distinct()`                   |
-| [`filter`](#Filter-1)                 | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`            |
-| [`flatMap`](#Flat-Map-1)              | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`              |
-| [`map`](#Map-1)                       | Map function onto elements                                                                | `stream.map(mapper)`                  |
-| [`zipWith`](#Zip-With)                | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`        |
-| [`zipLongestWith`](#Zip-Longest-With) | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)` |
-| [`zipEqualWith`](#Zip-Equal-With)     | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`   |
+| Operation                                  | Description                                                                               | Code Snippet                                  |
+|--------------------------------------------|-------------------------------------------------------------------------------------------|-----------------------------------------------|
+| [`chainWith`](#Chain-With)                 | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`              |
+| [`chunkwiseOverlap`](#Chunkwise-Overlap-1) | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)` |
+| [`distinct`](#Distinct-1)                  | Filter out elements: iterate only unique items                                            | `stream.distinct()`                           |
+| [`filter`](#Filter-1)                      | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                    |
+| [`flatMap`](#Flat-Map-1)                   | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                      |
+| [`map`](#Map-1)                            | Map function onto elements                                                                | `stream.map(mapper)`                          |
+| [`zipWith`](#Zip-With)                     | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                |
+| [`zipLongestWith`](#Zip-Longest-With)      | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`         |
+| [`zipEqualWith`](#Zip-Equal-With)          | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`           |
 
 #### Stream Terminal Operations
 ##### Transformation Terminal Operations
@@ -388,6 +389,31 @@ const result = Stream.of(input)
   .chainWith([7, 8, 9])
   .toArray();
 // 1, 2, 3, 4, 5, 6, 7, 8, 9
+```
+
+#### Chunkwise Overlap
+Return a stream consisting of overlapping chunks of elements from the stream.
+
+```
+chunkwiseOverlap(
+  chunkSize: number,
+  overlapSize: number,
+  includeIncompleteTail: boolean = true,
+): Stream
+```
+
+* Chunk size must be at least 1.
+* Overlap size must be less than chunk size.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+const result = Stream.of(numbers)
+  .chunkwiseOverlap(3, 1)
+  .toArray()
+// [1, 2, 3], [3, 4, 5], [5, 6, 7], [7, 8, 9]
 ```
 
 #### Distinct
