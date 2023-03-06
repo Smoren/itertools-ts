@@ -4,7 +4,9 @@ import {
   flatMap,
   repeat,
   chunkwiseOverlap,
+  pairwise,
   FlatMapper,
+  Pair,
 } from "./single";
 
 import {
@@ -43,6 +45,7 @@ export const single = {
   filter,
   flatMap,
   map,
+  pairwise,
   repeat,
 }
 
