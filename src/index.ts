@@ -18,6 +18,10 @@ import {
 } from "./set"
 
 import {
+  toValue,
+} from "./reduce";
+
+import {
   Stream,
 } from "./stream";
 
@@ -32,10 +36,6 @@ import {
   InvalidArgumentError,
   LengthError,
 } from "./exceptions";
-
-import {
-	reduceFunc
-} from "./reduce";
 
 export const single = {
   map,
@@ -53,6 +53,10 @@ export const multi = {
 
 export const set = {
   distinct,
+}
+
+export const reduce = {
+  toValue,
 }
 
 export {
@@ -73,8 +77,4 @@ export type {
 export {
   InvalidArgumentError,
   LengthError,
-}
-
-export const reduce = {
-	reduceFunc
 }
