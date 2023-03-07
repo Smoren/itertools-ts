@@ -84,6 +84,12 @@ export function *chunkwiseOverlap<T>(
   }
 }
 
+export function *chunkwise<T>(data: Iterable<T>|Iterator<T>, chunkSize: number): Iterable<Array<T>> {
+  for (const chunk of chunkwiseOverlap(data, chunkSize, 0)) {
+    yield chunk;
+  }
+}
+
 export type Pair<T> = [T, T];
 
 export function *pairwise<T>(data: Iterable<T>|Iterator<T>): Iterable<Pair<T>>
