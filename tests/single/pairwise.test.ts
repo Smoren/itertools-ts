@@ -10,7 +10,7 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Single Map Test", (input, expected) => {
+])("Single Pairwise Test", (input, expected) => {
   it("", () => {
     // Given
     const result = [];
@@ -380,4 +380,3 @@ function dataProviderForMaps(): Array<unknown> {
     ],
   ];
 }
-

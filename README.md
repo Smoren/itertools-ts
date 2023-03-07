@@ -30,6 +30,7 @@ npm i itertools-ts
 #### Single Iteration
 | Iterator                                 | Description                                 | Code Snippet                                     |
 |------------------------------------------|---------------------------------------------|--------------------------------------------------|
+| [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `chunkwise(data, chunkSize)`                     |
 | [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `chunkwiseOverlap(data, chunkSize, overlapSize)` |
 | [`filter`](#Filter)                      | Filter for elements where predicate is true | `filter(data, predicate)`                        |
 | [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `flatMap(data, mapper)`                          |
@@ -58,6 +59,7 @@ npm i itertools-ts
 | Operation                                  | Description                                                                               | Code Snippet                                  |
 |--------------------------------------------|-------------------------------------------------------------------------------------------|-----------------------------------------------|
 | [`chainWith`](#Chain-With)                 | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`              |
+| [`chunkwise`](#Chunkwise-1)                | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                 |
 | [`chunkwiseOverlap`](#Chunkwise-Overlap-1) | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)` |
 | [`distinct`](#Distinct-1)                  | Filter out elements: iterate only unique items                                            | `stream.distinct()`                           |
 | [`filter`](#Filter-1)                      | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                    |
@@ -183,6 +185,38 @@ for (const [letter, number] of multi.zipEqual(letters, numbers)) {
 ```
 
 ## Single Iteration
+### Chunkwise
+Return elements in chunks of a certain size.
+
+```
+function *chunkwise<T>(
+  data: Iterable<T>|Iterator<T>, 
+  chunkSize: number,
+): Iterable<Array<T>>
+```
+
+Chunk size must be at least 1.
+
+```typescript
+import { single } from 'itertools-ts';
+
+const movies = [
+    'Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith',
+    'A New Hope', 'Empire Strikes Back', 'Return of the Jedi',
+    'The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker',
+];
+const trilogies = [];
+
+for (const trilogy of single.chunkwise(movies, 3)) {
+    trilogies.push(trilogy);
+}
+// [
+//     ['Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith'],
+//     ['A New Hope', 'Empire Strikes Back', 'Return of the Jedi'],
+//     ['The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker]',
+// ]
+```
+
 ### Chunkwise Overlap
 Return overlapped chunks of elements.
 
@@ -411,6 +445,26 @@ const result = Stream.of(input)
   .chainWith([7, 8, 9])
   .toArray();
 // 1, 2, 3, 4, 5, 6, 7, 8, 9
+```
+
+#### Chunkwise
+Return a stream consisting of chunks of elements from the stream.
+
+```
+stream.chunkwise(chunkSize: number): Stream
+```
+
+Chunk size must be at least 1.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const friends = ['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey'];
+
+const result = Stream.of(friends)
+  .chunkwise(2)
+  .toArray();
+// ['Ross', 'Rachel'], ['Chandler', 'Monica'], ['Joey']
 ```
 
 #### Chunkwise Overlap

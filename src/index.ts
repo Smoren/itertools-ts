@@ -1,9 +1,10 @@
 import {
-  map,
+  chunkwise,
+  chunkwiseOverlap,
   filter,
   flatMap,
+  map,
   repeat,
-  chunkwiseOverlap,
   pairwise,
   FlatMapper,
   Pair,
@@ -41,6 +42,7 @@ import {
 } from "./exceptions";
 
 export const single = {
+  chunkwise,
   chunkwiseOverlap,
   filter,
   flatMap,
@@ -77,6 +79,7 @@ export const tools = {
 
 export type {
   FlatMapper,
+  Pair,
 }
 
 export {

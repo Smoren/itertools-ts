@@ -96,6 +96,38 @@ function dataProviderForArrays(): Array<unknown> {
     [
       [],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) < 0)
+        .chunkwise(2)
+        .toArray(),
+      [],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) < 0)
+        .chunkwise(2)
+        .toArray(),
+      [[-1, -2], [-3]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwise(2)
+        .toArray(),
+      [[1, 2], [3, 4], [5]],
+    ],
+    [
+      [-3, -2, -1, 0, 1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwise(2)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .filter((value) => !((value as number) > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
@@ -367,6 +399,38 @@ function dataProviderForGenerators(): Array<unknown> {
         .flatMap((item) => item)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) < 0)
+        .chunkwise(2)
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) < 0)
+        .chunkwise(2)
+        .toArray(),
+      [[-1, -2], [-3]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwise(2)
+        .toArray(),
+      [[1, 2], [3, 4], [5]],
+    ],
+    [
+      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwise(2)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
     ],
     [
       createGeneratorFixture([]),
@@ -646,6 +710,38 @@ function dataProviderForIterables(): Array<unknown> {
     [
       createIterableFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) < 0)
+        .chunkwise(2)
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) < 0)
+        .chunkwise(2)
+        .toArray(),
+      [[-1, -2], [-3]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwise(2)
+        .toArray(),
+      [[1, 2], [3, 4], [5]],
+    ],
+    [
+      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwise(2)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .filter((value) => !((value as number) > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
@@ -921,6 +1017,38 @@ function dataProviderForIterators(): Array<unknown> {
     [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) < 0)
+        .chunkwise(2)
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) < 0)
+        .chunkwise(2)
+        .toArray(),
+      [[-1, -2], [-3]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwise(2)
+        .toArray(),
+      [[1, 2], [3, 4], [5]],
+    ],
+    [
+      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwise(2)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .filter((value) => !((value as number) > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
@@ -1182,6 +1310,35 @@ function dataProviderForStrings(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwise(2)
+        .toArray(),
+      [],
+    ],
+    [
+      'abc',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwise(2)
+        .toArray(),
+      [['a', 'b'], ['c']],
+    ],
+    [
+      '012345',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => parseInt(value as string) > 0)
+        .chunkwise(2)
+        .toArray(),
+      [['1', '2'], ['3', '4'], ['5']],
+    ],
+    [
+      '012345',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .chunkwise(2)
+        .toArray(),
+      [['0', '1'], ['2', '3'], ['4', '5']],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [],
@@ -1432,6 +1589,38 @@ function dataProviderForSets(): Array<unknown> {
         .flatMap((item) => item)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) < 0)
+        .chunkwise(2)
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) < 0)
+        .chunkwise(2)
+        .toArray(),
+      [[-1, -2], [-3]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .chunkwise(2)
+        .toArray(),
+      [[1, 2], [3, 4], [5]],
+    ],
+    [
+      new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) >= 0)
+        .chunkwise(2)
+        .toArray(),
+      [[0, 1], [2, 3], [4, 5]],
     ],
     [
       new Set([]),
@@ -1709,6 +1898,38 @@ function dataProviderForMaps(): Array<unknown> {
         .flatMap((item) => (item as Array<unknown>)[1])
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] < 0)
+        .chunkwise(2)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] < 0)
+        .chunkwise(2)
+        .toArray(),
+      [[[1, -1], [3, -2]], [[5, -3]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] > 0)
+        .chunkwise(2)
+        .toArray(),
+      [[[4, 1], [5, 2]], [[6, 3], [7, 4]], [[8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as Array<number>)[1] >= 0)
+        .chunkwise(2)
+        .toArray(),
+      [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
     ],
     [
       createMapFixture([]),
