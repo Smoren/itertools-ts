@@ -325,6 +325,58 @@ function dataProviderForArrays(): Array<unknown> {
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .toArray(),
+      [],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [],
+    ],
+    [
+      [1, 2, 3, 4, 5, 6, 7],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      [1, 2, 3, 4, 5, 6, 7],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(10)
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7],
+    ],
+    [
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(2)
+        .toArray(),
+      [1, 2],
+    ],
+    [
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(10)
+        .toArray(),
+      [1, 2, 3, 4],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .chainWith([1, 2, 3])
+        .toArray(),
+      [1, 2, 3],
+    ],
   ];
 }
 
@@ -631,6 +683,58 @@ function dataProviderForGenerators(): Array<unknown> {
         .pairwise()
         .toArray(),
       [[-1, -2], [-2, -3]],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(10)
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(2)
+        .toArray(),
+      [1, 2],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(10)
+        .toArray(),
+      [1, 2, 3, 4],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .chainWith([1, 2, 3])
+        .toArray(),
+      [1, 2, 3],
     ],
   ];
 }
@@ -939,6 +1043,58 @@ function dataProviderForIterables(): Array<unknown> {
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createIterableFixture([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(10)
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7],
+    ],
+    [
+      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(2)
+        .toArray(),
+      [1, 2],
+    ],
+    [
+      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(10)
+        .toArray(),
+      [1, 2, 3, 4],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .chainWith([1, 2, 3])
+        .toArray(),
+      [1, 2, 3],
+    ],
   ];
 }
 
@@ -1246,6 +1402,58 @@ function dataProviderForIterators(): Array<unknown> {
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createIteratorFixture([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(10)
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7],
+    ],
+    [
+      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(2)
+        .toArray(),
+      [1, 2],
+    ],
+    [
+      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(10)
+        .toArray(),
+      [1, 2, 3, 4],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .chainWith([1, 2, 3])
+        .toArray(),
+      [1, 2, 3],
+    ],
   ];
 }
 
@@ -1514,6 +1722,58 @@ function dataProviderForStrings(): Array<unknown> {
         .pairwise()
         .toArray(),
       [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'e'], ['e', 'f']],
+    ],
+    [
+      '',
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .toArray(),
+      [],
+    ],
+    [
+      '',
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [],
+    ],
+    [
+      '1234567',
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      ['1', '2', '3', '4', '5'],
+    ],
+    [
+      '1234567',
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(10)
+        .toArray(),
+      ['1', '2', '3', '4', '5', '6', '7'],
+    ],
+    [
+      '1234567890',
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(2)
+        .toArray(),
+      ['1', '2'],
+    ],
+    [
+      '1234567890',
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(10)
+        .toArray(),
+      ['1', '2', '3', '4', '0'],
+    ],
+    [
+      '',
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .chainWith('123')
+        .toArray(),
+      ['1', '2', '3'],
     ],
   ];
 }
@@ -1821,6 +2081,58 @@ function dataProviderForSets(): Array<unknown> {
         .pairwise()
         .toArray(),
       [[-1, -2], [-2, -3]],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      new Set([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(10)
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7],
+    ],
+    [
+      new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(2)
+        .toArray(),
+      [1, 2],
+    ],
+    [
+      new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as number) < 5)
+        .limit(10)
+        .toArray(),
+      [1, 2, 3, 4],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .chainWith([1, 2, 3])
+        .toArray(),
+      [1, 2, 3],
     ],
   ];
 }
@@ -2160,6 +2472,58 @@ function dataProviderForMaps(): Array<unknown> {
         .pairwise()
         .toArray(),
       [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(10)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as Array<number>)[1] < 5)
+        .limit(2)
+        .toArray(),
+      [[0, 1], [1, 2]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .filter((x) => (x as Array<number>)[1] < 5)
+        .limit(10)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4]],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterator<unknown>) => Stream.of(iterable)
+        .limit(0)
+        .chainWith(createMapFixture([1, 2, 3]))
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3]],
     ],
   ];
 }

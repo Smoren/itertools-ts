@@ -100,3 +100,18 @@ export function *pairwise<T>(data: Iterable<T>|Iterator<T>): Iterable<Pair<T>>
     yield chunk as Pair<T>;
   }
 }
+
+export function *limit<T>(data: Iterable<T>|Iterator<T>, count: number): Iterable<T> {
+  if (count < 0) {
+    throw new InvalidArgumentError(`Limit must be ≥ 0. Got ${count}`);
+  }
+
+  let i = 0;
+  for (const datum of toIterable(data)) {
+    if (i >= count) {
+      return;
+    }
+    yield datum;
+    ++i;
+  }
+}

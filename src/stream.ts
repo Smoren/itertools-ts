@@ -1,5 +1,5 @@
 import { toIterable } from './tools';
-import { chunkwise, chunkwiseOverlap, filter, flatMap, map, pairwise } from './single';
+import { chunkwise, chunkwiseOverlap, filter, flatMap, limit, map, pairwise } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
 import { toValue } from "./reduce";
@@ -51,6 +51,11 @@ export class Stream {
 
   filter(predicate: (item: unknown) => boolean): Stream {
     this.data = filter(this.data, predicate);
+    return this;
+  }
+
+  limit(count: number): Stream {
+    this.data = limit(this.data, count);
     return this;
   }
 
