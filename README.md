@@ -34,6 +34,7 @@ npm i itertools-ts
 | [`filter`](#Filter)                      | Filter for elements where predicate is true | `filter(data, predicate)`                        |
 | [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `flatMap(data, mapper)`                          |
 | [`map`](#Map)                            | Map function onto each item                 | `map(data, mapper)`                              |
+| [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `pairwise(data)`                                 |
 | [`repeat`](#Repeat)                      | Repeat an item a number of times            | `repeat(item, repetitions)`                      |
 
 #### Reduce
@@ -62,6 +63,7 @@ npm i itertools-ts
 | [`filter`](#Filter-1)                      | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                    |
 | [`flatMap`](#Flat-Map-1)                   | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                      |
 | [`map`](#Map-1)                            | Map function onto elements                                                                | `stream.map(mapper)`                          |
+| [`pairwise`](#Pairwise-1)                  | Return pairs of elements from iterable source                                             | `stream.pairwise()`                           |
 | [`zipWith`](#Zip-With)                     | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                |
 | [`zipLongestWith`](#Zip-Longest-With)      | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`         |
 | [`zipEqualWith`](#Zip-Equal-With)          | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`           |
@@ -270,6 +272,26 @@ for (const actualGrade of single.map(grades, strictParentsOpinion)) {
   console.log(actualGrade);
 }
 // A, F, F, F, A
+```
+
+### Pairwise
+Returns successive overlapping pairs.
+
+Returns empty generator if given collection contains fewer than 2 elements.
+
+```
+function *pairwise<T>(data: Iterable<T>|Iterator<T>): Iterable<Pair<T>>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const friends = ['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey', 'Phoebe'];
+
+for (const [leftFriend, rightFriend] of single.pairwise(friends)) {
+  console.log(`${leftFriend} and ${rightFriend}`);
+}
+// Ross and Rachel, Rachel and Chandler, Chandler and Monica, ...
 ```
 
 ### Repeat
@@ -486,6 +508,26 @@ const result = Stream.of(grades)
   .map((grade) => grade === 100 ? 'A' : 'F')
   .toArray();
 // A, F, F, F, A
+```
+
+#### Pairwise
+Return a stream consisting of pairs of elements from the stream.
+
+```
+stream.pairwise(): Stream
+```
+
+Returns empty stream if given collection contains less than 2 elements.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const stream = Stream.of(input)
+  .pairwise()
+  .toArray();
+// [1, 2], [2, 3], [3, 4], [4, 5]
 ```
 
 #### Zip With
