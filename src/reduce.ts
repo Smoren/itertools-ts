@@ -13,3 +13,24 @@ export function toValue<TInput, TOutput>(
 
   return carry;
 }
+
+export function toMin<TValue, TComparable>(
+  data: Iterable<TValue>|Iterator<TValue>,
+  compareBy?: (datum: TValue) => TComparable,
+) {
+  if (compareBy !== undefined) {
+    return toValue(
+      data,
+      (carry: TValue|undefined, datum) => compareBy(datum) < compareBy(carry ?? datum)
+        ? datum
+        : carry ?? datum
+    );
+  }
+
+  return toValue(data, (carry, datum) => {
+    const lhs = carry ?? datum;
+    const rhs = datum;
+
+    return lhs <= rhs ? lhs : rhs;
+  });
+}
