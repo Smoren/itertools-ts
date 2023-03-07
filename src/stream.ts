@@ -1,5 +1,5 @@
 import { toIterable } from './tools';
-import { chunkwiseOverlap, filter, flatMap, map } from './single';
+import { chunkwiseOverlap, filter, flatMap, map, pairwise } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
 import { toValue } from "./reduce";
@@ -56,6 +56,11 @@ export class Stream {
 
   flatMap(mapper: (datum: unknown) => unknown): Stream {
     this.data = flatMap(this.data, mapper);
+    return this;
+  }
+
+  pairwise(): Stream {
+    this.data = pairwise(this.data);
     return this;
   }
 
