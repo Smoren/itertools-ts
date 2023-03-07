@@ -34,6 +34,7 @@ npm i itertools-ts
 | [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `chunkwiseOverlap(data, chunkSize, overlapSize)` |
 | [`filter`](#Filter)                      | Filter for elements where predicate is true | `filter(data, predicate)`                        |
 | [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `flatMap(data, mapper)`                          |
+| [`limit`](#Limit)                        | Iterate up to a limit                       | `limit(data, limit)`                             |
 | [`map`](#Map)                            | Map function onto each item                 | `map(data, mapper)`                              |
 | [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `pairwise(data)`                                 |
 | [`repeat`](#Repeat)                      | Repeat an item a number of times            | `repeat(item, repetitions)`                      |
@@ -64,6 +65,7 @@ npm i itertools-ts
 | [`distinct`](#Distinct-1)                  | Filter out elements: iterate only unique items                                            | `stream.distinct()`                           |
 | [`filter`](#Filter-1)                      | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                    |
 | [`flatMap`](#Flat-Map-1)                   | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                      |
+| [`limit`](#Limit-1)                        | Limit the stream's iteration                                                              | `stream.limit(limit)`                         |
 | [`map`](#Map-1)                            | Map function onto elements                                                                | `stream.map(mapper)`                          |
 | [`pairwise`](#Pairwise-1)                  | Return pairs of elements from iterable source                                             | `stream.pairwise()`                           |
 | [`zipWith`](#Zip-With)                     | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                |
@@ -284,6 +286,27 @@ for (number of single.flatMap(data, mapper)) {
   console.log(number);
 }
 // 1 -1 2 -2 3 -3 4 -4 5 -5
+```
+
+### Limit
+Iterate up to a limit.
+
+Stops even if more data available if limit reached.
+
+```
+function *limit<T>(data: Iterable<T>|Iterator<T>, count: number): Iterable<T>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const matrixMovies = ['The Matrix', 'The Matrix Reloaded', 'The Matrix Revolutions', 'The Matrix Resurrections'];
+const limit = 1;
+
+for (const goodMovie of single.limit(matrixMovies, limit)) {
+    console.log(goodMovie);
+}
+// 'The Matrix' (and nothing else)
 ```
 
 ### Map
@@ -544,6 +567,27 @@ const result = Stream.of(data)
   .flatMap(mapper)
   .toArray();
 // [1, 2, 2, 3, 4, 4, 5]
+```
+
+#### Limit
+Return a stream up to a limit.
+
+Stops even if more data available if limit reached.
+
+```
+limit(count: number): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const matrixMovies = ['The Matrix', 'The Matrix Reloaded', 'The Matrix Revolutions', 'The Matrix Resurrections'];
+const limit = 1;
+
+const goodMovies = Stream.of(matrixMovies)
+  .limit(limit)
+  .toArray();
+// 'The Matrix' (and nothing else)
 ```
 
 #### Map
