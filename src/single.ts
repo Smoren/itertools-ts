@@ -1,6 +1,6 @@
 import { toIterable } from "./transform";
 import { InvalidArgumentError } from "./exceptions";
-import { isIterable } from "./summary";
+import { isIterable, isIterator } from "./summary";
 
 export function *map<TInput, TOutput>(
   data: Iterable<TInput>|Iterator<TInput>,
@@ -37,6 +37,36 @@ export function *flatMap<TInput, TOutput>(
       }
     } else {
       yield unflattened as TOutput;
+    }
+  }
+}
+
+export function *flatten(
+  data: Iterable<unknown>|Iterator<unknown>,
+  dimensions: number = Infinity,
+): Iterable<unknown> {
+  if (dimensions < 1) {
+    for (let datum of toIterable(data)) {
+      if (data instanceof Map) {
+        datum = (datum as [unknown, unknown])[1];
+      }
+
+      yield datum;
+    }
+    return;
+  }
+
+  for (let datum of toIterable(data)) {
+    if (data instanceof Map) {
+      datum = (datum as [unknown, unknown])[1];
+    }
+
+    if ((isIterable(datum) || isIterator(datum)) && !(typeof datum === 'string' || datum instanceof String)) {
+      for (const subDatum of flatten(datum as Iterable<unknown>|Iterator<unknown>, dimensions-1)) {
+        yield subDatum;
+      }
+    } else {
+      yield datum;
     }
   }
 }
