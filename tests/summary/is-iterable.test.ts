@@ -1,6 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from '../fixture';
-import { transform, summary } from '../../src';
+import { summary } from '../../src';
 
 describe.each(dataProviderForTrue())("Tools Is Iterable Tst True", (input) => {
   it("", () => {
