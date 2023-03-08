@@ -2191,12 +2191,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (item: number) => item,
+      (item: [number, number]) => item[1],
       undefined,
     ],
     [
       createMapFixture([]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
       undefined,
     ],
     [
@@ -2206,12 +2206,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([0]),
-      (item: number) => item,
+      (item: [number, number]) => item[1],
       [0, 0],
     ],
     [
       createMapFixture([0]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
       [0, 0],
     ],
     [
@@ -2221,12 +2221,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([Infinity]),
-      (item: number) => item,
+      (item: [number, number]) => item[1],
       [0, Infinity],
     ],
     [
       createMapFixture([Infinity]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
       [0, Infinity],
     ],
     [
@@ -2236,12 +2236,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([-Infinity]),
-      (item: number) => item,
+      (item: [number, number]) => item[1],
       [0, -Infinity],
     ],
     [
       createMapFixture([-Infinity]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
       [0, -Infinity],
     ],
     [
@@ -2251,12 +2251,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([Infinity, -Infinity]),
-      (item: number) => item,
-      [0, Infinity],
+      (item: [number, number]) => item[1],
+      [1, -Infinity],
     ],
     [
       createMapFixture([Infinity, -Infinity]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
       [0, Infinity],
     ],
     [
@@ -2266,12 +2266,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([Infinity, -Infinity, 10, -1]),
-      (item: number) => item,
-      [0, Infinity],
+      (item: [number, number]) => item[1],
+      [1, -Infinity],
     ],
     [
       createMapFixture([Infinity, -Infinity, 10, -1]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
       [0, Infinity],
     ],
     [
@@ -2281,12 +2281,27 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3]),
-      (item: number) => item,
+      (item: [number, number]) => item[1],
       [0, 1],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
+      [2, 3],
+    ],
+    [
+      createMapFixture([3, 2, 1]),
+      undefined,
+      [0, 3],
+    ],
+    [
+      createMapFixture([3, 2, 1]),
+      (item: [number, number]) => item[1],
+      [2, 1],
+    ],
+    [
+      createMapFixture([3, 2, 1]),
+      (item: [number, number]) => -item[1],
       [0, 3],
     ],
     [
@@ -2296,27 +2311,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([3, 2, 1]),
-      (item: number) => item,
-      [0, 3],
+      (item: [number, number]) => item[1],
+      [2, 1],
     ],
     [
       createMapFixture([3, 2, 1]),
-      (item: number) => -item,
-      [0, 3],
-    ],
-    [
-      createMapFixture([3, 2, 1]),
-      undefined,
-      [0, 3],
-    ],
-    [
-      createMapFixture([3, 2, 1]),
-      (item: number) => item,
-      [0, 1],
-    ],
-    [
-      createMapFixture([3, 2, 1]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
       [0, 3],
     ],
     [
@@ -2326,12 +2326,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([2.1, 1]),
-      (item: number) => item,
-      [0, 2.1],
+      (item: [number, number]) => item[1],
+      [1, 1],
     ],
     [
       createMapFixture([2.1, 1]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
       [0, 2.1],
     ],
     [
@@ -2341,12 +2341,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([2, 1.1]),
-      (item: number) => item,
-      [0, 2],
+      (item: [number, number]) => item[1],
+      [1, 1.1],
     ],
     [
       createMapFixture([2, 1.1]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
       [0, 2],
     ],
     [
@@ -2356,12 +2356,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([2.2, 1.1]),
-      (item: number) => item,
-      [0, 2.2],
+      (item: [number, number]) => item[1],
+      [1, 1.1],
     ],
     [
       createMapFixture([2.2, 1.1]),
-      (item: number) => -item,
+      (item: [number, number]) => -item[1],
       [0, 2.2],
     ],
     [
@@ -2371,13 +2371,13 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1.1, 2.2]),
-      (item: number) => item,
+      (item: [number, number]) => item[1],
       [0, 1.1],
     ],
     [
       createMapFixture([1.1, 2.2]),
-      (item: number) => -item,
-      [0, 1.1],
+      (item: [number, number]) => -item[1],
+      [1, 2.2],
     ],
     [
       createMapFixture(['a', 'b', 'c']),
@@ -2386,13 +2386,13 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture(['a', 'b', 'c']),
-      (item: string) => item,
+      (item: [number, string]) => item[1],
       [0, 'a'],
     ],
     [
       createMapFixture(['a', 'b', 'c']),
-      (item: string) => -item.charCodeAt(0),
-      [0, 'c'],
+      (item: [number, string]) => -item[1].charCodeAt(0),
+      [2, 'c'],
     ],
     [
       createMapFixture(['b', 'c', 'a']),
@@ -2401,13 +2401,13 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture(['b', 'c', 'a']),
-      (item: string) => item,
-      [0, 'b'],
+      (item: [number, string]) => item[1],
+      [2, 'a'],
     ],
     [
       createMapFixture(['b', 'c', 'a']),
-      (item: string) => -item.charCodeAt(0),
-      [0, 'c'],
+      (item: [number, string]) => -item[1].charCodeAt(0),
+      [1, 'c'],
     ],
     [
       createMapFixture(['c', 'b', 'a']),
@@ -2416,13 +2416,13 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture(['c', 'b', 'a']),
-      (item: string) => item,
-      [0, 'c'],
+      (item: [number, string]) => item[1],
+      [2, 'a'],
     ],
     [
       createMapFixture(['c', 'b', 'a']),
-      (item: string) => -item.charCodeAt(0),
-      [0, 'a'],
+      (item: [number, string]) => -item[1].charCodeAt(0),
+      [0, 'c'],
     ],
     [
       createMapFixture(['ab', 'ba', 'b']),
@@ -2431,7 +2431,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture(['ab', 'ba', 'b']),
-      (item: string) => item,
+      (item: [number, string]) => item[1],
       [0, 'ab'],
     ],
     [
@@ -2441,8 +2441,8 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture(['ba', 'b', 'ab']),
-      (item: string) => item,
-      [0, 'ba'],
+      (item: [number, string]) => item[1],
+      [2, 'ab'],
     ],
     [
       createMapFixture( [[]]),
@@ -2451,7 +2451,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[]]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1],
       [0, []],
     ],
     [
@@ -2461,7 +2461,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[2]]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1],
       [0, [2]],
     ],
     [
@@ -2471,7 +2471,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[], []]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1],
       [0, []],
     ],
     [
@@ -2481,7 +2481,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture( [[], [2]]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1],
       [0, []],
     ],
     [
@@ -2491,8 +2491,8 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[2], []]),
-      (item: Array<unknown>) => item,
-      [0, [2]],
+      (item: [number, Array<number>]) => item[1],
+      [1, []],
     ],
     [
       createMapFixture([[], [null]]),
@@ -2501,7 +2501,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[], [null]]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1],
       [0, []],
     ],
     [
@@ -2511,7 +2511,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture( [[null], [null]]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1],
       [0, [null]],
     ],
     [
@@ -2521,7 +2521,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[1, 2], [2]]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1],
       [0, [1, 2]],
     ],
     [
@@ -2531,8 +2531,8 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture( [[3, 2], [2]]),
-      (item: Array<unknown>) => item,
-      [0, [3, 2]],
+      (item: [number, Array<number>]) => item[1],
+      [1, [2]],
     ],
     [
       createMapFixture([[1, 2], [2, 1]]),
@@ -2541,7 +2541,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[1, 2], [2, 1]]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1],
       [0, [1, 2]],
     ],
     [
@@ -2551,7 +2551,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[2, 1], [1, 2]]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1][1],
       [0, [2, 1]],
     ],
     [
@@ -2561,17 +2561,17 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([['a'], ['b']]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1],
       [0, ['a']],
     ],
     [
       createMapFixture([['a', 'a'], ['b']]),
       undefined,
-      [0, ['a','a']],
+      [0, ['a', 'a']],
     ],
     [
       createMapFixture([['a', 'a'], ['b']]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<string>]) => item[1],
       [0, ['a', 'a']],
     ],
     [
@@ -2581,17 +2581,17 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => item,
+      (item: [number, Array<number>]) => item[1],
       [0, [1, 2, 3]],
     ],
     [
       createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => item[1],
-      [0, [1, 2, 3]],
+      (item: [number, Array<number>]) => item[1][1],
+      [1, [2, 0, 3]],
     ],
     [
       createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => -(item[1] as number),
+      (item: [number, Array<number>]) => -item[1][1],
       [0, [1, 2, 3]],
     ],
   ]
