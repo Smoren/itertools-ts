@@ -2,7 +2,7 @@
 import { createGeneratorFixture, createIterableFixture } from '../fixture';
 import { transform, summary, InvalidArgumentError } from '../../src';
 
-describe.each(dataProviderForSuccess())("Tools To Iterable Test Success", (input, expected) => {
+describe.each(dataProviderForSuccess())("Transform To Iterable Test Success", (input, expected) => {
   it("", () => {
     // Given
     const iterable = transform.toIterable(input as Iterable<unknown>|Iterator<unknown>);
@@ -88,7 +88,7 @@ function dataProviderForSuccess(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForError())("Tools To Iterable Test Error", (input) => {
+describe.each(dataProviderForError())("Transform To Iterable Test Error", (input) => {
   it("", () => {
     expect(() => {
       transform.toIterable(input as Iterable<unknown>|Iterator<unknown>);

@@ -1,27 +1,19 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture } from '../fixture';
-import { transform, summary, InvalidArgumentError } from '../../src';
+import { transform } from '../../src';
 
-describe.each(dataProviderForSuccess())("Transform To Iterator Test Success", (input, expected) => {
+describe.each(dataProvider())("Transform To Array Test", (input, expected) => {
   it("", () => {
     // Given
-    const iterator = transform.toIterator(input as Iterable<unknown>|Iterator<unknown>);
-    const result = [];
+    const result = transform.toArray(input as Iterable<unknown>|Iterator<unknown>);
 
     // Then
-    expect(summary.isIterator(iterator)).toBeTruthy();
-
-    // And when
-    for (const item of transform.toIterable(iterator)) {
-      result.push(item);
-    }
-
-    // Then
+    expect(Array.isArray(result)).toBeTruthy();
     expect(result).toEqual(expected);
   });
 });
 
-function dataProviderForSuccess(): Array<unknown> {
+function dataProvider(): Array<unknown> {
   return [
     [
       '',
@@ -87,28 +79,5 @@ function dataProviderForSuccess(): Array<unknown> {
       new Map([['a', 1], ['b', 2], ['c', 3]]),
       [['a', 1], ['b', 2], ['c', 3]],
     ],
-  ];
-}
-
-describe.each(dataProviderForError())("Transform To Iterable Test Error", (input) => {
-  it("", () => {
-    expect(() => {
-      transform.toIterator(input as Iterable<unknown>|Iterator<unknown>);
-    }).toThrow(InvalidArgumentError);
-  });
-});
-
-function dataProviderForError(): Array<unknown> {
-  return [
-    [1],
-    [1.0],
-    [true],
-    [false],
-    [null],
-    [undefined],
-    [NaN],
-    [Infinity],
-    [-Infinity],
-    [{a: 1}],
   ];
 }

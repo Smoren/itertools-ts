@@ -32,3 +32,11 @@ export function toIterator<T>(collection: Iterable<T>|Iterator<T>): Iterator<T> 
 
   throw new InvalidArgumentError('Given collection is not iterable or iterator.');
 }
+
+export function toArray<T>(collection: Iterable<T>|Iterator<T>): Array<T> {
+  const result = [];
+  for (const item of toIterable(collection)) {
+    result.push(item);
+  }
+  return result;
+}
