@@ -1,4 +1,4 @@
-import { toIterable } from './tools';
+import { toIterable } from './transform';
 import { chunkwise, chunkwiseOverlap, filter, flatMap, limit, map, pairwise } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";

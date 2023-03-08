@@ -1,6 +1,6 @@
 // @ts-ignore
+import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
 import { reduce } from "../../src";
-import {createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture} from "../fixture";
 
 describe.each([
 	...dataProviderForSumReducerArrays(),

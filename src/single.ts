@@ -1,5 +1,6 @@
-import { isIterable, toIterable } from "./tools";
+import { toIterable } from "./transform";
 import { InvalidArgumentError } from "./exceptions";
+import { isIterable } from "./summary";
 
 export function *map<TInput, TOutput>(
   data: Iterable<TInput>|Iterator<TInput>,
