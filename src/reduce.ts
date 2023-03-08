@@ -17,7 +17,7 @@ export function toValue<TInput, TOutput>(
 export function toMin<TValue, TComparable>(
   data: Iterable<TValue>|Iterator<TValue>,
   compareBy?: (datum: TValue) => TComparable,
-) {
+): TValue|undefined {
   if (compareBy !== undefined) {
     return toValue(
       data,

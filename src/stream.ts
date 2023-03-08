@@ -9,11 +9,11 @@ import {
   limit,
   map,
   pairwise,
-  slice
+  slice,
 } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
-import { toValue } from "./reduce";
+import { toMin, toValue } from "./reduce";
 
 export class Stream {
   protected data: Iterable<unknown>;
@@ -109,7 +109,11 @@ export class Stream {
     reducer: (carry: T|undefined, datum: unknown) => T,
     initialValue?: T,
   ): T|undefined {
-    return toValue(this.data, reducer, initialValue);
+    return toValue(this, reducer, initialValue);
+  }
+
+  toMin<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined {
+    return toMin(this, compareBy);
   }
 
   toArray(): Array<unknown> {

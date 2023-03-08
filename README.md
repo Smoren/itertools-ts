@@ -32,7 +32,7 @@ import { Stream } from 'itertools-ts';
 
 const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
   .distinct()                                    // [1, 2, 3, 4, 5]
-  .map((x) => $x**2)                             // [1, 4, 9, 16, 25]
+  .map((x) => x**2)                              // [1, 4, 9, 16, 25]
   .filter((x) => x < 10)                         // [1, 4, 9]
   .toValue((carry, datum) => carry + datum, 0);  // 14
 ```
@@ -79,11 +79,12 @@ Quick Reference
 | [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              |
 | [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 |
 | [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      |
-| [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice($data, [start], [count], [step])`         |
+| [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice(data, [start], [count], [step])`          |
 
 #### Reduce
 | Reducer                | Description                            | Code Snippet                                  |
 |------------------------|----------------------------------------|-----------------------------------------------|
+| [`toMin`](#To-Min)     | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
 | [`toValue`](#To-Value) | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
 
 #### Set and multiset Iteration
@@ -139,6 +140,7 @@ Quick Reference
 ##### Reduction Terminal Operations
 | Terminal Operation       | Description                                 | Code Snippet                            |
 |--------------------------|---------------------------------------------|-----------------------------------------|
+| [`toMin`](#To-Min-1)     | Reduces stream to its min value             | `stream.toMin([compareBy])`             |
 | [`toValue`](#To-Value-1) | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
 
 Usage
@@ -493,6 +495,55 @@ for (const winterYear of single.slice(olympics, 1, 8, 2)) {
 ```
 
 ## Reduce
+### To Min
+Reduces to the min value.
+
+```
+function toMin<TValue, TComparable>(
+  data: Iterable<TValue>|Iterator<TValue>,
+  compareBy?: (datum: TValue) => TComparable,
+): TValue|undefined
+```
+
+- Optional callable param `compareBy` must return comparable value.
+- If `compareBy` is not provided then items of given collection must be comparable.
+- Returns `undefined` if collection is empty.
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const numbers = [5, 3, 1, 2, 4];
+
+const result = reduce.toMin(numbers);
+// 1
+
+const movieRatings = [
+  {
+    title: 'The Matrix',
+    rating: 4.7,
+  },
+  {
+    title: 'The Matrix Reloaded',
+    rating: 4.3,
+  },
+  {
+    title: 'The Matrix Revolutions',
+    rating: 3.9,
+  },
+  {
+    title: 'The Matrix Resurrections',
+    rating: 2.5,
+  },
+];
+const compareBy = (movie) => movie.rating;
+
+const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
+// {
+//   title: 'The Matrix Resurrections',
+//   rating: 2.5,
+// }
+```
+
 ### To Value
 Reduce elements to a single value using reducer function.
 
@@ -983,6 +1034,27 @@ const result = Stream.of([1, 2, 3, 4, 5])
 ```
 
 #### Reduce Terminal Operations
+##### To Min
+Reduces iterable source to its min value.
+
+```
+toMin<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined
+```
+
+- Optional callable param `compareBy` must return comparable value.
+- If `compareBy` is not provided then items of given collection must be comparable.
+- Returns `undefined` if collection is empty.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, -1, 2, -2, 3, -3];
+
+const result = Stream.of(iterable)
+  .toMin();
+// -3
+```
+
 ##### To Value
 Reduces iterable source like array_reduce() function.
 
