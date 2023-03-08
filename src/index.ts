@@ -20,7 +20,7 @@ import { runningTotal } from "./math";
 
 import { chain, zip, zipLongest, zipEqual } from "./multi";
 
-import { distinct } from "./set";
+import { distinct, intersection, partialIntersection, symmetricDifference, union } from "./set";
 
 import {
   toAverage,
@@ -71,6 +71,10 @@ export const multi = {
 
 export const set = {
   distinct,
+  intersection,
+  partialIntersection,
+  symmetricDifference,
+  union,
 };
 
 export const reduce = {

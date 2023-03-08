@@ -134,8 +134,8 @@ function dataProviderForArrays(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      [0, 1, true, false, null, '3'],
-      [0, 1, 2, 2, 2, 5],
+      [0, 1, true, false, null, '3', ''],
+      [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
 }
@@ -183,8 +183,8 @@ function dataProviderForGenerators(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      createGeneratorFixture([0, 1, true, false, null, '3']),
-      [0, 1, 2, 2, 2, 5],
+      createGeneratorFixture([0, 1, true, false, null, '3', '']),
+      [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
 }
@@ -232,8 +232,8 @@ function dataProviderForIterables(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      createIterableFixture([0, 1, true, false, null, '3']),
-      [0, 1, 2, 2, 2, 5],
+      createIterableFixture([0, 1, true, false, null, '3', '']),
+      [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
 }
@@ -281,8 +281,8 @@ function dataProviderForIterators(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      createIteratorFixture([0, 1, true, false, null, '3']),
-      [0, 1, 2, 2, 2, 5],
+      createIteratorFixture([0, 1, true, false, null, '3', '']),
+      [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
 }
@@ -343,8 +343,8 @@ function dataProviderForSets(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      new Set([2, true, false, '3']),
-      [2, 3, 3, 6],
+      new Set([2, true, false, '3', '']),
+      [2, 3, 3, 6, 6],
     ],
   ];
 }

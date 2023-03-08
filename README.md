@@ -104,9 +104,13 @@ Quick Reference
 | [`toValue`](#To-Value)     | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
 
 #### Set and multiset Iteration
-| Iterator                | Description                 | Code Snippet         |
-|-------------------------|-----------------------------|----------------------|
-| [`distinct`](#Distinct) | Iterate only distinct items | `set.distinct(data)` |
+| Iterator                                       | Description                       | Code Snippet                                      |
+|------------------------------------------------|-----------------------------------|---------------------------------------------------|
+| [`distinct`](#Distinct)                        | Iterate only distinct items       | `set.distinct(data)`                              |
+| [`intersection`](#Intersection)                | Intersection of iterables         | `set.intersection(...iterables)`                  |
+| [`partialIntersection`](#Partial-Intersection) | Partial intersection of iterables | `set.partialIntersection(minCount, ...iterables)` |
+| [`symmetricDifference`](#Symmetric-Difference) | Symmetric difference of iterables | `set.symmetricDifference(...iterables)`           |
+| [`union`](#Union)                              | Union of iterables                | `set.union(...iterables)`                         |
 
 #### Summary
 | Summary                      | Description                    | Code Snippet               |
@@ -826,8 +830,10 @@ const result = reduce.toValue(input, sum, 0);
 Filter out elements from the iterable only returning distinct elements.
 
 ```
-function* distinct<T>(data: Iterable<T>|Iterator<T>): Iterable<T>
+function* distinct<T>(data: Iterable<T> | Iterator<T>): Iterable<T>
 ```
+
+Always treats different instances of objects and arrays as unequal.
 
 ```typescript
 import { set } from 'itertools-ts';
@@ -838,6 +844,102 @@ for (const chessPiece of set.distinct(chessSet)) {
   console.log(chessPiece);
 }
 // rook, knight, bishop, king, queen, pawn
+```
+
+### Intersection
+Iterates intersection of iterables.
+
+```
+function* intersection<T>(...iterables: Array<Iterable<T> | Iterator<T>>): Iterable<T>
+```
+
+* Always treats different instances of objects and arrays as unequal.
+* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
+
+```typescript
+import { set } from 'itertools-ts';
+
+const chessPieces = ['rook', 'knight', 'bishop', 'queen', 'king', 'pawn'];
+const shogiPieces = ['rook', 'knight', 'bishop', 'king', 'pawn', 'lance', 'gold general', 'silver general'];
+
+for (const commonPiece of set.intersection(chessPieces, shogiPieces)) {
+    console.log(commonPiece);
+}
+// rook, knight, bishop, king, pawn
+```
+
+### Partial Intersection
+Iterates [M-partial intersection](https://github.com/Smoren/partial-intersection-php) of iterables.
+
+```
+function* partialIntersection<T>(
+  minIntersectionCount: number,
+  ...iterables: Array<Iterable<T> | Iterator<T>>
+): Iterable<T>
+```
+
+* Always treats different instances of objects and arrays as unequal.
+* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
+
+```typescript
+import { set } from 'itertools-ts';
+
+const staticallyTyped    = ['c++', 'java', 'c#', 'go', 'haskell'];
+const dynamicallyTyped   = ['php', 'python', 'javascript', 'typescript'];
+const supportsInterfaces = ['php', 'java', 'c#', 'typescript'];
+
+for (const language of set.partialIntersection(2, staticallyTyped, dynamicallyTyped, supportsInterfaces)) {
+    console.log(language);
+}
+// c++, java, c#, go, php
+```
+
+### Symmetric difference
+Iterates the symmetric difference of iterables.
+
+```
+function* symmetricDifference<T>(
+  ...iterables: Array<Iterable<T> | Iterator<T>>
+): Iterable<T>
+```
+
+* Always treats different instances of objects and arrays as unequal.
+* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
+
+```typescript
+import { set } from 'itertools-ts';
+
+const a = [2, 3, 4, 7];
+const b = [2, 3, 5, 8];
+const c = [2, 3, 6, 9];
+
+for (const item of set.symmetricDifference(a, b, c)) {
+  console.log(item);
+}
+// 4, 5, 6, 7, 8, 9
+```
+
+### Union
+Iterates the union of iterables.
+
+```
+function* union<T>(...iterables: Array<Iterable<T> | Iterator<T>>): Iterable<T>
+```
+
+* Always treats different instances of objects and arrays as unequal.
+* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
+
+```typescript
+import { set } from 'itertools-ts';
+
+const a = [1, 2, 3];
+const b = [2, 3, 4];
+const c = [3, 4, 5];
+
+for (const item of set.symmetricDifference(a, b, c)) {
+    console.log(item);
+}
+// 1, 2, 3, 4, 5
 ```
 
 ## Summary
