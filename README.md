@@ -71,6 +71,7 @@ Quick Reference
 |------------------------------------------|---------------------------------------------|---------------------------------------------------------|
 | [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `single.chunkwise(data, chunkSize)`                     |
 | [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` |
+| [`enumerate`](#Enumerate)                | Enumerates elements of collection           | `single.enumerate(data)`                                |
 | [`filter`](#Filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        |
 | [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          |
 | [`flatten`](#Flatten)                    | Flatten multidimensional iterable           | `single.flatten(data, [dimensions])`                    |
@@ -116,6 +117,7 @@ Quick Reference
 | [`chunkwise`](#Chunkwise-1)                | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                 |
 | [`chunkwiseOverlap`](#Chunkwise-Overlap-1) | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)` |
 | [`distinct`](#Distinct-1)                  | Filter out elements: iterate only unique items                                            | `stream.distinct()`                           |
+| [`enumerate`](#Enumerate-1)                | Enumerates elements of stream                                                             | `stream.enumerate()`                          |
 | [`filter`](#Filter-1)                      | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                    |
 | [`flatMap`](#Flat-Map-1)                   | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                      |
 | [`flatten`](#Flatten-1)                    | Flatten multidimensional stream                                                           | `stream.flatten([dimensions])`                |
@@ -296,6 +298,23 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 for (const chunk of single.chunkwiseOverlap(numbers, 3, 1)) {
   // [1, 2, 3], [3, 4, 5], [5, 6, 7], [7, 8, 9], [9, 10]
+}
+```
+
+### Enumerate
+Enumerates elements of given collection.
+
+```
+function *enumerate<T>(data: Iterable<T>|Iterator<T>): Iterable<[number, T]>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const letters = ['a', 'b', 'c', 'd', 'e'];
+
+for (const item of single.enumerate(letters)) {
+  // [[0, 'a'], [1, 'b'], [2, 'c'], [3, 'd'], [4, 'e']]
 }
 ```
 
@@ -696,6 +715,23 @@ const stream = Stream.of(input)
   .distinct()
   .toArray();
 // 1, 2, 3, '1', '2', '3'
+```
+
+#### Enumerate
+Enumerates elements of the stream.
+
+```
+stream.enumerate(): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = ['a', 'b', 'c', 'd', 'e'];
+const stream = Stream.of(input)
+  .enumerate()
+  .toArray();
+// [[0, 'a'], [1, 'b'], [2, 'c'], [3, 'd'], [4, 'e']]
 ```
 
 #### Filter
