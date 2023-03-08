@@ -50,13 +50,13 @@ function dataProviderForUsingCustomComparator(): Array<unknown> {
         },
         {
           title: 'The Matrix Resurrections',
-          rating: 2.5,
+          rating: 2.6,
         },
       ],
       (movie: Record<string, unknown>): number => movie['rating'] as number,
       {
         title: 'The Matrix Resurrections',
-        rating: 2.5,
+        rating: 2.6,
       },
     ],
   ];
