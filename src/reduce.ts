@@ -34,3 +34,24 @@ export function toMin<TValue, TComparable>(
     return lhs <= rhs ? lhs : rhs;
   });
 }
+
+export function toMax<TValue, TComparable>(
+  data: Iterable<TValue>|Iterator<TValue>,
+  compareBy?: (datum: TValue) => TComparable,
+): TValue|undefined {
+  if (compareBy !== undefined) {
+    return toValue(
+      data,
+      (carry: TValue|undefined, datum) => compareBy(datum) > compareBy(carry ?? datum)
+        ? datum
+        : carry ?? datum
+    );
+  }
+
+  return toValue(data, (carry, datum) => {
+    const lhs = carry ?? datum;
+    const rhs = datum;
+
+    return lhs >= rhs ? lhs : rhs;
+  });
+}

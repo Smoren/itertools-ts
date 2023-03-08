@@ -10,10 +10,10 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Reduce To Min Test", (input, compareBy, expected) => {
+])("Reduce To Max Test", (input, compareBy, expected) => {
   it("", () => {
     // When
-    const result = reduce.toMin(input as Iterable<unknown>, compareBy as ((datum: unknown) => unknown)|undefined);
+    const result = reduce.toMax(input as Iterable<unknown>, compareBy as ((datum: unknown) => unknown)|undefined);
 
     // Then
     expect(result).toEqual(expected);
@@ -25,7 +25,7 @@ describe.each([
 ])("Reduce To Min Using Custom Comparator Test", (input, compareBy, expected) => {
   it("", () => {
     // When
-    const result = reduce.toMin(input as Iterable<unknown>, compareBy as (datum: unknown) => unknown);
+    const result = reduce.toMax(input as Iterable<unknown>, compareBy as (datum: unknown) => unknown);
 
     // Then
     expect(result).toEqual(expected);
@@ -55,8 +55,8 @@ function dataProviderForUsingCustomComparator(): Array<unknown> {
       ],
       (movie: Record<string, unknown>): number => movie['rating'] as number,
       {
-        title: 'The Matrix Resurrections',
-        rating: 2.6,
+        title: 'The Matrix',
+        rating: 4.7,
       },
     ],
   ];
@@ -71,12 +71,12 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [],
-      (item: number) => item,
+      (item: unknown) => item,
       undefined,
     ],
     [
       [],
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       undefined,
     ],
     [
@@ -86,12 +86,12 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [0],
-      (item: number) => item,
+      (item: unknown) => item,
       0,
     ],
     [
       [0],
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       0,
     ],
     [
@@ -101,12 +101,12 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [Infinity],
-      (item: number) => item,
+      (item: unknown) => item,
       Infinity,
     ],
     [
       [Infinity],
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       Infinity,
     ],
     [
@@ -116,213 +116,228 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [-Infinity],
-      (item: number) => item,
+      (item: unknown) => item,
       -Infinity,
     ],
     [
       [-Infinity],
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       -Infinity,
     ],
     [
       [Infinity, -Infinity],
       undefined,
-      -Infinity,
+      Infinity,
     ],
     [
       [Infinity, -Infinity],
-      (item: number) => item,
-      -Infinity,
+      (item: unknown) => item,
+      Infinity,
     ],
     [
       [Infinity, -Infinity],
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      -Infinity,
+    ],
+    [
+      [Infinity, -Infinity, 10, -1],
+      undefined,
       Infinity,
     ],
     [
       [Infinity, -Infinity, 10, -1],
-      undefined,
-      -Infinity,
-    ],
-    [
-      [Infinity, -Infinity, 10, -1],
-      (item: number) => item,
-      -Infinity,
-    ],
-    [
-      [Infinity, -Infinity, 10, -1],
-      (item: number) => -item,
+      (item: unknown) => item,
       Infinity,
     ],
     [
+      [Infinity, -Infinity, 10, -1],
+      (item: unknown) => -(item as number),
+      -Infinity,
+    ],
+    [
       [1, 2, 3],
       undefined,
-      1,
+      3,
     ],
     [
       [1, 2, 3],
-      (item: number) => item,
-      1,
+      (item: unknown) => item,
+      3,
     ],
     [
       [1, 2, 3],
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      [3, 2, 1],
+      undefined,
       3,
     ],
     [
       [3, 2, 1],
-      undefined,
-      1,
-    ],
-    [
-      [3, 2, 1],
-      (item: number) => item,
-      1,
-    ],
-    [
-      [3, 2, 1],
-      (item: number) => -item,
+      (item: unknown) => item,
       3,
     ],
     [
       [3, 2, 1],
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      [2, 3, 1],
       undefined,
-      1,
-    ],
-    [
-      [3, 2, 1],
-      (item: number) => item,
-      1,
-    ],
-    [
-      [3, 2, 1],
-      (item: number) => -item,
       3,
     ],
     [
-      [2.1, 1],
+      [2, 3, 1],
+      (item: unknown) => item,
+      3,
+    ],
+    [
+      [2, 3, 1],
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      [1, 2.1],
       undefined,
-      1,
-    ],
-    [
-      [2.1, 1],
-      (item: number) => item,
-      1,
-    ],
-    [
-      [2.1, 1],
-      (item: number) => -item,
       2.1,
     ],
     [
+      [1, 2.1],
+      (item: unknown) => item,
+      2.1,
+    ],
+    [
+      [1, 2.1],
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      [2.1, 1],
+      undefined,
+      2.1,
+    ],
+    [
+      [2.1, 1],
+      (item: unknown) => item,
+      2.1,
+    ],
+    [
+      [2.1, 1],
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
       [2, 1.1],
       undefined,
-      1.1,
-    ],
-    [
-      [2, 1.1],
-      (item: number) => item,
-      1.1,
-    ],
-    [
-      [2, 1.1],
-      (item: number) => -item,
       2,
     ],
     [
+      [2, 1.1],
+      (item: unknown) => item,
+      2,
+    ],
+    [
+      [2, 1.1],
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
       [2.2, 1.1],
       undefined,
-      1.1,
+      2.2,
     ],
     [
       [2.2, 1.1],
-      (item: number) => item,
-      1.1,
+      (item: unknown) => item,
+      2.2,
     ],
     [
       [2.2, 1.1],
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
+      [1.1, 2.2],
+      undefined,
       2.2,
     ],
     [
       [1.1, 2.2],
-      undefined,
-      1.1,
-    ],
-    [
-      [1.1, 2.2],
-      (item: number) => item,
-      1.1,
-    ],
-    [
-      [1.1, 2.2],
-      (item: number) => -item,
+      (item: unknown) => item,
       2.2,
     ],
     [
+      [1.1, 2.2],
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
       ['a', 'b', 'c'],
       undefined,
-      'a',
-    ],
-    [
-      ['a', 'b', 'c'],
-      (item: string) => item,
-      'a',
-    ],
-    [
-      ['a', 'b', 'c'],
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      ['a', 'b', 'c'],
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      ['a', 'b', 'c'],
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       ['b', 'c', 'a'],
       undefined,
-      'a',
-    ],
-    [
-      ['b', 'c', 'a'],
-      (item: string) => item,
-      'a',
-    ],
-    [
-      ['b', 'c', 'a'],
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      ['b', 'c', 'a'],
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      ['b', 'c', 'a'],
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       ['c', 'b', 'a'],
       undefined,
-      'a',
-    ],
-    [
-      ['c', 'b', 'a'],
-      (item: string) => item,
-      'a',
-    ],
-    [
-      ['c', 'b', 'a'],
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      ['c', 'b', 'a'],
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      ['c', 'b', 'a'],
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       ['ab', 'ba', 'b'],
       undefined,
-      'ab',
+      'ba',
     ],
     [
       ['ab', 'ba', 'b'],
-      (item: string) => item,
-      'ab',
+      (item: unknown) => item,
+      'ba',
     ],
     [
       ['ba', 'b', 'ab'],
       undefined,
-      'ab',
+      'ba',
     ],
     [
       ['ba', 'b', 'ab'],
-      (item: string) => item,
-      'ab',
+      (item: unknown) => item,
+      'ba',
     ],
     [
       [[]],
@@ -331,7 +346,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [[]],
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [],
     ],
     [
@@ -341,7 +356,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [[2]],
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [2],
     ],
     [
@@ -351,38 +366,28 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [[], []],
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [],
     ],
     [
       [[], [2]],
       undefined,
-      [],
+      [2],
     ],
     [
       [[], [2]],
-      (item: Array<unknown>) => item,
-      [],
+      (item: unknown) => item,
+      [2],
     ],
     [
       [[2], []],
       undefined,
-      [],
+      [2],
     ],
     [
       [[2], []],
-      (item: Array<unknown>) => item,
-      [],
-    ],
-    [
-      [[], [null]],
-      undefined,
-      [],
-    ],
-    [
-      [[], [null]],
-      (item: Array<unknown>) => item,
-      [],
+      (item: unknown) => item,
+      [2],
     ],
     [
       [[null], [null]],
@@ -391,88 +396,88 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [[null], [null]],
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [null],
     ],
     [
       [[1, 2], [2]],
       undefined,
-      [1, 2],
+      [2],
     ],
     [
       [[1, 2], [2]],
-      (item: Array<unknown>) => item,
-      [1, 2],
-    ],
-    [
-      [[3, 2], [2]],
-      undefined,
+      (item: unknown) => item,
       [2],
     ],
     [
       [[3, 2], [2]],
-      (item: Array<unknown>) => item,
-      [2],
+      undefined,
+      [3, 2],
+    ],
+    [
+      [[3, 2], [2]],
+      (item: unknown) => item,
+      [3, 2],
     ],
     [
       [[1, 2], [2, 1]],
       undefined,
-      [1, 2],
+      [2, 1],
     ],
     [
       [[1, 2], [2, 1]],
-      (item: Array<unknown>) => item,
-      [1, 2],
+      (item: unknown) => item,
+      [2, 1],
     ],
     [
       [[2, 1], [1, 2]],
       undefined,
-      [1, 2],
+      [2, 1],
     ],
     [
       [[2, 1], [1, 2]],
-      (item: Array<unknown>) => item,
-      [1, 2],
+      (item: unknown) => item,
+      [2, 1],
     ],
     [
       [['a'], ['b']],
       undefined,
-      ['a'],
+      ['b'],
     ],
     [
       [['a'], ['b']],
-      (item: Array<unknown>) => item,
-      ['a'],
+      (item: unknown) => item,
+      ['b'],
     ],
     [
       [['a', 'a'], ['b']],
       undefined,
-      ['a', 'a'],
+      ['b'],
     ],
     [
       [['a', 'a'], ['b']],
-      (item: Array<unknown>) => item,
-      ['a', 'a'],
+      (item: unknown) => item,
+      ['b'],
     ],
     [
       [[1, 2, 3], [2, 0, 3], [2, 1, 3]],
       undefined,
+      [2, 1, 3],
+    ],
+    [
+      [[1, 2, 3], [2, 0, 3], [2, 1, 3]],
+      (item: unknown) => item,
+      [2, 1, 3],
+    ],
+    [
+      [[1, 2, 3], [2, 0, 3], [2, 1, 3]],
+      (item: unknown) => (item as Array<number>)[1],
       [1, 2, 3],
     ],
     [
       [[1, 2, 3], [2, 0, 3], [2, 1, 3]],
-      (item: Array<unknown>) => item,
-      [1, 2, 3],
-    ],
-    [
-      [[1, 2, 3], [2, 0, 3], [2, 1, 3]],
-      (item: Array<unknown>) => item[1],
+      (item: unknown) => -(item as Array<number>)[1],
       [2, 0, 3],
-    ],
-    [
-      [[1, 2, 3], [2, 0, 3], [2, 1, 3]],
-      (item: Array<unknown>) => -(item[1] as number),
-      [1, 2, 3],
     ],
   ];
 }
@@ -486,12 +491,12 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([]),
-      (item: number) => item,
+      (item: unknown) => item,
       undefined,
     ],
     [
       createGeneratorFixture([]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       undefined,
     ],
     [
@@ -501,12 +506,12 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([0]),
-      (item: number) => item,
+      (item: unknown) => item,
       0,
     ],
     [
       createGeneratorFixture([0]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       0,
     ],
     [
@@ -516,12 +521,12 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([Infinity]),
-      (item: number) => item,
+      (item: unknown) => item,
       Infinity,
     ],
     [
       createGeneratorFixture([Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       Infinity,
     ],
     [
@@ -531,213 +536,228 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([-Infinity]),
-      (item: number) => item,
+      (item: unknown) => item,
       -Infinity,
     ],
     [
       createGeneratorFixture([-Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       -Infinity,
     ],
     [
       createGeneratorFixture([Infinity, -Infinity]),
       undefined,
-      -Infinity,
+      Infinity,
     ],
     [
       createGeneratorFixture([Infinity, -Infinity]),
-      (item: number) => item,
-      -Infinity,
+      (item: unknown) => item,
+      Infinity,
     ],
     [
       createGeneratorFixture([Infinity, -Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      -Infinity,
+    ],
+    [
+      createGeneratorFixture([Infinity, -Infinity, 10, -1]),
+      undefined,
       Infinity,
     ],
     [
       createGeneratorFixture([Infinity, -Infinity, 10, -1]),
-      undefined,
-      -Infinity,
-    ],
-    [
-      createGeneratorFixture([Infinity, -Infinity, 10, -1]),
-      (item: number) => item,
-      -Infinity,
-    ],
-    [
-      createGeneratorFixture([Infinity, -Infinity, 10, -1]),
-      (item: number) => -item,
+      (item: unknown) => item,
       Infinity,
     ],
     [
+      createGeneratorFixture([Infinity, -Infinity, 10, -1]),
+      (item: unknown) => -(item as number),
+      -Infinity,
+    ],
+    [
       createGeneratorFixture([1, 2, 3]),
       undefined,
-      1,
+      3,
     ],
     [
       createGeneratorFixture([1, 2, 3]),
-      (item: number) => item,
-      1,
+      (item: unknown) => item,
+      3,
     ],
     [
       createGeneratorFixture([1, 2, 3]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createGeneratorFixture([3, 2, 1]),
+      undefined,
       3,
     ],
     [
       createGeneratorFixture([3, 2, 1]),
-      undefined,
-      1,
-    ],
-    [
-      createGeneratorFixture([3, 2, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      createGeneratorFixture([3, 2, 1]),
-      (item: number) => -item,
+      (item: unknown) => item,
       3,
     ],
     [
       createGeneratorFixture([3, 2, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createGeneratorFixture([2, 3, 1]),
       undefined,
-      1,
-    ],
-    [
-      createGeneratorFixture([3, 2, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      createGeneratorFixture([3, 2, 1]),
-      (item: number) => -item,
       3,
     ],
     [
-      createGeneratorFixture([2.1, 1]),
+      createGeneratorFixture([2, 3, 1]),
+      (item: unknown) => item,
+      3,
+    ],
+    [
+      createGeneratorFixture([2, 3, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createGeneratorFixture([1, 2.1]),
       undefined,
-      1,
-    ],
-    [
-      createGeneratorFixture([2.1, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      createGeneratorFixture([2.1, 1]),
-      (item: number) => -item,
       2.1,
     ],
     [
+      createGeneratorFixture([1, 2.1]),
+      (item: unknown) => item,
+      2.1,
+    ],
+    [
+      createGeneratorFixture([1, 2.1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createGeneratorFixture([2.1, 1]),
+      undefined,
+      2.1,
+    ],
+    [
+      createGeneratorFixture([2.1, 1]),
+      (item: unknown) => item,
+      2.1,
+    ],
+    [
+      createGeneratorFixture([2.1, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
       createGeneratorFixture([2, 1.1]),
       undefined,
-      1.1,
-    ],
-    [
-      createGeneratorFixture([2, 1.1]),
-      (item: number) => item,
-      1.1,
-    ],
-    [
-      createGeneratorFixture([2, 1.1]),
-      (item: number) => -item,
       2,
     ],
     [
+      createGeneratorFixture([2, 1.1]),
+      (item: unknown) => item,
+      2,
+    ],
+    [
+      createGeneratorFixture([2, 1.1]),
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
       createGeneratorFixture([2.2, 1.1]),
       undefined,
-      1.1,
+      2.2,
     ],
     [
       createGeneratorFixture([2.2, 1.1]),
-      (item: number) => item,
-      1.1,
+      (item: unknown) => item,
+      2.2,
     ],
     [
       createGeneratorFixture([2.2, 1.1]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
+      createGeneratorFixture([1.1, 2.2]),
+      undefined,
       2.2,
     ],
     [
       createGeneratorFixture([1.1, 2.2]),
-      undefined,
-      1.1,
-    ],
-    [
-      createGeneratorFixture([1.1, 2.2]),
-      (item: number) => item,
-      1.1,
-    ],
-    [
-      createGeneratorFixture([1.1, 2.2]),
-      (item: number) => -item,
+      (item: unknown) => item,
       2.2,
     ],
     [
+      createGeneratorFixture([1.1, 2.2]),
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
       createGeneratorFixture(['a', 'b', 'c']),
       undefined,
-      'a',
-    ],
-    [
-      createGeneratorFixture(['a', 'b', 'c']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      createGeneratorFixture(['a', 'b', 'c']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      createGeneratorFixture(['a', 'b', 'c']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      createGeneratorFixture(['a', 'b', 'c']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       createGeneratorFixture(['b', 'c', 'a']),
       undefined,
-      'a',
-    ],
-    [
-      createGeneratorFixture(['b', 'c', 'a']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      createGeneratorFixture(['b', 'c', 'a']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      createGeneratorFixture(['b', 'c', 'a']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      createGeneratorFixture(['b', 'c', 'a']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       createGeneratorFixture(['c', 'b', 'a']),
       undefined,
-      'a',
-    ],
-    [
-      createGeneratorFixture(['c', 'b', 'a']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      createGeneratorFixture(['c', 'b', 'a']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      createGeneratorFixture(['c', 'b', 'a']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      createGeneratorFixture(['c', 'b', 'a']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       createGeneratorFixture(['ab', 'ba', 'b']),
       undefined,
-      'ab',
+      'ba',
     ],
     [
       createGeneratorFixture(['ab', 'ba', 'b']),
-      (item: string) => item,
-      'ab',
+      (item: unknown) => item,
+      'ba',
     ],
     [
       createGeneratorFixture(['ba', 'b', 'ab']),
       undefined,
-      'ab',
+      'ba',
     ],
     [
       createGeneratorFixture(['ba', 'b', 'ab']),
-      (item: string) => item,
-      'ab',
+      (item: unknown) => item,
+      'ba',
     ],
     [
       createGeneratorFixture([[]]),
@@ -746,7 +766,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([[]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [],
     ],
     [
@@ -756,7 +776,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([[2]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [2],
     ],
     [
@@ -766,38 +786,28 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([[], []]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [],
     ],
     [
       createGeneratorFixture([[], [2]]),
       undefined,
-      [],
+      [2],
     ],
     [
       createGeneratorFixture([[], [2]]),
-      (item: Array<unknown>) => item,
-      [],
+      (item: unknown) => item,
+      [2],
     ],
     [
       createGeneratorFixture([[2], []]),
       undefined,
-      [],
+      [2],
     ],
     [
       createGeneratorFixture([[2], []]),
-      (item: Array<unknown>) => item,
-      [],
-    ],
-    [
-      createGeneratorFixture([[], [null]]),
-      undefined,
-      [],
-    ],
-    [
-      createGeneratorFixture([[], [null]]),
-      (item: Array<unknown>) => item,
-      [],
+      (item: unknown) => item,
+      [2],
     ],
     [
       createGeneratorFixture([[null], [null]]),
@@ -806,88 +816,88 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([[null], [null]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [null],
     ],
     [
       createGeneratorFixture([[1, 2], [2]]),
       undefined,
-      [1, 2],
+      [2],
     ],
     [
       createGeneratorFixture([[1, 2], [2]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
-    ],
-    [
-      createGeneratorFixture([[3, 2], [2]]),
-      undefined,
+      (item: unknown) => item,
       [2],
     ],
     [
       createGeneratorFixture([[3, 2], [2]]),
-      (item: Array<unknown>) => item,
-      [2],
+      undefined,
+      [3, 2],
+    ],
+    [
+      createGeneratorFixture([[3, 2], [2]]),
+      (item: unknown) => item,
+      [3, 2],
     ],
     [
       createGeneratorFixture([[1, 2], [2, 1]]),
       undefined,
-      [1, 2],
+      [2, 1],
     ],
     [
       createGeneratorFixture([[1, 2], [2, 1]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
+      (item: unknown) => item,
+      [2, 1],
     ],
     [
       createGeneratorFixture([[2, 1], [1, 2]]),
       undefined,
-      [1, 2],
+      [2, 1],
     ],
     [
       createGeneratorFixture([[2, 1], [1, 2]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
+      (item: unknown) => item,
+      [2, 1],
     ],
     [
       createGeneratorFixture([['a'], ['b']]),
       undefined,
-      ['a'],
+      ['b'],
     ],
     [
       createGeneratorFixture([['a'], ['b']]),
-      (item: Array<unknown>) => item,
-      ['a'],
+      (item: unknown) => item,
+      ['b'],
     ],
     [
       createGeneratorFixture([['a', 'a'], ['b']]),
       undefined,
-      ['a', 'a'],
+      ['b'],
     ],
     [
       createGeneratorFixture([['a', 'a'], ['b']]),
-      (item: Array<unknown>) => item,
-      ['a', 'a'],
+      (item: unknown) => item,
+      ['b'],
     ],
     [
       createGeneratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
       undefined,
+      [2, 1, 3],
+    ],
+    [
+      createGeneratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: unknown) => item,
+      [2, 1, 3],
+    ],
+    [
+      createGeneratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: unknown) => (item as Array<number>)[1],
       [1, 2, 3],
     ],
     [
       createGeneratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => item,
-      [1, 2, 3],
-    ],
-    [
-      createGeneratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => item[1],
+      (item: unknown) => -(item as Array<number>)[1],
       [2, 0, 3],
-    ],
-    [
-      createGeneratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => -(item[1] as number),
-      [1, 2, 3],
     ],
   ];
 }
@@ -901,12 +911,12 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([]),
-      (item: number) => item,
+      (item: unknown) => item,
       undefined,
     ],
     [
       createIterableFixture([]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       undefined,
     ],
     [
@@ -916,12 +926,12 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([0]),
-      (item: number) => item,
+      (item: unknown) => item,
       0,
     ],
     [
       createIterableFixture([0]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       0,
     ],
     [
@@ -931,12 +941,12 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([Infinity]),
-      (item: number) => item,
+      (item: unknown) => item,
       Infinity,
     ],
     [
       createIterableFixture([Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       Infinity,
     ],
     [
@@ -946,213 +956,228 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([-Infinity]),
-      (item: number) => item,
+      (item: unknown) => item,
       -Infinity,
     ],
     [
       createIterableFixture([-Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       -Infinity,
     ],
     [
       createIterableFixture([Infinity, -Infinity]),
       undefined,
-      -Infinity,
+      Infinity,
     ],
     [
       createIterableFixture([Infinity, -Infinity]),
-      (item: number) => item,
-      -Infinity,
+      (item: unknown) => item,
+      Infinity,
     ],
     [
       createIterableFixture([Infinity, -Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      -Infinity,
+    ],
+    [
+      createIterableFixture([Infinity, -Infinity, 10, -1]),
+      undefined,
       Infinity,
     ],
     [
       createIterableFixture([Infinity, -Infinity, 10, -1]),
-      undefined,
-      -Infinity,
-    ],
-    [
-      createIterableFixture([Infinity, -Infinity, 10, -1]),
-      (item: number) => item,
-      -Infinity,
-    ],
-    [
-      createIterableFixture([Infinity, -Infinity, 10, -1]),
-      (item: number) => -item,
+      (item: unknown) => item,
       Infinity,
     ],
     [
+      createIterableFixture([Infinity, -Infinity, 10, -1]),
+      (item: unknown) => -(item as number),
+      -Infinity,
+    ],
+    [
       createIterableFixture([1, 2, 3]),
       undefined,
-      1,
+      3,
     ],
     [
       createIterableFixture([1, 2, 3]),
-      (item: number) => item,
-      1,
+      (item: unknown) => item,
+      3,
     ],
     [
       createIterableFixture([1, 2, 3]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createIterableFixture([3, 2, 1]),
+      undefined,
       3,
     ],
     [
       createIterableFixture([3, 2, 1]),
-      undefined,
-      1,
-    ],
-    [
-      createIterableFixture([3, 2, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      createIterableFixture([3, 2, 1]),
-      (item: number) => -item,
+      (item: unknown) => item,
       3,
     ],
     [
       createIterableFixture([3, 2, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createIterableFixture([2, 3, 1]),
       undefined,
-      1,
-    ],
-    [
-      createIterableFixture([3, 2, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      createIterableFixture([3, 2, 1]),
-      (item: number) => -item,
       3,
     ],
     [
-      createIterableFixture([2.1, 1]),
+      createIterableFixture([2, 3, 1]),
+      (item: unknown) => item,
+      3,
+    ],
+    [
+      createIterableFixture([2, 3, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createIterableFixture([1, 2.1]),
       undefined,
-      1,
-    ],
-    [
-      createIterableFixture([2.1, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      createIterableFixture([2.1, 1]),
-      (item: number) => -item,
       2.1,
     ],
     [
+      createIterableFixture([1, 2.1]),
+      (item: unknown) => item,
+      2.1,
+    ],
+    [
+      createIterableFixture([1, 2.1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createIterableFixture([2.1, 1]),
+      undefined,
+      2.1,
+    ],
+    [
+      createIterableFixture([2.1, 1]),
+      (item: unknown) => item,
+      2.1,
+    ],
+    [
+      createIterableFixture([2.1, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
       createIterableFixture([2, 1.1]),
       undefined,
-      1.1,
-    ],
-    [
-      createIterableFixture([2, 1.1]),
-      (item: number) => item,
-      1.1,
-    ],
-    [
-      createIterableFixture([2, 1.1]),
-      (item: number) => -item,
       2,
     ],
     [
+      createIterableFixture([2, 1.1]),
+      (item: unknown) => item,
+      2,
+    ],
+    [
+      createIterableFixture([2, 1.1]),
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
       createIterableFixture([2.2, 1.1]),
       undefined,
-      1.1,
+      2.2,
     ],
     [
       createIterableFixture([2.2, 1.1]),
-      (item: number) => item,
-      1.1,
+      (item: unknown) => item,
+      2.2,
     ],
     [
       createIterableFixture([2.2, 1.1]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
+      createIterableFixture([1.1, 2.2]),
+      undefined,
       2.2,
     ],
     [
       createIterableFixture([1.1, 2.2]),
-      undefined,
-      1.1,
-    ],
-    [
-      createIterableFixture([1.1, 2.2]),
-      (item: number) => item,
-      1.1,
-    ],
-    [
-      createIterableFixture([1.1, 2.2]),
-      (item: number) => -item,
+      (item: unknown) => item,
       2.2,
     ],
     [
+      createIterableFixture([1.1, 2.2]),
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
       createIterableFixture(['a', 'b', 'c']),
       undefined,
-      'a',
-    ],
-    [
-      createIterableFixture(['a', 'b', 'c']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      createIterableFixture(['a', 'b', 'c']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      createIterableFixture(['a', 'b', 'c']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      createIterableFixture(['a', 'b', 'c']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       createIterableFixture(['b', 'c', 'a']),
       undefined,
-      'a',
-    ],
-    [
-      createIterableFixture(['b', 'c', 'a']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      createIterableFixture(['b', 'c', 'a']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      createIterableFixture(['b', 'c', 'a']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      createIterableFixture(['b', 'c', 'a']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       createIterableFixture(['c', 'b', 'a']),
       undefined,
-      'a',
-    ],
-    [
-      createIterableFixture(['c', 'b', 'a']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      createIterableFixture(['c', 'b', 'a']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      createIterableFixture(['c', 'b', 'a']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      createIterableFixture(['c', 'b', 'a']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       createIterableFixture(['ab', 'ba', 'b']),
       undefined,
-      'ab',
+      'ba',
     ],
     [
       createIterableFixture(['ab', 'ba', 'b']),
-      (item: string) => item,
-      'ab',
+      (item: unknown) => item,
+      'ba',
     ],
     [
       createIterableFixture(['ba', 'b', 'ab']),
       undefined,
-      'ab',
+      'ba',
     ],
     [
       createIterableFixture(['ba', 'b', 'ab']),
-      (item: string) => item,
-      'ab',
+      (item: unknown) => item,
+      'ba',
     ],
     [
       createIterableFixture([[]]),
@@ -1161,7 +1186,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([[]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [],
     ],
     [
@@ -1171,7 +1196,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([[2]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [2],
     ],
     [
@@ -1181,38 +1206,28 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([[], []]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [],
     ],
     [
       createIterableFixture([[], [2]]),
       undefined,
-      [],
+      [2],
     ],
     [
       createIterableFixture([[], [2]]),
-      (item: Array<unknown>) => item,
-      [],
+      (item: unknown) => item,
+      [2],
     ],
     [
       createIterableFixture([[2], []]),
       undefined,
-      [],
+      [2],
     ],
     [
       createIterableFixture([[2], []]),
-      (item: Array<unknown>) => item,
-      [],
-    ],
-    [
-      createIterableFixture([[], [null]]),
-      undefined,
-      [],
-    ],
-    [
-      createIterableFixture([[], [null]]),
-      (item: Array<unknown>) => item,
-      [],
+      (item: unknown) => item,
+      [2],
     ],
     [
       createIterableFixture([[null], [null]]),
@@ -1221,88 +1236,88 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([[null], [null]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [null],
     ],
     [
       createIterableFixture([[1, 2], [2]]),
       undefined,
-      [1, 2],
+      [2],
     ],
     [
       createIterableFixture([[1, 2], [2]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
-    ],
-    [
-      createIterableFixture([[3, 2], [2]]),
-      undefined,
+      (item: unknown) => item,
       [2],
     ],
     [
       createIterableFixture([[3, 2], [2]]),
-      (item: Array<unknown>) => item,
-      [2],
+      undefined,
+      [3, 2],
+    ],
+    [
+      createIterableFixture([[3, 2], [2]]),
+      (item: unknown) => item,
+      [3, 2],
     ],
     [
       createIterableFixture([[1, 2], [2, 1]]),
       undefined,
-      [1, 2],
+      [2, 1],
     ],
     [
       createIterableFixture([[1, 2], [2, 1]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
+      (item: unknown) => item,
+      [2, 1],
     ],
     [
       createIterableFixture([[2, 1], [1, 2]]),
       undefined,
-      [1, 2],
+      [2, 1],
     ],
     [
       createIterableFixture([[2, 1], [1, 2]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
+      (item: unknown) => item,
+      [2, 1],
     ],
     [
       createIterableFixture([['a'], ['b']]),
       undefined,
-      ['a'],
+      ['b'],
     ],
     [
       createIterableFixture([['a'], ['b']]),
-      (item: Array<unknown>) => item,
-      ['a'],
+      (item: unknown) => item,
+      ['b'],
     ],
     [
       createIterableFixture([['a', 'a'], ['b']]),
       undefined,
-      ['a', 'a'],
+      ['b'],
     ],
     [
       createIterableFixture([['a', 'a'], ['b']]),
-      (item: Array<unknown>) => item,
-      ['a', 'a'],
+      (item: unknown) => item,
+      ['b'],
     ],
     [
       createIterableFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
       undefined,
+      [2, 1, 3],
+    ],
+    [
+      createIterableFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: unknown) => item,
+      [2, 1, 3],
+    ],
+    [
+      createIterableFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: unknown) => (item as Array<number>)[1],
       [1, 2, 3],
     ],
     [
       createIterableFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => item,
-      [1, 2, 3],
-    ],
-    [
-      createIterableFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => item[1],
+      (item: unknown) => -(item as Array<number>)[1],
       [2, 0, 3],
-    ],
-    [
-      createIterableFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => -(item[1] as number),
-      [1, 2, 3],
     ],
   ];
 }
@@ -1316,12 +1331,12 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([]),
-      (item: number) => item,
+      (item: unknown) => item,
       undefined,
     ],
     [
       createIteratorFixture([]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       undefined,
     ],
     [
@@ -1331,12 +1346,12 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([0]),
-      (item: number) => item,
+      (item: unknown) => item,
       0,
     ],
     [
       createIteratorFixture([0]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       0,
     ],
     [
@@ -1346,12 +1361,12 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([Infinity]),
-      (item: number) => item,
+      (item: unknown) => item,
       Infinity,
     ],
     [
       createIteratorFixture([Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       Infinity,
     ],
     [
@@ -1361,213 +1376,228 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([-Infinity]),
-      (item: number) => item,
+      (item: unknown) => item,
       -Infinity,
     ],
     [
       createIteratorFixture([-Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       -Infinity,
     ],
     [
       createIteratorFixture([Infinity, -Infinity]),
       undefined,
-      -Infinity,
+      Infinity,
     ],
     [
       createIteratorFixture([Infinity, -Infinity]),
-      (item: number) => item,
-      -Infinity,
+      (item: unknown) => item,
+      Infinity,
     ],
     [
       createIteratorFixture([Infinity, -Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      -Infinity,
+    ],
+    [
+      createIteratorFixture([Infinity, -Infinity, 10, -1]),
+      undefined,
       Infinity,
     ],
     [
       createIteratorFixture([Infinity, -Infinity, 10, -1]),
-      undefined,
-      -Infinity,
-    ],
-    [
-      createIteratorFixture([Infinity, -Infinity, 10, -1]),
-      (item: number) => item,
-      -Infinity,
-    ],
-    [
-      createIteratorFixture([Infinity, -Infinity, 10, -1]),
-      (item: number) => -item,
+      (item: unknown) => item,
       Infinity,
     ],
     [
+      createIteratorFixture([Infinity, -Infinity, 10, -1]),
+      (item: unknown) => -(item as number),
+      -Infinity,
+    ],
+    [
       createIteratorFixture([1, 2, 3]),
       undefined,
-      1,
+      3,
     ],
     [
       createIteratorFixture([1, 2, 3]),
-      (item: number) => item,
-      1,
+      (item: unknown) => item,
+      3,
     ],
     [
       createIteratorFixture([1, 2, 3]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createIteratorFixture([3, 2, 1]),
+      undefined,
       3,
     ],
     [
       createIteratorFixture([3, 2, 1]),
-      undefined,
-      1,
-    ],
-    [
-      createIteratorFixture([3, 2, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      createIteratorFixture([3, 2, 1]),
-      (item: number) => -item,
+      (item: unknown) => item,
       3,
     ],
     [
       createIteratorFixture([3, 2, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createIteratorFixture([2, 3, 1]),
       undefined,
-      1,
-    ],
-    [
-      createIteratorFixture([3, 2, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      createIteratorFixture([3, 2, 1]),
-      (item: number) => -item,
       3,
     ],
     [
-      createIteratorFixture([2.1, 1]),
+      createIteratorFixture([2, 3, 1]),
+      (item: unknown) => item,
+      3,
+    ],
+    [
+      createIteratorFixture([2, 3, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createIteratorFixture([1, 2.1]),
       undefined,
-      1,
-    ],
-    [
-      createIteratorFixture([2.1, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      createIteratorFixture([2.1, 1]),
-      (item: number) => -item,
       2.1,
     ],
     [
+      createIteratorFixture([1, 2.1]),
+      (item: unknown) => item,
+      2.1,
+    ],
+    [
+      createIteratorFixture([1, 2.1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      createIteratorFixture([2.1, 1]),
+      undefined,
+      2.1,
+    ],
+    [
+      createIteratorFixture([2.1, 1]),
+      (item: unknown) => item,
+      2.1,
+    ],
+    [
+      createIteratorFixture([2.1, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
       createIteratorFixture([2, 1.1]),
       undefined,
-      1.1,
-    ],
-    [
-      createIteratorFixture([2, 1.1]),
-      (item: number) => item,
-      1.1,
-    ],
-    [
-      createIteratorFixture([2, 1.1]),
-      (item: number) => -item,
       2,
     ],
     [
+      createIteratorFixture([2, 1.1]),
+      (item: unknown) => item,
+      2,
+    ],
+    [
+      createIteratorFixture([2, 1.1]),
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
       createIteratorFixture([2.2, 1.1]),
       undefined,
-      1.1,
+      2.2,
     ],
     [
       createIteratorFixture([2.2, 1.1]),
-      (item: number) => item,
-      1.1,
+      (item: unknown) => item,
+      2.2,
     ],
     [
       createIteratorFixture([2.2, 1.1]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
+      createIteratorFixture([1.1, 2.2]),
+      undefined,
       2.2,
     ],
     [
       createIteratorFixture([1.1, 2.2]),
-      undefined,
-      1.1,
-    ],
-    [
-      createIteratorFixture([1.1, 2.2]),
-      (item: number) => item,
-      1.1,
-    ],
-    [
-      createIteratorFixture([1.1, 2.2]),
-      (item: number) => -item,
+      (item: unknown) => item,
       2.2,
     ],
     [
+      createIteratorFixture([1.1, 2.2]),
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
       createIteratorFixture(['a', 'b', 'c']),
       undefined,
-      'a',
-    ],
-    [
-      createIteratorFixture(['a', 'b', 'c']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      createIteratorFixture(['a', 'b', 'c']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      createIteratorFixture(['a', 'b', 'c']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      createIteratorFixture(['a', 'b', 'c']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       createIteratorFixture(['b', 'c', 'a']),
       undefined,
-      'a',
-    ],
-    [
-      createIteratorFixture(['b', 'c', 'a']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      createIteratorFixture(['b', 'c', 'a']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      createIteratorFixture(['b', 'c', 'a']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      createIteratorFixture(['b', 'c', 'a']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       createIteratorFixture(['c', 'b', 'a']),
       undefined,
-      'a',
-    ],
-    [
-      createIteratorFixture(['c', 'b', 'a']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      createIteratorFixture(['c', 'b', 'a']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      createIteratorFixture(['c', 'b', 'a']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      createIteratorFixture(['c', 'b', 'a']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       createIteratorFixture(['ab', 'ba', 'b']),
       undefined,
-      'ab',
+      'ba',
     ],
     [
       createIteratorFixture(['ab', 'ba', 'b']),
-      (item: string) => item,
-      'ab',
+      (item: unknown) => item,
+      'ba',
     ],
     [
       createIteratorFixture(['ba', 'b', 'ab']),
       undefined,
-      'ab',
+      'ba',
     ],
     [
       createIteratorFixture(['ba', 'b', 'ab']),
-      (item: string) => item,
-      'ab',
+      (item: unknown) => item,
+      'ba',
     ],
     [
       createIteratorFixture([[]]),
@@ -1576,7 +1606,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([[]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [],
     ],
     [
@@ -1586,7 +1616,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([[2]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [2],
     ],
     [
@@ -1596,38 +1626,28 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([[], []]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [],
     ],
     [
       createIteratorFixture([[], [2]]),
       undefined,
-      [],
+      [2],
     ],
     [
       createIteratorFixture([[], [2]]),
-      (item: Array<unknown>) => item,
-      [],
+      (item: unknown) => item,
+      [2],
     ],
     [
       createIteratorFixture([[2], []]),
       undefined,
-      [],
+      [2],
     ],
     [
       createIteratorFixture([[2], []]),
-      (item: Array<unknown>) => item,
-      [],
-    ],
-    [
-      createIteratorFixture([[], [null]]),
-      undefined,
-      [],
-    ],
-    [
-      createIteratorFixture([[], [null]]),
-      (item: Array<unknown>) => item,
-      [],
+      (item: unknown) => item,
+      [2],
     ],
     [
       createIteratorFixture([[null], [null]]),
@@ -1636,88 +1656,88 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([[null], [null]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [null],
     ],
     [
       createIteratorFixture([[1, 2], [2]]),
       undefined,
-      [1, 2],
+      [2],
     ],
     [
       createIteratorFixture([[1, 2], [2]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
-    ],
-    [
-      createIteratorFixture([[3, 2], [2]]),
-      undefined,
+      (item: unknown) => item,
       [2],
     ],
     [
       createIteratorFixture([[3, 2], [2]]),
-      (item: Array<unknown>) => item,
-      [2],
+      undefined,
+      [3, 2],
+    ],
+    [
+      createIteratorFixture([[3, 2], [2]]),
+      (item: unknown) => item,
+      [3, 2],
     ],
     [
       createIteratorFixture([[1, 2], [2, 1]]),
       undefined,
-      [1, 2],
+      [2, 1],
     ],
     [
       createIteratorFixture([[1, 2], [2, 1]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
+      (item: unknown) => item,
+      [2, 1],
     ],
     [
       createIteratorFixture([[2, 1], [1, 2]]),
       undefined,
-      [1, 2],
+      [2, 1],
     ],
     [
       createIteratorFixture([[2, 1], [1, 2]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
+      (item: unknown) => item,
+      [2, 1],
     ],
     [
       createIteratorFixture([['a'], ['b']]),
       undefined,
-      ['a'],
+      ['b'],
     ],
     [
       createIteratorFixture([['a'], ['b']]),
-      (item: Array<unknown>) => item,
-      ['a'],
+      (item: unknown) => item,
+      ['b'],
     ],
     [
       createIteratorFixture([['a', 'a'], ['b']]),
       undefined,
-      ['a', 'a'],
+      ['b'],
     ],
     [
       createIteratorFixture([['a', 'a'], ['b']]),
-      (item: Array<unknown>) => item,
-      ['a', 'a'],
+      (item: unknown) => item,
+      ['b'],
     ],
     [
       createIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
       undefined,
+      [2, 1, 3],
+    ],
+    [
+      createIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: unknown) => item,
+      [2, 1, 3],
+    ],
+    [
+      createIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: unknown) => (item as Array<number>)[1],
       [1, 2, 3],
     ],
     [
       createIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => item,
-      [1, 2, 3],
-    ],
-    [
-      createIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => item[1],
+      (item: unknown) => -(item as Array<number>)[1],
       [2, 0, 3],
-    ],
-    [
-      createIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => -(item[1] as number),
-      [1, 2, 3],
     ],
   ];
 }
@@ -1725,46 +1745,126 @@ function dataProviderForIterators(): Array<unknown> {
 function dataProviderForStrings(): Array<unknown> {
   return [
     [
-      ['a', 'b', 'c'],
+      '',
       undefined,
+      undefined,
+    ],
+    [
+      '',
+      (item: unknown) => item,
+      undefined,
+    ],
+    [
+      '',
+      (item: unknown) => -parseInt(item as string),
+      undefined,
+    ],
+    [
+      '0',
+      undefined,
+      '0',
+    ],
+    [
+      '0',
+      (item: unknown) => item,
+      '0',
+    ],
+    [
+      '0',
+      (item: unknown) => -parseInt(item as string),
+      '0',
+    ],
+    [
+      '123',
+      undefined,
+      '3',
+    ],
+    [
+      '123',
+      (item: unknown) => item,
+      '3',
+    ],
+    [
+      '123',
+      (item: unknown) => -parseInt(item as string),
+      '1',
+    ],
+    [
+      '321',
+      undefined,
+      '3',
+    ],
+    [
+      '321',
+      (item: unknown) => item,
+      '3',
+    ],
+    [
+      '321',
+      (item: unknown) => -parseInt(item as string),
+      '1',
+    ],
+    [
+      '231',
+      undefined,
+      '3',
+    ],
+    [
+      '231',
+      (item: unknown) => item,
+      '3',
+    ],
+    [
+      '231',
+      (item: unknown) => -(item as number),
+      '1',
+    ],
+    [
+      'abc',
+      undefined,
+      'c',
+    ],
+    [
+      'abc',
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      'abc',
+      (item: unknown) => -(item as string).charCodeAt(0),
       'a',
     ],
     [
-      ['b', 'c', 'a'],
+      'bca',
       undefined,
+      'c',
+    ],
+    [
+      'bca',
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      'bca',
+      (item: unknown) => -(item as string).charCodeAt(0),
       'a',
     ],
     [
-      ['c', 'b', 'a'],
+      'cba',
       undefined,
+      'c',
+    ],
+    [
+      'cba',
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      'cba',
+      (item: unknown) => -(item as string).charCodeAt(0),
       'a',
     ],
-    [
-      ['ab', 'ba', 'b'],
-      undefined,
-      'ab',
-    ],
-    [
-      ['ba', 'b', 'ab'],
-      undefined,
-      'ab',
-    ],
-    [
-      ['ac', 'b', 'ab'],
-      undefined,
-      'ab',
-    ],
-    [
-      [['a'], ['b']],
-      undefined,
-      ['a'],
-    ],
-    [
-      [['a', 'a'], ['b']],
-      undefined,
-      ['a', 'a'],
-    ],
-  ]
+  ];
 }
 
 function dataProviderForSets(): Array<unknown> {
@@ -1776,12 +1876,12 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([]),
-      (item: number) => item,
+      (item: unknown) => item,
       undefined,
     ],
     [
       new Set([]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       undefined,
     ],
     [
@@ -1791,12 +1891,12 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([0]),
-      (item: number) => item,
+      (item: unknown) => item,
       0,
     ],
     [
       new Set([0]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       0,
     ],
     [
@@ -1806,12 +1906,12 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([Infinity]),
-      (item: number) => item,
+      (item: unknown) => item,
       Infinity,
     ],
     [
       new Set([Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       Infinity,
     ],
     [
@@ -1821,213 +1921,228 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([-Infinity]),
-      (item: number) => item,
+      (item: unknown) => item,
       -Infinity,
     ],
     [
       new Set([-Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
       -Infinity,
     ],
     [
       new Set([Infinity, -Infinity]),
       undefined,
-      -Infinity,
+      Infinity,
     ],
     [
       new Set([Infinity, -Infinity]),
-      (item: number) => item,
-      -Infinity,
+      (item: unknown) => item,
+      Infinity,
     ],
     [
       new Set([Infinity, -Infinity]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      -Infinity,
+    ],
+    [
+      new Set([Infinity, -Infinity, 10, -1]),
+      undefined,
       Infinity,
     ],
     [
       new Set([Infinity, -Infinity, 10, -1]),
-      undefined,
-      -Infinity,
-    ],
-    [
-      new Set([Infinity, -Infinity, 10, -1]),
-      (item: number) => item,
-      -Infinity,
-    ],
-    [
-      new Set([Infinity, -Infinity, 10, -1]),
-      (item: number) => -item,
+      (item: unknown) => item,
       Infinity,
     ],
     [
+      new Set([Infinity, -Infinity, 10, -1]),
+      (item: unknown) => -(item as number),
+      -Infinity,
+    ],
+    [
       new Set([1, 2, 3]),
       undefined,
-      1,
+      3,
     ],
     [
       new Set([1, 2, 3]),
-      (item: number) => item,
-      1,
+      (item: unknown) => item,
+      3,
     ],
     [
       new Set([1, 2, 3]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      new Set([3, 2, 1]),
+      undefined,
       3,
     ],
     [
       new Set([3, 2, 1]),
-      undefined,
-      1,
-    ],
-    [
-      new Set([3, 2, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      new Set([3, 2, 1]),
-      (item: number) => -item,
+      (item: unknown) => item,
       3,
     ],
     [
       new Set([3, 2, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      new Set([2, 3, 1]),
       undefined,
-      1,
-    ],
-    [
-      new Set([3, 2, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      new Set([3, 2, 1]),
-      (item: number) => -item,
       3,
     ],
     [
-      new Set([2.1, 1]),
+      new Set([2, 3, 1]),
+      (item: unknown) => item,
+      3,
+    ],
+    [
+      new Set([2, 3, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      new Set([1, 2.1]),
       undefined,
-      1,
-    ],
-    [
-      new Set([2.1, 1]),
-      (item: number) => item,
-      1,
-    ],
-    [
-      new Set([2.1, 1]),
-      (item: number) => -item,
       2.1,
     ],
     [
+      new Set([1, 2.1]),
+      (item: unknown) => item,
+      2.1,
+    ],
+    [
+      new Set([1, 2.1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
+      new Set([2.1, 1]),
+      undefined,
+      2.1,
+    ],
+    [
+      new Set([2.1, 1]),
+      (item: unknown) => item,
+      2.1,
+    ],
+    [
+      new Set([2.1, 1]),
+      (item: unknown) => -(item as number),
+      1,
+    ],
+    [
       new Set([2, 1.1]),
       undefined,
-      1.1,
-    ],
-    [
-      new Set([2, 1.1]),
-      (item: number) => item,
-      1.1,
-    ],
-    [
-      new Set([2, 1.1]),
-      (item: number) => -item,
       2,
     ],
     [
+      new Set([2, 1.1]),
+      (item: unknown) => item,
+      2,
+    ],
+    [
+      new Set([2, 1.1]),
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
       new Set([2.2, 1.1]),
       undefined,
-      1.1,
+      2.2,
     ],
     [
       new Set([2.2, 1.1]),
-      (item: number) => item,
-      1.1,
+      (item: unknown) => item,
+      2.2,
     ],
     [
       new Set([2.2, 1.1]),
-      (item: number) => -item,
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
+      new Set([1.1, 2.2]),
+      undefined,
       2.2,
     ],
     [
       new Set([1.1, 2.2]),
-      undefined,
-      1.1,
-    ],
-    [
-      new Set([1.1, 2.2]),
-      (item: number) => item,
-      1.1,
-    ],
-    [
-      new Set([1.1, 2.2]),
-      (item: number) => -item,
+      (item: unknown) => item,
       2.2,
     ],
     [
+      new Set([1.1, 2.2]),
+      (item: unknown) => -(item as number),
+      1.1,
+    ],
+    [
       new Set(['a', 'b', 'c']),
       undefined,
-      'a',
-    ],
-    [
-      new Set(['a', 'b', 'c']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      new Set(['a', 'b', 'c']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      new Set(['a', 'b', 'c']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      new Set(['a', 'b', 'c']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       new Set(['b', 'c', 'a']),
       undefined,
-      'a',
-    ],
-    [
-      new Set(['b', 'c', 'a']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      new Set(['b', 'c', 'a']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      new Set(['b', 'c', 'a']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      new Set(['b', 'c', 'a']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       new Set(['c', 'b', 'a']),
       undefined,
-      'a',
-    ],
-    [
-      new Set(['c', 'b', 'a']),
-      (item: string) => item,
-      'a',
-    ],
-    [
-      new Set(['c', 'b', 'a']),
-      (item: string) => -item.charCodeAt(0),
       'c',
+    ],
+    [
+      new Set(['c', 'b', 'a']),
+      (item: unknown) => item,
+      'c',
+    ],
+    [
+      new Set(['c', 'b', 'a']),
+      (item: unknown) => -(item as string).charCodeAt(0),
+      'a',
     ],
     [
       new Set(['ab', 'ba', 'b']),
       undefined,
-      'ab',
+      'ba',
     ],
     [
       new Set(['ab', 'ba', 'b']),
-      (item: string) => item,
-      'ab',
+      (item: unknown) => item,
+      'ba',
     ],
     [
       new Set(['ba', 'b', 'ab']),
       undefined,
-      'ab',
+      'ba',
     ],
     [
       new Set(['ba', 'b', 'ab']),
-      (item: string) => item,
-      'ab',
+      (item: unknown) => item,
+      'ba',
     ],
     [
       new Set([[]]),
@@ -2036,7 +2151,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([[]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [],
     ],
     [
@@ -2046,7 +2161,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([[2]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [2],
     ],
     [
@@ -2056,38 +2171,28 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([[], []]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [],
     ],
     [
       new Set([[], [2]]),
       undefined,
-      [],
+      [2],
     ],
     [
       new Set([[], [2]]),
-      (item: Array<unknown>) => item,
-      [],
+      (item: unknown) => item,
+      [2],
     ],
     [
       new Set([[2], []]),
       undefined,
-      [],
+      [2],
     ],
     [
       new Set([[2], []]),
-      (item: Array<unknown>) => item,
-      [],
-    ],
-    [
-      new Set([[], [null]]),
-      undefined,
-      [],
-    ],
-    [
-      new Set([[], [null]]),
-      (item: Array<unknown>) => item,
-      [],
+      (item: unknown) => item,
+      [2],
     ],
     [
       new Set([[null], [null]]),
@@ -2096,88 +2201,88 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([[null], [null]]),
-      (item: Array<unknown>) => item,
+      (item: unknown) => item,
       [null],
     ],
     [
       new Set([[1, 2], [2]]),
       undefined,
-      [1, 2],
+      [2],
     ],
     [
       new Set([[1, 2], [2]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
-    ],
-    [
-      new Set([[3, 2], [2]]),
-      undefined,
+      (item: unknown) => item,
       [2],
     ],
     [
       new Set([[3, 2], [2]]),
-      (item: Array<unknown>) => item,
-      [2],
+      undefined,
+      [3, 2],
+    ],
+    [
+      new Set([[3, 2], [2]]),
+      (item: unknown) => item,
+      [3, 2],
     ],
     [
       new Set([[1, 2], [2, 1]]),
       undefined,
-      [1, 2],
+      [2, 1],
     ],
     [
       new Set([[1, 2], [2, 1]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
+      (item: unknown) => item,
+      [2, 1],
     ],
     [
       new Set([[2, 1], [1, 2]]),
       undefined,
-      [1, 2],
+      [2, 1],
     ],
     [
       new Set([[2, 1], [1, 2]]),
-      (item: Array<unknown>) => item,
-      [1, 2],
+      (item: unknown) => item,
+      [2, 1],
     ],
     [
       new Set([['a'], ['b']]),
       undefined,
-      ['a'],
+      ['b'],
     ],
     [
       new Set([['a'], ['b']]),
-      (item: Array<unknown>) => item,
-      ['a'],
+      (item: unknown) => item,
+      ['b'],
     ],
     [
       new Set([['a', 'a'], ['b']]),
       undefined,
-      ['a', 'a'],
+      ['b'],
     ],
     [
       new Set([['a', 'a'], ['b']]),
-      (item: Array<unknown>) => item,
-      ['a', 'a'],
+      (item: unknown) => item,
+      ['b'],
     ],
     [
       new Set([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
       undefined,
+      [2, 1, 3],
+    ],
+    [
+      new Set([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: unknown) => item,
+      [2, 1, 3],
+    ],
+    [
+      new Set([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: unknown) => (item as Array<number>)[1],
       [1, 2, 3],
     ],
     [
       new Set([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => item,
-      [1, 2, 3],
-    ],
-    [
-      new Set([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => item[1],
+      (item: unknown) => -(item as Array<number>)[1],
       [2, 0, 3],
-    ],
-    [
-      new Set([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: Array<unknown>) => -(item[1] as number),
-      [1, 2, 3],
     ],
   ];
 }
@@ -2191,12 +2296,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (item: [number, number]) => item[1],
+      (item: unknown) => item,
       undefined,
     ],
     [
       createMapFixture([]),
-      (item: [number, number]) => -item[1],
+      (item: unknown) => -(item as number),
       undefined,
     ],
     [
@@ -2206,12 +2311,12 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([0]),
-      (item: [number, number]) => item[1],
+      (item: unknown) => item,
       [0, 0],
     ],
     [
       createMapFixture([0]),
-      (item: [number, number]) => -item[1],
+      (item: unknown) => -(item as number),
       [0, 0],
     ],
     [
@@ -2221,233 +2326,243 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([Infinity]),
-      (item: [number, number]) => item[1],
+      (item: unknown) => item,
       [0, Infinity],
     ],
     [
       createMapFixture([Infinity]),
-      (item: [number, number]) => -item[1],
+      (item: unknown) => -(item as number),
       [0, Infinity],
     ],
     [
       createMapFixture([-Infinity]),
-      (item: [number, number]) => item[1],
+      undefined,
       [0, -Infinity],
     ],
     [
       createMapFixture([-Infinity]),
-      (item: [number, number]) => -item[1],
+      (item: [unknown, number]) => item[1],
+      [0, -Infinity],
+    ],
+    [
+      createMapFixture([-Infinity]),
+      (item: [unknown, number]) => -item[1],
       [0, -Infinity],
     ],
     [
       createMapFixture([Infinity, -Infinity]),
-      (item: [number, number]) => item[1],
-      [1, -Infinity],
+      (item: [unknown, number]) => item[1],
+      [0, Infinity],
     ],
     [
       createMapFixture([Infinity, -Infinity]),
-      (item: [number, number]) => -item[1],
-      [0, Infinity],
-    ],
-    [
-      createMapFixture([Infinity, -Infinity, 10, -1]),
-      (item: [number, number]) => item[1],
+      (item: [unknown, number]) => -item[1],
       [1, -Infinity],
     ],
     [
       createMapFixture([Infinity, -Infinity, 10, -1]),
-      (item: [number, number]) => -item[1],
+      (item: [unknown, number]) => item[1],
       [0, Infinity],
     ],
     [
-      createMapFixture([1, 2, 3]),
-      (item: [number, number]) => item[1],
-      [0, 1],
+      createMapFixture([Infinity, -Infinity, 10, -1]),
+      (item: [unknown, number]) => -item[1],
+      [1, -Infinity],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (item: [number, number]) => -item[1],
+      (item: [unknown, number]) => item[1],
       [2, 3],
     ],
     [
-      createMapFixture([3, 2, 1]),
-      (item: [number, number]) => item[1],
-      [2, 1],
+      createMapFixture([1, 2, 3]),
+      (item: [unknown, number]) => -item[1],
+      [0, 1],
     ],
     [
       createMapFixture([3, 2, 1]),
-      (item: [number, number]) => -item[1],
+      (item: [unknown, number]) => item[1],
       [0, 3],
     ],
     [
       createMapFixture([3, 2, 1]),
-      (item: [number, number]) => item[1],
+      (item: [unknown, number]) => -item[1],
       [2, 1],
     ],
     [
-      createMapFixture([3, 2, 1]),
-      (item: [number, number]) => -item[1],
-      [0, 3],
+      createMapFixture([2, 3, 1]),
+      (item: [unknown, number]) => item[1],
+      [1, 3],
+    ],
+    [
+      createMapFixture([2, 3, 1]),
+      (item: [unknown, number]) => -item[1],
+      [2, 1],
+    ],
+    [
+      createMapFixture([1, 2.1]),
+      (item: [unknown, number]) => item[1],
+      [1, 2.1],
+    ],
+    [
+      createMapFixture([1, 2.1]),
+      (item: [unknown, number]) => -item[1],
+      [0, 1],
     ],
     [
       createMapFixture([2.1, 1]),
-      (item: [number, number]) => item[1],
-      [1, 1],
-    ],
-    [
-      createMapFixture([2.1, 1]),
-      (item: [number, number]) => -item[1],
+      (item: [unknown, number]) => item[1],
       [0, 2.1],
     ],
     [
-      createMapFixture([2, 1.1]),
-      (item: [number, number]) => item[1],
-      [1, 1.1],
+      createMapFixture([2.1, 1]),
+      (item: [unknown, number]) => -item[1],
+      [1, 1],
     ],
     [
       createMapFixture([2, 1.1]),
-      (item: [number, number]) => -item[1],
+      (item: [unknown, number]) => item[1],
       [0, 2],
     ],
     [
-      createMapFixture([2.2, 1.1]),
-      (item: [number, number]) => item[1],
+      createMapFixture([2, 1.1]),
+      (item: [unknown, number]) => -item[1],
       [1, 1.1],
     ],
     [
       createMapFixture([2.2, 1.1]),
-      (item: [number, number]) => -item[1],
+      (item: [unknown, number]) => item[1],
       [0, 2.2],
     ],
     [
-      createMapFixture([1.1, 2.2]),
-      (item: [number, number]) => item[1],
-      [0, 1.1],
+      createMapFixture([2.2, 1.1]),
+      (item: [unknown, number]) => -item[1],
+      [1, 1.1],
     ],
     [
       createMapFixture([1.1, 2.2]),
-      (item: [number, number]) => -item[1],
+      (item: [unknown, number]) => item[1],
       [1, 2.2],
     ],
     [
-      createMapFixture(['a', 'b', 'c']),
-      (item: [number, string]) => item[1],
-      [0, 'a'],
+      createMapFixture([1.1, 2.2]),
+      (item: [unknown, number]) => -item[1],
+      [0, 1.1],
     ],
     [
       createMapFixture(['a', 'b', 'c']),
-      (item: [number, string]) => -item[1].charCodeAt(0),
+      (item: [unknown, string]) => item[1],
       [2, 'c'],
     ],
     [
-      createMapFixture(['b', 'c', 'a']),
-      (item: [number, string]) => item[1],
-      [2, 'a'],
+      createMapFixture(['a', 'b', 'c']),
+      (item: [unknown, string]) => -item[1].charCodeAt(0),
+      [0, 'a'],
     ],
     [
       createMapFixture(['b', 'c', 'a']),
-      (item: [number, string]) => -item[1].charCodeAt(0),
+      (item: [unknown, string]) => item[1],
       [1, 'c'],
     ],
     [
-      createMapFixture(['c', 'b', 'a']),
-      (item: [number, string]) => item[1],
+      createMapFixture(['b', 'c', 'a']),
+      (item: [unknown, string]) => -item[1].charCodeAt(0),
       [2, 'a'],
     ],
     [
       createMapFixture(['c', 'b', 'a']),
-      (item: [number, string]) => -item[1].charCodeAt(0),
+      (item: [unknown, string]) => item[1],
       [0, 'c'],
     ],
     [
+      createMapFixture(['c', 'b', 'a']),
+      (item: [unknown, string]) => -item[1].charCodeAt(0),
+      [2, 'a'],
+    ],
+    [
       createMapFixture(['ab', 'ba', 'b']),
-      (item: [number, string]) => item[1],
-      [0, 'ab'],
+      (item: [unknown, string]) => item[1],
+      [1, 'ba'],
     ],
     [
       createMapFixture(['ba', 'b', 'ab']),
-      (item: [number, string]) => item[1],
-      [2, 'ab'],
+      (item: [unknown, string]) => item[1],
+      [0, 'ba'],
     ],
     [
       createMapFixture([[]]),
-      (item: [number, Array<number>]) => item[1],
+      (item: [unknown, string]) => item[1],
       [0, []],
     ],
     [
       createMapFixture([[2]]),
-      (item: [number, Array<number>]) => item[1],
+      (item: [unknown, string]) => item[1],
       [0, [2]],
     ],
     [
       createMapFixture([[], []]),
-      (item: [number, Array<number>]) => item[1],
+      (item: [unknown, string]) => item[1],
       [0, []],
     ],
     [
-      createMapFixture( [[], [2]]),
-      (item: [number, Array<number>]) => item[1],
-      [0, []],
+      createMapFixture([[], [2]]),
+      (item: [unknown, string]) => item[1],
+      [1, [2]],
     ],
     [
       createMapFixture([[2], []]),
-      (item: [number, Array<number>]) => item[1],
-      [1, []],
+      (item: [unknown, string]) => item[1],
+      [0, [2]],
     ],
     [
-      createMapFixture([[], [null]]),
-      (item: [number, Array<number>]) => item[1],
-      [0, []],
-    ],
-    [
-      createMapFixture( [[null], [null]]),
-      (item: [number, Array<number>]) => item[1],
+      createMapFixture([[null], [null]]),
+      (item: [unknown, string]) => item[1],
       [0, [null]],
     ],
     [
       createMapFixture([[1, 2], [2]]),
-      (item: [number, Array<number>]) => item[1],
-      [0, [1, 2]],
-    ],
-    [
-      createMapFixture( [[3, 2], [2]]),
-      (item: [number, Array<number>]) => item[1],
+      (item: [unknown, string]) => item[1],
       [1, [2]],
     ],
     [
+      createMapFixture([[3, 2], [2]]),
+      (item: [unknown, string]) => item[1],
+      [0, [3, 2]],
+    ],
+    [
       createMapFixture([[1, 2], [2, 1]]),
-      (item: [number, Array<number>]) => item[1],
-      [0, [1, 2]],
+      (item: [unknown, string]) => item[1],
+      [1, [2, 1]],
     ],
     [
       createMapFixture([[2, 1], [1, 2]]),
-      (item: [number, Array<number>]) => item[1][1],
+      (item: [unknown, string]) => item[1],
       [0, [2, 1]],
     ],
     [
       createMapFixture([['a'], ['b']]),
-      (item: [number, Array<number>]) => item[1],
-      [0, ['a']],
+      (item: [unknown, string]) => item[1],
+      [1, ['b']],
     ],
     [
       createMapFixture([['a', 'a'], ['b']]),
-      (item: [number, Array<string>]) => item[1],
-      [0, ['a', 'a']],
+      (item: [unknown, string]) => item[1],
+      [1, ['b']],
     ],
     [
       createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: [number, Array<number>]) => item[1],
+      (item: [unknown, Array<number>]) => item[1],
+      [2, [2, 1, 3]],
+    ],
+    [
+      createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: [unknown, Array<number>]) => item[1][1],
       [0, [1, 2, 3]],
     ],
     [
       createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: [number, Array<number>]) => item[1][1],
+      (item: [unknown, Array<number>]) => -item[1][1],
       [1, [2, 0, 3]],
-    ],
-    [
-      createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
-      (item: [number, Array<number>]) => -item[1][1],
-      [0, [1, 2, 3]],
     ],
   ];
 }

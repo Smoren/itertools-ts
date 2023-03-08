@@ -37,7 +37,7 @@ const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
   .toValue((carry, datum) => carry + datum, 0);  // 14
 ```
 
-All functions work on iterable collections:
+All functions work on iterable collections and iterators:
 * `Array`
 * `Set`
 * `Map`
@@ -59,12 +59,12 @@ Quick Reference
 ### Loop Iteration Tools
 
 #### Multi Iteration
-| Iterator                     | Description                                                                             | Code Snippet                     |
-|------------------------------|-----------------------------------------------------------------------------------------|----------------------------------|
-| [`chain`](#Chain)            | Chain multiple iterables together                                                       | `multi.chain(list1, list2)`      |
-| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes       | `multi.zip(list1, list2)`        |
-| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `multi.zipEqual(list1, list2)`   |
-| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes        | `multi.zipLongest(list1, list2)` |
+| Iterator                     | Description                                                                             | Code Snippet                          |
+|------------------------------|-----------------------------------------------------------------------------------------|---------------------------------------|
+| [`chain`](#Chain)            | Chain multiple iterables together                                                       | `multi.chain(list1, list2, ...)`      |
+| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes       | `multi.zip(list1, list2, ...)`        |
+| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `multi.zipEqual(list1, list2, ...)`   |
+| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes        | `multi.zipLongest(list1, list2, ...)` |
 
 #### Single Iteration
 | Iterator                                 | Description                                 | Code Snippet                                            |
@@ -84,6 +84,7 @@ Quick Reference
 #### Reduce
 | Reducer                | Description                            | Code Snippet                                  |
 |------------------------|----------------------------------------|-----------------------------------------------|
+| [`toMax`](#To-Max)     | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
 | [`toMin`](#To-Min)     | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
 | [`toValue`](#To-Value) | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
 
@@ -140,6 +141,7 @@ Quick Reference
 ##### Reduction Terminal Operations
 | Terminal Operation       | Description                                 | Code Snippet                            |
 |--------------------------|---------------------------------------------|-----------------------------------------|
+| [`toMax`](#To-Max-1)     | Reduces stream to its max value             | `stream.toMax([compareBy])`             |
 | [`toMin`](#To-Min-1)     | Reduces stream to its min value             | `stream.toMin([compareBy])`             |
 | [`toValue`](#To-Value-1) | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
 
@@ -495,6 +497,55 @@ for (const winterYear of single.slice(olympics, 1, 8, 2)) {
 ```
 
 ## Reduce
+### To Max
+Reduces to the max value.
+
+```
+function toMax<TValue, TComparable>(
+  data: Iterable<TValue>|Iterator<TValue>,
+  compareBy?: (datum: TValue) => TComparable,
+): TValue|undefined
+```
+
+- Optional callable param `compareBy` must return comparable value.
+- If `compareBy` is not provided then items of given collection must be comparable.
+- Returns `undefined` if collection is empty.
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const numbers = [5, 3, 1, 2, 4];
+
+const result = reduce.toMax(numbers);
+// 1
+
+const movieRatings = [
+  {
+    title: 'The Matrix',
+    rating: 4.7,
+  },
+  {
+    title: 'The Matrix Reloaded',
+    rating: 4.3,
+  },
+  {
+    title: 'The Matrix Revolutions',
+    rating: 3.9,
+  },
+  {
+    title: 'The Matrix Resurrections',
+    rating: 2.5,
+  },
+];
+const compareBy = (movie) => movie.rating;
+
+const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
+// {
+//   title: 'The Matrix',
+//   rating: 4.7,
+// }
+```
+
 ### To Min
 Reduces to the min value.
 
@@ -1034,6 +1085,27 @@ const result = Stream.of([1, 2, 3, 4, 5])
 ```
 
 #### Reduce Terminal Operations
+##### To Max
+Reduces iterable source to its max value.
+
+```
+toMax<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined
+```
+
+- Optional callable param `compareBy` must return comparable value.
+- If `compareBy` is not provided then items of given collection must be comparable.
+- Returns `undefined` if collection is empty.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, -1, 2, -2, 3, -3];
+
+const result = Stream.of(iterable)
+  .toMax();
+// 3
+```
+
 ##### To Min
 Reduces iterable source to its min value.
 
