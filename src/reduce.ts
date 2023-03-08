@@ -1,4 +1,4 @@
-import { toIterable } from "./tools";
+import { toIterable } from "./transform";
 
 export function toValue<TInput, TOutput>(
   data: Iterable<TInput>|Iterator<TInput>,

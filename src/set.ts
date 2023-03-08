@@ -1,4 +1,4 @@
-import { toIterable } from "./tools";
+import { toIterable } from "./transform";
 
 export function *distinct<T>(data: Iterable<T>|Iterator<T>): Iterable<T> {
   const used = new Set();

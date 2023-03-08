@@ -31,11 +31,14 @@ import {
 } from "./stream";
 
 import {
-  toIterable,
-  toIterator,
   isIterable,
   isIterator,
-} from "./tools";
+} from "./summary";
+
+import {
+  toIterable,
+  toIterator,
+} from "./transform";
 
 import {
   InvalidArgumentError,
@@ -72,11 +75,14 @@ export {
   Stream
 }
 
-export const tools = {
-  toIterable,
-  toIterator,
+export const summary = {
   isIterable,
   isIterator,
+}
+
+export const transform = {
+  toIterable,
+  toIterator,
 }
 
 export type {

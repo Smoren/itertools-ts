@@ -1,6 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { single, tools, FlatMapper } from "../../src";
+import { single, summary, FlatMapper } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
@@ -104,14 +104,14 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10],
-      (item: Array<number>|number, func: FlatMapper<number, number>) => tools.isIterable(item)
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
         ? single.flatMap(item as Array<number>, func)
         : [item],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10],
-      (item: Array<number>|number, func: FlatMapper<number, number>) => tools.isIterable(item)
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
         ? single.flatMap(item as Array<number>, func)
         : item,
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -228,14 +228,14 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => tools.isIterable(item)
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
         ? single.flatMap(item as Array<number>, func)
         : [item],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       createGeneratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => tools.isIterable(item)
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
         ? single.flatMap(item as Array<number>, func)
         : item,
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -352,14 +352,14 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => tools.isIterable(item)
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
         ? single.flatMap(item as Array<number>, func)
         : [item],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       createIterableFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => tools.isIterable(item)
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
         ? single.flatMap(item as Array<number>, func)
         : item,
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -476,14 +476,14 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => tools.isIterable(item)
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
         ? single.flatMap(item as Array<number>, func)
         : [item],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       createIteratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => tools.isIterable(item)
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
         ? single.flatMap(item as Array<number>, func)
         : item,
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -670,14 +670,14 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => tools.isIterable(item)
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
         ? single.flatMap(item as Array<number>, func)
         : [item],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       new Set([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => tools.isIterable(item)
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
         ? single.flatMap(item as Array<number>, func)
         : item,
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -794,14 +794,14 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: [number, Array<number>|number], func: FlatMapper<Array<number>|number, number>) => tools.isIterable(item[1])
+      (item: [number, Array<number>|number], func: FlatMapper<Array<number>|number, number>) => summary.isIterable(item[1])
         ? single.flatMap(createMapFixture(item[1] as Array<number>), func)
         : [item[1]],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       createMapFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: [number, Array<number>|number], func: FlatMapper<Array<number>|number, number>) => tools.isIterable(item[1])
+      (item: [number, Array<number>|number], func: FlatMapper<Array<number>|number, number>) => summary.isIterable(item[1])
         ? single.flatMap(createMapFixture(item[1] as Array<number>), func)
         : item[1],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],

@@ -1,7 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { Stream } from '../../src';
-import { repeat } from "../../src/single";
+import { Stream, single } from '../../src';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -82,7 +81,7 @@ function dataProviderForArrays(): Array<unknown> {
     [
       [1, 2, 3],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => repeat(item, (item as number) + 1))
+        .flatMap((item) => single.repeat(item, (item as number) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
@@ -441,7 +440,7 @@ function dataProviderForGenerators(): Array<unknown> {
     [
       createGeneratorFixture([1, 2, 3]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => repeat(item, (item as number) + 1))
+        .flatMap((item) => single.repeat(item, (item as number) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
@@ -800,7 +799,7 @@ function dataProviderForIterables(): Array<unknown> {
     [
       createIterableFixture([1, 2, 3]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => repeat(item, (item as number) + 1))
+        .flatMap((item) => single.repeat(item, (item as number) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
@@ -1159,7 +1158,7 @@ function dataProviderForIterators(): Array<unknown> {
     [
       createIteratorFixture([1, 2, 3]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => repeat(item, (item as number) + 1))
+        .flatMap((item) => single.repeat(item, (item as number) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
@@ -1511,7 +1510,7 @@ function dataProviderForStrings(): Array<unknown> {
     [
       '123',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => repeat(parseInt(item as string), parseInt(item as string) + 1))
+        .flatMap((item) => single.repeat(parseInt(item as string), parseInt(item as string) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
@@ -1839,7 +1838,7 @@ function dataProviderForSets(): Array<unknown> {
     [
       new Set([1, 2, 3]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => repeat(item, (item as number) + 1))
+        .flatMap((item) => single.repeat(item, (item as number) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
@@ -2200,7 +2199,7 @@ function dataProviderForMaps(): Array<unknown> {
     [
       createMapFixture([1, 2, 3]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => repeat((item as Array<unknown>)[1], ((item as Array<unknown>)[1] as number) + 1))
+        .flatMap((item) => single.repeat((item as Array<unknown>)[1], ((item as Array<unknown>)[1] as number) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],

@@ -1,4 +1,5 @@
-import { createMultipleIterator, MultipleIterationMode, toIterable } from "./tools";
+import { toIterable } from "./transform";
+import { createMultipleIterator, MultipleIterationMode } from "./tools";
 
 export function *zip(
   ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
