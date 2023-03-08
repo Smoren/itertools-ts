@@ -1,4 +1,4 @@
-import { toIterable } from './transform';
+import { toArray, toIterable } from './transform';
 import { chunkwise, chunkwiseOverlap, filter, flatMap, limit, map, pairwise } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
@@ -87,11 +87,7 @@ export class Stream {
   }
 
   toArray(): Array<unknown> {
-    const result = [];
-    for (const item of this) {
-      result.push(item);
-    }
-    return result;
+    return toArray(this);
   }
 
   *[Symbol.iterator]() {

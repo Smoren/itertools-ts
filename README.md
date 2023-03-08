@@ -97,8 +97,9 @@ Quick Reference
 #### Transform
 | Iterator                     | Description                       | Code Snippet       |
 |------------------------------|-----------------------------------|--------------------|
-| [`toIterable`](#Is-Iterable) | Transforms collection to iterable | `toIterable(data)` |
-| [`toIterator`](#Is-Iterator) | Transforms collection to iterator | `toIterator(data)` |
+| [`toArray`](#To-Array)       | Transforms collection to array    | `toArray(data)`    |
+| [`toIterable`](#To-Iterable) | Transforms collection to iterable | `toIterable(data)` |
+| [`toIterator`](#To-Iterator) | Transforms collection to iterator | `toIterator(data)` |
 
 ### Stream Iteration Tools
 #### Stream Sources
@@ -125,9 +126,9 @@ Quick Reference
 
 #### Stream Terminal Operations
 ##### Transformation Terminal Operations
-| Terminal Operation     | Description                      | Code Snippet       |
-|------------------------|----------------------------------|--------------------|
-| [`toArray`](#To-Array) | Returns array of stream elements | `stream.toArray()` |
+| Terminal Operation       | Description                      | Code Snippet       |
+|--------------------------|----------------------------------|--------------------|
+| [`toArray`](#To-Array-1) | Returns array of stream elements | `stream.toArray()` |
 
 ##### Reduction Terminal Operations
 | Terminal Operation       | Description                                 | Code Snippet                            |
@@ -514,6 +515,22 @@ import { transform } from "itertools-ts";
 const input = [1, 2, 3, 4, 5];
 
 const result = transform.toIterable(input);
+// [1, 2, 3, 4, 5]
+```
+
+### To Array
+Returns `Array` instance of given collection or iterator.
+
+```
+function toArray<T>(collection: Iterable<T>|Iterator<T>): Array<T>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const iterator = transform.toIterator([1, 2, 3, 4, 5]);
+
+const result = transform.toArray(iterator);
 // [1, 2, 3, 4, 5]
 ```
 

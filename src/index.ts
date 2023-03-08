@@ -36,6 +36,7 @@ import {
 } from "./summary";
 
 import {
+  toArray,
   toIterable,
   toIterator,
 } from "./transform";
@@ -71,18 +72,19 @@ export const reduce = {
   toValue,
 }
 
-export {
-  Stream
-}
-
 export const summary = {
   isIterable,
   isIterator,
 }
 
 export const transform = {
+  toArray,
   toIterable,
   toIterator,
+}
+
+export {
+  Stream,
 }
 
 export type {
