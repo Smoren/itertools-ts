@@ -153,3 +153,36 @@ export function *enumerate<T>(data: Iterable<T>|Iterator<T>): Iterable<[number, 
     yield [i++, datum];
   }
 }
+
+export function *slice<T>(
+  data: Iterable<T>|Iterator<T>,
+  start: number = 0,
+  count?: number,
+  step: number = 1,
+): Iterable<T> {
+  if (start < 0) {
+    throw new InvalidArgumentError("Parameter 'start' cannot be negative");
+  }
+
+  if (count !== undefined && count < 0) {
+    throw new InvalidArgumentError("Parameter 'count' cannot be negative");
+  }
+
+  if (step <= 0) {
+    throw new InvalidArgumentError("Parameter 'step' must be positive");
+  }
+
+  let index = 0;
+  let yielded = 0;
+  for (const datum of toIterable(data)) {
+    if (index++ < start || (index - start - 1) % step !== 0) {
+      continue;
+    }
+
+    if (yielded++ === count && count !== undefined) {
+      break;
+    }
+
+    yield datum;
+  }
+}

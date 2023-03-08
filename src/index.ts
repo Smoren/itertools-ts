@@ -9,6 +9,7 @@ import {
   map,
   repeat,
   pairwise,
+  slice,
   FlatMapper,
   Pair,
 } from "./single";
@@ -59,6 +60,7 @@ export const single = {
   map,
   pairwise,
   repeat,
+  slice,
 }
 
 export const multi = {

@@ -79,6 +79,7 @@ Quick Reference
 | [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              |
 | [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 |
 | [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      |
+| [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice($data, [start], [count], [step])`         |
 
 #### Reduce
 | Reducer                | Description                            | Code Snippet                                  |
@@ -124,6 +125,7 @@ Quick Reference
 | [`limit`](#Limit-1)                        | Limit the stream's iteration                                                              | `stream.limit(limit)`                         |
 | [`map`](#Map-1)                            | Map function onto elements                                                                | `stream.map(mapper)`                          |
 | [`pairwise`](#Pairwise-1)                  | Return pairs of elements from iterable source                                             | `stream.pairwise()`                           |
+| [`slice`](#Slice-1)                        | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`      |
 | [`zipWith`](#Zip-With)                     | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                |
 | [`zipLongestWith`](#Zip-Longest-With)      | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`         |
 | [`zipEqualWith`](#Zip-Equal-With)          | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`           |
@@ -464,6 +466,30 @@ for (const repeated of single.repeat(data, repetitions)) {
   console.log(repeated);
 }
 // 'Beetlejuice', 'Beetlejuice', 'Beetlejuice'
+```
+
+### Slice
+Extract a slice of the iterable.
+
+```
+function *slice<T>(
+  data: Iterable<T>|Iterator<T>,
+  start: number = 0,
+  count?: number,
+  step: number = 1,
+): Iterable<T>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const olympics = [1992, 1994, 1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022];
+const winterOlympics = [];
+
+for (const winterYear of single.slice(olympics, 1, 8, 2)) {
+    winterOlympics.push(winterYear);
+}
+// [1994, 1998, 2002, 2006, 2010, 2014, 2018, 2022]
 ```
 
 ## Reduce
@@ -846,6 +872,24 @@ const stream = Stream.of(input)
   .pairwise()
   .toArray();
 // [1, 2], [2, 3], [3, 4], [4, 5]
+```
+
+#### Slice
+Extract a slice of the stream.
+
+```
+slice(start: number = 0, count?: number, step: number = 1): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const olympics = [1992, 1994, 1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022];
+
+const summerOlympics = Stream.of(olympics)
+  .slice(0, 8, 2)
+  .toArray();
+// [1992, 1996, 2000, 2004, 2008, 2012, 2016, 2020]
 ```
 
 #### Zip With

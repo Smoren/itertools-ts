@@ -1,5 +1,16 @@
 import { toArray, toIterable } from './transform';
-import { chunkwise, chunkwiseOverlap, enumerate, filter, flatMap, flatten, limit, map, pairwise } from './single';
+import {
+  chunkwise,
+  chunkwiseOverlap,
+  enumerate,
+  filter,
+  flatMap,
+  flatten,
+  limit,
+  map,
+  pairwise,
+  slice
+} from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
 import { toValue } from "./reduce";
@@ -81,6 +92,11 @@ export class Stream {
 
   pairwise(): Stream {
     this.data = pairwise(this.data);
+    return this;
+  }
+
+  slice(start: number = 0, count?: number, step: number = 1): Stream {
+    this.data = slice(this.data, start, count, step);
     return this;
   }
 
