@@ -26,6 +26,7 @@ import {
 } from "./set"
 
 import {
+  toMax,
   toMin,
   toValue,
 } from "./reduce";
@@ -76,6 +77,7 @@ export const set = {
 }
 
 export const reduce = {
+  toMax,
   toMin,
   toValue,
 }
