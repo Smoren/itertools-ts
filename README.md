@@ -31,10 +31,10 @@ for (const [letter, number] of multi.zip(['a', 'b'], [1, 2])) {
 import { Stream } from 'itertools-ts';
 
 const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
-  .distinct()             // [1, 2, 3, 4, 5]
-  .map((x) => $x**2)      // [1, 4, 9, 16, 25]
-  .filter((x) => x < 10)  // [1, 4, 9]
-  .toArray();
+  .distinct()                                 // [1, 2, 3, 4, 5]
+  .map((x) => $x**2)                          // [1, 4, 9, 16, 25]
+  .filter((x) => x < 10)                      // [1, 4, 9]
+  .toValue((carry, datum) => carry + datum);  // 14
 ```
 
 All functions work on iterable collections:
@@ -59,47 +59,47 @@ Quick Reference
 ### Loop Iteration Tools
 
 #### Multi Iteration
-| Iterator                     | Description                                                                             | Code Snippet               |
-|------------------------------|-----------------------------------------------------------------------------------------|----------------------------|
-| [`chain`](#Chain)            | Chain multiple iterables together                                                       | `chain(list1, list2)`      |
-| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes       | `zip(list1, list2)`        |
-| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `zipEqual(list1, list2)`   |
-| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes        | `zipLongest(list1, list2)` |
+| Iterator                     | Description                                                                             | Code Snippet                     |
+|------------------------------|-----------------------------------------------------------------------------------------|----------------------------------|
+| [`chain`](#Chain)            | Chain multiple iterables together                                                       | `multi.chain(list1, list2)`      |
+| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes       | `multi.zip(list1, list2)`        |
+| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `multi.zipEqual(list1, list2)`   |
+| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes        | `multi.zipLongest(list1, list2)` |
 
 #### Single Iteration
-| Iterator                                 | Description                                 | Code Snippet                                     |
-|------------------------------------------|---------------------------------------------|--------------------------------------------------|
-| [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `chunkwise(data, chunkSize)`                     |
-| [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `chunkwiseOverlap(data, chunkSize, overlapSize)` |
-| [`filter`](#Filter)                      | Filter for elements where predicate is true | `filter(data, predicate)`                        |
-| [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `flatMap(data, mapper)`                          |
-| [`limit`](#Limit)                        | Iterate up to a limit                       | `limit(data, limit)`                             |
-| [`map`](#Map)                            | Map function onto each item                 | `map(data, mapper)`                              |
-| [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `pairwise(data)`                                 |
-| [`repeat`](#Repeat)                      | Repeat an item a number of times            | `repeat(item, repetitions)`                      |
+| Iterator                                 | Description                                 | Code Snippet                                            |
+|------------------------------------------|---------------------------------------------|---------------------------------------------------------|
+| [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `single.chunkwise(data, chunkSize)`                     |
+| [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` |
+| [`filter`](#Filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        |
+| [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          |
+| [`limit`](#Limit)                        | Iterate up to a limit                       | `single.limit(data, limit)`                             |
+| [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              |
+| [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 |
+| [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      |
 
 #### Reduce
-| Reducer                | Description                            | Code Snippet                           |
-|------------------------|----------------------------------------|----------------------------------------|
-| [`toValue`](#To-Value) | Reduce to value using callable reducer | `toValue(data, reducer, initialValue)` |
+| Reducer                | Description                            | Code Snippet                                  |
+|------------------------|----------------------------------------|-----------------------------------------------|
+| [`toValue`](#To-Value) | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
 
 #### Set and multiset Iteration
-| Iterator                | Description                 | Code Snippet     |
-|-------------------------|-----------------------------|------------------|
-| [`distinct`](#Distinct) | Iterate only distinct items | `distinct(data)` |
+| Iterator                | Description                 | Code Snippet         |
+|-------------------------|-----------------------------|----------------------|
+| [`distinct`](#Distinct) | Iterate only distinct items | `set.distinct(data)` |
 
 #### Summary
-| Summary                      | Description                    | Code Snippet       |
-|------------------------------|--------------------------------|--------------------|
-| [`isIterable`](#Is-Iterable) | True if given data is iterable | `isIterable(data)` |
-| [`isIterator`](#Is-Iterator) | True if given data is iterator | `isIterator(data)` |
+| Summary                      | Description                    | Code Snippet               |
+|------------------------------|--------------------------------|----------------------------|
+| [`isIterable`](#Is-Iterable) | True if given data is iterable | `summary.isIterable(data)` |
+| [`isIterator`](#Is-Iterator) | True if given data is iterator | `summary.isIterator(data)` |
 
 #### Transform
-| Iterator                     | Description                       | Code Snippet       |
-|------------------------------|-----------------------------------|--------------------|
-| [`toArray`](#To-Array)       | Transforms collection to array    | `toArray(data)`    |
-| [`toIterable`](#To-Iterable) | Transforms collection to iterable | `toIterable(data)` |
-| [`toIterator`](#To-Iterator) | Transforms collection to iterator | `toIterator(data)` |
+| Iterator                     | Description                       | Code Snippet                 |
+|------------------------------|-----------------------------------|------------------------------|
+| [`toArray`](#To-Array)       | Transforms collection to array    | `transform.toArray(data)`    |
+| [`toIterable`](#To-Iterable) | Transforms collection to iterable | `transform.toIterable(data)` |
+| [`toIterator`](#To-Iterator) | Transforms collection to iterator | `transform.toIterator(data)` |
 
 ### Stream Iteration Tools
 #### Stream Sources
