@@ -1,5 +1,5 @@
-import { toIterable } from './tools';
-import { chunkwise, chunkwiseOverlap, filter, flatMap, limit, map, pairwise } from './single';
+import { toArray, toIterable } from './transform';
+import { chunkwise, chunkwiseOverlap, filter, flatMap, flatten, limit, map, pairwise } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
 import { toValue } from "./reduce";
@@ -69,6 +69,11 @@ export class Stream {
     return this;
   }
 
+  flatten(dimensions: number = Infinity): Stream {
+    this.data = flatten(this.data, dimensions);
+    return this;
+  }
+
   pairwise(): Stream {
     this.data = pairwise(this.data);
     return this;
@@ -87,11 +92,7 @@ export class Stream {
   }
 
   toArray(): Array<unknown> {
-    const result = [];
-    for (const item of this) {
-      result.push(item);
-    }
-    return result;
+    return toArray(this);
   }
 
   *[Symbol.iterator]() {

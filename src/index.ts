@@ -3,6 +3,7 @@ import {
   chunkwiseOverlap,
   filter,
   flatMap,
+  flatten,
   limit,
   map,
   repeat,
@@ -32,11 +33,15 @@ import {
 } from "./stream";
 
 import {
-  toIterable,
-  toIterator,
   isIterable,
   isIterator,
-} from "./tools";
+} from "./summary";
+
+import {
+  toArray,
+  toIterable,
+  toIterator,
+} from "./transform";
 
 import {
   InvalidArgumentError,
@@ -48,6 +53,7 @@ export const single = {
   chunkwiseOverlap,
   filter,
   flatMap,
+  flatten,
   limit,
   map,
   pairwise,
@@ -70,15 +76,19 @@ export const reduce = {
   toValue,
 }
 
-export {
-  Stream
-}
-
-export const tools = {
-  toIterable,
-  toIterator,
+export const summary = {
   isIterable,
   isIterator,
+}
+
+export const transform = {
+  toArray,
+  toIterable,
+  toIterator,
+}
+
+export {
+  Stream,
 }
 
 export type {

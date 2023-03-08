@@ -7,47 +7,100 @@
 
 Inspired by Python — designed for TypeScript.
 
-**Warning**: This library is an active work in progress, and is not yet ready for production use.
+Features
+--------
 
-## Setup
+IterTools makes you an iteration superstar by providing two types of tools:
+
+* Loop iteration tools
+* Stream iteration tools
+
+**Loop Iteration Tools Example**
+
+```typescript
+import { multi } from 'itertools-ts';
+
+for (const [letter, number] of multi.zip(['a', 'b'], [1, 2])) {
+  console.log(`${letter}${number}`);  // a1, b2
+}
+```
+
+**Stream Iteration Tools Example**
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
+  .distinct()                                    // [1, 2, 3, 4, 5]
+  .map((x) => $x**2)                             // [1, 4, 9, 16, 25]
+  .filter((x) => x < 10)                         // [1, 4, 9]
+  .toValue((carry, datum) => carry + datum, 0);  // 14
+```
+
+All functions work on iterable collections:
+* `Array`
+* `Set`
+* `Map`
+* `String`
+* `Generator`
+* `Iterable`
+* `Iterator`
+
+Setup
+-----
 
 ```bash
 npm i itertools-ts
 ```
 
-## Quick Reference
+Quick Reference
+---------------
 
 ### Loop Iteration Tools
 
 #### Multi Iteration
-| Iterator                     | Description                                                                             | Code Snippet               |
-|------------------------------|-----------------------------------------------------------------------------------------|----------------------------|
-| [`chain`](#Chain)            | Chain multiple iterables together                                                       | `chain(list1, list2)`      |
-| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes       | `zip(list1, list2)`        |
-| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `zipEqual(list1, list2)`   |
-| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes        | `zipLongest(list1, list2)` |
+| Iterator                     | Description                                                                             | Code Snippet                     |
+|------------------------------|-----------------------------------------------------------------------------------------|----------------------------------|
+| [`chain`](#Chain)            | Chain multiple iterables together                                                       | `multi.chain(list1, list2)`      |
+| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes       | `multi.zip(list1, list2)`        |
+| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `multi.zipEqual(list1, list2)`   |
+| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes        | `multi.zipLongest(list1, list2)` |
 
 #### Single Iteration
-| Iterator                                 | Description                                 | Code Snippet                                     |
-|------------------------------------------|---------------------------------------------|--------------------------------------------------|
-| [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `chunkwise(data, chunkSize)`                     |
-| [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `chunkwiseOverlap(data, chunkSize, overlapSize)` |
-| [`filter`](#Filter)                      | Filter for elements where predicate is true | `filter(data, predicate)`                        |
-| [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `flatMap(data, mapper)`                          |
-| [`limit`](#Limit)                        | Iterate up to a limit                       | `limit(data, limit)`                             |
-| [`map`](#Map)                            | Map function onto each item                 | `map(data, mapper)`                              |
-| [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `pairwise(data)`                                 |
-| [`repeat`](#Repeat)                      | Repeat an item a number of times            | `repeat(item, repetitions)`                      |
+| Iterator                                 | Description                                 | Code Snippet                                            |
+|------------------------------------------|---------------------------------------------|---------------------------------------------------------|
+| [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `single.chunkwise(data, chunkSize)`                     |
+| [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` |
+| [`filter`](#Filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        |
+| [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          |
+| [`flatten`](#Flatten)                    | Flatten multidimensional iterable           | `single.flatten(data, [dimensions])`                    |
+| [`limit`](#Limit)                        | Iterate up to a limit                       | `single.limit(data, limit)`                             |
+| [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              |
+| [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 |
+| [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      |
 
 #### Reduce
-| Reducer                | Description                            | Code Snippet                           |
-|------------------------|----------------------------------------|----------------------------------------|
-| [`toValue`](#To-Value) | Reduce to value using callable reducer | `toValue(data, reducer, initialValue)` |
+| Reducer                | Description                            | Code Snippet                                  |
+|------------------------|----------------------------------------|-----------------------------------------------|
+| [`toValue`](#To-Value) | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
 
 #### Set and multiset Iteration
-| Iterator                | Description                 | Code Snippet     |
-|-------------------------|-----------------------------|------------------|
-| [`distinct`](#Distinct) | Iterate only distinct items | `distinct(data)` |
+| Iterator                | Description                 | Code Snippet         |
+|-------------------------|-----------------------------|----------------------|
+| [`distinct`](#Distinct) | Iterate only distinct items | `set.distinct(data)` |
+
+#### Summary
+| Summary                      | Description                    | Code Snippet               |
+|------------------------------|--------------------------------|----------------------------|
+| [`isIterable`](#Is-Iterable) | True if given data is iterable | `summary.isIterable(data)` |
+| [`isIterator`](#Is-Iterator) | True if given data is iterator | `summary.isIterator(data)` |
+
+#### Transform
+| Iterator                     | Description                       | Code Snippet                 |
+|------------------------------|-----------------------------------|------------------------------|
+| [`toArray`](#To-Array)       | Transforms collection to array    | `transform.toArray(data)`    |
+| [`toIterable`](#To-Iterable) | Transforms collection to iterable | `transform.toIterable(data)` |
+| [`toIterator`](#To-Iterator) | Transforms collection to iterator | `transform.toIterator(data)` |
 
 ### Stream Iteration Tools
 #### Stream Sources
@@ -65,6 +118,7 @@ npm i itertools-ts
 | [`distinct`](#Distinct-1)                  | Filter out elements: iterate only unique items                                            | `stream.distinct()`                           |
 | [`filter`](#Filter-1)                      | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                    |
 | [`flatMap`](#Flat-Map-1)                   | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                      |
+| [`flatten`](#Flatten-1)                    | Flatten multidimensional stream                                                           | `stream.flatten([dimensions])`                |
 | [`limit`](#Limit-1)                        | Limit the stream's iteration                                                              | `stream.limit(limit)`                         |
 | [`map`](#Map-1)                            | Map function onto elements                                                                | `stream.map(mapper)`                          |
 | [`pairwise`](#Pairwise-1)                  | Return pairs of elements from iterable source                                             | `stream.pairwise()`                           |
@@ -74,16 +128,17 @@ npm i itertools-ts
 
 #### Stream Terminal Operations
 ##### Transformation Terminal Operations
-| Terminal Operation     | Description                      | Code Snippet       |
-|------------------------|----------------------------------|--------------------|
-| [`toArray`](#To-Array) | Returns array of stream elements | `stream.toArray()` |
+| Terminal Operation       | Description                      | Code Snippet       |
+|--------------------------|----------------------------------|--------------------|
+| [`toArray`](#To-Array-1) | Returns array of stream elements | `stream.toArray()` |
 
 ##### Reduction Terminal Operations
 | Terminal Operation       | Description                                 | Code Snippet                            |
 |--------------------------|---------------------------------------------|-----------------------------------------|
 | [`toValue`](#To-Value-1) | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
 
-## Usage
+Usage
+-----
 
 ## Multi Iteration
 ### Chain
@@ -288,6 +343,28 @@ for (number of single.flatMap(data, mapper)) {
 // 1 -1 2 -2 3 -3 4 -4 5 -5
 ```
 
+### Flatten
+Flatten a multidimensional iterable.
+
+```
+function *flatten(
+  data: Iterable<unknown>|Iterator<unknown>,
+  dimensions: number = Infinity,
+): Iterable<unknown>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const multidimensional = [1, [2, 3], [4, 5]];
+
+const flattened = [];
+for (const number of single.flatten(multidimensional)) {
+    flattened.push(number);
+}
+// [1, 2, 3, 4, 5]
+```
+
 ### Limit
 Iterate up to a limit.
 
@@ -392,7 +469,6 @@ const result = reduce.toValue(input, sum, 0);
 // 15
 ```
 
-
 ## Set and multiset
 ### Distinct
 Filter out elements from the iterable only returning distinct elements.
@@ -412,6 +488,96 @@ for (const chessPiece of set.distinct(chessSet)) {
 // rook, knight, bishop, king, queen, pawn
 ```
 
+## Summary
+### Is Iterable
+Returns true if given data is an `Iterable` instance.
+
+```
+function isIterable(input: unknown): boolean
+```
+
+```typescript
+import { summary } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+summary.isIterable(input); // true
+summary.isIterable(input[Symbol.iterator]()) // false
+summary.isIterable(1); // false
+```
+
+### Is Iterator
+Returns true if given data is an `Iterator` instance.
+
+```
+function isIterator(input: unknown): boolean
+```
+
+```typescript
+import { summary } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+summary.isIterator(input[Symbol.iterator]()) // true
+summary.isIterator(input); // false
+summary.isIterator(1); // false
+```
+
+## Transform
+### To Iterable
+Returns `Iterable` instance of given collection or iterator.
+
+Throws `InvalidArgumentError` if given data is not a collection or an iterator.
+
+```
+function toIterable<T>(collection: Iterable<T>|Iterator<T>): Iterable<T>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = transform.toIterable(input);
+// [1, 2, 3, 4, 5]
+```
+
+### To Array
+Returns `Array` instance of given collection or iterator.
+
+```
+function toArray<T>(collection: Iterable<T>|Iterator<T>): Array<T>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const iterator = transform.toIterator([1, 2, 3, 4, 5]);
+
+const result = transform.toArray(iterator);
+// [1, 2, 3, 4, 5]
+```
+
+### To Iterator
+Returns `Iterator` instance of given collection or iterator.
+
+Throws `InvalidArgumentError` if given data is not a collection or an iterator.
+
+```
+function toIterator<T>(collection: Iterable<T>|Iterator<T>): Iterator<T>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = transform.toIterator(input);
+console.log(result.next !== undefined);
+// true
+```
+
+## Stream
 ### Stream Sources
 #### Of
 Creates stream from an iterable.
@@ -569,6 +735,24 @@ const result = Stream.of(data)
 // [1, 2, 2, 3, 4, 4, 5]
 ```
 
+#### Flatten
+Flatten a multidimensional stream.
+
+```
+stream.flatten(dimensions: number = Infinity): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const data = [1, [2, 3], [4, 5]];
+
+const result = Stream.of(data)
+  .flatten()
+  .toArray();
+// [1, 2, 3, 4, 5]
+```
+
 #### Limit
 Return a stream up to a limit.
 
@@ -722,8 +906,6 @@ const result = Stream.of([1, 2, 3, 4, 5])
 ##### To Value
 Reduces iterable source like array_reduce() function.
 
-But unlike `array.reduce()`, it works with all `Iterable` types.
-
 ```
 toValue<T>(
   reducer: (carry: T|undefined, datum: unknown) => T,
@@ -741,13 +923,15 @@ const result = Stream.of(input)
 // 15
 ```
 
-## Unit testing
+Unit testing
+------------
 
 ```bash
 npm i
 npm run test
 ```
 
-## License
+License
+-------
 
 IterTools TS is licensed under the MIT License.

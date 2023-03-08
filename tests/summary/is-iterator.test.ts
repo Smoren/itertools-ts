@@ -1,10 +1,10 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from '../fixture';
-import { tools } from '../../src';
+import { summary } from '../../src';
 
-describe.each(dataProviderForTrue())("Tools Is Iterator Test True", (input) => {
+describe.each(dataProviderForTrue())("Summary Is Iterator Test True", (input) => {
   it("", () => {
-    expect(tools.isIterator(input)).toBeTruthy();
+    expect(summary.isIterator(input)).toBeTruthy();
   });
 });
 
@@ -19,9 +19,9 @@ function dataProviderForTrue(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForFalse())("Tools Is Iterator Test False", (input) => {
+describe.each(dataProviderForFalse())("Summary Is Iterator Test False", (input) => {
   it("", () => {
-    expect(tools.isIterator(input)).toBeFalsy();
+    expect(summary.isIterator(input)).toBeFalsy();
   });
 });
 
