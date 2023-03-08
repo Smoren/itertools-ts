@@ -31,10 +31,10 @@ for (const [letter, number] of multi.zip(['a', 'b'], [1, 2])) {
 import { Stream } from 'itertools-ts';
 
 const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
-  .distinct()                                 // [1, 2, 3, 4, 5]
-  .map((x) => $x**2)                          // [1, 4, 9, 16, 25]
-  .filter((x) => x < 10)                      // [1, 4, 9]
-  .toValue((carry, datum) => carry + datum);  // 14
+  .distinct()                                    // [1, 2, 3, 4, 5]
+  .map((x) => $x**2)                             // [1, 4, 9, 16, 25]
+  .filter((x) => x < 10)                         // [1, 4, 9]
+  .toValue((carry, datum) => carry + datum, 0);  // 14
 ```
 
 All functions work on iterable collections:
