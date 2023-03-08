@@ -7,15 +7,54 @@
 
 Inspired by Python — designed for TypeScript.
 
-**Warning**: This library is an active work in progress, and is not yet ready for production use.
+Features
+--------
 
-## Setup
+IterTools makes you an iteration superstar by providing two types of tools:
+
+* Loop iteration tools
+* Stream iteration tools
+
+**Loop Iteration Tools Example**
+
+```typescript
+import { multi } from 'itertools-ts';
+
+for (const [letter, number] of multi.zip(['a', 'b'], [1, 2])) {
+  console.log(`${letter}${number}`);  // a1, b2
+}
+```
+
+**Stream Iteration Tools Example**
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
+  .distinct()             // [1, 2, 3, 4, 5]
+  .map((x) => $x**2)      // [1, 4, 9, 16, 25]
+  .filter((x) => x < 10)  // [1, 4, 9]
+  .toArray();
+```
+
+All functions work on iterable collections:
+* `Array`
+* `Set`
+* `Map`
+* `String`
+* `Generator`
+* `Iterable`
+* `Iterator`
+
+Setup
+-----
 
 ```bash
 npm i itertools-ts
 ```
 
-## Quick Reference
+Quick Reference
+---------------
 
 ### Loop Iteration Tools
 
@@ -48,6 +87,18 @@ npm i itertools-ts
 | Iterator                | Description                 | Code Snippet     |
 |-------------------------|-----------------------------|------------------|
 | [`distinct`](#Distinct) | Iterate only distinct items | `distinct(data)` |
+
+#### Summary
+| Summary                      | Description                    | Code Snippet       |
+|------------------------------|--------------------------------|--------------------|
+| [`isIterable`](#Is-Iterable) | True if given data is iterable | `isIterable(data)` |
+| [`isIterator`](#Is-Iterator) | True if given data is iterator | `isIterator(data)` |
+
+#### Transform
+| Iterator                     | Description                       | Code Snippet       |
+|------------------------------|-----------------------------------|--------------------|
+| [`toIterable`](#Is-Iterable) | Transforms collection to iterable | `toIterable(data)` |
+| [`toIterator`](#Is-Iterator) | Transforms collection to iterator | `toIterator(data)` |
 
 ### Stream Iteration Tools
 #### Stream Sources
@@ -83,7 +134,8 @@ npm i itertools-ts
 |--------------------------|---------------------------------------------|-----------------------------------------|
 | [`toValue`](#To-Value-1) | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
 
-## Usage
+Usage
+-----
 
 ## Multi Iteration
 ### Chain
@@ -392,7 +444,6 @@ const result = reduce.toValue(input, sum, 0);
 // 15
 ```
 
-
 ## Set and multiset
 ### Distinct
 Filter out elements from the iterable only returning distinct elements.
@@ -412,6 +463,80 @@ for (const chessPiece of set.distinct(chessSet)) {
 // rook, knight, bishop, king, queen, pawn
 ```
 
+## Summary
+### Is Iterable
+Returns true if given data is an `Iterable` instance.
+
+```
+function isIterable(input: unknown): boolean
+```
+
+```typescript
+import { summary } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+summary.isIterable(input); // true
+summary.isIterable(input[Symbol.iterator]()) // false
+summary.isIterable(1); // false
+```
+
+### Is Iterator
+Returns true if given data is an `Iterator` instance.
+
+```
+function isIterator(input: unknown): boolean
+```
+
+```typescript
+import { summary } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+summary.isIterator(input[Symbol.iterator]()) // true
+summary.isIterator(input); // false
+summary.isIterator(1); // false
+```
+
+## Transform
+### To Iterable
+Returns `Iterable` instance of given collection or iterator.
+
+Throws `InvalidArgumentError` if given data is not a collection or an iterator.
+
+```
+function toIterable<T>(collection: Iterable<T>|Iterator<T>): Iterable<T>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = transform.toIterable(input);
+// [1, 2, 3, 4, 5]
+```
+
+### To Iterator
+Returns `Iterator` instance of given collection or iterator.
+
+Throws `InvalidArgumentError` if given data is not a collection or an iterator.
+
+```
+function toIterator<T>(collection: Iterable<T>|Iterator<T>): Iterator<T>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = transform.toIterator(input);
+console.log(result.next !== undefined);
+// true
+```
+
+## Stream
 ### Stream Sources
 #### Of
 Creates stream from an iterable.
@@ -722,8 +847,6 @@ const result = Stream.of([1, 2, 3, 4, 5])
 ##### To Value
 Reduces iterable source like array_reduce() function.
 
-But unlike `array.reduce()`, it works with all `Iterable` types.
-
 ```
 toValue<T>(
   reducer: (carry: T|undefined, datum: unknown) => T,
@@ -741,13 +864,15 @@ const result = Stream.of(input)
 // 15
 ```
 
-## Unit testing
+Unit testing
+------------
 
 ```bash
 npm i
 npm run test
 ```
 
-## License
+License
+-------
 
 IterTools TS is licensed under the MIT License.
