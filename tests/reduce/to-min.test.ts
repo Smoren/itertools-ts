@@ -1,15 +1,15 @@
 // @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from "../fixture";
+import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
 import { reduce } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
   ...dataProviderForGenerators(),
   ...dataProviderForIterables(),
-  // ...dataProviderForIterators(),
-  // ...dataProviderForStrings(),
-  // ...dataProviderForSets(),
-  // ...dataProviderForMaps(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
 ])("Reduce To Min Test", (input, compareBy, expected) => {
   it("", () => {
     // When
@@ -1305,4 +1305,1294 @@ function dataProviderForIterables(): Array<unknown> {
       [1, 2, 3],
     ],
   ];
+}
+
+function dataProviderForIterators(): Array<unknown> {
+  return [
+    [
+      createIteratorFixture([]),
+      undefined,
+      undefined,
+    ],
+    [
+      createIteratorFixture([]),
+      (item: number) => item,
+      undefined,
+    ],
+    [
+      createIteratorFixture([]),
+      (item: number) => -item,
+      undefined,
+    ],
+    [
+      createIteratorFixture([0]),
+      undefined,
+      0,
+    ],
+    [
+      createIteratorFixture([0]),
+      (item: number) => item,
+      0,
+    ],
+    [
+      createIteratorFixture([0]),
+      (item: number) => -item,
+      0,
+    ],
+    [
+      createIteratorFixture([Infinity]),
+      undefined,
+      Infinity,
+    ],
+    [
+      createIteratorFixture([Infinity]),
+      (item: number) => item,
+      Infinity,
+    ],
+    [
+      createIteratorFixture([Infinity]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createIteratorFixture([-Infinity]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createIteratorFixture([-Infinity]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createIteratorFixture([-Infinity]),
+      (item: number) => -item,
+      -Infinity,
+    ],
+    [
+      createIteratorFixture([Infinity, -Infinity]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createIteratorFixture([Infinity, -Infinity]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createIteratorFixture([Infinity, -Infinity]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createIteratorFixture([Infinity, -Infinity, 10, -1]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createIteratorFixture([Infinity, -Infinity, 10, -1]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createIteratorFixture([Infinity, -Infinity, 10, -1]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      undefined,
+      1,
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createIteratorFixture([3, 2, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createIteratorFixture([3, 2, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createIteratorFixture([3, 2, 1]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createIteratorFixture([3, 2, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createIteratorFixture([3, 2, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createIteratorFixture([3, 2, 1]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createIteratorFixture([2.1, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createIteratorFixture([2.1, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createIteratorFixture([2.1, 1]),
+      (item: number) => -item,
+      2.1,
+    ],
+    [
+      createIteratorFixture([2, 1.1]),
+      undefined,
+      1.1,
+    ],
+    [
+      createIteratorFixture([2, 1.1]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createIteratorFixture([2, 1.1]),
+      (item: number) => -item,
+      2,
+    ],
+    [
+      createIteratorFixture([2.2, 1.1]),
+      undefined,
+      1.1,
+    ],
+    [
+      createIteratorFixture([2.2, 1.1]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createIteratorFixture([2.2, 1.1]),
+      (item: number) => -item,
+      2.2,
+    ],
+    [
+      createIteratorFixture([1.1, 2.2]),
+      undefined,
+      1.1,
+    ],
+    [
+      createIteratorFixture([1.1, 2.2]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createIteratorFixture([1.1, 2.2]),
+      (item: number) => -item,
+      2.2,
+    ],
+    [
+      createIteratorFixture(['a', 'b', 'c']),
+      undefined,
+      'a',
+    ],
+    [
+      createIteratorFixture(['a', 'b', 'c']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createIteratorFixture(['a', 'b', 'c']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createIteratorFixture(['b', 'c', 'a']),
+      undefined,
+      'a',
+    ],
+    [
+      createIteratorFixture(['b', 'c', 'a']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createIteratorFixture(['b', 'c', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createIteratorFixture(['c', 'b', 'a']),
+      undefined,
+      'a',
+    ],
+    [
+      createIteratorFixture(['c', 'b', 'a']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createIteratorFixture(['c', 'b', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createIteratorFixture(['ab', 'ba', 'b']),
+      undefined,
+      'ab',
+    ],
+    [
+      createIteratorFixture(['ab', 'ba', 'b']),
+      (item: string) => item,
+      'ab',
+    ],
+    [
+      createIteratorFixture(['ba', 'b', 'ab']),
+      undefined,
+      'ab',
+    ],
+    [
+      createIteratorFixture(['ba', 'b', 'ab']),
+      (item: string) => item,
+      'ab',
+    ],
+    [
+      createIteratorFixture([[]]),
+      undefined,
+      [],
+    ],
+    [
+      createIteratorFixture([[]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createIteratorFixture([[2]]),
+      undefined,
+      [2],
+    ],
+    [
+      createIteratorFixture([[2]]),
+      (item: Array<unknown>) => item,
+      [2],
+    ],
+    [
+      createIteratorFixture([[], []]),
+      undefined,
+      [],
+    ],
+    [
+      createIteratorFixture([[], []]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createIteratorFixture([[], [2]]),
+      undefined,
+      [],
+    ],
+    [
+      createIteratorFixture([[], [2]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createIteratorFixture([[2], []]),
+      undefined,
+      [],
+    ],
+    [
+      createIteratorFixture([[2], []]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createIteratorFixture([[], [null]]),
+      undefined,
+      [],
+    ],
+    [
+      createIteratorFixture([[], [null]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createIteratorFixture([[null], [null]]),
+      undefined,
+      [null],
+    ],
+    [
+      createIteratorFixture([[null], [null]]),
+      (item: Array<unknown>) => item,
+      [null],
+    ],
+    [
+      createIteratorFixture([[1, 2], [2]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createIteratorFixture([[1, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createIteratorFixture([[3, 2], [2]]),
+      undefined,
+      [2],
+    ],
+    [
+      createIteratorFixture([[3, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [2],
+    ],
+    [
+      createIteratorFixture([[1, 2], [2, 1]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createIteratorFixture([[1, 2], [2, 1]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createIteratorFixture([[2, 1], [1, 2]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createIteratorFixture([[2, 1], [1, 2]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createIteratorFixture([['a'], ['b']]),
+      undefined,
+      ['a'],
+    ],
+    [
+      createIteratorFixture([['a'], ['b']]),
+      (item: Array<unknown>) => item,
+      ['a'],
+    ],
+    [
+      createIteratorFixture([['a', 'a'], ['b']]),
+      undefined,
+      ['a', 'a'],
+    ],
+    [
+      createIteratorFixture([['a', 'a'], ['b']]),
+      (item: Array<unknown>) => item,
+      ['a', 'a'],
+    ],
+    [
+      createIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      undefined,
+      [1, 2, 3],
+    ],
+    [
+      createIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item,
+      [1, 2, 3],
+    ],
+    [
+      createIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item[1],
+      [2, 0, 3],
+    ],
+    [
+      createIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => -(item[1] as number),
+      [1, 2, 3],
+    ],
+  ];
+}
+
+function dataProviderForStrings(): Array<unknown> {
+  return [
+    [
+      ['a', 'b', 'c'],
+      undefined,
+      'a',
+    ],
+    [
+      ['b', 'c', 'a'],
+      undefined,
+      'a',
+    ],
+    [
+      ['c', 'b', 'a'],
+      undefined,
+      'a',
+    ],
+    [
+      ['ab', 'ba', 'b'],
+      undefined,
+      'ab',
+    ],
+    [
+      ['ba', 'b', 'ab'],
+      undefined,
+      'ab',
+    ],
+    [
+      ['ac', 'b', 'ab'],
+      undefined,
+      'ab',
+    ],
+    [
+      [['a'], ['b']],
+      undefined,
+      ['a'],
+    ],
+    [
+      [['a', 'a'], ['b']],
+      undefined,
+      ['a', 'a'],
+    ],
+  ]
+}
+
+function dataProviderForSets(): Array<unknown> {
+  return [
+    [
+      new Set([]),
+      undefined,
+      undefined,
+    ],
+    [
+      new Set([]),
+      (item: number) => item,
+      undefined,
+    ],
+    [
+      new Set([]),
+      (item: number) => -item,
+      undefined,
+    ],
+    [
+      new Set([0]),
+      undefined,
+      0,
+    ],
+    [
+      new Set([0]),
+      (item: number) => item,
+      0,
+    ],
+    [
+      new Set([0]),
+      (item: number) => -item,
+      0,
+    ],
+    [
+      new Set([Infinity]),
+      undefined,
+      Infinity,
+    ],
+    [
+      new Set([Infinity]),
+      (item: number) => item,
+      Infinity,
+    ],
+    [
+      new Set([Infinity]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      new Set([-Infinity]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      new Set([-Infinity]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      new Set([-Infinity]),
+      (item: number) => -item,
+      -Infinity,
+    ],
+    [
+      new Set([Infinity, -Infinity]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      new Set([Infinity, -Infinity]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      new Set([Infinity, -Infinity]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      new Set([Infinity, -Infinity, 10, -1]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      new Set([Infinity, -Infinity, 10, -1]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      new Set([Infinity, -Infinity, 10, -1]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      new Set([1, 2, 3]),
+      undefined,
+      1,
+    ],
+    [
+      new Set([1, 2, 3]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      new Set([1, 2, 3]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      new Set([3, 2, 1]),
+      undefined,
+      1,
+    ],
+    [
+      new Set([3, 2, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      new Set([3, 2, 1]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      new Set([3, 2, 1]),
+      undefined,
+      1,
+    ],
+    [
+      new Set([3, 2, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      new Set([3, 2, 1]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      new Set([2.1, 1]),
+      undefined,
+      1,
+    ],
+    [
+      new Set([2.1, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      new Set([2.1, 1]),
+      (item: number) => -item,
+      2.1,
+    ],
+    [
+      new Set([2, 1.1]),
+      undefined,
+      1.1,
+    ],
+    [
+      new Set([2, 1.1]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      new Set([2, 1.1]),
+      (item: number) => -item,
+      2,
+    ],
+    [
+      new Set([2.2, 1.1]),
+      undefined,
+      1.1,
+    ],
+    [
+      new Set([2.2, 1.1]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      new Set([2.2, 1.1]),
+      (item: number) => -item,
+      2.2,
+    ],
+    [
+      new Set([1.1, 2.2]),
+      undefined,
+      1.1,
+    ],
+    [
+      new Set([1.1, 2.2]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      new Set([1.1, 2.2]),
+      (item: number) => -item,
+      2.2,
+    ],
+    [
+      new Set(['a', 'b', 'c']),
+      undefined,
+      'a',
+    ],
+    [
+      new Set(['a', 'b', 'c']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      new Set(['a', 'b', 'c']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      new Set(['b', 'c', 'a']),
+      undefined,
+      'a',
+    ],
+    [
+      new Set(['b', 'c', 'a']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      new Set(['b', 'c', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      new Set(['c', 'b', 'a']),
+      undefined,
+      'a',
+    ],
+    [
+      new Set(['c', 'b', 'a']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      new Set(['c', 'b', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      new Set(['ab', 'ba', 'b']),
+      undefined,
+      'ab',
+    ],
+    [
+      new Set(['ab', 'ba', 'b']),
+      (item: string) => item,
+      'ab',
+    ],
+    [
+      new Set(['ba', 'b', 'ab']),
+      undefined,
+      'ab',
+    ],
+    [
+      new Set(['ba', 'b', 'ab']),
+      (item: string) => item,
+      'ab',
+    ],
+    [
+      new Set([[]]),
+      undefined,
+      [],
+    ],
+    [
+      new Set([[]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      new Set([[2]]),
+      undefined,
+      [2],
+    ],
+    [
+      new Set([[2]]),
+      (item: Array<unknown>) => item,
+      [2],
+    ],
+    [
+      new Set([[], []]),
+      undefined,
+      [],
+    ],
+    [
+      new Set([[], []]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      new Set([[], [2]]),
+      undefined,
+      [],
+    ],
+    [
+      new Set([[], [2]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      new Set([[2], []]),
+      undefined,
+      [],
+    ],
+    [
+      new Set([[2], []]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      new Set([[], [null]]),
+      undefined,
+      [],
+    ],
+    [
+      new Set([[], [null]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      new Set([[null], [null]]),
+      undefined,
+      [null],
+    ],
+    [
+      new Set([[null], [null]]),
+      (item: Array<unknown>) => item,
+      [null],
+    ],
+    [
+      new Set([[1, 2], [2]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      new Set([[1, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      new Set([[3, 2], [2]]),
+      undefined,
+      [2],
+    ],
+    [
+      new Set([[3, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [2],
+    ],
+    [
+      new Set([[1, 2], [2, 1]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      new Set([[1, 2], [2, 1]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      new Set([[2, 1], [1, 2]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      new Set([[2, 1], [1, 2]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      new Set([['a'], ['b']]),
+      undefined,
+      ['a'],
+    ],
+    [
+      new Set([['a'], ['b']]),
+      (item: Array<unknown>) => item,
+      ['a'],
+    ],
+    [
+      new Set([['a', 'a'], ['b']]),
+      undefined,
+      ['a', 'a'],
+    ],
+    [
+      new Set([['a', 'a'], ['b']]),
+      (item: Array<unknown>) => item,
+      ['a', 'a'],
+    ],
+    [
+      new Set([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      undefined,
+      [1, 2, 3],
+    ],
+    [
+      new Set([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item,
+      [1, 2, 3],
+    ],
+    [
+      new Set([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item[1],
+      [2, 0, 3],
+    ],
+    [
+      new Set([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => -(item[1] as number),
+      [1, 2, 3],
+    ],
+  ];
+}
+
+function dataProviderForMaps(): Array<unknown> {
+  return [
+    [
+      createMapFixture([]),
+      undefined,
+      undefined,
+    ],
+    [
+      createMapFixture([]),
+      (item: number) => item,
+      undefined,
+    ],
+    [
+      createMapFixture([]),
+      (item: number) => -item,
+      undefined,
+    ],
+    [
+      createMapFixture([0]),
+      undefined,
+      [0, 0],
+    ],
+    [
+      createMapFixture([0]),
+      (item: number) => item,
+      [0, 0],
+    ],
+    [
+      createMapFixture([0]),
+      (item: number) => -item,
+      [0, 0],
+    ],
+    [
+      createMapFixture([Infinity]),
+      undefined,
+      [0, Infinity],
+    ],
+    [
+      createMapFixture([Infinity]),
+      (item: number) => item,
+      [0, Infinity],
+    ],
+    [
+      createMapFixture([Infinity]),
+      (item: number) => -item,
+      [0, Infinity],
+    ],
+    [
+      createMapFixture([-Infinity]),
+      undefined,
+      [0, -Infinity],
+    ],
+    [
+      createMapFixture([-Infinity]),
+      (item: number) => item,
+      [0, -Infinity],
+    ],
+    [
+      createMapFixture([-Infinity]),
+      (item: number) => -item,
+      [0, -Infinity],
+    ],
+    [
+      createMapFixture([Infinity, -Infinity]),
+      undefined,
+      [0, Infinity],
+    ],
+    [
+      createMapFixture([Infinity, -Infinity]),
+      (item: number) => item,
+      [0, Infinity],
+    ],
+    [
+      createMapFixture([Infinity, -Infinity]),
+      (item: number) => -item,
+      [0, Infinity],
+    ],
+    [
+      createMapFixture([Infinity, -Infinity, 10, -1]),
+      undefined,
+      [0, Infinity],
+    ],
+    [
+      createMapFixture([Infinity, -Infinity, 10, -1]),
+      (item: number) => item,
+      [0, Infinity],
+    ],
+    [
+      createMapFixture([Infinity, -Infinity, 10, -1]),
+      (item: number) => -item,
+      [0, Infinity],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      undefined,
+      [0, 1],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (item: number) => item,
+      [0, 1],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (item: number) => -item,
+      [0, 3],
+    ],
+    [
+      createMapFixture([3, 2, 1]),
+      undefined,
+      [0, 3],
+    ],
+    [
+      createMapFixture([3, 2, 1]),
+      (item: number) => item,
+      [0, 3],
+    ],
+    [
+      createMapFixture([3, 2, 1]),
+      (item: number) => -item,
+      [0, 3],
+    ],
+    [
+      createMapFixture([3, 2, 1]),
+      undefined,
+      [0, 3],
+    ],
+    [
+      createMapFixture([3, 2, 1]),
+      (item: number) => item,
+      [0, 1],
+    ],
+    [
+      createMapFixture([3, 2, 1]),
+      (item: number) => -item,
+      [0, 3],
+    ],
+    [
+      createMapFixture([2.1, 1]),
+      undefined,
+      [0, 2.1],
+    ],
+    [
+      createMapFixture([2.1, 1]),
+      (item: number) => item,
+      [0, 2.1],
+    ],
+    [
+      createMapFixture([2.1, 1]),
+      (item: number) => -item,
+      [0, 2.1],
+    ],
+    [
+      createMapFixture([2, 1.1]),
+      undefined,
+      [0, 2],
+    ],
+    [
+      createMapFixture([2, 1.1]),
+      (item: number) => item,
+      [0, 2],
+    ],
+    [
+      createMapFixture([2, 1.1]),
+      (item: number) => -item,
+      [0, 2],
+    ],
+    [
+      createMapFixture([2.2, 1.1]),
+      undefined,
+      [0, 2.2],
+    ],
+    [
+      createMapFixture([2.2, 1.1]),
+      (item: number) => item,
+      [0, 2.2],
+    ],
+    [
+      createMapFixture([2.2, 1.1]),
+      (item: number) => -item,
+      [0, 2.2],
+    ],
+    [
+      createMapFixture([1.1, 2.2]),
+      undefined,
+      [0, 1.1],
+    ],
+    [
+      createMapFixture([1.1, 2.2]),
+      (item: number) => item,
+      [0, 1.1],
+    ],
+    [
+      createMapFixture([1.1, 2.2]),
+      (item: number) => -item,
+      [0, 1.1],
+    ],
+    [
+      createMapFixture(['a', 'b', 'c']),
+      undefined,
+      [0, 'a'],
+    ],
+    [
+      createMapFixture(['a', 'b', 'c']),
+      (item: string) => item,
+      [0, 'a'],
+    ],
+    [
+      createMapFixture(['a', 'b', 'c']),
+      (item: string) => -item.charCodeAt(0),
+      [0, 'c'],
+    ],
+    [
+      createMapFixture(['b', 'c', 'a']),
+      undefined,
+      [0, 'b'],
+    ],
+    [
+      createMapFixture(['b', 'c', 'a']),
+      (item: string) => item,
+      [0, 'b'],
+    ],
+    [
+      createMapFixture(['b', 'c', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      [0, 'c'],
+    ],
+    [
+      createMapFixture(['c', 'b', 'a']),
+      undefined,
+      [0, 'c'],
+    ],
+    [
+      createMapFixture(['c', 'b', 'a']),
+      (item: string) => item,
+      [0, 'c'],
+    ],
+    [
+      createMapFixture(['c', 'b', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      [0, 'a'],
+    ],
+    [
+      createMapFixture(['ab', 'ba', 'b']),
+      undefined,
+      [0, 'ab'],
+    ],
+    [
+      createMapFixture(['ab', 'ba', 'b']),
+      (item: string) => item,
+      [0, 'ab'],
+    ],
+    [
+      createMapFixture(['ba', 'b', 'ab']),
+      undefined,
+      [0, 'ba'],
+    ],
+    [
+      createMapFixture(['ba', 'b', 'ab']),
+      (item: string) => item,
+      [0, 'ba'],
+    ],
+    [
+      createMapFixture( [[]]),
+      undefined,
+      [0, []],
+    ],
+    [
+      createMapFixture([[]]),
+      (item: Array<unknown>) => item,
+      [0, []],
+    ],
+    [
+      createMapFixture([[2]]),
+      undefined,
+      [0, [2]],
+    ],
+    [
+      createMapFixture([[2]]),
+      (item: Array<unknown>) => item,
+      [0, [2]],
+    ],
+    [
+      createMapFixture([[], []]),
+      undefined,
+      [0, []],
+    ],
+    [
+      createMapFixture([[], []]),
+      (item: Array<unknown>) => item,
+      [0, []],
+    ],
+    [
+      createMapFixture( [[], [2]]),
+      undefined,
+      [0, []],
+    ],
+    [
+      createMapFixture( [[], [2]]),
+      (item: Array<unknown>) => item,
+      [0, []],
+    ],
+    [
+      createMapFixture([[2], []]),
+      undefined,
+      [0, [2]],
+    ],
+    [
+      createMapFixture([[2], []]),
+      (item: Array<unknown>) => item,
+      [0, [2]],
+    ],
+    [
+      createMapFixture([[], [null]]),
+      undefined,
+      [0, []],
+    ],
+    [
+      createMapFixture([[], [null]]),
+      (item: Array<unknown>) => item,
+      [0, []],
+    ],
+    [
+      createMapFixture( [[null], [null]]),
+      undefined,
+      [0, [null]],
+    ],
+    [
+      createMapFixture( [[null], [null]]),
+      (item: Array<unknown>) => item,
+      [0, [null]],
+    ],
+    [
+      createMapFixture([[1, 2], [2]]),
+      undefined,
+      [0, [1, 2]],
+    ],
+    [
+      createMapFixture([[1, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [0, [1, 2]],
+    ],
+    [
+      createMapFixture([[3, 2], [2]]),
+      undefined,
+      [0, [3, 2]],
+    ],
+    [
+      createMapFixture( [[3, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [0, [3, 2]],
+    ],
+    [
+      createMapFixture([[1, 2], [2, 1]]),
+      undefined,
+      [0, [1, 2]],
+    ],
+    [
+      createMapFixture([[1, 2], [2, 1]]),
+      (item: Array<unknown>) => item,
+      [0, [1, 2]],
+    ],
+    [
+      createMapFixture([[2, 1], [1, 2]]),
+      undefined,
+      [0, [2, 1]],
+    ],
+    [
+      createMapFixture([[2, 1], [1, 2]]),
+      (item: Array<unknown>) => item,
+      [0, [2, 1]],
+    ],
+    [
+      createMapFixture([['a'], ['b']]),
+      undefined,
+      [0, ['a']],
+    ],
+    [
+      createMapFixture([['a'], ['b']]),
+      (item: Array<unknown>) => item,
+      [0, ['a']],
+    ],
+    [
+      createMapFixture([['a', 'a'], ['b']]),
+      undefined,
+      [0, ['a','a']],
+    ],
+    [
+      createMapFixture([['a', 'a'], ['b']]),
+      (item: Array<unknown>) => item,
+      [0, ['a', 'a']],
+    ],
+    [
+      createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      undefined,
+      [0, [1, 2, 3]],
+    ],
+    [
+      createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item,
+      [0, [1, 2, 3]],
+    ],
+    [
+      createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item[1],
+      [0, [1, 2, 3]],
+    ],
+    [
+      createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => -(item[1] as number),
+      [0, [1, 2, 3]],
+    ],
+  ]
 }
