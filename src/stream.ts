@@ -1,5 +1,5 @@
 import { toArray, toIterable } from './transform';
-import { chunkwise, chunkwiseOverlap, filter, flatMap, limit, map, pairwise } from './single';
+import { chunkwise, chunkwiseOverlap, filter, flatMap, flatten, limit, map, pairwise } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
 import { toValue } from "./reduce";
@@ -66,6 +66,11 @@ export class Stream {
 
   flatMap(mapper: (datum: unknown) => unknown): Stream {
     this.data = flatMap(this.data, mapper);
+    return this;
+  }
+
+  flatten(dimensions: number = Infinity): Stream {
+    this.data = flatten(this.data, dimensions);
     return this;
   }
 

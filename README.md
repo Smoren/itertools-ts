@@ -73,6 +73,7 @@ Quick Reference
 | [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` |
 | [`filter`](#Filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        |
 | [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          |
+| [`flatten`](#Flatten)                    | Flatten multidimensional iterable           | `single.flatten(data, [dimensions])`                    |
 | [`limit`](#Limit)                        | Iterate up to a limit                       | `single.limit(data, limit)`                             |
 | [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              |
 | [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 |
@@ -117,6 +118,7 @@ Quick Reference
 | [`distinct`](#Distinct-1)                  | Filter out elements: iterate only unique items                                            | `stream.distinct()`                           |
 | [`filter`](#Filter-1)                      | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                    |
 | [`flatMap`](#Flat-Map-1)                   | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                      |
+| [`flatten`](#Flatten-1)                    | Flatten multidimensional stream                                                           | `stream.flatten([dimensions])`                |
 | [`limit`](#Limit-1)                        | Limit the stream's iteration                                                              | `stream.limit(limit)`                         |
 | [`map`](#Map-1)                            | Map function onto elements                                                                | `stream.map(mapper)`                          |
 | [`pairwise`](#Pairwise-1)                  | Return pairs of elements from iterable source                                             | `stream.pairwise()`                           |
@@ -339,6 +341,28 @@ for (number of single.flatMap(data, mapper)) {
   console.log(number);
 }
 // 1 -1 2 -2 3 -3 4 -4 5 -5
+```
+
+### Flatten
+Flatten a multidimensional iterable.
+
+```
+function *flatten(
+  data: Iterable<unknown>|Iterator<unknown>,
+  dimensions: number = Infinity,
+): Iterable<unknown>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const multidimensional = [1, [2, 3], [4, 5]];
+
+const flattened = [];
+for (const number of single.flatten(multidimensional)) {
+    flattened.push(number);
+}
+// [1, 2, 3, 4, 5]
 ```
 
 ### Limit
@@ -709,6 +733,24 @@ const result = Stream.of(data)
   .flatMap(mapper)
   .toArray();
 // [1, 2, 2, 3, 4, 4, 5]
+```
+
+#### Flatten
+Flatten a multidimensional stream.
+
+```
+stream.flatten(dimensions: number = Infinity): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const data = [1, [2, 3], [4, 5]];
+
+const result = Stream.of(data)
+  .flatten()
+  .toArray();
+// [1, 2, 3, 4, 5]
 ```
 
 #### Limit
