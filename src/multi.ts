@@ -16,6 +16,7 @@ export function* zip(
 ): Iterable<Array<unknown>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.SHORTEST,
+    undefined,
     ...iterables
   )) {
     yield values;
@@ -38,6 +39,7 @@ export function* zipLongest(
 ): Iterable<Array<unknown>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.LONGEST,
+    undefined,
     ...iterables
   )) {
     yield values;
@@ -59,6 +61,7 @@ export function* zipEqual(
 ): Iterable<Array<unknown>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.STRICT_EQUAL,
+    undefined,
     ...iterables
   )) {
     yield values;

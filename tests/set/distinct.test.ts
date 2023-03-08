@@ -10,7 +10,7 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Single Distinct Test", (input, expected) => {
+])("Set Distinct Test", (input, expected) => {
   it("", () => {
     // Given
     const result = [];

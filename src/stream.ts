@@ -15,7 +15,7 @@ import {
 } from "./single";
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { runningTotal } from "./math";
-import { distinct } from "./set";
+import { distinct, intersection, partialIntersection, symmetricDifference, union } from "./set";
 import {
   toAverage,
   toCount,
@@ -304,6 +304,66 @@ export class Stream {
    */
   distinct(): Stream {
     this.data = distinct(this.data);
+    return this;
+  }
+
+  /**
+   * Iterates the intersection of iterable source and given iterables.
+   *
+   * Always treats different instances of objects and arrays as unequal.
+   *
+   * @param iterables
+   *
+   * @see set.intersection
+   */
+  intersectionWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream {
+    this.data = intersection(this.data, ...iterables);
+    return this;
+  }
+
+  /**
+   * Iterates partial intersection of iterable source and given iterables.
+   *
+   * Always treats different instances of objects and arrays as unequal.
+   *
+   * @param minIntersectionCount
+   * @param iterables
+   *
+   * @see set.partialIntersection
+   */
+  partialIntersectionWith(
+    minIntersectionCount: number,
+    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+  ): Stream {
+    this.data = partialIntersection(minIntersectionCount, this.data, ...iterables);
+    return this;
+  }
+
+  /**
+   * Iterates the symmetric difference of iterable source and given iterables.
+   *
+   * Always treats different instances of objects and arrays as unequal.
+   *
+   * @param iterables
+   *
+   * @see set.symmetricDifference
+   */
+  symmetricDifferenceWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream {
+    this.data = symmetricDifference(this.data, ...iterables);
+    return this;
+  }
+
+  /**
+   * Iterates union of iterable source and given iterables.
+   *
+   * Always treats different instances of objects and arrays as unequal.
+   *
+   * @param iterables
+   *
+   * @see set.union
+   */
+  unionWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream {
+    this.data = union(this.data, ...iterables);
     return this;
   }
 
