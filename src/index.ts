@@ -1,6 +1,7 @@
 import {
   chunkwise,
   chunkwiseOverlap,
+  enumerate,
   filter,
   flatMap,
   flatten,
@@ -50,6 +51,7 @@ import {
 export const single = {
   chunkwise,
   chunkwiseOverlap,
+  enumerate,
   filter,
   flatMap,
   flatten,

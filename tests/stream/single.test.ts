@@ -25,6 +25,27 @@ function dataProviderForArrays(): Array<unknown> {
     [
       [],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [],
+    ],
+    [
+      [1],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, 1]],
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3]],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toArray(),
       [],
@@ -409,6 +430,27 @@ function dataProviderForArrays(): Array<unknown> {
 
 function dataProviderForGenerators(): Array<unknown> {
   return [
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, 1]],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3]],
+    ],
     [
       createGeneratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
@@ -799,6 +841,27 @@ function dataProviderForIterables(): Array<unknown> {
     [
       createIterableFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, 1]],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3]],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toArray(),
       [],
@@ -1183,6 +1246,27 @@ function dataProviderForIterables(): Array<unknown> {
 
 function dataProviderForIterators(): Array<unknown> {
   return [
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, 1]],
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3]],
+    ],
     [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
@@ -1573,6 +1657,27 @@ function dataProviderForStrings(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [],
+    ],
+    [
+      '1',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, '1']],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, '1'], [1, '2'], [2, '3']],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .filter((value) => parseInt(value as string) > 0)
         .toArray(),
       [],
@@ -1905,6 +2010,27 @@ function dataProviderForStrings(): Array<unknown> {
 
 function dataProviderForSets(): Array<unknown> {
   return [
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, 1]],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3]],
+    ],
     [
       new Set([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
@@ -2292,6 +2418,27 @@ function dataProviderForSets(): Array<unknown> {
 
 function dataProviderForMaps(): Array<unknown> {
   return [
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, [0, 1]]],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, [0, 1]], [1, [1, 2]], [2, [2, 3]]],
+    ],
     [
       createMapFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)

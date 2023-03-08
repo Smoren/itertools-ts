@@ -146,3 +146,10 @@ export function *limit<T>(data: Iterable<T>|Iterator<T>, count: number): Iterabl
     ++i;
   }
 }
+
+export function *enumerate<T>(data: Iterable<T>|Iterator<T>): Iterable<[number, T]> {
+  let i = 0;
+  for (const datum of toIterable(data)) {
+    yield [i++, datum];
+  }
+}
