@@ -13,7 +13,7 @@ import {
 } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
-import { toMax, toMin, toValue } from "./reduce";
+import { toMax, toMin, toSum, toValue } from "./reduce";
 
 export class Stream {
   protected data: Iterable<unknown>;
@@ -118,6 +118,10 @@ export class Stream {
 
   toMin<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined {
     return toMin(this, compareBy);
+  }
+
+  toSum(): number {
+    return toSum(this as Iterable<number>);
   }
 
   toArray(): Array<unknown> {

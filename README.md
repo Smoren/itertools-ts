@@ -31,10 +31,10 @@ for (const [letter, number] of multi.zip(['a', 'b'], [1, 2])) {
 import { Stream } from 'itertools-ts';
 
 const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
-  .distinct()                                    // [1, 2, 3, 4, 5]
-  .map((x) => x**2)                              // [1, 4, 9, 16, 25]
-  .filter((x) => x < 10)                         // [1, 4, 9]
-  .toValue((carry, datum) => carry + datum, 0);  // 14
+  .distinct()             // [1, 2, 3, 4, 5]
+  .map((x) => x**2)       // [1, 4, 9, 16, 25]
+  .filter((x) => x < 10)  // [1, 4, 9]
+  .toSum();               // 14
 ```
 
 All functions work on iterable collections and iterators:
@@ -86,6 +86,7 @@ Quick Reference
 |------------------------|----------------------------------------|-----------------------------------------------|
 | [`toMax`](#To-Max)     | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
 | [`toMin`](#To-Min)     | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
+| [`toSum`](#To-Sum)     | Reduce to the sum of its elements      | `reduce.toSum(numbers)`                       |
 | [`toValue`](#To-Value) | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
 
 #### Set and multiset Iteration
@@ -139,11 +140,12 @@ Quick Reference
 | [`toArray`](#To-Array-1) | Returns array of stream elements | `stream.toArray()` |
 
 ##### Reduction Terminal Operations
-| Terminal Operation       | Description                                 | Code Snippet                            |
-|--------------------------|---------------------------------------------|-----------------------------------------|
-| [`toMax`](#To-Max-1)     | Reduces stream to its max value             | `stream.toMax([compareBy])`             |
-| [`toMin`](#To-Min-1)     | Reduces stream to its min value             | `stream.toMin([compareBy])`             |
-| [`toValue`](#To-Value-1) | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
+| Terminal Operation        | Description                                 | Code Snippet                            |
+|---------------------------|---------------------------------------------|-----------------------------------------|
+| [`toMax`](#To-Max-1)      | Reduces stream to its max value             | `stream.toMax([compareBy])`             |
+| [`toMin`](#To-Min-1)      | Reduces stream to its min value             | `stream.toMin([compareBy])`             |
+| [`toSum`](#To-Sum-1)      | Reduces stream to the sum of its items      | `stream.toSum()`                        |
+| [`toValue`](#To-Value-1)  | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
 
 Usage
 -----
@@ -593,6 +595,24 @@ const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
 //   title: 'The Matrix Resurrections',
 //   rating: 2.5,
 // }
+```
+
+### To Sum
+Reduces to the sum of its elements.
+
+For maps uses values for accumulating sum.
+
+```
+function toSum(data: Iterable<number>|Iterator<number>|Map<unknown, number>): number
+```
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const parts = [10, 20, 30];
+
+const sum = reduce.toSum(parts);
+// 60
 ```
 
 ### To Value
@@ -1125,6 +1145,23 @@ const input = [1, -1, 2, -2, 3, -3];
 const result = Stream.of(iterable)
   .toMin();
 // -3
+```
+
+##### To Sum
+Reduces iterable source to the sum of its items.
+
+```
+stream.toSum(): number
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = Stream.of(iterable)
+  .toSum();
+// 15
 ```
 
 ##### To Value

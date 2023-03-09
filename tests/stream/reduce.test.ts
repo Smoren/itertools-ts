@@ -306,6 +306,44 @@ function dataProviderForArrays(): Array<unknown> {
         .toMin(),
       -3,
     ],
+    [
+      [],
+      (iterable: Iterable<number>) => Stream.of(iterable).toSum(),
+      0,
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable).toSum(),
+      0,
+    ],
+    [
+      [],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      0,
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      6,
+    ],
+    [
+      [],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toSum(),
+      0,
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toSum(),
+      -6,
+    ],
   ];
 }
 
@@ -594,6 +632,34 @@ function dataProviderForGenerators(): Array<unknown> {
         .filter((value) => (value as number) <= 0)
         .toMin(),
       -3,
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      0,
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      6,
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toSum(),
+      0,
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toSum(),
+      -6,
     ],
   ];
 }
@@ -884,6 +950,34 @@ function dataProviderForIterables(): Array<unknown> {
         .toMin(),
       -3,
     ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      0,
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      6,
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toSum(),
+      0,
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toSum(),
+      -6,
+    ],
   ];
 }
 
@@ -1173,13 +1267,41 @@ function dataProviderForIterators(): Array<unknown> {
         .toMin(),
       -3,
     ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      0,
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      6,
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toSum(),
+      0,
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toSum(),
+      -6,
+    ],
   ];
 }
 
 function dataProviderForStrings(): Array<unknown> {
   return [
     [
-      [],
+      '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .map((datum) => parseInt(datum as string))
         .toValue(function (carry, item) {
@@ -1188,7 +1310,7 @@ function dataProviderForStrings(): Array<unknown> {
       undefined,
     ],
     [
-      [],
+      '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .map((datum) => parseInt(datum as string))
         .toValue(function (carry, item) {
@@ -1197,7 +1319,7 @@ function dataProviderForStrings(): Array<unknown> {
       1,
     ],
     [
-      [],
+      '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .map((datum) => parseInt(datum as string))
         .filter((value: unknown) => (value as number) > 0)
@@ -1207,7 +1329,7 @@ function dataProviderForStrings(): Array<unknown> {
       undefined,
     ],
     [
-      [],
+      '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .map((datum) => parseInt(datum as string))
         .filter((value) => (value as number) > 0)
@@ -1215,7 +1337,7 @@ function dataProviderForStrings(): Array<unknown> {
       1,
     ],
     [
-      [],
+      '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .map((datum) => parseInt(datum as string))
         .filter((value) => !((value as number) > 0))
@@ -1223,7 +1345,7 @@ function dataProviderForStrings(): Array<unknown> {
       undefined,
     ],
     [
-      [],
+      '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .map((datum) => parseInt(datum as string))
         .filter((value) => !((value as number) > 0))
@@ -1360,6 +1482,20 @@ function dataProviderForStrings(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toMin((value) => -(value as string).charCodeAt(0)),
       'c',
+    ],
+    [
+      '',
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      0,
+    ],
+    [
+      '123',
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      6,
     ],
   ];
 }
@@ -1650,6 +1786,34 @@ function dataProviderForSets(): Array<unknown> {
         .toMin(),
       -3,
     ],
+    [
+      new Set([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      0,
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toSum(),
+      6,
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toSum(),
+      0,
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toSum(),
+      -6,
+    ],
   ];
 }
 
@@ -1934,6 +2098,34 @@ function dataProviderForMaps(): Array<unknown> {
         .filter((value) => (value as [number, number])[1] <= 0)
         .toMin((value) => (value as [number, number])[1]),
       [5, -3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .toSum(),
+      0,
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .toSum(),
+      6,
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .toSum(),
+      0,
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .toSum(),
+      6,
     ],
   ];
 }
