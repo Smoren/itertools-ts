@@ -181,6 +181,18 @@ function dataProviderForArrays(): Array<unknown> {
     [
       [],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      0,
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      6,
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toMax(),
       undefined,
     ],
@@ -508,6 +520,18 @@ function dataProviderForGenerators(): Array<unknown> {
     [
       createGeneratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      0,
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      6,
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toMax(),
       undefined,
     ],
@@ -821,6 +845,18 @@ function dataProviderForIterables(): Array<unknown> {
             .reduce((accumulator, current) => accumulator + current);
         }, 0),
       90,
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      0,
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      6,
     ],
     [
       createIterableFixture([]),
@@ -1142,6 +1178,18 @@ function dataProviderForIterators(): Array<unknown> {
     [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      0,
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      6,
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toMax(),
       undefined,
     ],
@@ -1426,6 +1474,18 @@ function dataProviderForStrings(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      0,
+    ],
+    [
+      'abcdef',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      6,
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toMax(),
       undefined,
     ],
@@ -1663,6 +1723,18 @@ function dataProviderForSets(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toMax(),
       undefined,
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      0,
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      6,
     ],
     [
       new Set([]),
@@ -1994,6 +2066,18 @@ function dataProviderForMaps(): Array<unknown> {
             .reduce((accumulator, current) => accumulator + (current as number));
         }, 0),
       90,
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      0,
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toCount(),
+      6,
     ],
     [
       createMapFixture([]),

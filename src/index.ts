@@ -26,6 +26,7 @@ import {
 } from "./set"
 
 import {
+  toCount,
   toMax,
   toMin,
   toSum,
@@ -78,6 +79,7 @@ export const set = {
 }
 
 export const reduce = {
+  toCount,
   toMax,
   toMin,
   toSum,
