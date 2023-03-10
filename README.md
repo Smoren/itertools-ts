@@ -84,6 +84,7 @@ Quick Reference
 #### Reduce
 | Reducer                | Description                            | Code Snippet                                  |
 |------------------------|----------------------------------------|-----------------------------------------------|
+| [`toCount`](#To-Count) | Reduce to length of iterable           | `reduce.toCount(data)`                        |
 | [`toMax`](#To-Max)     | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
 | [`toMin`](#To-Min)     | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
 | [`toSum`](#To-Sum)     | Reduce to the sum of its elements      | `reduce.toSum(numbers)`                       |
@@ -140,12 +141,13 @@ Quick Reference
 | [`toArray`](#To-Array-1) | Returns array of stream elements | `stream.toArray()` |
 
 ##### Reduction Terminal Operations
-| Terminal Operation        | Description                                 | Code Snippet                            |
-|---------------------------|---------------------------------------------|-----------------------------------------|
-| [`toMax`](#To-Max-1)      | Reduces stream to its max value             | `stream.toMax([compareBy])`             |
-| [`toMin`](#To-Min-1)      | Reduces stream to its min value             | `stream.toMin([compareBy])`             |
-| [`toSum`](#To-Sum-1)      | Reduces stream to the sum of its items      | `stream.toSum()`                        |
-| [`toValue`](#To-Value-1)  | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
+| Terminal Operation       | Description                                 | Code Snippet                            |
+|--------------------------|---------------------------------------------|-----------------------------------------|
+| [`toCount`](#To-Count-1) | Reduces stream to its length                | `stream.toCount()`                      |
+| [`toMax`](#To-Max-1)     | Reduces stream to its max value             | `stream.toMax([compareBy])`             |
+| [`toMin`](#To-Min-1)     | Reduces stream to its min value             | `stream.toMin([compareBy])`             |
+| [`toSum`](#To-Sum-1)     | Reduces stream to the sum of its items      | `stream.toSum()`                        |
+| [`toValue`](#To-Value-1) | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
 
 Usage
 -----
@@ -499,6 +501,22 @@ for (const winterYear of single.slice(olympics, 1, 8, 2)) {
 ```
 
 ## Reduce
+### To Count
+Reduces iterable to its length.
+
+```
+function toCount(data: Iterable<unknown>|Iterator<unknown>): number
+```
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const data = [1, 2, 3];
+
+const length = reduce.toCount(data);
+// 3
+```
+
 ### To Max
 Reduces to the max value.
 
@@ -1105,6 +1123,23 @@ const result = Stream.of([1, 2, 3, 4, 5])
 ```
 
 #### Reduce Terminal Operations
+##### To Count
+Reduces iterable source to its length.
+
+```
+toCount(): number
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [10, 20, 30, 40, 50];
+
+const result = Stream.of(iterable)
+  .toCount();
+// 5
+```
+
 ##### To Max
 Reduces iterable source to its max value.
 
