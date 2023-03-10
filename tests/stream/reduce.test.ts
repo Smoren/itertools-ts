@@ -320,6 +320,44 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [],
+      (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
+      undefined,
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
+      -36,
+    ],
+    [
+      [],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      6,
+    ],
+    [
+      [],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      -6,
+    ],
+    [
+      [],
       (iterable: Iterable<number>) => Stream.of(iterable).toSum(),
       0,
     ],
@@ -659,6 +697,44 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
+      undefined,
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
+      -36,
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      6,
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      -6,
+    ],
+    [
+      createGeneratorFixture([]),
       (iterable: Iterable<number>) => Stream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toSum(),
@@ -988,6 +1064,44 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
+      undefined,
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
+      -36,
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      6,
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      -6,
+    ],
+    [
+      createIterableFixture([]),
       (iterable: Iterable<number>) => Stream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toSum(),
@@ -1314,6 +1428,44 @@ function dataProviderForIterators(): Array<unknown> {
         .filter((value) => (value as number) <= 0)
         .toMin(),
       -3,
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
+      undefined,
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
+      -36,
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      6,
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      -6,
     ],
     [
       createIteratorFixture([]),
@@ -1860,6 +2012,44 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([]),
+      (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
+      undefined,
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
+      -36,
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      6,
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      -6,
+    ],
+    [
+      new Set([]),
       (iterable: Iterable<number>) => Stream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toSum(),
@@ -2182,6 +2372,52 @@ function dataProviderForMaps(): Array<unknown> {
         .filter((value) => (value as [number, number])[1] <= 0)
         .toMin((value) => (value as [number, number])[1]),
       [5, -3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .toProduct(),
+      undefined,
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .toProduct(),
+      -36,
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .filter((value) => (value as number) > 0)
+        .toProduct(),
+      6,
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      undefined,
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .filter((value) => (value as number) <= 0)
+        .toProduct(),
+      -6,
     ],
     [
       createMapFixture([]),

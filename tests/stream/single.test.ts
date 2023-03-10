@@ -1,6 +1,7 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
 import { Stream, single } from '../../src';
+import { enumerate } from '../../lib/single';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -42,6 +43,66 @@ function dataProviderForArrays(): Array<unknown> {
         .enumerate()
         .toArray(),
       [[0, 1], [1, 2], [2, 3]],
+    ],
+    [
+      [['a', 1], ['b', 2], ['c', 3]],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      ['a', 'b', 'c'],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      ['a', 'b', 'c'],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [0, 1, 2],
+    ],
+    [
+      [['a', 1], ['b', 2], ['c', 3]],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      ['a', 'b', 'c'],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      ['a', 'b', 'c'],
     ],
     [
       [],
@@ -487,6 +548,66 @@ function dataProviderForGenerators(): Array<unknown> {
       [[0, 1], [1, 2], [2, 3]],
     ],
     [
+      createGeneratorFixture([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      ['a', 'b', 'c'],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture(['a', 'b', 'c']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [0, 1, 2],
+    ],
+    [
+      createGeneratorFixture([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture(['a', 'b', 'c']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      ['a', 'b', 'c'],
+    ],
+    [
       createGeneratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .filter((value) => (value as number) > 0)
@@ -930,6 +1051,66 @@ function dataProviderForIterables(): Array<unknown> {
       [[0, 1], [1, 2], [2, 3]],
     ],
     [
+      createIterableFixture([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      ['a', 'b', 'c'],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture(['a', 'b', 'c']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [0, 1, 2],
+    ],
+    [
+      createIterableFixture([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture(['a', 'b', 'c']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      ['a', 'b', 'c'],
+    ],
+    [
       createIterableFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .filter((value) => (value as number) > 0)
@@ -1371,6 +1552,66 @@ function dataProviderForIterators(): Array<unknown> {
         .enumerate()
         .toArray(),
       [[0, 1], [1, 2], [2, 3]],
+    ],
+    [
+      createIteratorFixture([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      ['a', 'b', 'c'],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture(['a', 'b', 'c']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [0, 1, 2],
+    ],
+    [
+      createIteratorFixture([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture(['a', 'b', 'c']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      ['a', 'b', 'c'],
     ],
     [
       createIteratorFixture([]),
@@ -1818,6 +2059,38 @@ function dataProviderForStrings(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      'abc',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [0, 1, 2],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      'abc',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      ['a', 'b', 'c'],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .filter((value) => parseInt(value as string) > 0)
         .toArray(),
       [],
@@ -2205,6 +2478,66 @@ function dataProviderForSets(): Array<unknown> {
         .enumerate()
         .toArray(),
       [[0, 1], [1, 2], [2, 3]],
+    ],
+    [
+      new Set([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      ['a', 'b', 'c'],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      new Set(['a', 'b', 'c']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .keys()
+        .toArray(),
+      [0, 1, 2],
+    ],
+    [
+      new Set([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      new Set(['a', 'b', 'c']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .enumerate()
+        .values()
+        .toArray(),
+      ['a', 'b', 'c'],
     ],
     [
       new Set([]),
@@ -2648,6 +2981,34 @@ function dataProviderForMaps(): Array<unknown> {
         .enumerate()
         .toArray(),
       [[0, [0, 1]], [1, [1, 2]], [2, [2, 3]]],
+    ],
+    [
+      new Map([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      ['a', 'b', 'c'],
+    ],
+    [
+      new Map([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      new Map([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      new Map([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .toArray(),
+      [],
     ],
     [
       createMapFixture([]),
