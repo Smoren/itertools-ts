@@ -76,19 +76,22 @@ Quick Reference
 | [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          |
 | [`flatten`](#Flatten)                    | Flatten multidimensional iterable           | `single.flatten(data, [dimensions])`                    |
 | [`limit`](#Limit)                        | Iterate up to a limit                       | `single.limit(data, limit)`                             |
+| [`keys`](#Keys)                          | Iterate keys of key-value pairs             | `single.keys(data)`                                     |
 | [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              |
 | [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 |
 | [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      |
 | [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice(data, [start], [count], [step])`          |
+| [`values`](#Values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   |
 
 #### Reduce
-| Reducer                | Description                            | Code Snippet                                  |
-|------------------------|----------------------------------------|-----------------------------------------------|
-| [`toCount`](#To-Count) | Reduce to length of iterable           | `reduce.toCount(data)`                        |
-| [`toMax`](#To-Max)     | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
-| [`toMin`](#To-Min)     | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
-| [`toSum`](#To-Sum)     | Reduce to the sum of its elements      | `reduce.toSum(numbers)`                       |
-| [`toValue`](#To-Value) | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
+| Reducer                    | Description                            | Code Snippet                                  |
+|----------------------------|----------------------------------------|-----------------------------------------------|
+| [`toCount`](#To-Count)     | Reduce to length of iterable           | `reduce.toCount(data)`                        |
+| [`toMax`](#To-Max)         | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
+| [`toMin`](#To-Min)         | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
+| [`toProduct`](#To-Product) | Reduce to the product of its elements  | `reduce.toProduct(numbers)`                   |
+| [`toSum`](#To-Sum)         | Reduce to the sum of its elements      | `reduce.toSum(numbers)`                       |
+| [`toValue`](#To-Value)     | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
 
 #### Set and multiset Iteration
 | Iterator                | Description                 | Code Snippet         |
@@ -126,10 +129,12 @@ Quick Reference
 | [`filter`](#Filter-1)                      | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                    |
 | [`flatMap`](#Flat-Map-1)                   | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                      |
 | [`flatten`](#Flatten-1)                    | Flatten multidimensional stream                                                           | `stream.flatten([dimensions])`                |
+| [`keys`](#Keys-1)                          | Iterate keys of key-value pairs from stream                                               | `stream.keys()`                               |
 | [`limit`](#Limit-1)                        | Limit the stream's iteration                                                              | `stream.limit(limit)`                         |
 | [`map`](#Map-1)                            | Map function onto elements                                                                | `stream.map(mapper)`                          |
 | [`pairwise`](#Pairwise-1)                  | Return pairs of elements from iterable source                                             | `stream.pairwise()`                           |
 | [`slice`](#Slice-1)                        | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`      |
+| [`values`](#Values-1)                      | Iterate values of key-value pairs from stream                                             | `stream.values()`                             |
 | [`zipWith`](#Zip-With)                     | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                |
 | [`zipLongestWith`](#Zip-Longest-With)      | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`         |
 | [`zipEqualWith`](#Zip-Equal-With)          | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`           |
@@ -141,13 +146,14 @@ Quick Reference
 | [`toArray`](#To-Array-1) | Returns array of stream elements | `stream.toArray()` |
 
 ##### Reduction Terminal Operations
-| Terminal Operation       | Description                                 | Code Snippet                            |
-|--------------------------|---------------------------------------------|-----------------------------------------|
-| [`toCount`](#To-Count-1) | Reduces stream to its length                | `stream.toCount()`                      |
-| [`toMax`](#To-Max-1)     | Reduces stream to its max value             | `stream.toMax([compareBy])`             |
-| [`toMin`](#To-Min-1)     | Reduces stream to its min value             | `stream.toMin([compareBy])`             |
-| [`toSum`](#To-Sum-1)     | Reduces stream to the sum of its items      | `stream.toSum()`                        |
-| [`toValue`](#To-Value-1) | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
+| Terminal Operation           | Description                                 | Code Snippet                            |
+|------------------------------|---------------------------------------------|-----------------------------------------|
+| [`toCount`](#To-Count-1)     | Reduces stream to its length                | `stream.toCount()`                      |
+| [`toMax`](#To-Max-1)         | Reduces stream to its max value             | `stream.toMax([compareBy])`             |
+| [`toMin`](#To-Min-1)         | Reduces stream to its min value             | `stream.toMin([compareBy])`             |
+| [`toProduct`](#To-Product-1) | Reduces stream to the product of its items  | `stream.toProduct()`                    |
+| [`toSum`](#To-Sum-1)         | Reduces stream to the sum of its items      | `stream.toSum()`                        |
+| [`toValue`](#To-Value-1)     | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
 
 Usage
 -----
@@ -394,6 +400,26 @@ for (const number of single.flatten(multidimensional)) {
 // [1, 2, 3, 4, 5]
 ```
 
+### Keys
+Iterate keys of key-value pairs.
+
+```
+function *keys<TKey, TValue>(
+  collection: Iterable<[TKey, TValue]>|Iterator<[TKey, TValue]>,
+): Iterable<TKey>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
+
+for (const key of single.keys(dict)) {
+  console.log(key);
+}
+// 'a', 'b', 'c'
+```
+
 ### Limit
 Iterate up to a limit.
 
@@ -498,6 +524,26 @@ for (const winterYear of single.slice(olympics, 1, 8, 2)) {
     winterOlympics.push(winterYear);
 }
 // [1994, 1998, 2002, 2006, 2010, 2014, 2018, 2022]
+```
+
+### Values
+Iterate values of key-value pairs.
+
+```
+function *values<TKey, TValue>(
+  collection: Iterable<[TKey, TValue]>|Iterator<[TKey, TValue]>,
+): Iterable<TValue>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
+
+for (const value of single.keys(dict)) {
+  console.log(value);
+}
+// 1, 2, 3
 ```
 
 ## Reduce
@@ -615,13 +661,29 @@ const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
 // }
 ```
 
+### To Product
+Reduces to the product of its elements.
+
+Returns `undefined` if collection is empty.
+
+```
+function toProduct(data: Iterable<number>|Iterator<number>): number|undefined
+```
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const primeFactors = [5, 2, 2];
+
+const number = reduce.toProduct(primeFactors);
+// 20
+```
+
 ### To Sum
 Reduces to the sum of its elements.
 
-For maps uses values for accumulating sum.
-
 ```
-function toSum(data: Iterable<number>|Iterator<number>|Map<unknown, number>): number
+function toSum(data: Iterable<number>|Iterator<number>): number
 ```
 
 ```typescript
@@ -955,6 +1017,24 @@ const result = Stream.of(data)
 // [1, 2, 3, 4, 5]
 ```
 
+### Keys
+Iterate keys of key-value pairs.
+
+```
+keys(): Stream
+```
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
+
+const result = Stream.of(dict)
+  .keys()
+  .toArray();
+// 'a', 'b', 'c'
+```
+
 #### Limit
 Return a stream up to a limit.
 
@@ -1030,6 +1110,24 @@ const summerOlympics = Stream.of(olympics)
   .slice(0, 8, 2)
   .toArray();
 // [1992, 1996, 2000, 2004, 2008, 2012, 2016, 2020]
+```
+
+### Values
+Iterate keys of key-value pairs.
+
+```
+values(): Stream
+```
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
+
+const result = Stream.of(dict)
+  .values()
+  .toArray();
+// 1, 2, 3
 ```
 
 #### Zip With
@@ -1127,7 +1225,7 @@ const result = Stream.of([1, 2, 3, 4, 5])
 Reduces iterable source to its length.
 
 ```
-toCount(): number
+stream.toCount(): number
 ```
 
 ```typescript
@@ -1144,7 +1242,7 @@ const result = Stream.of(iterable)
 Reduces iterable source to its max value.
 
 ```
-toMax<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined
+stream.toMax<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined
 ```
 
 - Optional callable param `compareBy` must return comparable value.
@@ -1165,7 +1263,7 @@ const result = Stream.of(iterable)
 Reduces iterable source to its min value.
 
 ```
-toMin<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined
+stream.toMin<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined
 ```
 
 - Optional callable param `compareBy` must return comparable value.
@@ -1180,6 +1278,25 @@ const input = [1, -1, 2, -2, 3, -3];
 const result = Stream.of(iterable)
   .toMin();
 // -3
+```
+
+##### To Product
+Reduces iterable source to the product of its items.
+
+```
+stream.toProduct(): number|undefined
+```
+
+Returns `undefined` if stream is empty.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = Stream.of(input)
+  .toProduct();
+// 120
 ```
 
 ##### To Sum

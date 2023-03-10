@@ -5,11 +5,13 @@ import {
   filter,
   flatMap,
   flatten,
+  keys,
   limit,
   map,
   repeat,
   pairwise,
   slice,
+  values,
   FlatMapper,
   Pair,
 } from "./single";
@@ -29,6 +31,7 @@ import {
   toCount,
   toMax,
   toMin,
+  toProduct,
   toSum,
   toValue,
 } from "./reduce";
@@ -60,11 +63,13 @@ export const single = {
   filter,
   flatMap,
   flatten,
+  keys,
   limit,
   map,
   pairwise,
   repeat,
   slice,
+  values,
 }
 
 export const multi = {
@@ -82,6 +87,7 @@ export const reduce = {
   toCount,
   toMax,
   toMin,
+  toProduct,
   toSum,
   toValue,
 }

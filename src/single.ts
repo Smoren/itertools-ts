@@ -186,3 +186,19 @@ export function *slice<T>(
     yield datum;
   }
 }
+
+export function *keys<TKey, TValue>(
+  collection: Iterable<[TKey, TValue]>|Iterator<[TKey, TValue]>,
+): Iterable<TKey> {
+  for (const [key] of toIterable(collection)) {
+    yield key;
+  }
+}
+
+export function *values<TKey, TValue>(
+  collection: Iterable<[TKey, TValue]>|Iterator<[TKey, TValue]>,
+): Iterable<TValue> {
+  for (const [, value] of toIterable(collection)) {
+    yield value;
+  }
+}

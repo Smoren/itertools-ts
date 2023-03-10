@@ -1,5 +1,5 @@
 import { toIterable } from "./transform";
-import { single } from "./index";
+import { single, transform } from "./index";
 
 export function toValue<TInput, TOutput>(
   data: Iterable<TInput>|Iterator<TInput>,
@@ -57,16 +57,19 @@ export function toMax<TValue, TComparable>(
   });
 }
 
-export function toSum(data: Iterable<number>|Iterator<number>|Map<unknown, number>): number {
-  if (data instanceof Map<unknown, number>) {
-    data = single.map(data, (pair: [unknown, number]) => pair[1]);
-  }
-
+export function toSum(data: Iterable<number>|Iterator<number>): number {
   return toValue(
     data,
     (carry, datum) => (carry as number) + Number(datum),
     0,
   ) as number;
+}
+
+export function toProduct(data: Iterable<number>|Iterator<number>): number|undefined {
+  return toValue(
+    data,
+    (carry, datum) => (carry ?? 1) * datum,
+  );
 }
 
 export function toCount(data: Iterable<unknown>|Iterator<unknown>): number

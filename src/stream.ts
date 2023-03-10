@@ -5,15 +5,16 @@ import {
   enumerate,
   filter,
   flatMap,
-  flatten,
+  flatten, keys,
   limit,
   map,
   pairwise,
   slice,
+  values,
 } from './single';
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
-import { toCount, toMax, toMin, toSum, toValue } from "./reduce";
+import { toCount, toMax, toMin, toProduct, toSum, toValue } from "./reduce";
 
 export class Stream {
   protected data: Iterable<unknown>;
@@ -70,6 +71,11 @@ export class Stream {
     return this;
   }
 
+  keys(): Stream {
+    this.data = keys(this.data as Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>);
+    return this;
+  }
+
   limit(count: number): Stream {
     this.data = limit(this.data, count);
     return this;
@@ -100,6 +106,11 @@ export class Stream {
     return this;
   }
 
+  values(): Stream {
+    this.data = values(this.data as Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>);
+    return this;
+  }
+
   distinct(): Stream {
     this.data = distinct(this.data);
     return this;
@@ -126,6 +137,10 @@ export class Stream {
 
   toSum(): number {
     return toSum(this as Iterable<number>);
+  }
+
+  toProduct(): number|undefined {
+    return toProduct(this as Iterable<number>);
   }
 
   toArray(): Array<unknown> {
