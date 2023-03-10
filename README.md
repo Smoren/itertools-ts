@@ -1,8 +1,10 @@
 # IterTools implementation for TypeScript
 
+[![npm](https://img.shields.io/npm/v/itertools-ts.svg)](https://www.npmjs.com/package/itertools-ts)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Smoren/itertools-ts/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Smoren/itertools-ts/?branch=master)
 [![Coverage Status](https://coveralls.io/repos/github/Smoren/itertools-ts/badge.svg?branch=master)](https://coveralls.io/github/Smoren/itertools-ts?branch=master)
 ![Build and test](https://github.com/Smoren/itertools-ts/actions/workflows/test_master.yml/badge.svg)
+[![Minified Size](https://badgen.net/bundlephobia/minzip/itertools-ts)](https://bundlephobia.com/result?p=itertools-ts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Inspired by Python — designed for TypeScript.
@@ -265,7 +267,7 @@ Return elements in chunks of a certain size.
 
 ```
 function *chunkwise<T>(
-  data: Iterable<T>|Iterator<T>, 
+  data: Iterable<T>|Iterator<T>,
   chunkSize: number,
 ): Iterable<Array<T>>
 ```
