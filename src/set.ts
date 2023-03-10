@@ -1,6 +1,6 @@
 import { toIterable } from "./transform";
 
-export function *distinct<T>(data: Iterable<T>|Iterator<T>): Iterable<T> {
+export function* distinct<T>(data: Iterable<T> | Iterator<T>): Iterable<T> {
   const used = new Set();
 
   if (data instanceof Map) {

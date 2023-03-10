@@ -1,4 +1,4 @@
-import { LengthError } from './exceptions';
+import { LengthError } from "./exceptions";
 import { single } from "./index";
 import { toIterator } from "./transform";
 
@@ -8,10 +8,10 @@ export enum MultipleIterationMode {
   STRICT_EQUAL,
 }
 
-export function *createMultipleIterator(
+export function* createMultipleIterator(
   mode: MultipleIterationMode,
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-) {
+  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+): Iterable<Array<unknown>> {
   if (iterables.length === 0) {
     return;
   }
@@ -21,42 +21,42 @@ export function *createMultipleIterator(
     iterators.push(toIterator(it));
   }
 
-  iterate:
+  iterate: while (true) {
+    const statuses = single.map(iterators, (it: Iterator<unknown>) =>
+      it.next()
+    );
+    const values = [];
 
-    while (true) {
-      const statuses = single.map(iterators, (it: Iterator<unknown>) => it.next());
-      const values = [];
+    let allValid = true;
+    let anyValid = false;
 
-      let allValid = true;
-      let anyValid = false;
+    for (const status of statuses) {
+      let value;
 
-      for (const status of statuses) {
-        let value;
-
-        if (status.done) {
-          allValid = false;
-          value = undefined;
-        } else {
-          anyValid = true;
-          value = status.value;
-        }
-
-        values.push(value);
+      if (status.done) {
+        allValid = false;
+        value = undefined;
+      } else {
+        anyValid = true;
+        value = status.value;
       }
 
-      if (!allValid && anyValid) {
-        switch (mode) {
-          case MultipleIterationMode.SHORTEST:
-            break iterate;
-          case MultipleIterationMode.STRICT_EQUAL:
-            throw new LengthError("Iterators must have equal lengths");
-        }
-      }
-
-      if (!anyValid) {
-        break;
-      }
-
-      yield values;
+      values.push(value);
     }
+
+    if (!allValid && anyValid) {
+      switch (mode) {
+        case MultipleIterationMode.SHORTEST:
+          break iterate;
+        case MultipleIterationMode.STRICT_EQUAL:
+          throw new LengthError("Iterators must have equal lengths");
+      }
+    }
+
+    if (!anyValid) {
+      break;
+    }
+
+    yield values;
+  }
 }

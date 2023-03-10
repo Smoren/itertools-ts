@@ -2,18 +2,20 @@ import { toIterable } from "./transform";
 import { InvalidArgumentError } from "./exceptions";
 import { isIterable, isIterator } from "./summary";
 
-export function *map<TInput, TOutput>(
-  data: Iterable<TInput>|Iterator<TInput>,
-  mapper: (datum: TInput) => TOutput,
+export function* map<TInput, TOutput>(
+  data: Iterable<TInput> | Iterator<TInput>,
+  mapper: (datum: TInput) => TOutput
 ): Iterable<TOutput> {
   for (const datum of toIterable(data)) {
     yield mapper(datum);
   }
 }
 
-export function *repeat<T>(item: T, repetitions: number): Iterable<T> {
+export function* repeat<T>(item: T, repetitions: number): Iterable<T> {
   if (repetitions < 0) {
-    throw new InvalidArgumentError(`Number of repetitions cannot be negative: ${repetitions}`);
+    throw new InvalidArgumentError(
+      `Number of repetitions cannot be negative: ${repetitions}`
+    );
   }
   for (let i = repetitions; i > 0; --i) {
     yield item;
@@ -21,18 +23,20 @@ export function *repeat<T>(item: T, repetitions: number): Iterable<T> {
 }
 
 export type FlatMapper<TInput, TOutput> = (
-  datum: Iterable<TInput>|Iterator<TInput>|TInput,
+  datum: Iterable<TInput> | Iterator<TInput> | TInput,
   mapper: FlatMapper<TInput, TOutput>
-) => TOutput|Iterable<TInput>|Iterator<TInput>;
+) => TOutput | Iterable<TInput> | Iterator<TInput>;
 
-export function *flatMap<TInput, TOutput>(
-  data: Iterable<TInput>|Iterator<TInput>,
-  mapper: FlatMapper<TInput, TOutput>,
+export function* flatMap<TInput, TOutput>(
+  data: Iterable<TInput> | Iterator<TInput>,
+  mapper: FlatMapper<TInput, TOutput>
 ): Iterable<TOutput> {
   for (const datum of toIterable<TInput>(data)) {
     const unflattened = mapper(datum, mapper);
     if (isIterable(unflattened)) {
-      for (const flattenedItem of toIterable(unflattened as Iterable<TOutput>|Iterator<TOutput>)) {
+      for (const flattenedItem of toIterable(
+        unflattened as Iterable<TOutput> | Iterator<TOutput>
+      )) {
         yield flattenedItem;
       }
     } else {
@@ -41,9 +45,9 @@ export function *flatMap<TInput, TOutput>(
   }
 }
 
-export function *flatten(
-  data: Iterable<unknown>|Iterator<unknown>,
-  dimensions: number = Infinity,
+export function* flatten(
+  data: Iterable<unknown> | Iterator<unknown>,
+  dimensions = Infinity
 ): Iterable<unknown> {
   if (dimensions < 1) {
     for (let datum of toIterable(data)) {
@@ -61,8 +65,14 @@ export function *flatten(
       datum = (datum as [unknown, unknown])[1];
     }
 
-    if ((isIterable(datum) || isIterator(datum)) && !(typeof datum === 'string' || datum instanceof String)) {
-      for (const subDatum of flatten(datum as Iterable<unknown>|Iterator<unknown>, dimensions-1)) {
+    if (
+      (isIterable(datum) || isIterator(datum)) &&
+      !(typeof datum === "string" || datum instanceof String)
+    ) {
+      for (const subDatum of flatten(
+        datum as Iterable<unknown> | Iterator<unknown>,
+        dimensions - 1
+      )) {
         yield subDatum;
       }
     } else {
@@ -71,9 +81,9 @@ export function *flatten(
   }
 }
 
-export function *filter<T>(
-  data: Iterable<T>|Iterator<T>,
-  predicate: (datum: T) => boolean,
+export function* filter<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (datum: T) => boolean
 ): Iterable<T> {
   for (const datum of toIterable(data)) {
     if (predicate(datum)) {
@@ -82,18 +92,18 @@ export function *filter<T>(
   }
 }
 
-export function *chunkwiseOverlap<T>(
-  data: Iterable<T>|Iterator<T>,
+export function* chunkwiseOverlap<T>(
+  data: Iterable<T> | Iterator<T>,
   chunkSize: number,
   overlapSize: number,
-  includeIncompleteTail: boolean = true,
+  includeIncompleteTail = true
 ): Iterable<Array<T>> {
   if (chunkSize < 1) {
     throw new InvalidArgumentError(`Chunk size must be ≥ 1. Got ${chunkSize}`);
   }
 
   if (overlapSize >= chunkSize) {
-    throw new InvalidArgumentError('Overlap size must be less than chunk size');
+    throw new InvalidArgumentError("Overlap size must be less than chunk size");
   }
 
   let chunk: Array<T> = [];
@@ -105,7 +115,7 @@ export function *chunkwiseOverlap<T>(
 
     if (chunk.length === chunkSize) {
       yield chunk;
-      chunk = chunk.slice(chunkSize-overlapSize);
+      chunk = chunk.slice(chunkSize - overlapSize);
       isLastIterationYielded = true;
     }
   }
@@ -115,7 +125,10 @@ export function *chunkwiseOverlap<T>(
   }
 }
 
-export function *chunkwise<T>(data: Iterable<T>|Iterator<T>, chunkSize: number): Iterable<Array<T>> {
+export function* chunkwise<T>(
+  data: Iterable<T> | Iterator<T>,
+  chunkSize: number
+): Iterable<Array<T>> {
   for (const chunk of chunkwiseOverlap(data, chunkSize, 0)) {
     yield chunk;
   }
@@ -123,8 +136,9 @@ export function *chunkwise<T>(data: Iterable<T>|Iterator<T>, chunkSize: number):
 
 export type Pair<T> = [T, T];
 
-export function *pairwise<T>(data: Iterable<T>|Iterator<T>): Iterable<Pair<T>>
-{
+export function* pairwise<T>(
+  data: Iterable<T> | Iterator<T>
+): Iterable<Pair<T>> {
   const chunked = chunkwiseOverlap(data, 2, 1, false);
 
   for (const chunk of chunked) {
@@ -132,7 +146,10 @@ export function *pairwise<T>(data: Iterable<T>|Iterator<T>): Iterable<Pair<T>>
   }
 }
 
-export function *limit<T>(data: Iterable<T>|Iterator<T>, count: number): Iterable<T> {
+export function* limit<T>(
+  data: Iterable<T> | Iterator<T>,
+  count: number
+): Iterable<T> {
   if (count < 0) {
     throw new InvalidArgumentError(`Limit must be ≥ 0. Got ${count}`);
   }
@@ -147,18 +164,20 @@ export function *limit<T>(data: Iterable<T>|Iterator<T>, count: number): Iterabl
   }
 }
 
-export function *enumerate<T>(data: Iterable<T>|Iterator<T>): Iterable<[number, T]> {
+export function* enumerate<T>(
+  data: Iterable<T> | Iterator<T>
+): Iterable<[number, T]> {
   let i = 0;
   for (const datum of toIterable(data)) {
     yield [i++, datum];
   }
 }
 
-export function *slice<T>(
-  data: Iterable<T>|Iterator<T>,
-  start: number = 0,
+export function* slice<T>(
+  data: Iterable<T> | Iterator<T>,
+  start = 0,
   count?: number,
-  step: number = 1,
+  step = 1
 ): Iterable<T> {
   if (start < 0) {
     throw new InvalidArgumentError("Parameter 'start' cannot be negative");
@@ -187,16 +206,16 @@ export function *slice<T>(
   }
 }
 
-export function *keys<TKey, TValue>(
-  collection: Iterable<[TKey, TValue]>|Iterator<[TKey, TValue]>,
+export function* keys<TKey, TValue>(
+  collection: Iterable<[TKey, TValue]> | Iterator<[TKey, TValue]>
 ): Iterable<TKey> {
   for (const [key] of toIterable(collection)) {
     yield key;
   }
 }
 
-export function *values<TKey, TValue>(
-  collection: Iterable<[TKey, TValue]>|Iterator<[TKey, TValue]>,
+export function* values<TKey, TValue>(
+  collection: Iterable<[TKey, TValue]> | Iterator<[TKey, TValue]>
 ): Iterable<TValue> {
   for (const [, value] of toIterable(collection)) {
     yield value;

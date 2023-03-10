@@ -3,7 +3,10 @@ export function isIterable(input: unknown): boolean {
     return false;
   }
 
-  return typeof (input as Record<string|symbol, unknown>)[Symbol.iterator] === 'function';
+  return (
+    typeof (input as Record<string | symbol, unknown>)[Symbol.iterator] ===
+    "function"
+  );
 }
 
 export function isIterator(input: unknown): boolean {
@@ -11,6 +14,8 @@ export function isIterator(input: unknown): boolean {
     return false;
   }
 
-  return (input as Record<string, unknown>).next !== undefined
-    && typeof (input as Record<string, unknown>).next === 'function';
+  return (
+    (input as Record<string, unknown>).next !== undefined &&
+    typeof (input as Record<string, unknown>).next === "function"
+  );
 }

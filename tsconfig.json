@@ -3,9 +3,7 @@
     "target": "ES6",
     "module": "commonjs",
     "moduleResolution": "Node",
-    "lib": [
-      "es6"
-    ],
+    "lib": ["es6"],
     "rootDir": "./src",
     "allowJs": false,
     "outDir": "./dist",

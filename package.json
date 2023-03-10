@@ -2,19 +2,36 @@
   "name": "itertools-ts",
   "version": "0.17.3",
   "description": "Extended itertools port for TypeScript. Provides a huge set of functions for working with iterable collections",
-  "main": "./lib/index.js",
-  "scripts": {
-    "build:commonjs": "rimraf lib && tsc --downlevelIteration --target es5 --outDir lib --module commonjs --declaration",
-    "build:es": "rimraf es && tsc --target es6 --outDir es --module es6",
-    "build": "npm run build:commonjs && npm run build:es",
-    "prepublishOnly": "npm run build",
-    "test": "jest --coverage",
-    "jest": "jest"
-  },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Smoren/itertools-ts.git"
   },
+  "author": {
+    "name": "Smoren",
+    "email": "ofigate@gmail.com",
+    "url": "https://github.com/Smoren"
+  },
+  "homepage": "https://github.com/Smoren/itertools-ts#readme",
+  "bugs": {
+    "url": "https://github.com/Smoren/itertools-ts/issues"
+  },
+  "main": "./lib/index.js",
+  "module": "./es/index.js",
+  "scripts": {
+    "build": "npm run build:commonjs && npm run build:es",
+    "build:commonjs": "rimraf lib && tsc --downlevelIteration --target es5 --outDir lib --module commonjs --declaration",
+    "build:es": "rimraf es && tsc --target es6 --outDir es --module es6",
+    "format": "ts-scripts format",
+    "jest": "jest",
+    "lint": "ts-scripts lint",
+    "prepublishOnly": "npm run build",
+    "test": "jest --coverage"
+  },
+  "files": [
+    "es",
+    "lib"
+  ],
   "keywords": [
     "itertools",
     "itertool",
@@ -33,34 +50,21 @@
     "loops",
     "looping"
   ],
-  "author": {
-    "name": "Smoren",
-    "email": "ofigate@gmail.com",
-    "url": "https://github.com/Smoren"
+  "devDependencies": {
+    "@borderless/ts-scripts": "^0.13.6",
+    "@types/jest": "^29.2.4",
+    "jest": "^29.3.1",
+    "rimraf": "^4.4.0",
+    "ts-expect": "^1.1.0",
+    "ts-jest": "^29.0.3",
+    "typescript": "^4.9.4"
   },
+  "types": "./lib/index.d.ts",
   "contributors": [
     {
       "name": "Anastasiya Golubeva",
       "url": "https://github.com/anastansa"
     }
   ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Smoren/itertools-ts/issues"
-  },
-  "homepage": "https://github.com/Smoren/itertools-ts#readme",
-  "devDependencies": {
-    "@types/jest": "^29.2.4",
-    "jest": "^29.3.1",
-    "rimraf": "^4.4.0",
-    "ts-jest": "^29.0.3",
-    "typescript": "^4.9.4"
-  },
-  "files": [
-    "es",
-    "lib"
-  ],
-  "types": "./lib/index.d.ts",
-  "jsnext:main": "./es/index.js",
-  "module": "./es/index.js"
+  "jsnext:main": "./es/index.js"
 }

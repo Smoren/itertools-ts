@@ -1,17 +1,18 @@
-import { toArray, toIterable } from './transform';
+import { toArray, toIterable } from "./transform";
 import {
   chunkwise,
   chunkwiseOverlap,
   enumerate,
   filter,
   flatMap,
-  flatten, keys,
+  flatten,
+  keys,
   limit,
   map,
   pairwise,
   slice,
   values,
-} from './single';
+} from "./single";
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
 import { toCount, toMax, toMin, toProduct, toSum, toValue } from "./reduce";
@@ -19,7 +20,7 @@ import { toCount, toMax, toMin, toProduct, toSum, toValue } from "./reduce";
 export class Stream {
   protected data: Iterable<unknown>;
 
-  static of(data: Iterable<unknown>|Iterator<unknown>): Stream {
+  static of(data: Iterable<unknown> | Iterator<unknown>): Stream {
     return new Stream(toIterable(data));
   }
 
@@ -27,22 +28,28 @@ export class Stream {
     return new Stream([]);
   }
 
-  zipWith(...iterables: Array<Iterable<unknown>|Iterator<unknown>>): Stream {
+  zipWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream {
     this.data = zip(this.data, ...iterables);
     return this;
   }
 
-  zipLongestWith(...iterables: Array<Iterable<unknown>|Iterator<unknown>>): Stream {
+  zipLongestWith(
+    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+  ): Stream {
     this.data = zipLongest(this.data, ...iterables);
     return this;
   }
 
-  zipEqualWith(...iterables: Array<Iterable<unknown>|Iterator<unknown>>): Stream {
+  zipEqualWith(
+    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+  ): Stream {
     this.data = zipEqual(this.data, ...iterables);
     return this;
   }
 
-  chainWith(...iterables: Array<Iterable<unknown>|Iterator<unknown>>): Stream {
+  chainWith(
+    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+  ): Stream {
     this.data = chain(this.data, ...iterables);
     return this;
   }
@@ -50,9 +57,14 @@ export class Stream {
   chunkwiseOverlap(
     chunkSize: number,
     overlapSize: number,
-    includeIncompleteTail: boolean = true,
+    includeIncompleteTail = true
   ): Stream {
-    this.data = chunkwiseOverlap(this.data, chunkSize, overlapSize, includeIncompleteTail);
+    this.data = chunkwiseOverlap(
+      this.data,
+      chunkSize,
+      overlapSize,
+      includeIncompleteTail
+    );
     return this;
   }
 
@@ -72,7 +84,9 @@ export class Stream {
   }
 
   keys(): Stream {
-    this.data = keys(this.data as Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>);
+    this.data = keys(
+      this.data as Iterable<[unknown, unknown]> | Iterator<[unknown, unknown]>
+    );
     return this;
   }
 
@@ -91,7 +105,7 @@ export class Stream {
     return this;
   }
 
-  flatten(dimensions: number = Infinity): Stream {
+  flatten(dimensions = Infinity): Stream {
     this.data = flatten(this.data, dimensions);
     return this;
   }
@@ -101,13 +115,15 @@ export class Stream {
     return this;
   }
 
-  slice(start: number = 0, count?: number, step: number = 1): Stream {
+  slice(start = 0, count?: number, step = 1): Stream {
     this.data = slice(this.data, start, count, step);
     return this;
   }
 
   values(): Stream {
-    this.data = values(this.data as Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>);
+    this.data = values(
+      this.data as Iterable<[unknown, unknown]> | Iterator<[unknown, unknown]>
+    );
     return this;
   }
 
@@ -117,9 +133,9 @@ export class Stream {
   }
 
   toValue<T>(
-    reducer: (carry: T|undefined, datum: unknown) => T,
-    initialValue?: T,
-  ): T|undefined {
+    reducer: (carry: T | undefined, datum: unknown) => T,
+    initialValue?: T
+  ): T | undefined {
     return toValue(this, reducer, initialValue);
   }
 
@@ -127,11 +143,15 @@ export class Stream {
     return toCount(this as Iterable<number>);
   }
 
-  toMax<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined {
+  toMax<TComparable>(
+    compareBy?: (datum: unknown) => TComparable
+  ): unknown | undefined {
     return toMax(this, compareBy);
   }
 
-  toMin<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined {
+  toMin<TComparable>(
+    compareBy?: (datum: unknown) => TComparable
+  ): unknown | undefined {
     return toMin(this, compareBy);
   }
 
@@ -139,7 +159,7 @@ export class Stream {
     return toSum(this as Iterable<number>);
   }
 
-  toProduct(): number|undefined {
+  toProduct(): number | undefined {
     return toProduct(this as Iterable<number>);
   }
 
@@ -147,7 +167,7 @@ export class Stream {
     return toArray(this);
   }
 
-  *[Symbol.iterator]() {
+  *[Symbol.iterator](): Iterator<unknown> {
     for (const datum of this.data) {
       yield datum;
     }
