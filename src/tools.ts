@@ -8,6 +8,12 @@ export enum MultipleIterationMode {
   STRICT_EQUAL,
 }
 
+/**
+ * Creates iterable instance to iterate several iterables simultaneously.
+ *
+ * @param mode shortest, longest or strict equal
+ * @param iterables
+ */
 export function* createMultipleIterator(
   mode: MultipleIterationMode,
   ...iterables: Array<Iterable<unknown> | Iterator<unknown>>

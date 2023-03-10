@@ -2,6 +2,12 @@ import { toIterable } from "./transform";
 import { InvalidArgumentError } from "./exceptions";
 import { isIterable, isIterator } from "./summary";
 
+/**
+ * Map a function onto every element of the iteration.
+ *
+ * @param data
+ * @param mapper
+ */
 export function* map<TInput, TOutput>(
   data: Iterable<TInput> | Iterator<TInput>,
   mapper: (datum: TInput) => TOutput
@@ -11,6 +17,12 @@ export function* map<TInput, TOutput>(
   }
 }
 
+/**
+ * Repeat an item.
+ *
+ * @param item
+ * @param repetitions
+ */
 export function* repeat<T>(item: T, repetitions: number): Iterable<T> {
   if (repetitions < 0) {
     throw new InvalidArgumentError(
@@ -27,6 +39,15 @@ export type FlatMapper<TInput, TOutput> = (
   mapper: FlatMapper<TInput, TOutput>
 ) => TOutput | Iterable<TInput> | Iterator<TInput>;
 
+/**
+ * Returns a new collection formed by applying a given callback mapper function to each element
+ * of the given collection, and then flattening the result by one level.
+ *
+ * The mapper function can return scalar or collections as a result.
+ *
+ * @param data
+ * @param mapper
+ */
 export function* flatMap<TInput, TOutput>(
   data: Iterable<TInput> | Iterator<TInput>,
   mapper: FlatMapper<TInput, TOutput>
@@ -45,6 +66,14 @@ export function* flatMap<TInput, TOutput>(
   }
 }
 
+/**
+ * Flatten an iterable by a number of dimensions.
+ *
+ * Ex: [[1, 2], [3, 4], 5] => [1, 2, 3, 4, 5] // Flattened by one dimension
+ *
+ * @param data
+ * @param dimensions
+ */
 export function* flatten(
   data: Iterable<unknown> | Iterator<unknown>,
   dimensions = Infinity
@@ -81,6 +110,12 @@ export function* flatten(
   }
 }
 
+/**
+ * Filter out elements from the iterable only returning elements where there predicate function is true.
+ *
+ * @param data
+ * @param predicate
+ */
 export function* filter<T>(
   data: Iterable<T> | Iterator<T>,
   predicate: (datum: T) => boolean
@@ -92,6 +127,18 @@ export function* filter<T>(
   }
 }
 
+/**
+ * Return overlapped chunks of elements from given collection.
+ *
+ * Chunk size must be at least 1.
+ *
+ * Overlap size must be less than chunk size.
+ *
+ * @param data
+ * @param chunkSize
+ * @param overlapSize
+ * @param includeIncompleteTail
+ */
 export function* chunkwiseOverlap<T>(
   data: Iterable<T> | Iterator<T>,
   chunkSize: number,
@@ -125,6 +172,14 @@ export function* chunkwiseOverlap<T>(
   }
 }
 
+/**
+ * Return chunks of elements from given collection.
+ *
+ * Chunk size must be at least 1.
+ *
+ * @param data
+ * @param chunkSize
+ */
 export function* chunkwise<T>(
   data: Iterable<T> | Iterator<T>,
   chunkSize: number
@@ -136,6 +191,13 @@ export function* chunkwise<T>(
 
 export type Pair<T> = [T, T];
 
+/**
+ * Return pairs of elements from given collection.
+ *
+ * Returns empty generator if given collection contains less than 2 elements.
+ *
+ * @param data
+ */
 export function* pairwise<T>(
   data: Iterable<T> | Iterator<T>
 ): Iterable<Pair<T>> {
@@ -146,6 +208,12 @@ export function* pairwise<T>(
   }
 }
 
+/**
+ * Limit iteration to a max size limit.
+ *
+ * @param data
+ * @param count ≥ 0, max count of iteration
+ */
 export function* limit<T>(
   data: Iterable<T> | Iterator<T>,
   count: number
@@ -164,6 +232,13 @@ export function* limit<T>(
   }
 }
 
+/**
+ * Enumerates items of given collection.
+ *
+ * Ex: ['a', 'b', 'c'] => [[0, 'a'], [1, 'b'], [2, 'c']]
+ *
+ * @param data
+ */
 export function* enumerate<T>(
   data: Iterable<T> | Iterator<T>
 ): Iterable<[number, T]> {
@@ -173,6 +248,16 @@ export function* enumerate<T>(
   }
 }
 
+/**
+ * Extract a slice of the collection.
+ *
+ * @param data
+ * @param start
+ * @param count
+ * @param step
+ *
+ * @throws InvalidArgumentError if `start` or `count` are negative or if `step` is not positive.
+ */
 export function* slice<T>(
   data: Iterable<T> | Iterator<T>,
   start = 0,
@@ -206,6 +291,13 @@ export function* slice<T>(
   }
 }
 
+/**
+ * Iterates keys from the collection of key-value pairs.
+ *
+ * Ex: [[0, 'a'], [1, 'b'], [2, 'c']] => [0, 1, 2]
+ *
+ * @param collection
+ */
 export function* keys<TKey, TValue>(
   collection: Iterable<[TKey, TValue]> | Iterator<[TKey, TValue]>
 ): Iterable<TKey> {
@@ -214,6 +306,13 @@ export function* keys<TKey, TValue>(
   }
 }
 
+/**
+ * Iterates values from the collection of key-value pairs.
+ *
+ * Ex: [[0, 'a'], [1, 'b'], [2, 'c']] => ['a', 'b', 'c']
+ *
+ * @param collection
+ */
 export function* values<TKey, TValue>(
   collection: Iterable<[TKey, TValue]> | Iterator<[TKey, TValue]>
 ): Iterable<TValue> {

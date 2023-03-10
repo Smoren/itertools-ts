@@ -1,3 +1,8 @@
+/**
+ * Return true if given input is an Iterable instance.
+ *
+ * @param input
+ */
 export function isIterable(input: unknown): boolean {
   if (input === null || input === undefined) {
     return false;
@@ -9,6 +14,11 @@ export function isIterable(input: unknown): boolean {
   );
 }
 
+/**
+ * Return true if given input is an Iterator instance.
+ *
+ * @param input
+ */
 export function isIterator(input: unknown): boolean {
   if (input === null || input === undefined) {
     return false;

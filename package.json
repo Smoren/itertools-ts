@@ -22,11 +22,11 @@
     "build": "npm run build:commonjs && npm run build:es",
     "build:commonjs": "rimraf lib && tsc --downlevelIteration --target es5 --outDir lib --module commonjs --declaration",
     "build:es": "rimraf es && tsc --target es6 --outDir es --module es6",
-    "format": "ts-scripts format",
+    "test": "jest --coverage",
     "jest": "jest",
+    "format": "ts-scripts format",
     "lint": "ts-scripts lint",
     "prepublishOnly": "npm run build",
-    "test": "jest --coverage",
     "prepare": "husky install"
   },
   "files": [

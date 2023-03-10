@@ -1,6 +1,16 @@
 import { toIterable } from "./transform";
 import { createMultipleIterator, MultipleIterationMode } from "./tools";
 
+/**
+ * Iterate multiple iterable collections simultaneously.
+ *
+ * Make an iterator that aggregates items from multiple iterators.
+ * Similar to Python's zip function.
+ *
+ * For uneven lengths, iterations stops when the shortest iterable is exhausted.
+ *
+ * @param iterables
+ */
 export function* zip(
   ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
 ): Iterable<Array<unknown>> {
@@ -12,6 +22,17 @@ export function* zip(
   }
 }
 
+/**
+ * Iterate multiple iterable collections simultaneously.
+ *
+ * Make an iterator that aggregates items from multiple iterators.
+ * Similar to Python's zip_longest function
+ *
+ * Iteration continues until the longest iterable is exhausted.
+ * For uneven lengths, the exhausted iterables will produce null for the remaining iterations.
+ *
+ * @param iterables
+ */
 export function* zipLongest(
   ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
 ): Iterable<Array<unknown>> {
@@ -23,6 +44,16 @@ export function* zipLongest(
   }
 }
 
+/**
+ * Iterate multiple iterable collections of equal lengths simultaneously.
+ *
+ * Works like multi.zip() method but throws LengthException if lengths not equal,
+ * i.e., at least one iterator ends before the others.
+ *
+ * @param iterables
+ *
+ * @throws LengthError if iterators lengths not equal.
+ */
 export function* zipEqual(
   ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
 ): Iterable<Array<unknown>> {
@@ -34,6 +65,13 @@ export function* zipEqual(
   }
 }
 
+/**
+ * Chain multiple iterables together into a single iteration.
+ *
+ * Makes a single continuous sequence out of multiple sequences.
+ *
+ * @param iterables
+ */
 export function* chain(
   ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
 ): Iterable<unknown> {

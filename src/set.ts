@@ -1,5 +1,10 @@
 import { toIterable } from "./transform";
 
+/**
+ * Iterate only the distinct elements.
+ *
+ * @param data
+ */
 export function* distinct<T>(data: Iterable<T> | Iterator<T>): Iterable<T> {
   const used = new Set();
 

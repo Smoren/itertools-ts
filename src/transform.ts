@@ -1,6 +1,13 @@
 import { InvalidArgumentError } from "./exceptions";
 import { isIterable, isIterator } from "./summary";
 
+/**
+ * Converts collection to Iterable instance.
+ *
+ * If instance is already an iterable then just return it.
+ *
+ * @param collection
+ */
 export function toIterable<T>(
   collection: Iterable<T> | Iterator<T>
 ): Iterable<T> {
@@ -21,6 +28,13 @@ export function toIterable<T>(
   );
 }
 
+/**
+ * Converts collection to Iterator instance.
+ *
+ * If instance is already an iterator then just return it.
+ *
+ * @param collection
+ */
 export function toIterator<T>(
   collection: Iterable<T> | Iterator<T>
 ): Iterator<T> {
@@ -41,6 +55,11 @@ export function toIterator<T>(
   );
 }
 
+/**
+ * Converts given collection to array.
+ *
+ * @param collection
+ */
 export function toArray<T>(collection: Iterable<T> | Iterator<T>): Array<T> {
   const result = [];
   for (const item of toIterable(collection)) {
