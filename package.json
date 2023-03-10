@@ -54,5 +54,12 @@
     "rimraf": "^4.4.0",
     "ts-jest": "^29.0.3",
     "typescript": "^4.9.4"
-  }
+  },
+  "files": [
+    "es",
+    "lib"
+  ],
+  "types": "./lib/index.d.ts",
+  "jsnext:main": "./es/index.js",
+  "module": "./es/index.js"
 }
