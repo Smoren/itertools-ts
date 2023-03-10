@@ -1,6 +1,6 @@
 {
   "name": "itertools-ts",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "description": "Extended itertools port for TypeScript. Provides a huge set of functions for working with iterable collections",
   "main": "./lib/index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "keywords": [
     "itertools",
+    "itertool",
     "itertools-library",
     "itertools-lib",
     "iterable",
@@ -26,11 +27,11 @@
     "stream",
     "streams",
     "fluentinterface",
+    "map",
+    "filter",
     "zip",
     "loops",
-    "looping",
-    "random-iteration",
-    "infinite-iteration"
+    "looping"
   ],
   "author": {
     "name": "Smoren",
