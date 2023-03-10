@@ -1,7 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
 import { Stream, single } from '../../src';
-import { enumerate } from '../../lib/single';
 
 describe.each([
   ...dataProviderForArrays(),
