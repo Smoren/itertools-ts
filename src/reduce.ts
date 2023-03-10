@@ -1,5 +1,5 @@
 import { toIterable } from "./transform";
-import { single, Stream } from "./index";
+import { single } from "./index";
 
 export function toValue<TInput, TOutput>(
   data: Iterable<TInput>|Iterator<TInput>,
