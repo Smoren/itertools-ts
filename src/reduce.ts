@@ -1,4 +1,5 @@
 import { toIterable } from "./transform";
+import { LengthError } from "./exceptions";
 
 /**
  * Reduces iterable source like `array.reduce()` function.
@@ -141,4 +142,44 @@ export function toCount(data: Iterable<unknown> | Iterator<unknown>): number {
   }
 
   return toValue(data, (carry) => (carry as number) + 1, 0) as number;
+}
+
+/**
+ * Reduces given collection to its first value.
+ *
+ * @param data
+ *
+ * @throws LengthError if given collection is empty.
+ */
+export function toFirst<T>(data: Iterable<T> | Iterator<T>): T
+{
+  for (const datum of toIterable(data)) {
+    return datum;
+  }
+
+  throw new LengthError('Collection is empty');
+}
+
+/**
+ * Reduces given collection to its last value.
+ *
+ * @param data
+ *
+ * @throws LengthError if given collection is empty.
+ */
+export function toLast<T>(data: Iterable<T> | Iterator<T>): T
+{
+  let isEmpty = true;
+  let result;
+
+  for (const datum of toIterable(data)) {
+    result = datum;
+    isEmpty = false;
+  }
+
+  if (isEmpty) {
+    throw new LengthError('Collection is empty');
+  }
+
+  return result as T;
 }

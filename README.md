@@ -89,6 +89,8 @@ Quick Reference
 |----------------------------|----------------------------------------|-----------------------------------------------|
 | [`toAverage`](#To-Average) | Mean average of elements               | `reduce.toAverage(numbers)`                   |
 | [`toCount`](#To-Count)     | Reduce to length of iterable           | `reduce.toCount(data)`                        |
+| [`toFirst`](#To-First)     | Reduce to its first value              | `reduce.toFirst(data)`                        |
+| [`toLast`](#To-Last)       | Reduce to its last value               | `reduce.toLast(data)`                         |
 | [`toMax`](#To-Max)         | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
 | [`toMin`](#To-Min)         | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
 | [`toProduct`](#To-Product) | Reduce to the product of its elements  | `reduce.toProduct(numbers)`                   |
@@ -152,6 +154,8 @@ Quick Reference
 |------------------------------|-------------------------------------------------|-----------------------------------------|
 | [`toAverage`](#To-Average-1) | Reduces stream to the mean average of its items | `stream.toAverage()`                    |
 | [`toCount`](#To-Count-1)     | Reduces stream to its length                    | `stream.toCount()`                      |
+| [`toFirst`](#To-First-1)     | Reduces stream to its first value               | `stream.toFirst()`                      |
+| [`toLast`](#To-Last-1)       | Reduces stream to its last value                | `stream.toLast()`                       |
 | [`toMax`](#To-Max-1)         | Reduces stream to its max value                 | `stream.toMax([compareBy])`             |
 | [`toMin`](#To-Min-1)         | Reduces stream to its min value                 | `stream.toMin([compareBy])`             |
 | [`toProduct`](#To-Product-1) | Reduces stream to the product of its items      | `stream.toProduct()`                    |
@@ -584,6 +588,42 @@ const data = [1, 2, 3];
 
 const length = reduce.toCount(data);
 // 3
+```
+
+### To First
+Reduces iterable to its first element.
+
+```
+function toFirst<T>(data: Iterable<T> | Iterator<T>): T
+```
+
+Throws `LengthException` if collection is empty.
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const medals = ['gold', 'silver', 'bronze'];
+
+const first = reduce.toFirst(medals);
+// gold
+```
+
+### To Last
+Reduces iterable to its last element.
+
+```
+function toLast<T>(data: Iterable<T> | Iterator<T>): T
+```
+
+Throws `LengthException` if collection is empty.
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const medals = ['gold', 'silver', 'bronze'];
+
+const first = reduce.toFirst(medals);
+// bronze
 ```
 
 ### To Max
@@ -1278,6 +1318,44 @@ const input = [10, 20, 30, 40, 50];
 const result = Stream.of(iterable)
   .toCount();
 // 5
+```
+
+##### To First
+Reduces stream to its first element.
+
+```
+stream.toFirst(): unknown
+```
+
+Throws `LengthException` if stream is empty.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [10, 20, 30];
+
+const result = Stream.of(input)
+  .toFirst();
+// 10
+```
+
+##### To Last
+Reduces stream to its last element.
+
+```
+stream.to:Last(): unknown
+```
+
+Throws `LengthException` if stream is empty.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [10, 20, 30];
+
+const result = Stream.of(input)
+  .toLast();
+// 30
 ```
 
 ##### To Max

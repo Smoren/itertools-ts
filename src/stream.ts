@@ -15,7 +15,7 @@ import {
 } from "./single";
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
-import { toAverage, toCount, toMax, toMin, toProduct, toSum, toValue } from "./reduce";
+import { toAverage, toCount, toFirst, toLast, toMax, toMin, toProduct, toSum, toValue } from "./reduce";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -82,7 +82,7 @@ export class Stream {
   /**
    * Iterate iterable source with another iterable collections of equal lengths simultaneously.
    *
-   * Works like Multi::zip() method but throws \LengthException if lengths not equal,
+   * Works like multi.zip() method but throws LengthException if lengths not equal,
    * i.e., at least one iterator ends before the others.
    *
    * @param iterables
@@ -355,6 +355,28 @@ export class Stream {
     compareBy?: (datum: unknown) => TComparable
   ): unknown | undefined {
     return toMin(this, compareBy);
+  }
+
+  /**
+   * Returns the first element of stream.
+   *
+   * @throws LengthError if stream is empty.
+   *
+   * @see reduce.toFirst
+   */
+  toFirst(): unknown {
+    return toFirst(this);
+  }
+
+  /**
+   * Returns the first element of stream.
+   *
+   * @throws LengthError if stream is empty.
+   *
+   * @see reduce.toLast
+   */
+  toLast(): unknown {
+    return toLast(this);
   }
 
   /**
