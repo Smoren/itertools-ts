@@ -181,6 +181,18 @@ function dataProviderForArrays(): Array<unknown> {
     [
       [],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      undefined,
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      0,
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toCount(),
       0,
     ],
@@ -558,6 +570,18 @@ function dataProviderForGenerators(): Array<unknown> {
     [
       createGeneratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      undefined,
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      0,
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toCount(),
       0,
     ],
@@ -921,6 +945,18 @@ function dataProviderForIterables(): Array<unknown> {
             .reduce((accumulator, current) => accumulator + current);
         }, 0),
       90,
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      undefined,
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      0,
     ],
     [
       createIterableFixture([]),
@@ -1292,6 +1328,18 @@ function dataProviderForIterators(): Array<unknown> {
     [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      undefined,
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      0,
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toCount(),
       0,
     ],
@@ -1626,6 +1674,18 @@ function dataProviderForStrings(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      undefined,
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      2,
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toCount(),
       0,
     ],
@@ -1869,6 +1929,18 @@ function dataProviderForSets(): Array<unknown> {
             .reduce((accumulator, current) => accumulator + current);
         }, 0),
       90,
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      undefined,
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toAverage(),
+      0,
     ],
     [
       new Set([]),
@@ -2256,6 +2328,20 @@ function dataProviderForMaps(): Array<unknown> {
             .reduce((accumulator, current) => accumulator + (current as number));
         }, 0),
       90,
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .toAverage(),
+      undefined,
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .toAverage(),
+      0,
     ],
     [
       createMapFixture([]),

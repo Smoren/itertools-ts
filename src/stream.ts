@@ -15,7 +15,7 @@ import {
 } from "./single";
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { distinct } from "./set";
-import { toCount, toMax, toMin, toProduct, toSum, toValue } from "./reduce";
+import { toAverage, toCount, toMax, toMin, toProduct, toSum, toValue } from "./reduce";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -297,6 +297,17 @@ export class Stream {
     initialValue?: T
   ): T | undefined {
     return toValue(this, reducer, initialValue);
+  }
+
+  /**
+   * Reduces iterable source to the mean average of its items.
+   *
+   * Returns `undefined` if iterable source is empty.
+   *
+   * @see reduce.toAverage
+   */
+  toAverage(): number | undefined {
+    return toAverage(this as Iterable<number>);
   }
 
   /**

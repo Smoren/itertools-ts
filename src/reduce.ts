@@ -22,6 +22,24 @@ export function toValue<TInput, TOutput>(
 }
 
 /**
+ * Reduces given collection to the mean average of its items.
+ *
+ * Returns `undefined` if given collection is empty.
+ *
+ * @param data
+ */
+export function toAverage(
+  data: Iterable<number> | Iterator<number>,
+): number | undefined {
+  const [count, sum] = toValue(data, (carry, datum) => {
+    const [count, sum] = carry as [number, number];
+    return [count + 1, sum + Number(datum)];
+  }, [0, 0]) as [number, number];
+
+  return count ? (sum / count) : undefined;
+}
+
+/**
  * Reduces given iterable to its min value.
  *
  * Optional callable param `compareBy` must return comparable value.

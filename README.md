@@ -87,6 +87,7 @@ Quick Reference
 #### Reduce
 | Reducer                    | Description                            | Code Snippet                                  |
 |----------------------------|----------------------------------------|-----------------------------------------------|
+| [`toAverage`](#To-Average) | Mean average of elements               | `reduce.toAverage(numbers)`                   |
 | [`toCount`](#To-Count)     | Reduce to length of iterable           | `reduce.toCount(data)`                        |
 | [`toMax`](#To-Max)         | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
 | [`toMin`](#To-Min)         | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
@@ -147,14 +148,15 @@ Quick Reference
 | [`toArray`](#To-Array-1) | Returns array of stream elements | `stream.toArray()` |
 
 ##### Reduction Terminal Operations
-| Terminal Operation           | Description                                 | Code Snippet                            |
-|------------------------------|---------------------------------------------|-----------------------------------------|
-| [`toCount`](#To-Count-1)     | Reduces stream to its length                | `stream.toCount()`                      |
-| [`toMax`](#To-Max-1)         | Reduces stream to its max value             | `stream.toMax([compareBy])`             |
-| [`toMin`](#To-Min-1)         | Reduces stream to its min value             | `stream.toMin([compareBy])`             |
-| [`toProduct`](#To-Product-1) | Reduces stream to the product of its items  | `stream.toProduct()`                    |
-| [`toSum`](#To-Sum-1)         | Reduces stream to the sum of its items      | `stream.toSum()`                        |
-| [`toValue`](#To-Value-1)     | Reduces stream like array.reduce() function | `stream.toValue(reducer, initialValue)` |
+| Terminal Operation           | Description                                     | Code Snippet                            |
+|------------------------------|-------------------------------------------------|-----------------------------------------|
+| [`toAverage`](#To-Average-1) | Reduces stream to the mean average of its items | `stream.toAverage()`                    |
+| [`toCount`](#To-Count-1)     | Reduces stream to its length                    | `stream.toCount()`                      |
+| [`toMax`](#To-Max-1)         | Reduces stream to its max value                 | `stream.toMax([compareBy])`             |
+| [`toMin`](#To-Min-1)         | Reduces stream to its min value                 | `stream.toMin([compareBy])`             |
+| [`toProduct`](#To-Product-1) | Reduces stream to the product of its items      | `stream.toProduct()`                    |
+| [`toSum`](#To-Sum-1)         | Reduces stream to the sum of its items          | `stream.toSum()`                        |
+| [`toValue`](#To-Value-1)     | Reduces stream like array.reduce() function     | `stream.toValue(reducer, initialValue)` |
 
 Usage
 -----
@@ -548,6 +550,26 @@ for (const value of single.keys(dict)) {
 ```
 
 ## Reduce
+### To Average
+Reduces to the mean average.
+
+Returns `undefined` if collection is empty.
+
+```
+function toAverage(
+  data: Iterable<number> | Iterator<number>,
+): number | undefined
+```
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const grades = [100, 90, 95, 85, 94];
+
+const finalGrade = reduce.toAverage(numbers);
+// 92.8
+```
+
 ### To Count
 Reduces iterable to its length.
 
@@ -1222,6 +1244,25 @@ const result = Stream.of([1, 2, 3, 4, 5])
 ```
 
 #### Reduce Terminal Operations
+##### To Average
+Reduces iterable source to the mean average of its items.
+
+```
+stream.toAverage(): number|undefined
+```
+
+Returns `undefined` if iterable source is empty.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [2, 4, 6, 8];
+
+const result = Stream.of(iterable)
+  .toAverage();
+// 5
+```
+
 ##### To Count
 Reduces iterable source to its length.
 
