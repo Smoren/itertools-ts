@@ -16,6 +16,8 @@ import {
   Pair,
 } from "./single";
 
+import { runningTotal } from "./math";
+
 import { chain, zip, zipLongest, zipEqual } from "./multi";
 
 import { distinct } from "./set";
@@ -44,6 +46,10 @@ export const single = {
   repeat,
   slice,
   values,
+};
+
+export const math = {
+  runningTotal,
 };
 
 export const multi = {
