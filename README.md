@@ -1011,7 +1011,7 @@ const result = Stream.of(friends)
 Return a stream consisting of overlapping chunks of elements from the stream.
 
 ```
-chunkwiseOverlap(
+stream.chunkwiseOverlap(
   chunkSize: number,
   overlapSize: number,
   includeIncompleteTail: boolean = true,
@@ -1070,7 +1070,7 @@ const stream = Stream.of(input)
 Filter out elements from the stream only keeping elements where there predicate function is true.
 
 ```
-filter(predicate: (item: unknown) => boolean): Stream
+stream.filter(predicate: (item: unknown) => boolean): Stream
 ```
 
 ```typescript
@@ -1125,7 +1125,7 @@ const result = Stream.of(data)
 Iterate keys of key-value pairs.
 
 ```
-keys(): Stream
+stream.keys(): Stream
 ```
 
 ```typescript
@@ -1145,7 +1145,7 @@ Return a stream up to a limit.
 Stops even if more data available if limit reached.
 
 ```
-limit(count: number): Stream
+stream.limit(count: number): Stream
 ```
 
 ```typescript
@@ -1220,7 +1220,7 @@ const result = Stream.of(input)
 Extract a slice of the stream.
 
 ```
-slice(start: number = 0, count?: number, step: number = 1): Stream
+stream.slice(start: number = 0, count?: number, step: number = 1): Stream
 ```
 
 ```typescript
@@ -1238,7 +1238,7 @@ const summerOlympics = Stream.of(olympics)
 Iterate keys of key-value pairs.
 
 ```
-values(): Stream
+stream.values(): Stream
 ```
 
 ```typescript
@@ -1303,7 +1303,7 @@ for (const zipped of stream) {
 Return a stream consisting of multiple iterable collections of equal lengths streamed simultaneously.
 
 ```
-zipEqualWith(
+stream.zipEqualWith(
   ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
 ): Stream
 ```
@@ -1402,7 +1402,7 @@ const result = Stream.of(input)
 Reduces stream to its last element.
 
 ```
-stream.to:Last(): unknown
+stream.toLast(): unknown
 ```
 
 Throws `LengthException` if stream is empty.
@@ -1499,7 +1499,7 @@ const result = Stream.of(iterable)
 Reduces iterable source like array_reduce() function.
 
 ```
-toValue<T>(
+stream.toValue<T>(
   reducer: (carry: T|undefined, datum: unknown) => T,
   initialValue?: T,
 ): T|undefined
