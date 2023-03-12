@@ -22,7 +22,17 @@ import { chain, zip, zipLongest, zipEqual } from "./multi";
 
 import { distinct } from "./set";
 
-import { toAverage, toCount, toMax, toMin, toProduct, toSum, toValue, toFirst, toLast } from "./reduce";
+import {
+  toAverage,
+  toCount,
+  toMax,
+  toMin,
+  toProduct,
+  toSum,
+  toValue,
+  toFirst,
+  toLast,
+} from "./reduce";
 
 import { Stream } from "./stream";
 

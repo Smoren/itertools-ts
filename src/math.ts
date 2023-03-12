@@ -10,7 +10,6 @@ export function* runningTotal<T>(
   numbers: Iterable<T> | Iterator<T>,
   initialValue?: number
 ): Iterable<number> {
-
   if (initialValue !== undefined) {
     yield initialValue;
   }

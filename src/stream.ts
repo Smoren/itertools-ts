@@ -16,7 +16,17 @@ import {
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { runningTotal } from "./math";
 import { distinct } from "./set";
-import { toAverage, toCount, toFirst, toLast, toMax, toMin, toProduct, toSum, toValue } from "./reduce";
+import {
+  toAverage,
+  toCount,
+  toFirst,
+  toLast,
+  toMax,
+  toMin,
+  toProduct,
+  toSum,
+  toValue,
+} from "./reduce";
 
 /**
  * Provides fluent interface for working with iterables.

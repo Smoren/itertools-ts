@@ -30,14 +30,18 @@ export function toValue<TInput, TOutput>(
  * @param data
  */
 export function toAverage(
-  data: Iterable<number> | Iterator<number>,
+  data: Iterable<number> | Iterator<number>
 ): number | undefined {
-  const [count, sum] = toValue(data, (carry, datum) => {
-    const [count, sum] = carry as [number, number];
-    return [count + 1, sum + Number(datum)];
-  }, [0, 0]) as [number, number];
+  const [count, sum] = toValue(
+    data,
+    (carry, datum) => {
+      const [count, sum] = carry as [number, number];
+      return [count + 1, sum + Number(datum)];
+    },
+    [0, 0]
+  ) as [number, number];
 
-  return count ? (sum / count) : undefined;
+  return count ? sum / count : undefined;
 }
 
 /**
@@ -151,13 +155,12 @@ export function toCount(data: Iterable<unknown> | Iterator<unknown>): number {
  *
  * @throws LengthError if given collection is empty.
  */
-export function toFirst<T>(data: Iterable<T> | Iterator<T>): T
-{
+export function toFirst<T>(data: Iterable<T> | Iterator<T>): T {
   for (const datum of toIterable(data)) {
     return datum;
   }
 
-  throw new LengthError('Collection is empty');
+  throw new LengthError("Collection is empty");
 }
 
 /**
@@ -167,8 +170,7 @@ export function toFirst<T>(data: Iterable<T> | Iterator<T>): T
  *
  * @throws LengthError if given collection is empty.
  */
-export function toLast<T>(data: Iterable<T> | Iterator<T>): T
-{
+export function toLast<T>(data: Iterable<T> | Iterator<T>): T {
   let isEmpty = true;
   let result;
 
@@ -178,7 +180,7 @@ export function toLast<T>(data: Iterable<T> | Iterator<T>): T
   }
 
   if (isEmpty) {
-    throw new LengthError('Collection is empty');
+    throw new LengthError("Collection is empty");
   }
 
   return result as T;
