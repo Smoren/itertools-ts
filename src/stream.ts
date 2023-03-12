@@ -14,6 +14,7 @@ import {
   values,
 } from "./single";
 import { chain, zip, zipEqual, zipLongest } from "./multi";
+import { runningTotal } from "./math";
 import { distinct } from "./set";
 import { toAverage, toCount, toFirst, toLast, toMax, toMin, toProduct, toSum, toValue } from "./reduce";
 
@@ -245,6 +246,18 @@ export class Stream {
    */
   pairwise(): Stream {
     this.data = pairwise(this.data);
+    return this;
+  }
+
+  /**
+   * Accumulate the running total over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running total leads off with the initial value.
+   *
+   * @see math.runningTotal
+   */
+  runningTotal(initialValue?: number): Stream {
+    this.data = runningTotal(this.data, initialValue);
     return this;
   }
 

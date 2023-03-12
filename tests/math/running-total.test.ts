@@ -10,7 +10,7 @@ describe.each([
     const result = [];
 
     // When
-    for (const item of math.runningTotal(input as Iterable<unknown>, initialValue as unknown)) {
+    for (const item of math.runningTotal(input as Iterable<unknown>, initialValue as number|undefined)) {
       result.push(item);
     }
 
@@ -58,6 +58,11 @@ function dataProviderForArraysWithInitialValue(): Array<unknown> {
     ],
     [
       [1, 2, 3, -4, -5],
+      5,
+      [5, 6, 8, 11, 7, 2],
+    ],
+    [
+      ['1', '2', '3', '-4', '-5'],
       5,
       [5, 6, 8, 11, 7, 2],
     ],
@@ -120,6 +125,18 @@ function dataProviderForArrays(): Array<unknown> {
       [1, 2, 3, -4, -5],
       [1, 3, 6, 2, -3],
     ],
+    [
+      ['1', '2', '3'],
+      [1, 3, 6],
+    ],
+    [
+      ['1', '2', '-3'],
+      [1, 3, 0],
+    ],
+    [
+      [0, 1, true, false, null, '3'],
+      [0, 1, 2, 2, 2, 5],
+    ],
   ];
 }
 
@@ -157,7 +174,19 @@ function dataProviderForGenerators(): Array<unknown> {
       createGeneratorFixture([1, 2, 3, -4, -5]),
       [1, 3, 6, 2, -3],
     ],
-  ]
+    [
+      createGeneratorFixture(['1', '2', '3']),
+      [1, 3, 6],
+    ],
+    [
+      createGeneratorFixture(['1', '2', '-3']),
+      [1, 3, 0],
+    ],
+    [
+      createGeneratorFixture([0, 1, true, false, null, '3']),
+      [0, 1, 2, 2, 2, 5],
+    ],
+  ];
 }
 
 function dataProviderForIterables(): Array<unknown> {
@@ -194,7 +223,19 @@ function dataProviderForIterables(): Array<unknown> {
       createIterableFixture([1, 2, 3, -4, -5]),
       [1, 3, 6, 2, -3],
     ],
-  ]
+    [
+      createIterableFixture(['1', '2', '3']),
+      [1, 3, 6],
+    ],
+    [
+      createIterableFixture(['1', '2', '-3']),
+      [1, 3, 0],
+    ],
+    [
+      createIterableFixture([0, 1, true, false, null, '3']),
+      [0, 1, 2, 2, 2, 5],
+    ],
+  ];
 }
 
 function dataProviderForIterators(): Array<unknown> {
@@ -231,24 +272,36 @@ function dataProviderForIterators(): Array<unknown> {
       createIteratorFixture([1, 2, 3, -4, -5]),
       [1, 3, 6, 2, -3],
     ],
-  ]
+    [
+      createIteratorFixture(['1', '2', '3']),
+      [1, 3, 6],
+    ],
+    [
+      createIteratorFixture(['1', '2', '-3']),
+      [1, 3, 0],
+    ],
+    [
+      createIteratorFixture([0, 1, true, false, null, '3']),
+      [0, 1, 2, 2, 2, 5],
+    ],
+  ];
 }
 
 function dataProviderForStrings(): Array<unknown> {
   return [
     [
-      [Number('1'), Number('2'), Number('3')],
+      '',
+      [],
+    ],
+    [
+      '1',
+      [1],
+    ],
+    [
+      '123',
       [1, 3, 6],
     ],
-    [
-      [Number('0'), Number('12'), Number('345')],
-      [0, 12, 357],
-    ],
-    [
-      [Number('1.1'), Number('2.2'), Number('3.3')],
-      [1.1, 3.3000000000000003, 6.6],
-    ],
-  ]
+  ];
 }
 
 function dataProviderForSets(): Array<unknown> {
@@ -281,7 +334,17 @@ function dataProviderForSets(): Array<unknown> {
       new Set([1, 2, 3, -4, -5]),
       [1, 3, 6, 2, -3],
     ],
-  ]
+    [
+      new Set(['1', '2', '3']),
+      [1, 3, 6],
+    ],
+    [
+      new Set(['1', '2', '-3']),
+      [1, 3, 0],
+    ],
+    [
+      new Set([2, true, false, '3']),
+      [2, 3, 3, 6],
+    ],
+  ];
 }
-
-

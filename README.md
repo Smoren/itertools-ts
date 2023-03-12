@@ -84,6 +84,11 @@ Quick Reference
 | [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice(data, [start], [count], [step])`          |
 | [`values`](#Values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   |
 
+#### Math Iteration
+| Iterator                         | Description                | Code Snippet                                 |
+|----------------------------------|----------------------------|----------------------------------------------|
+| [`runningTotal`](#Running-Total) | Running total accumulation | `math.runningTotal(numbers, [initialValue])` |
+
 #### Reduce
 | Reducer                    | Description                            | Code Snippet                                  |
 |----------------------------|----------------------------------------|-----------------------------------------------|
@@ -137,6 +142,7 @@ Quick Reference
 | [`limit`](#Limit-1)                        | Limit the stream's iteration                                                              | `stream.limit(limit)`                         |
 | [`map`](#Map-1)                            | Map function onto elements                                                                | `stream.map(mapper)`                          |
 | [`pairwise`](#Pairwise-1)                  | Return pairs of elements from iterable source                                             | `stream.pairwise()`                           |
+| [`runningTotal`](#Running-Total-1)         | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`         |
 | [`slice`](#Slice-1)                        | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`      |
 | [`values`](#Values-1)                      | Iterate values of key-value pairs from stream                                             | `stream.values()`                             |
 | [`zipWith`](#Zip-With)                     | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                |
@@ -170,7 +176,7 @@ Usage
 Chain multiple iterables together into a single continuous sequence.
 
 ```
-function *chain(
+function* chain(
   ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
 ): Iterable<unknown>
 ```
@@ -190,7 +196,7 @@ for (const movie of multi.chain(prequels, originals)) {
 Iterate multiple iterable collections simultaneously.
 
 ```
-function *zip(
+function* zip(
   ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
 ): Iterable<Array<unknown>>
 ```
@@ -226,7 +232,7 @@ Note: For uneven lengths, iteration stops when the shortest iterable is exhauste
 Iterate multiple iterable collections simultaneously.
 
 ```
-function *zipLongest(
+function* zipLongest(
   ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
 ): Iterable<Array<unknown>>
 ```
@@ -250,7 +256,7 @@ Iterate multiple iterable collections with equal lengths simultaneously.
 Throws `LengthException` if lengths are not equal, meaning that at least one iterator ends before the others.
 
 ```
-function *zipEqual(
+function* zipEqual(
   ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
 ): Iterable<Array<unknown>>
 ```
@@ -271,7 +277,7 @@ for (const [letter, number] of multi.zipEqual(letters, numbers)) {
 Return elements in chunks of a certain size.
 
 ```
-function *chunkwise<T>(
+function* chunkwise<T>(
   data: Iterable<T>|Iterator<T>,
   chunkSize: number,
 ): Iterable<Array<T>>
@@ -303,7 +309,7 @@ for (const trilogy of single.chunkwise(movies, 3)) {
 Return overlapped chunks of elements.
 
 ```
-function *chunkwiseOverlap<T>(
+function* chunkwiseOverlap<T>(
   data: Iterable<T>|Iterator<T>,
   chunkSize: number,
   overlapSize: number,
@@ -328,7 +334,7 @@ for (const chunk of single.chunkwiseOverlap(numbers, 3, 1)) {
 Enumerates elements of given collection.
 
 ```
-function *enumerate<T>(data: Iterable<T>|Iterator<T>): Iterable<[number, T]>
+function* enumerate<T>(data: Iterable<T>|Iterator<T>): Iterable<[number, T]>
 ```
 
 ```typescript
@@ -345,7 +351,7 @@ for (const item of single.enumerate(letters)) {
 Filter out elements from the iterable only returning elements where the predicate function is true.
 
 ```
-function *filter<T>(
+function* filter<T>(
   data: Iterable<T>|Iterator<T>,
   predicate: (datum: T) => boolean,
 ): Iterable<T>
@@ -367,7 +373,7 @@ for (const goodMovie of single.filter(starWarsEpisodes, goodMoviePredicate)) {
 Map a function only the elements of the iterable and then flatten the results.
 
 ```
-function *flatMap<TInput, TOutput>(
+function* flatMap<TInput, TOutput>(
   data: Iterable<TInput>|Iterator<TInput>,
   mapper: FlatMapper<TInput, TOutput>,
 ): Iterable<TOutput>
@@ -389,7 +395,7 @@ for (number of single.flatMap(data, mapper)) {
 Flatten a multidimensional iterable.
 
 ```
-function *flatten(
+function* flatten(
   data: Iterable<unknown>|Iterator<unknown>,
   dimensions: number = Infinity,
 ): Iterable<unknown>
@@ -411,7 +417,7 @@ for (const number of single.flatten(multidimensional)) {
 Iterate keys of key-value pairs.
 
 ```
-function *keys<TKey, TValue>(
+function* keys<TKey, TValue>(
   collection: Iterable<[TKey, TValue]>|Iterator<[TKey, TValue]>,
 ): Iterable<TKey>
 ```
@@ -433,7 +439,7 @@ Iterate up to a limit.
 Stops even if more data available if limit reached.
 
 ```
-function *limit<T>(data: Iterable<T>|Iterator<T>, count: number): Iterable<T>
+function* limit<T>(data: Iterable<T>|Iterator<T>, count: number): Iterable<T>
 ```
 
 ```typescript
@@ -452,7 +458,7 @@ for (const goodMovie of single.limit(matrixMovies, limit)) {
 Map a function onto each element.
 
 ```
-function *map<TInput, TOutput>(
+function* map<TInput, TOutput>(
   data: Iterable<TInput>|Iterator<TInput>,
   mapper: (datum: TInput) => TOutput,
 ): Iterable<TOutput>
@@ -476,7 +482,7 @@ Returns successive overlapping pairs.
 Returns empty generator if given collection contains fewer than 2 elements.
 
 ```
-function *pairwise<T>(data: Iterable<T>|Iterator<T>): Iterable<Pair<T>>
+function* pairwise<T>(data: Iterable<T>|Iterator<T>): Iterable<Pair<T>>
 ```
 
 ```typescript
@@ -494,7 +500,7 @@ for (const [leftFriend, rightFriend] of single.pairwise(friends)) {
 Repeat an item.
 
 ```
-function *repeat<T>(item: T, repetitions: number): Iterable<T>
+function* repeat<T>(item: T, repetitions: number): Iterable<T>
 ```
 
 ```typescript
@@ -513,7 +519,7 @@ for (const repeated of single.repeat(data, repetitions)) {
 Extract a slice of the iterable.
 
 ```
-function *slice<T>(
+function* slice<T>(
   data: Iterable<T>|Iterator<T>,
   start: number = 0,
   count?: number,
@@ -537,7 +543,7 @@ for (const winterYear of single.slice(olympics, 1, 8, 2)) {
 Iterate values of key-value pairs.
 
 ```
-function *values<TKey, TValue>(
+function* values<TKey, TValue>(
   collection: Iterable<[TKey, TValue]>|Iterator<[TKey, TValue]>,
 ): Iterable<TValue>
 ```
@@ -551,6 +557,41 @@ for (const value of single.keys(dict)) {
   console.log(value);
 }
 // 1, 2, 3
+```
+
+## Math Iteration
+### Running Total
+Accumulate the running total over a list of numbers.
+
+```
+function* runningTotal<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number>
+```
+
+```typescript
+import { math } from 'itertools-ts';
+
+const prices = [1, 2, 3, 4, 5];
+
+for (const runningTotal of math.runningTotal(prices)) {
+    console.log(runningTotal);
+}
+// 1, 3, 6, 10, 15
+```
+
+Provide an optional initial value to lead off the running total.
+```typescript
+import { math } from 'itertools-ts';
+
+const prices = [1, 2, 3, 4, 5];
+const initialValue = 5;
+
+for (const runningTotal of math.runningTotal(prices, initialValue)) {
+  console.log(runningTotal);
+}
+// 5, 6, 8, 11, 15, 20
 ```
 
 ## Reduce
@@ -784,7 +825,7 @@ const result = reduce.toValue(input, sum, 0);
 Filter out elements from the iterable only returning distinct elements.
 
 ```
-function *distinct<T>(data: Iterable<T>|Iterator<T>): Iterable<T>
+function* distinct<T>(data: Iterable<T>|Iterator<T>): Iterable<T>
 ```
 
 ```typescript
@@ -1155,6 +1196,24 @@ const stream = Stream.of(input)
   .pairwise()
   .toArray();
 // [1, 2], [2, 3], [3, 4], [4, 5]
+```
+
+#### Running Total
+Return a stream accumulating the running total over the stream.
+
+```
+stream.runningTotal(initialValue?: number): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = Stream.of(input)
+  .runningTotal()
+  .toArray();
+// 1, 3, 6, 10, 15
 ```
 
 #### Slice

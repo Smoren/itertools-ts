@@ -1,9 +1,15 @@
-import { toIterable } from './transform';
+import { toIterable } from "./transform";
 
-export function* runningTotal<TInput, TOutput>(
-  numbers: Iterable<TInput> | Iterator<TInput>,
-  initialValue?: TOutput
-): Iterable<TOutput> {
+/**
+ * Accumulate the running total over a list of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running total leads off with the initial value.
+ */
+export function* runningTotal<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number> {
 
   if (initialValue !== undefined) {
     yield initialValue;
@@ -11,7 +17,7 @@ export function* runningTotal<TInput, TOutput>(
 
   let total = initialValue ?? 0;
   for (const num of toIterable(numbers)) {
-    total = (num as number) + (total as number);
-    yield total as TOutput;
+    total += Number(num as number);
+    yield total as number;
   }
 }
