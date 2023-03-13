@@ -74,6 +74,54 @@ function dataProviderForIterables(): Array<unknown> {
         .toArray(),
       [1, 2, 3, '1', '2', '3'],
     ],
+    [
+      [
+        [1, 2, 3, 4, 5],
+        [2, 3, 4, 5, 6, 7],
+        ['3', 4, 5, 6, 7, 8, 9],
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift())
+        .intersectionWith(...iterables)
+        .toArray(),
+      [4, 5],
+    ],
+    [
+      [
+        [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        ['1', '2', 3, 4, 5, 6, 7, '8', '9'],
+        [1, 3, 5, 7, 9, 11],
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift())
+        .intersectionWith(...iterables)
+        .toArray(),
+      [3, 5, 7],
+    ],
+    [
+      [
+        [1, 2, 3],
+        [1, 1, 1],
+        [[1, 1], [2, 1], [3, 1], [1, 2], [1, 3]],
+        [[1, 3], [1, 1], [1, 4], [2, 1]],
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift())
+        .zipWith(iterables.shift())
+        .intersectionWith(...iterables)
+        .toArray(),
+      [[1, 1], [2, 1]],
+    ],
+    [
+      [
+        [1, 2, 3],
+        ['a', 'b', 'c'],
+        [[1, 'a'], [2, 'b'], [3, 'c'], ['a', 2], ['a', 3]],
+        [['c', 3], [1, 'a'], ['d', 4], [2, 'b']],
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift())
+        .zipWith(iterables.shift())
+        .intersectionWith(...iterables)
+        .toArray(),
+      [[1, 'a'], [2, 'b']],
+    ],
   ];
 }
 
