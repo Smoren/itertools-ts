@@ -82,8 +82,7 @@ export class UsageMap {
    * @param value
    * @param owner
    */
-  public addUsage(value: unknown, owner: string): void
-  {
+  public addUsage(value: unknown, owner: string): void {
     if (!this.addedMap.has(value)) {
       this.addedMap.set(value, new Map());
     }
@@ -102,8 +101,7 @@ export class UsageMap {
    *
    * @param value
    */
-  public deleteUsage(value: unknown): void
-  {
+  public deleteUsage(value: unknown): void {
     if (!this.deletedMap.has(value)) {
       this.deletedMap.set(value, 1);
     } else {
@@ -116,14 +114,16 @@ export class UsageMap {
    *
    * @param value
    */
-  public getOwnersCount(value: unknown): number
-  {
+  public getOwnersCount(value: unknown): number {
     const deletesCount = this.deletedMap.get(value) ?? 0;
 
     return Stream.of(this.addedMap.get(value) ?? new Map())
       .map((datum) => (datum as [string, number])[1])
       .filter((count) => (count as number) > deletesCount)
-      .toValue((carry: number|undefined) => (carry as number) + 1, 0) as number;
+      .toValue(
+        (carry: number | undefined) => (carry as number) + 1,
+        0
+      ) as number;
   }
 
   /**
@@ -132,8 +132,7 @@ export class UsageMap {
    * @param value
    * @param maxOwnersCount
    */
-  public getUsagesCount(value: unknown, maxOwnersCount: number = 1): number
-  {
+  public getUsagesCount(value: unknown, maxOwnersCount = 1): number {
     const deletesCount = this.deletedMap.get(value) ?? 0;
 
     let owners = Stream.of(this.addedMap.get(value) ?? new Map())
@@ -157,5 +156,4 @@ export class UsageMap {
 /**
  * No value filler monad.
  */
-export class NoValueMonad {
-}
+export class NoValueMonad {}

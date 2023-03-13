@@ -133,26 +133,30 @@ Quick Reference
 | [`ofEmpty`](#Of-Empty) | Create an empty stream           | `Stream.ofEmpty()`    |
 
 #### Stream Operations
-| Operation                                  | Description                                                                               | Code Snippet                                  |
-|--------------------------------------------|-------------------------------------------------------------------------------------------|-----------------------------------------------|
-| [`chainWith`](#Chain-With)                 | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`              |
-| [`chunkwise`](#Chunkwise-1)                | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                 |
-| [`chunkwiseOverlap`](#Chunkwise-Overlap-1) | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)` |
-| [`distinct`](#Distinct-1)                  | Filter out elements: iterate only unique items                                            | `stream.distinct()`                           |
-| [`enumerate`](#Enumerate-1)                | Enumerates elements of stream                                                             | `stream.enumerate()`                          |
-| [`filter`](#Filter-1)                      | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                    |
-| [`flatMap`](#Flat-Map-1)                   | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                      |
-| [`flatten`](#Flatten-1)                    | Flatten multidimensional stream                                                           | `stream.flatten([dimensions])`                |
-| [`keys`](#Keys-1)                          | Iterate keys of key-value pairs from stream                                               | `stream.keys()`                               |
-| [`limit`](#Limit-1)                        | Limit the stream's iteration                                                              | `stream.limit(limit)`                         |
-| [`map`](#Map-1)                            | Map function onto elements                                                                | `stream.map(mapper)`                          |
-| [`pairwise`](#Pairwise-1)                  | Return pairs of elements from iterable source                                             | `stream.pairwise()`                           |
-| [`runningTotal`](#Running-Total-1)         | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`         |
-| [`slice`](#Slice-1)                        | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`      |
-| [`values`](#Values-1)                      | Iterate values of key-value pairs from stream                                             | `stream.values()`                             |
-| [`zipWith`](#Zip-With)                     | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                |
-| [`zipLongestWith`](#Zip-Longest-With)      | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`         |
-| [`zipEqualWith`](#Zip-Equal-With)          | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`           |
+| Operation                                               | Description                                                                               | Code Snippet                                                         |
+|---------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| [`chainWith`](#Chain-With)                              | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`                                     |
+| [`chunkwise`](#Chunkwise-1)                             | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                                        |
+| [`chunkwiseOverlap`](#Chunkwise-Overlap-1)              | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)`                        |
+| [`distinct`](#Distinct-1)                               | Filter out elements: iterate only unique items                                            | `stream.distinct()`                                                  |
+| [`enumerate`](#Enumerate-1)                             | Enumerates elements of stream                                                             | `stream.enumerate()`                                                 |
+| [`filter`](#Filter-1)                                   | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                                           |
+| [`flatMap`](#Flat-Map-1)                                | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                                             |
+| [`flatten`](#Flatten-1)                                 | Flatten multidimensional stream                                                           | `stream.flatten([dimensions])`                                       |
+| [`intersectionWith`](#Intersection-With)                | Intersect stream and given iterables                                                      | `stream.intersectionWith(...iterables)`                              |
+| [`keys`](#Keys-1)                                       | Iterate keys of key-value pairs from stream                                               | `stream.keys()`                                                      |
+| [`limit`](#Limit-1)                                     | Limit the stream's iteration                                                              | `stream.limit(limit)`                                                |
+| [`map`](#Map-1)                                         | Map function onto elements                                                                | `stream.map(mapper)`                                                 |
+| [`pairwise`](#Pairwise-1)                               | Return pairs of elements from iterable source                                             | `stream.pairwise()`                                                  |
+| [`partialIntersectionWith`](#Partial-Intersection-With) | Partially intersect stream and given iterables                                            | `stream.partialIntersectionWith(minIntersectionCount, ...iterables)` |
+| [`runningTotal`](#Running-Total-1)                      | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`                                |
+| [`slice`](#Slice-1)                                     | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`                             |
+| [`symmetricDifferenceWith`](#Symmetric-Difference-With) | Symmetric difference of stream and given iterables                                        | `stream.symmetricDifferenceWith(...iterables)`                       |
+| [`unionWith`](#Union-With)                              | Union of stream and given iterables                                                       | `stream.union(...iterables)`                                         |
+| [`values`](#Values-1)                                   | Iterate values of key-value pairs from stream                                             | `stream.values()`                                                    |
+| [`zipWith`](#Zip-With)                                  | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                                       |
+| [`zipLongestWith`](#Zip-Longest-With)                   | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`                                |
+| [`zipEqualWith`](#Zip-Equal-With)                       | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`                                  |
 
 #### Stream Terminal Operations
 ##### Transformation Terminal Operations
@@ -1224,6 +1228,28 @@ const result = Stream.of(data)
 // [1, 2, 3, 4, 5]
 ```
 
+### Intersection With
+Return a stream intersecting the stream with the input iterables.
+
+```
+stream.intersectionWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream
+```
+
+* Always treats different instances of objects and arrays as unequal.
+* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const chessPieces = ['rook', 'knight', 'bishop', 'queen', 'king', 'pawn'];
+const shogiPieces = ['rook', 'knight', 'bishop', 'king', 'pawn', 'lance', 'gold general', 'silver general'];
+
+const result = Stream.of(chessPieces)
+  .intersectionWith(shogiPieces)
+  .toArray();
+// rook, knight, bishop, king, pawn
+```
+
 ### Keys
 Iterate keys of key-value pairs.
 
@@ -1301,6 +1327,32 @@ const stream = Stream.of(input)
 // [1, 2], [2, 3], [3, 4], [4, 5]
 ```
 
+### Partial Intersection With
+Return a stream [partially intersecting](https://github.com/Smoren/partial-intersection-php) the stream with the input iterables.
+
+```
+stream.partialIntersectionWith(
+  minIntersectionCount: number,
+  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+): Stream
+```
+
+* Always treats different instances of objects and arrays as unequal.
+* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const staticallyTyped    = ['c++', 'java', 'c#', 'go', 'haskell'];
+const dynamicallyTyped   = ['php', 'python', 'javascript', 'typescript'];
+const supportsInterfaces = ['php', 'java', 'c#', 'typescript'];
+
+const result = Stream.of(staticallyTyped)
+  .partialIntersectionWith(2, dynamicallyTyped, supportsInterfaces)
+  .toArray();
+// c++, java, c#, go, php
+```
+
 #### Running Total
 Return a stream accumulating the running total over the stream.
 
@@ -1335,6 +1387,52 @@ const summerOlympics = Stream.of(olympics)
   .slice(0, 8, 2)
   .toArray();
 // [1992, 1996, 2000, 2004, 2008, 2012, 2016, 2020]
+```
+
+### Symmetric difference With
+Return a stream of the symmetric difference of the stream and the given iterables.
+
+```
+stream.symmetricDifferenceWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream
+```
+
+* Always treats different instances of objects and arrays as unequal.
+* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const a = [2, 3, 4, 7];
+const b = [2, 3, 5, 8];
+const c = [2, 3, 6, 9];
+
+const result = Stream.of(a)
+  .symmetricDifferenceWith(b, c)
+  .toArray();
+// 4, 5, 6, 7, 8, 9
+```
+
+### Union With
+Return a stream of union of the stream with the input iterables.
+
+```
+stream.unionWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream
+```
+
+* Always treats different instances of objects and arrays as unequal.
+* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const a = [1, 2, 3];
+const b = [2, 3, 4];
+const c = [3, 4, 5];
+
+const result = Stream.of(a)
+  .unionWith(b, c)
+  .toArray();
+// 1, 2, 3, 4, 5
 ```
 
 ### Values

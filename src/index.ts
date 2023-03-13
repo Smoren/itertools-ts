@@ -20,7 +20,13 @@ import { runningTotal } from "./math";
 
 import { chain, zip, zipLongest, zipEqual } from "./multi";
 
-import { distinct, intersection, partialIntersection, symmetricDifference, union } from "./set";
+import {
+  distinct,
+  intersection,
+  partialIntersection,
+  symmetricDifference,
+  union,
+} from "./set";
 
 import {
   toAverage,
