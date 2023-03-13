@@ -1,5 +1,10 @@
 import { toIterable } from "./transform";
-import { createMultipleIterator, MultipleIterationMode, NoValueMonad, UsageMap } from "./tools";
+import {
+  createMultipleIterator,
+  MultipleIterationMode,
+  NoValueMonad,
+  UsageMap,
+} from "./tools";
 import { enumerate } from "./single";
 import { single } from "./index";
 
@@ -39,7 +44,9 @@ export function* distinct<T>(data: Iterable<T> | Iterator<T>): Iterable<T> {
  *
  * @param iterables
  */
-export function* intersection<T>(...iterables: Array<Iterable<T> | Iterator<T>>): Iterable<T> {
+export function* intersection<T>(
+  ...iterables: Array<Iterable<T> | Iterator<T>>
+): Iterable<T> {
   yield* partialIntersection(iterables.length, ...iterables);
 }
 
@@ -57,8 +64,7 @@ export function* intersection<T>(...iterables: Array<Iterable<T> | Iterator<T>>)
 export function* partialIntersection<T>(
   minIntersectionCount: number,
   ...iterables: Array<Iterable<T> | Iterator<T>>
-): Iterable<T>
-{
+): Iterable<T> {
   const usageMap = new UsageMap();
 
   const multipleIterator = createMultipleIterator(
@@ -98,7 +104,11 @@ export function* symmetricDifference<T>(
   const usageMap = new UsageMap();
   const valuesSet: Set<T> = new Set();
 
-  const multipleIterator = createMultipleIterator(MultipleIterationMode.LONGEST, NoValueMonad, ...iterables);
+  const multipleIterator = createMultipleIterator(
+    MultipleIterationMode.LONGEST,
+    NoValueMonad,
+    ...iterables
+  );
 
   for (const values of multipleIterator) {
     for (const [owner, value] of enumerate(values)) {
@@ -132,6 +142,8 @@ export function* symmetricDifference<T>(
  *
  * @param iterables
  */
-export function* union<T>(...iterables: Array<Iterable<T> | Iterator<T>>): Iterable<T> {
+export function* union<T>(
+  ...iterables: Array<Iterable<T> | Iterator<T>>
+): Iterable<T> {
   yield* partialIntersection(1, ...iterables);
 }

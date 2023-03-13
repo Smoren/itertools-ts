@@ -15,7 +15,13 @@ import {
 } from "./single";
 import { chain, zip, zipEqual, zipLongest } from "./multi";
 import { runningTotal } from "./math";
-import { distinct, intersection, partialIntersection, symmetricDifference, union } from "./set";
+import {
+  distinct,
+  intersection,
+  partialIntersection,
+  symmetricDifference,
+  union,
+} from "./set";
 import {
   toAverage,
   toCount,
@@ -316,7 +322,9 @@ export class Stream {
    *
    * @see set.intersection
    */
-  intersectionWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream {
+  intersectionWith(
+    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+  ): Stream {
     this.data = intersection(this.data, ...iterables);
     return this;
   }
@@ -335,7 +343,11 @@ export class Stream {
     minIntersectionCount: number,
     ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
   ): Stream {
-    this.data = partialIntersection(minIntersectionCount, this.data, ...iterables);
+    this.data = partialIntersection(
+      minIntersectionCount,
+      this.data,
+      ...iterables
+    );
     return this;
   }
 
@@ -348,7 +360,9 @@ export class Stream {
    *
    * @see set.symmetricDifference
    */
-  symmetricDifferenceWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream {
+  symmetricDifferenceWith(
+    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+  ): Stream {
     this.data = symmetricDifference(this.data, ...iterables);
     return this;
   }
@@ -362,7 +376,9 @@ export class Stream {
    *
    * @see set.union
    */
-  unionWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream {
+  unionWith(
+    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+  ): Stream {
     this.data = union(this.data, ...iterables);
     return this;
   }
