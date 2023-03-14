@@ -520,6 +520,22 @@ function dataProviderForArrays(): Array<unknown> {
         .toArray(),
       [3, 5, 7],
     ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [['pos', [1, 3]], ['neg', [-1, -3]]],
+    ],
   ];
 }
 
@@ -1022,6 +1038,22 @@ function dataProviderForGenerators(): Array<unknown> {
         .slice(2, 3, 2)
         .toArray(),
       [3, 5, 7],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [['pos', [1, 3]], ['neg', [-1, -3]]],
     ],
   ];
 }
@@ -1526,6 +1558,22 @@ function dataProviderForIterables(): Array<unknown> {
         .toArray(),
       [3, 5, 7],
     ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [['pos', [1, 3]], ['neg', [-1, -3]]],
+    ],
   ];
 }
 
@@ -2029,6 +2077,22 @@ function dataProviderForIterators(): Array<unknown> {
         .toArray(),
       [3, 5, 7],
     ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [['pos', [1, 3]], ['neg', [-1, -3]]],
+    ],
   ];
 }
 
@@ -2451,6 +2515,20 @@ function dataProviderForStrings(): Array<unknown> {
         .slice(2, 3, 2)
         .toArray(),
       ['3', '5', '7'],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .groupBy((item) => Number(item as string) % 2 === 0 ? 'even' : 'odd')
+        .toArray(),
+      [],
+    ],
+    [
+      '123456',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .groupBy((item) => Number(item as string) % 2 === 0 ? 'even' : 'odd')
+        .toArray(),
+      [['odd', ['1', '3', '5']], ['even', ['2', '4', '6']]],
     ],
   ];
 }
@@ -2955,6 +3033,22 @@ function dataProviderForSets(): Array<unknown> {
         .toArray(),
       [3, 5, 7],
     ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [['pos', [1, 3]], ['neg', [-1, -3]]],
+    ],
   ];
 }
 
@@ -3457,6 +3551,22 @@ function dataProviderForMaps(): Array<unknown> {
         .slice(2, 3, 2)
         .toArray(),
       [[2, 3], [4, 5], [6, 7]],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) % 2 !== 0)
+        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as [number, number])[1] % 2 !== 0)
+        .groupBy((item) => (item as [number, number])[1] > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [['pos', [[0, 1], [4, 3]]], ['neg', [[1, -1], [5, -3]]]],
     ],
   ];
 }
