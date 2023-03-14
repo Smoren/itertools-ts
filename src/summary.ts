@@ -45,13 +45,13 @@ export function isString(input: unknown): boolean {
 /**
  * Returns true if all given collections are the same.
  *
- * For single iterable or empty iterables list returns true.
+ * For single collection or empty collections list returns true.
  *
- * @param iterables
+ * @param collections
  */
-export function same(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+export function same(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
   try {
-    for (const values of zipEqual(...iterables)) {
+    for (const values of zipEqual(...collections)) {
       for (const [lhs, rhs] of pairwise(values)) {
         if (lhs !== rhs) {
           return false;

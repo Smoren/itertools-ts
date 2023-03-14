@@ -116,11 +116,12 @@ Quick Reference
 | [`union`](#Union)                              | Union of iterables                | `set.union(...iterables)`                         |
 
 #### Summary
-| Summary                      | Description                    | Code Snippet               |
-|------------------------------|--------------------------------|----------------------------|
-| [`isIterable`](#Is-Iterable) | True if given data is iterable | `summary.isIterable(data)` |
-| [`isIterator`](#Is-Iterator) | True if given data is iterator | `summary.isIterator(data)` |
-| [`isString`](#Is-String)     | True if given data is string   | `summary.isString(data)`   |
+| Summary                      | Description                      | Code Snippet                   |
+|------------------------------|----------------------------------|--------------------------------|
+| [`isIterable`](#Is-Iterable) | True if given data is iterable   | `summary.isIterable(data)`     |
+| [`isIterator`](#Is-Iterator) | True if given data is iterator   | `summary.isIterator(data)`     |
+| [`isString`](#Is-String)     | True if given data is string     | `summary.isString(data)`       |
+| [`same`](#Same)              | True if collections are the same | `summary.same(...collections)` |
 
 #### Transform
 | Iterator                     | Description                       | Code Snippet                 |
@@ -181,6 +182,11 @@ Quick Reference
 | [`toProduct`](#To-Product-1) | Reduces stream to the product of its items      | `stream.toProduct()`                    |
 | [`toSum`](#To-Sum-1)         | Reduces stream to the sum of its items          | `stream.toSum()`                        |
 | [`toValue`](#To-Value-1)     | Reduces stream like array.reduce() function     | `stream.toValue(reducer, initialValue)` |
+
+##### Summary Terminal Operations
+| Terminal Operation         | Description                                                   | Code Snippet                      |
+|----------------------------|---------------------------------------------------------------|-----------------------------------|
+| [`sameWith`](#Same-With)   | Returns true if stream and all given collections are the same | `stream.sameWith(...collections)` |
 
 Usage
 -----
@@ -1059,6 +1065,29 @@ summary.isString(String('abc')) // true
 summary.isString(1); // false
 ```
 
+### Same
+Returns true if all given collections are the same.
+
+For single collection or empty collections list returns true.
+
+```
+function same(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean
+```
+
+```typescript
+import { summary } from "itertools-ts";
+
+const cocaColaIngredients = ['carbonated water', 'sugar', 'caramel color', 'phosphoric acid'];
+const pepsiIngredients    = ['carbonated water', 'sugar', 'caramel color', 'phosphoric acid'];
+const spriteIngredients   = ['carbonated water', 'sugar', 'citric acid', 'lemon lime flavorings'];
+
+const trueResult = summary.same(cocaColaIngredients, pepsiIngredients);
+// true
+
+const falseResult = summary.same(cocaColaIngredients, spriteIngredients);
+// false
+```
+
 ## Transform
 ### To Iterable
 Returns `Iterable` instance of given collection or iterator.
@@ -1875,6 +1904,31 @@ const result = Stream.of(input)
   .toValue((carry, item) => carry + item);
 // 15
 ```
+
+#### Stream Summary Terminal Operations
+##### Same With
+Returns true if stream and all given collections are the same.
+
+```
+sameWith(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean
+```
+
+For empty collections list returns true.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const trueResult = Stream.of(input)
+  .sameWith([1, 2, 3, 4, 5]);
+// true
+
+const falseResult = Stream.of(input)
+  .sameWith([5, 4, 3, 2, 1]);
+// false
+```
+
 
 Unit testing
 ------------

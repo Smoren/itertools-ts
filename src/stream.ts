@@ -527,14 +527,14 @@ export class Stream {
   /**
    * Returns true if stream collection and all given collections are the same.
    *
-   * For single iterable or empty iterables list returns true.
+   * For empty collections list returns true.
    *
-   * @param iterables
+   * @param collections
    *
    * @see summary.same
    */
-  sameWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
-    return same(this.data, ...iterables);
+  sameWith(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+    return same(this.data, ...collections);
   }
 
   /**
