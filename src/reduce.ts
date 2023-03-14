@@ -1,6 +1,6 @@
 import { toIterable } from "./transform";
 import { LengthError } from "./exceptions";
-import { isString } from './summary';
+import { isString } from "./summary";
 
 /**
  * Reduces iterable source like `array.reduce()` function.
