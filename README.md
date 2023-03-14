@@ -146,6 +146,7 @@ Quick Reference
 | [`flatMap`](#Flat-Map-1)                                | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                                             |
 | [`flatten`](#Flatten-1)                                 | Flatten multidimensional stream                                                           | `stream.flatten([dimensions])`                                       |
 | [`intersectionWith`](#Intersection-With)                | Intersect stream and given iterables                                                      | `stream.intersectionWith(...iterables)`                              |
+| [`groupBy`](#Group-By-1)                                | Group stram data by a common data element                                                 | `stream.groupBy(groupKeyFunction, [itemKeyFunc])`                    |
 | [`keys`](#Keys-1)                                       | Iterate keys of key-value pairs from stream                                               | `stream.keys()`                                                      |
 | [`limit`](#Limit-1)                                     | Limit the stream's iteration                                                              | `stream.limit(limit)`                                                |
 | [`map`](#Map-1)                                         | Map function onto elements                                                                | `stream.map(mapper)`                                                 |
@@ -1323,6 +1324,61 @@ const result = Stream.of(chessPieces)
   .intersectionWith(shogiPieces)
   .toArray();
 // rook, knight, bishop, king, pawn
+```
+
+### Group By
+Group stream data by a common data element.
+
+Iterate pairs of group name and collection of grouped items.
+
+```
+stream.groupBy(
+  groupKeyFunction: (item: unknown) => string,
+  itemKeyFunction?: (item: unknown) => string,
+): Stream
+```
+
+* The `groupKeyFunction` determines the key to group elements by.
+* The optional `itemKeyFunction` allows custom indexes within each group member.
+* Collection of grouped items may be an array or an object (depends on presence of `itemKeyFunction` param).
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const cartoonCharacters = [
+    ['Garfield', 'cat'],
+    ['Tom', 'cat'],
+    ['Felix', 'cat'],
+    ['Heathcliff', 'cat'],
+    ['Snoopy', 'dog'],
+    ['Scooby-Doo', 'dog'],
+    ['Odie', 'dog'],
+    ['Donald', 'duck'],
+    ['Daffy', 'duck'],
+];
+
+const result = Stream.of(cartoonCharacters)
+  .groupBy((x) => x[1])
+  .toArray();
+/*
+[
+  ['cat', [
+    ['Garfield', 'cat'],
+    ['Tom', 'cat'],
+    ['Felix', 'cat'],
+    ['Heathcliff', 'cat'],
+  ]],
+  ['dog', [
+    ['Snoopy', 'dog'],
+    ['Scooby-Doo', 'dog'],
+    ['Odie', 'dog'],
+  ]],
+  ['duck', [
+    ['Donald', 'duck'],
+    ['Daffy', 'duck'],
+  ]],
+]
+*/
 ```
 
 ### Keys

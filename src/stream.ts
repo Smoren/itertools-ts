@@ -5,7 +5,7 @@ import {
   enumerate,
   filter,
   flatMap,
-  flatten,
+  flatten, groupBy,
   keys,
   limit,
   map,
@@ -250,6 +250,28 @@ export class Stream {
    */
   flatten(dimensions = Infinity): Stream {
     this.data = flatten(this.data, dimensions);
+    return this;
+  }
+
+  /**
+   * Group stream data by a common data element.
+   *
+   * Iterate pairs of group name and collection of grouped items.
+   *
+   * Collection of grouped items may be an array or an object (depends on presence of `itemKeyFunction` param).
+   *
+   * The `groupKeyFunction` determines the key (or multiple keys) to group elements by.
+   *
+   * The `itemKeyFunction` (optional) determines the key of element in group.
+   *
+   * @param groupKeyFunction
+   * @param itemKeyFunction
+   */
+  groupBy(
+    groupKeyFunction: (item: unknown) => string,
+    itemKeyFunction?: (item: unknown) => string,
+  ): Stream {
+    this.data = groupBy(this.data, groupKeyFunction, itemKeyFunction);
     return this;
   }
 
