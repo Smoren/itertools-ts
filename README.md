@@ -48,6 +48,8 @@ All functions work on iterable collections and iterators:
 * `Iterable`
 * `Iterator`
 
+[More about Streams](#Stream)
+
 Setup
 -----
 
@@ -1112,6 +1114,33 @@ console.log(result.next !== undefined);
 ```
 
 ## Stream
+Streams provide a fluent interface to transform arrays and iterables through a pipeline of operations.
+
+Streams are made up of:
+
+1. One stream source factory method to create the stream.
+2. Zero or more stream operators that transform the stream to a new stream.
+3. Terminal operation of either:
+   * Stream terminal operation to transform the stream to a value or data structure.
+     ```typescript
+     const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
+       .distinct()             // [1, 2, 3, 4, 5]
+       .map((x) => x**2)       // [1, 4, 9, 16, 25]
+       .filter((x) => x < 10)  // [1, 4, 9]
+       .toSum();               // 14
+     ```
+   * The stream is iterated via a `for` loop.
+     ```typescript
+     const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
+       .distinct()             // [1, 2, 3, 4, 5]
+       .map((x) => x**2)       // [1, 4, 9, 16, 25]
+       .filter((x) => x < 10); // [1, 4, 9]
+
+     for (const item of result) {
+       // 1, 4, 9
+     }
+     ```
+
 ### Stream Sources
 #### Of
 Creates stream from an iterable.
