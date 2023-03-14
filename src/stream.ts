@@ -34,6 +34,7 @@ import {
   toSum,
   toValue,
 } from "./reduce";
+import { same } from "./summary";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -267,6 +268,8 @@ export class Stream {
    *
    * @param groupKeyFunction
    * @param itemKeyFunction
+   *
+   * @see single.groupBy
    */
   groupBy(
     groupKeyFunction: (item: unknown) => string,
@@ -519,6 +522,19 @@ export class Stream {
    */
   toProduct(): number | undefined {
     return toProduct(this as Iterable<number>);
+  }
+
+  /**
+   * Returns true if stream collection and all given collections are the same.
+   *
+   * For single iterable or empty iterables list returns true.
+   *
+   * @param iterables
+   *
+   * @see summary.same
+   */
+  sameWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+    return same(this.data, ...iterables);
   }
 
   /**
