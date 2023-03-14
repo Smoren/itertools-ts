@@ -1362,7 +1362,7 @@ const result = Stream.of(data)
 // [1, 2, 3, 4, 5]
 ```
 
-### Intersection With
+#### Intersection With
 Return a stream intersecting the stream with the input iterables.
 
 ```
@@ -1384,7 +1384,7 @@ const result = Stream.of(chessPieces)
 // rook, knight, bishop, king, pawn
 ```
 
-### Group By
+#### Group By
 Group stream data by a common data element.
 
 Iterate pairs of group name and collection of grouped items.
@@ -1439,7 +1439,7 @@ const result = Stream.of(cartoonCharacters)
 */
 ```
 
-### Keys
+#### Keys
 Iterate keys of key-value pairs.
 
 ```
@@ -1516,7 +1516,7 @@ const stream = Stream.of(input)
 // [1, 2], [2, 3], [3, 4], [4, 5]
 ```
 
-### Partial Intersection With
+#### Partial Intersection With
 Return a stream [partially intersecting](https://github.com/Smoren/partial-intersection-php) the stream with the input iterables.
 
 ```
@@ -1578,7 +1578,7 @@ const summerOlympics = Stream.of(olympics)
 // [1992, 1996, 2000, 2004, 2008, 2012, 2016, 2020]
 ```
 
-### Symmetric difference With
+#### Symmetric difference With
 Return a stream of the symmetric difference of the stream and the given iterables.
 
 ```
@@ -1601,7 +1601,7 @@ const result = Stream.of(a)
 // 4, 5, 6, 7, 8, 9
 ```
 
-### Union With
+#### Union With
 Return a stream of union of the stream with the input iterables.
 
 ```
@@ -1624,7 +1624,7 @@ const result = Stream.of(a)
 // 1, 2, 3, 4, 5
 ```
 
-### Values
+#### Values
 Iterate keys of key-value pairs.
 
 ```
