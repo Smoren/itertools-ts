@@ -1,3 +1,6 @@
+import { zipEqual } from "./multi";
+import { pairwise } from "./single";
+
 /**
  * Return true if given input is an Iterable instance.
  *
@@ -37,4 +40,27 @@ export function isIterator(input: unknown): boolean {
  */
 export function isString(input: unknown): boolean {
   return typeof input === "string" || input instanceof String;
+}
+
+/**
+ * Returns true if all given collections are the same.
+ *
+ * For single iterable or empty iterables list returns true.
+ *
+ * @param iterables
+ */
+export function same(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+  try {
+    for (const values of zipEqual(...iterables)) {
+      for (const [lhs, rhs] of pairwise(values)) {
+        if (lhs !== rhs) {
+          return false;
+        }
+      }
+    }
+  } catch (e) {
+    return false;
+  }
+
+  return true;
 }
