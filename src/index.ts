@@ -5,6 +5,7 @@ import {
   filter,
   flatMap,
   flatten,
+  groupBy,
   keys,
   limit,
   map,
@@ -42,7 +43,7 @@ import {
 
 import { Stream } from "./stream";
 
-import { isIterable, isIterator } from "./summary";
+import { isIterable, isIterator, isString } from "./summary";
 
 import { toArray, toIterable, toIterator } from "./transform";
 
@@ -55,6 +56,7 @@ export const single = {
   filter,
   flatMap,
   flatten,
+  groupBy,
   keys,
   limit,
   map,
@@ -98,6 +100,7 @@ export const reduce = {
 export const summary = {
   isIterable,
   isIterator,
+  isString,
 };
 
 export const transform = {

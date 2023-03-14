@@ -77,6 +77,7 @@ Quick Reference
 | [`filter`](#Filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        |
 | [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          |
 | [`flatten`](#Flatten)                    | Flatten multidimensional iterable           | `single.flatten(data, [dimensions])`                    |
+| [`groupBy`](#Group-By)                   | Group data by a common element              | `single.groupBy(data, groupKeyFunction, [itemKeyFunc])` |
 | [`limit`](#Limit)                        | Iterate up to a limit                       | `single.limit(data, limit)`                             |
 | [`keys`](#Keys)                          | Iterate keys of key-value pairs             | `single.keys(data)`                                     |
 | [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              |
@@ -117,6 +118,7 @@ Quick Reference
 |------------------------------|--------------------------------|----------------------------|
 | [`isIterable`](#Is-Iterable) | True if given data is iterable | `summary.isIterable(data)` |
 | [`isIterator`](#Is-Iterator) | True if given data is iterator | `summary.isIterator(data)` |
+| [`isString`](#Is-String)     | True if given data is string   | `summary.isString(data)`   |
 
 #### Transform
 | Iterator                     | Description                       | Code Snippet                 |
@@ -420,6 +422,63 @@ for (const number of single.flatten(multidimensional)) {
     flattened.push(number);
 }
 // [1, 2, 3, 4, 5]
+```
+
+### Group By
+Group data by a common data element.
+
+Iterate pairs of group name and collection of grouped items.
+
+```
+function* groupBy<T>(
+  data: Iterable<T> | Iterator<T>,
+  groupKeyFunction: (item: T) => string,
+  itemKeyFunction?: (item: T) => string,
+): Iterable<[string, Array<T>] | [string, Record<string, T>]>
+```
+
+* The `groupKeyFunction` determines the key to group elements by.
+* The optional `itemKeyFunction` allows custom indexes within each group member.
+* Collection of grouped items may be an array or an object (depends on presence of `itemKeyFunction` param).
+
+```typescript
+import { single } from 'itertools-ts';
+
+const cartoonCharacters = [
+    ['Garfield', 'cat'],
+    ['Tom', 'cat'],
+    ['Felix', 'cat'],
+    ['Heathcliff', 'cat'],
+    ['Snoopy', 'dog'],
+    ['Scooby-Doo', 'dog'],
+    ['Odie', 'dog'],
+    ['Donald', 'duck'],
+    ['Daffy', 'duck'],
+];
+
+const charactersGroupedByAnimal = {};
+for (const [animal, characters] of single.groupBy(cartoonCharacters, (x) => x[1])) {
+    charactersGroupedByAnimal[animal] = characters;
+}
+/*
+{
+  cat: [
+    ['Garfield', 'cat'],
+    ['Tom', 'cat'],
+    ['Felix', 'cat'],
+    ['Heathcliff', 'cat'],
+  ],
+  dog: [
+    ['Snoopy', 'dog'],
+    ['Scooby-Doo', 'dog'],
+    ['Odie', 'dog'],
+  ],
+  duck: [
+    ['Donald', 'duck'],
+    ['Daffy', 'duck'],
+  ],
+}
+*/
 ```
 
 ### Keys
@@ -979,6 +1038,22 @@ const input = [1, 2, 3, 4, 5];
 summary.isIterator(input[Symbol.iterator]()) // true
 summary.isIterator(input); // false
 summary.isIterator(1); // false
+```
+
+### Is String
+Returns true if given data is a string.
+
+```
+function isString(input: unknown): boolean
+```
+
+```typescript
+import { summary } from "itertools-ts";
+
+summary.isString('') // true
+summary.isString('abc') // true
+summary.isString(String('abc')) // true
+summary.isString(1); // false
 ```
 
 ## Transform
