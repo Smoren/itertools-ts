@@ -29,3 +29,12 @@ export function isIterator(input: unknown): boolean {
     typeof (input as Record<string, unknown>).next === "function"
   );
 }
+
+/**
+ * Return true if given input is string.
+ *
+ * @param input
+ */
+export function isString(input: unknown): boolean {
+  return typeof input === "string" || input instanceof String;
+}

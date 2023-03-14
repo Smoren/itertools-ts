@@ -1,5 +1,6 @@
 import { toIterable } from "./transform";
 import { LengthError } from "./exceptions";
+import { isString } from './summary';
 
 /**
  * Reduces iterable source like `array.reduce()` function.
@@ -137,7 +138,7 @@ export function toCount(data: Iterable<unknown> | Iterator<unknown>): number {
   switch (true) {
     case data instanceof Array:
       return (data as Array<unknown>).length;
-    case typeof (data as unknown) === "string" || data instanceof String:
+    case isString(data as unknown):
       return (data as string).length;
     case data instanceof Set:
       return (data as Set<unknown>).size;

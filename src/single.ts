@@ -1,6 +1,7 @@
 import { toIterable } from "./transform";
 import { InvalidArgumentError } from "./exceptions";
-import { isIterable, isIterator } from "./summary";
+import { isIterable, isIterator, isString } from "./summary";
+import { distinct } from './set';
 
 /**
  * Map a function onto every element of the iteration.
@@ -94,10 +95,7 @@ export function* flatten(
       datum = (datum as [unknown, unknown])[1];
     }
 
-    if (
-      (isIterable(datum) || isIterator(datum)) &&
-      !(typeof datum === "string" || datum instanceof String)
-    ) {
+    if ((isIterable(datum) || isIterator(datum)) && !isString(datum)) {
       for (const subDatum of flatten(
         datum as Iterable<unknown> | Iterator<unknown>,
         dimensions - 1
@@ -318,5 +316,61 @@ export function* values<TKey, TValue>(
 ): Iterable<TValue> {
   for (const [, value] of toIterable(collection)) {
     yield value;
+  }
+}
+
+/**
+ * Group data by a common data element.
+ *
+ * Iterate pairs of group name and collection of grouped items.
+ *
+ * Collection of grouped items may be an array or an object (depends on presence of `itemKeyFunction` param).
+ *
+ * The `groupKeyFunction` determines the key (or multiple keys) to group elements by.
+ *
+ * The `itemKeyFunction` (optional) determines the key of element in group.
+ *
+ * @param data
+ * @param groupKeyFunction
+ * @param itemKeyFunction
+ */
+export function* groupBy<T>(
+  data: Iterable<T> | Iterator<T>,
+  groupKeyFunction: (item: T) => string,
+  itemKeyFunction?: (item: T) => string,
+): Iterable<[string, Array<T>] | [string, Record<string, T>]> {
+  const groups = new Map();
+  const addGroup = (name: string) => {
+    if (!groups.has(name)) {
+      if (itemKeyFunction !== undefined) {
+        groups.set(name, {});
+      } else {
+        groups.set(name, []);
+      }
+    }
+  };
+
+  for (const item of toIterable(data)) {
+    const group = groupKeyFunction(item);
+
+    const itemKey = (itemKeyFunction !== undefined)
+      ? itemKeyFunction(item)
+      : undefined;
+    const itemGroups = (isIterable(group) || isIterator(group)) && !isString(group)
+      ? group
+      : [group];
+
+    for (const itemGroup of distinct(itemGroups)) {
+      addGroup(itemGroup);
+      if (itemKey === undefined) {
+        groups.get(itemGroup).push(item);
+      } else {
+        groups.get(itemGroup)[itemKey] = item;
+      }
+    }
+  }
+
+  for (const group of groups) {
+    yield group;
   }
 }
