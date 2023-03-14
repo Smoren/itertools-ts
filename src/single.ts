@@ -1,7 +1,7 @@
 import { toIterable } from "./transform";
 import { InvalidArgumentError } from "./exceptions";
 import { isIterable, isIterator, isString } from "./summary";
-import { distinct } from './set';
+import { distinct } from "./set";
 
 /**
  * Map a function onto every element of the iteration.
@@ -337,7 +337,7 @@ export function* values<TKey, TValue>(
 export function* groupBy<T>(
   data: Iterable<T> | Iterator<T>,
   groupKeyFunction: (item: T) => string,
-  itemKeyFunction?: (item: T) => string,
+  itemKeyFunction?: (item: T) => string
 ): Iterable<[string, Array<T>] | [string, Record<string, T>]> {
   const groups = new Map();
   const addGroup = (name: string) => {
@@ -353,12 +353,12 @@ export function* groupBy<T>(
   for (const item of toIterable(data)) {
     const group = groupKeyFunction(item);
 
-    const itemKey = (itemKeyFunction !== undefined)
-      ? itemKeyFunction(item)
-      : undefined;
-    const itemGroups = (isIterable(group) || isIterator(group)) && !isString(group)
-      ? group
-      : [group];
+    const itemKey =
+      itemKeyFunction !== undefined ? itemKeyFunction(item) : undefined;
+    const itemGroups =
+      (isIterable(group) || isIterator(group)) && !isString(group)
+        ? group
+        : [group];
 
     for (const itemGroup of distinct(itemGroups)) {
       addGroup(itemGroup);

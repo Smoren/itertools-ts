@@ -5,7 +5,8 @@ import {
   enumerate,
   filter,
   flatMap,
-  flatten, groupBy,
+  flatten,
+  groupBy,
   keys,
   limit,
   map,
@@ -269,7 +270,7 @@ export class Stream {
    */
   groupBy(
     groupKeyFunction: (item: unknown) => string,
-    itemKeyFunction?: (item: unknown) => string,
+    itemKeyFunction?: (item: unknown) => string
   ): Stream {
     this.data = groupBy(this.data, groupKeyFunction, itemKeyFunction);
     return this;
