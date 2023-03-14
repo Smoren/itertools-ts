@@ -533,7 +533,9 @@ export class Stream {
    *
    * @see summary.same
    */
-  sameWith(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+  sameWith(
+    ...collections: Array<Iterable<unknown> | Iterator<unknown>>
+  ): boolean {
     return same(this.data, ...collections);
   }
 

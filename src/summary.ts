@@ -49,7 +49,9 @@ export function isString(input: unknown): boolean {
  *
  * @param collections
  */
-export function same(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+export function same(
+  ...collections: Array<Iterable<unknown> | Iterator<unknown>>
+): boolean {
   try {
     for (const values of zipEqual(...collections)) {
       for (const [lhs, rhs] of pairwise(values)) {
