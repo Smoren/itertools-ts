@@ -1,0 +1,63 @@
+# IterTools Typescript Change Log
+
+## v1.6.0 - 2023-03-14
+
+### New Features
+* summary
+  * `same()`
+* Stream
+  * `sameWith()`
+
+## v1.5.0 - 2023-03-13
+
+### New Features
+* single
+  * `groupBy()`
+* summary
+  * `isString()`
+* Stream
+  * `groupBy()`
+
+## v1.4.0 - 2023-03-13
+
+### New Features
+* set
+  * `intersection()`
+  * `partialIntersection()`
+  * `symmetricDifference()`
+  * `union()`
+* Stream
+  * `intersectionWith()`
+  * `partialIntersectionWith()`
+  * `symmetricDifferenceWith()`
+  * `unionWith()`
+
+## v1.3.0 - 2023-03-12
+
+### New Features
+* math
+  * `runningTotal()`
+* Stream
+  * `runningTotal()`
+
+## v1.2.0 - 2023-03-11
+
+### New Features
+* reduce
+  * `toFirst()`
+  * `toLast()`
+* Stream
+  * `toFirst()`
+  * `toLast()`
+
+## v1.1.0 - 2023-03-11
+
+### New Features
+* reduce
+  * `toAverage()`
+* Stream
+  * `toAverage()`
+
+## v1.0.0 - 2023-03-11
+
+Initial release.
