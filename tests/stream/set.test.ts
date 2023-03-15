@@ -10,30 +10,50 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Stream Set Test", (input, streamFactory, expected) => {
-  it("", () => {
-    // Given
-    const result = (streamFactory as (data: unknown) => Stream)(input);
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+  "Stream Set Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    streamFactory: (data: unknown) => Stream,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = streamFactory(input);
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 describe.each([
   ...dataProviderForPartialIntersection(),
-])("Stream Set Partial Intersection Test", (input, minIntersectionCount, streamFactory, expected) => {
-  it("", () => {
-    // Given
-    const result = (streamFactory as (minIntersectionCount: number, data: unknown) => Stream)(
-      minIntersectionCount as number,
-      input as Array<Iterable<unknown>>
-    );
+] as Array<[
+  Iterable<unknown>|Iterator<unknown>,
+  number,
+  (minIntersectionCount: number, data: unknown) => Stream,
+  Array<unknown>
+]>)(
+  "Stream Set Partial Intersection Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    minIntersectionCount: number,
+    streamFactory: (minIntersectionCount: number, data: unknown) => Stream,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = streamFactory(
+        minIntersectionCount as number,
+        input as Array<Iterable<unknown>>
+      );
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

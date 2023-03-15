@@ -9,15 +9,21 @@ describe.each([
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
-])("Reduce To Sum Test", (input, expected) => {
-  it("", () => {
-    // When
-    const result = reduce.toSum(input as Iterable<number>);
+] as Array<[Iterable<number>|Iterator<number>, number]>)(
+  "Reduce To Sum Test",
+  (
+    input: Iterable<number>|Iterator<number>,
+    expected: number
+  ) => {
+    it("", () => {
+      // When
+      const result = reduce.toSum(input);
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

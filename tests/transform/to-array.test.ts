@@ -2,16 +2,22 @@
 import { createGeneratorFixture, createIterableFixture } from '../fixture';
 import { transform } from '../../src';
 
-describe.each(dataProvider())("Transform To Array Test", (input, expected) => {
-  it("", () => {
-    // Given
-    const result = transform.toArray(input as Iterable<unknown>|Iterator<unknown>);
+describe.each(dataProvider() as Array<[Iterable<unknown>|Iterator<unknown>, Array<unknown>]>)(
+  "Transform To Array Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = transform.toArray(input);
 
-    // Then
-    expect(Array.isArray(result)).toBeTruthy();
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(Array.isArray(result)).toBeTruthy();
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProvider(): Array<unknown> {
   return [

@@ -10,35 +10,45 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Single Slice Test", (input, config, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Iterable<unknown>|Iterator<unknown>, Array<number>, Array<unknown>]>)(
+  "Single Slice Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    config: Array<number>,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of single.slice(input as Iterable<unknown>, ...(config as Array<number>))) {
-      result.push(item);
-    }
+      // When
+      for (const item of single.slice(input, ...config)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 
 describe.each([
   ...dataProviderForErrors()
-])("Single Slice Error Test", (config) => {
-  it("", () => {
-    expect(() => {
-      const repetitions = single.slice([1, 2, 3], ...(config as Array<number>));
+] as Array<[Array<number>]>)(
+  "Single Slice Error Test",
+  (config: Array<number>) => {
+    it("", () => {
+      expect(() => {
+        const repetitions = single.slice([1, 2, 3], ...config);
 
-      for (const _ of repetitions) {
-        break;
-      }
-    }).toThrow(InvalidArgumentError);
-  });
-});
+        for (const _ of repetitions) {
+          break;
+        }
+      }).toThrow(InvalidArgumentError);
+    });
+  }
+);
 
 
 function dataProviderForArrays(): Array<unknown> {

@@ -11,20 +11,26 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
   ...dataProviderForMixed(),
-])("Multi Zip Longest Test", (iterables, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Array<Iterable<unknown>|Iterator<unknown>>, Array<unknown>]>)(
+  "Multi Zip Longest Test",
+  (
+    iterables: Array<Iterable<unknown>|Iterator<unknown>>,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const values of multi.zipLongest(...iterables as Array<Iterable<unknown>>)) {
-      result.push(values);
-    }
+      // When
+      for (const values of multi.zipLongest(...iterables)) {
+        result.push(values);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

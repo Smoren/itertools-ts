@@ -10,33 +10,46 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Single Limit Test", (input, limit, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Iterable<unknown>|Iterator<unknown>, number, Array<unknown>]>)(
+  "Single Limit Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    limit: number,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of single.limit(input as Iterable<unknown>, limit as number)) {
-      result.push(item);
-    }
+      // When
+      for (const item of single.limit(input, limit)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 describe.each([
   ...dataProviderForError(),
-])("Single Limit Error Test", (input, limit) => {
-  it("", () => {
-    expect(() => {
-      // When
-      for (const _ of single.limit(input as Iterable<unknown>, limit as number)) {
-        break;
-      }
-    }).toThrow(InvalidArgumentError);
-  });
-});
+] as Array<[Iterable<unknown>|Iterator<unknown>, number]>)(
+  "Single Limit Error Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    limit: number
+  ) => {
+    it("", () => {
+      expect(() => {
+        // When
+        for (const _ of single.limit(input, limit)) {
+          break;
+        }
+      }).toThrow(InvalidArgumentError);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

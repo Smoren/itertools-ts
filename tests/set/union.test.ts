@@ -10,23 +10,29 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMixed(),
-])("Set Union Test", (input, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Array<Iterable<unknown>|Iterator<unknown>>, Array<unknown>]>)(
+  "Set Union Test",
+  (
+    input: Array<Iterable<unknown>|Iterator<unknown>>,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of set.union(...input as Array<Iterable<unknown>>)) {
-      result.push(item);
-    }
+      // When
+      for (const item of set.union(...input)) {
+        result.push(item);
+      }
 
-    (result as Array<number>).sort();
-    (expected as Array<number>).sort();
+      (result as Array<number>).sort();
+      (expected as Array<number>).sort();
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

@@ -10,20 +10,26 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Set Distinct Test", (input, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Iterable<unknown>|Iterator<unknown>, Array<unknown>]>)(
+  "Set Distinct Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of set.distinct(input as Iterable<unknown>)) {
-      result.push(item);
-    }
+      // When
+      for (const item of set.distinct(input)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

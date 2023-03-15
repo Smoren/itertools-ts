@@ -11,32 +11,42 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForArrays(),
   ...dataProviderForObjects(),
-])("Single Repeat Test", (input, repetitions, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Iterable<unknown>|Iterator<unknown>, number, Array<unknown>]>)(
+  "Single Repeat Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    repetitions: number,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of single.repeat(input, repetitions as number)) {
-      result.push(item);
-    }
-
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
-
-describe.each(dataProviderForError())("Single Repeat Error Test", (input) => {
-  it("", () => {
-    expect(() => {
-      const repetitions = single.repeat(input, -1);
-
-      for (const _ of repetitions) {
-        break;
+      // When
+      for (const item of single.repeat(input, repetitions)) {
+        result.push(item);
       }
-    }).toThrow(InvalidArgumentError);
-  });
-});
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each(dataProviderForError() as Array<[Iterable<unknown>|Iterator<unknown>]>)(
+  "Single Repeat Error Test",
+  (input: Iterable<unknown>|Iterator<unknown>) => {
+    it("", () => {
+      expect(() => {
+        const repetitions = single.repeat(input, -1);
+
+        for (const _ of repetitions) {
+          break;
+        }
+      }).toThrow(InvalidArgumentError);
+    });
+  }
+);
 
 function dataProviderForIntegers(): Array<unknown> {
   return [

@@ -8,33 +8,47 @@ describe.each([
 	...dataProviderForSumReducerIterables(),
 	...dataProviderForSumReducerIterators(),
 	...dataProviderForSumReducerSets(),
-])("Reduce To Value Sum Reducer Test", (input, initialValue, expected) => {
-	it("", () => {
-		// Given
-		const sum = (carry: unknown, datum: unknown): unknown => (carry as number) + (datum as number);
+] as Array<[Iterable<unknown>|Iterator<unknown>, unknown, unknown]>)(
+  "Reduce To Value Sum Reducer Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    initialValue: unknown,
+    expected: unknown
+  ) => {
+    it("", () => {
+      // Given
+      const sum = (carry: unknown, datum: unknown): unknown => (carry as number) + (datum as number);
 
-		// When
-		const result = reduce.toValue(input as Iterable<unknown>, sum, initialValue as unknown);
+      // When
+      const result = reduce.toValue(input, sum, initialValue);
 
-		// Then
-		expect(result).toEqual(expected);
-	});
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 describe.each([
 	...dataProviderForSumReducerMaps(),
-])("Reduce To Value Sum Reducer Map Test", (input, initialValue, expected) => {
-	it("", () => {
-		// Given
-		const sum = (carry: unknown, datum: unknown): unknown => (carry as number) + (datum as Array<number>)[1];
+] as Array<[Iterable<unknown>|Iterator<unknown>, unknown, unknown]>)(
+  "Reduce To Value Sum Reducer Map Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    initialValue: unknown,
+    expected: unknown
+  ) => {
+    it("", () => {
+      // Given
+      const sum = (carry: unknown, datum: unknown): unknown => (carry as number) + (datum as Array<number>)[1];
 
-		// When
-		const result = reduce.toValue(input as Iterable<unknown>, sum, initialValue as unknown);
+      // When
+      const result = reduce.toValue(input, sum, initialValue);
 
-		// Then
-		expect(result).toEqual(expected);
-	});
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 describe.each([
 	...dataProviderForConcatReducerArrays(),
@@ -43,33 +57,47 @@ describe.each([
 	...dataProviderForConcatReducerIterators(),
 	...dataProviderForConcatReducerStrings(),
 	...dataProviderForConcatReducerSets(),
-])("Reduce To Value Concat Reducer Test", (input, initialValue, expected) => {
-	it("", () => {
-		// Given
-		const concat = (carry: unknown, datum: unknown): unknown => `${carry as string}${datum as string}`;
+] as Array<[Iterable<unknown>|Iterator<unknown>, unknown, unknown]>)(
+  "Reduce To Value Concat Reducer Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    initialValue: unknown,
+    expected: unknown
+  ) => {
+    it("", () => {
+      // Given
+      const concat = (carry: unknown, datum: unknown): unknown => `${carry as string}${datum as string}`;
 
-		// When
-		const result = reduce.toValue(input as Iterable<unknown>, concat, initialValue as unknown);
+      // When
+      const result = reduce.toValue(input, concat, initialValue);
 
-		// Then
-		expect(result).toEqual(expected);
-	});
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 describe.each([
 	...dataProviderForConcatReducerMaps(),
-])("Reduce To Value Concat Reducer Test", (input, initialValue, expected) => {
-	it("", () => {
-		// Given
-		const concat = (carry: unknown, datum: unknown): unknown => `${carry as string}${(datum as Array<string>)[1]}`;
+] as Array<[Iterable<unknown>|Iterator<unknown>, unknown, unknown]>)(
+  "Reduce To Value Concat Reducer Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    initialValue: unknown,
+    expected: unknown
+  ) => {
+    it("", () => {
+      // Given
+      const concat = (carry: unknown, datum: unknown): unknown => `${carry as string}${(datum as Array<string>)[1]}`;
 
-		// When
-		const result = reduce.toValue(input as Iterable<unknown>, concat, initialValue as unknown);
+      // When
+      const result = reduce.toValue(input, concat, initialValue);
 
-		// Then
-		expect(result).toEqual(expected);
-	});
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForSumReducerArrays(): Array<unknown> {
 	return [

@@ -10,15 +10,22 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Stream Single Test", (input, streamFactory, expected) => {
-  it("", () => {
-    // Given
-    const result = (streamFactory as (data: unknown) => Stream)(input);
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+  "Stream Single Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    streamFactory: (data: unknown) => Stream,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = streamFactory(input);
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

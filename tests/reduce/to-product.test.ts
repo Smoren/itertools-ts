@@ -9,19 +9,25 @@ describe.each([
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
-])("Reduce To Product Test", (input, expected) => {
-  it("", () => {
-    // When
-    const result = reduce.toProduct(input as Iterable<number>);
+] as Array<[Iterable<number>|Iterator<number>, number|undefined]>)(
+  "Reduce To Product Test",
+  (
+    input: Iterable<number>|Iterator<number>,
+    expected: number|undefined
+  ) => {
+    it("", () => {
+      // When
+      const result = reduce.toProduct(input);
 
-    // Then
-    if (expected === undefined) {
-      expect(result).toEqual(expected);
-    } else {
-      expect(result).toBeCloseTo(expected as number);
-    }
-  });
-});
+      // Then
+      if (expected === undefined) {
+        expect(result).toEqual(expected);
+      } else {
+        expect(result).toBeCloseTo(expected);
+      }
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

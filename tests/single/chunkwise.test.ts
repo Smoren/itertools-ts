@@ -10,20 +10,27 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Single Chunkwise Test", (input, chunkSize, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Iterable<unknown>|Iterator<unknown>, number, Array<unknown>]>)(
+  "Single Chunkwise Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    chunkSize: number,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of single.chunkwise(input as Iterable<unknown>, chunkSize as number)) {
-      result.push(item);
-    }
+      // When
+      for (const item of single.chunkwise(input, chunkSize)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

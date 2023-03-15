@@ -10,10 +10,15 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Reduce To Last Test", (input, expected) => {
+] as Array<[Iterable<unknown>|Iterator<unknown>, unknown]>)(
+  "Reduce To Last Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    expected: unknown
+  ) => {
   it("", () => {
     // When
-    const result = reduce.toLast(input as Iterable<number>);
+    const result = reduce.toLast(input);
 
     // Then
     expect(result).toEqual(expected);
@@ -22,13 +27,16 @@ describe.each([
 
 describe.each([
   ...dataProviderForError(),
-])("Reduce To Last Error Test", (input) => {
-  it("", () => {
-    expect(() => {
-      reduce.toLast(input as Iterable<unknown>);
-    }).toThrow(LengthError);
-  });
-});
+] as Array<[Iterable<unknown>|Iterator<unknown>]>)(
+  "Reduce To Last Error Test",
+  (input: Iterable<unknown>|Iterator<unknown>) => {
+    it("", () => {
+      expect(() => {
+        reduce.toLast(input);
+      }).toThrow(LengthError);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

@@ -10,23 +10,30 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMixed(),
-])("Set Partial Intersection Test", (input, minIntersectionCount, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Array<Iterable<unknown>|Iterator<unknown>>, number, Array<unknown>]>)(
+  "Set Partial Intersection Test",
+  (
+    input: Array<Iterable<unknown>|Iterator<unknown>>,
+    minIntersectionCount: number,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of set.partialIntersection(minIntersectionCount as number, ...input as Array<Iterable<unknown>>)) {
-      result.push(item);
-    }
+      // When
+      for (const item of set.partialIntersection(minIntersectionCount, ...input)) {
+        result.push(item);
+      }
 
-    (result as Array<unknown>).sort();
-    (expected as Array<unknown>).sort();
+      (result as Array<unknown>).sort();
+      (expected as Array<unknown>).sort();
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

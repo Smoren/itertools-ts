@@ -9,20 +9,26 @@ describe.each([
   ...dataProviderForIterators(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Single Values Test", (input, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>, Array<unknown>]>)(
+  "Single Values Test",
+  (
+    input: Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of single.values(input as Iterable<[unknown, unknown]>)) {
-      result.push(item);
-    }
+      // When
+      for (const item of single.values(input)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

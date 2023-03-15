@@ -84,5 +84,5 @@ export function sameCount(
 
   const counts = collections.map((collection) => toCount(collection));
 
-  return (new Set(counts)).size === 1;
+  return new Set(counts).size === 1;
 }

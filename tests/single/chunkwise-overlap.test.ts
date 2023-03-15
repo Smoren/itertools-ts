@@ -10,45 +10,62 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Chunkwise Overlap Test", (data, chunkSize, overlapSize, includeIncompleteTail, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
-    const chunks = single.chunkwiseOverlap(
-      data as Iterable<unknown>,
-      chunkSize as number,
-      overlapSize as number,
-      includeIncompleteTail as boolean,
-    );
+] as Array<[Iterable<unknown>|Iterator<unknown>, number, number, boolean, Array<unknown>]>)(
+  "Chunkwise Overlap Test",
+  (
+    data: Iterable<unknown>|Iterator<unknown>,
+    chunkSize: number,
+    overlapSize: number,
+    includeIncompleteTail: boolean,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
+      const chunks = single.chunkwiseOverlap(
+        data,
+        chunkSize,
+        overlapSize,
+        includeIncompleteTail,
+      );
 
-    // When
-    for (const item of chunks) {
-      result.push(item);
-    }
+      // When
+      for (const item of chunks) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 describe.each([
   ...dataProviderForError(),
-])("Chunkwise Overlap Error Test", (data, chunkSize, overlapSize, includeIncompleteTail) => {
-  it("", () => {
-    expect(() => {
-      const chunks = single.chunkwiseOverlap(
-        data as Iterable<unknown>,
-        chunkSize as number,
-        overlapSize as number,
-        includeIncompleteTail as boolean,
-      );
+] as Array<[Iterable<unknown>|Iterator<unknown>, number, number, boolean]>)(
+  "Chunkwise Overlap Error Test",
+  (
+    data: Iterable<unknown>|Iterator<unknown>,
+    chunkSize: number,
+    overlapSize: number,
+    includeIncompleteTail: boolean
+  ) => {
+    it("", () => {
+      expect(() => {
+        const chunks = single.chunkwiseOverlap(
+          data,
+          chunkSize,
+          overlapSize,
+          includeIncompleteTail,
+        );
 
-      for (const _ of chunks) {
-        break;
-      }
-    }).toThrow(InvalidArgumentError);
-  });
-});
+        for (const _ of chunks) {
+          break;
+        }
+      }).toThrow(InvalidArgumentError);
+    });
+  }
+);
 
 test("Chunkwise Overlap Default Param Value Test", () => {
   // Given
