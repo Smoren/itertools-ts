@@ -62,6 +62,17 @@ function dataProviderForArraysTrue(): Array<unknown> {
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([]),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22, 33]),
+    ],
   ];
 }
 
@@ -87,6 +98,17 @@ function dataProviderForGeneratorsTrue(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 9]),
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([]),
+    ],
+    [
+      createGeneratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22, 33]),
     ],
   ];
 }
@@ -114,6 +136,17 @@ function dataProviderForIterablesTrue(): Array<unknown> {
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([]),
+    ],
+    [
+      createIterableFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22, 33]),
+    ],
   ];
 }
 
@@ -139,6 +172,17 @@ function dataProviderForIteratorsTrue(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 9]),
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([]),
+    ],
+    [
+      createIteratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22, 33]),
     ],
   ];
 }
@@ -171,6 +215,17 @@ function dataProviderForStringsTrue(): Array<unknown> {
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([]),
+    ],
+    [
+      '135',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22, 33]),
+    ],
   ];
 }
 
@@ -196,6 +251,17 @@ function dataProviderForSetsTrue(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 9]),
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([]),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22, 33]),
     ],
   ];
 }
@@ -224,6 +290,17 @@ function dataProviderForMapsTrue(): Array<unknown> {
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([]),
+    ],
+    [
+      createMapFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22, 33]),
+    ],
   ];
 }
 
@@ -249,6 +326,17 @@ function dataProviderForArraysFalse(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 10]),
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([1, 2, 3]),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22]),
     ],
   ];
 }
@@ -276,6 +364,17 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
         .runningTotal()
         .sameWith([1, 4, 10]),
     ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([1, 2, 3]),
+    ],
+    [
+      createGeneratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22]),
+    ],
   ];
 }
 
@@ -302,6 +401,17 @@ function dataProviderForIterablesFalse(): Array<unknown> {
         .runningTotal()
         .sameWith([1, 4, 10]),
     ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([1, 2, 3]),
+    ],
+    [
+      createIterableFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22]),
+    ],
   ];
 }
 
@@ -327,6 +437,17 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 10]),
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([1, 2, 3]),
+    ],
+    [
+      createIteratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22]),
     ],
   ];
 }
@@ -359,6 +480,17 @@ function dataProviderForStringsFalse(): Array<unknown> {
         .runningTotal()
         .sameWith([1, 4, 10]),
     ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([1, 2, 3]),
+    ],
+    [
+      '135',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22]),
+    ],
   ];
 }
 
@@ -384,6 +516,17 @@ function dataProviderForSetsFalse(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 10]),
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([1, 2, 3]),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22]),
     ],
   ];
 }
@@ -414,6 +557,17 @@ function dataProviderForMapsFalse(): Array<unknown> {
         .map((item) => (item as [number, number])[1])
         .runningTotal()
         .sameWith([1, 4, 10]),
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameCountWith([1, 2, 3]),
+    ],
+    [
+      createMapFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .sameCountWith([11, 22]),
     ],
   ];
 }
