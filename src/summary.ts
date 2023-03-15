@@ -1,5 +1,6 @@
 import { zipEqual } from "./multi";
 import { pairwise } from "./single";
+import { toCount } from "./reduce";
 
 /**
  * Return true if given input is an Iterable instance.
@@ -65,4 +66,23 @@ export function same(
   }
 
   return true;
+}
+
+/**
+ * Returns true if all given collections have the same lengths.
+ *
+ * For single collection or empty collections list returns true.
+ *
+ * @param collections
+ */
+export function sameCount(
+  ...collections: Array<Iterable<unknown> | Iterator<unknown>>
+): boolean {
+  if (collections.length <= 1) {
+    return true;
+  }
+
+  const counts = collections.map((collection) => toCount(collection));
+
+  return (new Set(counts)).size === 1;
 }

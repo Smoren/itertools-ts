@@ -43,7 +43,7 @@ import {
 
 import { Stream } from "./stream";
 
-import { isIterable, isIterator, isString, same } from "./summary";
+import { isIterable, isIterator, isString, same, sameCount } from "./summary";
 
 import { toArray, toIterable, toIterator } from "./transform";
 
@@ -102,6 +102,7 @@ export const summary = {
   isIterator,
   isString,
   same,
+  sameCount,
 };
 
 export const transform = {

@@ -116,12 +116,13 @@ Quick Reference
 | [`union`](#Union)                              | Union of iterables                | `set.union(...iterables)`                         |
 
 #### Summary
-| Summary                      | Description                      | Code Snippet                   |
-|------------------------------|----------------------------------|--------------------------------|
-| [`isIterable`](#Is-Iterable) | True if given data is iterable   | `summary.isIterable(data)`     |
-| [`isIterator`](#Is-Iterator) | True if given data is iterator   | `summary.isIterator(data)`     |
-| [`isString`](#Is-String)     | True if given data is string     | `summary.isString(data)`       |
-| [`same`](#Same)              | True if collections are the same | `summary.same(...collections)` |
+| Summary                      | Description                               | Code Snippet                        |
+|------------------------------|-------------------------------------------|-------------------------------------|
+| [`isIterable`](#Is-Iterable) | True if given data is iterable            | `summary.isIterable(data)`          |
+| [`isIterator`](#Is-Iterator) | True if given data is iterator            | `summary.isIterator(data)`          |
+| [`isString`](#Is-String)     | True if given data is string              | `summary.isString(data)`            |
+| [`same`](#Same)              | True if collections are the same          | `summary.same(...collections)`      |
+| [`sameCount`](#Same-Count)   | True if collections have the same lengths | `summary.sameCount(...collections)` |
 
 #### Transform
 | Iterator                     | Description                       | Code Snippet                 |
@@ -184,9 +185,10 @@ Quick Reference
 | [`toValue`](#To-Value-1)     | Reduces stream like array.reduce() function     | `stream.toValue(reducer, initialValue)` |
 
 ##### Summary Terminal Operations
-| Terminal Operation         | Description                                                   | Code Snippet                      |
-|----------------------------|---------------------------------------------------------------|-----------------------------------|
-| [`sameWith`](#Same-With)   | Returns true if stream and all given collections are the same | `stream.sameWith(...collections)` |
+| Terminal Operation                  | Description                                                            | Code Snippet                           |
+|-------------------------------------|------------------------------------------------------------------------|----------------------------------------|
+| [`sameWith`](#Same-With)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |
+| [`sameCountWith`](#Same-Count-With) | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)` |
 
 Usage
 -----
@@ -1088,6 +1090,34 @@ const falseResult = summary.same(cocaColaIngredients, spriteIngredients);
 // false
 ```
 
+### Same Count
+Returns true if all given collections have the same lengths.
+
+For single collection or empty collections list returns true.
+
+```
+function same(
+  ...collections: Array<Iterable<unknown> | Iterator<unknown>>
+): boolean
+```
+
+```typescript
+import { summary } from "itertools-ts";
+
+const prequels  = ['Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith'];
+const originals = ['A New Hope', 'Empire Strikes Back', 'Return of the Jedi'];
+const sequels   = ['The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker'];
+
+const trueResult = summary.sameCount(prequels, originals, sequels);
+// true
+
+const batmanMovies = ['Batman Begins', 'The Dark Knight', 'The Dark Knight Rises'];
+const matrixMovies = ['The Matrix', 'The Matrix Reloaded', 'The Matrix Revolutions', 'The Matrix Resurrections'];
+
+const falseResult = summary.sameCount(batmanMovies, matrixMovies);
+// false
+```
+
 ## Transform
 ### To Iterable
 Returns `Iterable` instance of given collection or iterator.
@@ -1929,6 +1959,28 @@ const falseResult = Stream.of(input)
 // false
 ```
 
+##### Same Count With
+Returns true if stream collection and all given collections have the same lengths.
+
+```
+stream.sameCountWith(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean
+```
+
+For empty collections list returns true.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const trueResult = Stream.of(input)
+  .sameCountWith([5, 4, 3, 2, 1]);
+// true
+
+const falseResult = Stream.of(input)
+  .sameCountWith([1, 2, 3]);
+// false
+```
 
 Unit testing
 ------------

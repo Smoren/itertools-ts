@@ -34,7 +34,7 @@ import {
   toSum,
   toValue,
 } from "./reduce";
-import { same } from "./summary";
+import { same, sameCount } from "./summary";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -537,6 +537,21 @@ export class Stream {
     ...collections: Array<Iterable<unknown> | Iterator<unknown>>
   ): boolean {
     return same(this.data, ...collections);
+  }
+
+  /**
+   * Returns true if stream collection and all given collections have the same lengths.
+   *
+   * For empty collections list returns true.
+   *
+   * @param collections
+   *
+   * @see summary.sameCount
+   */
+  sameCountWith(
+    ...collections: Array<Iterable<unknown> | Iterator<unknown>>
+  ): boolean {
+    return sameCount(this.data, ...collections);
   }
 
   /**
