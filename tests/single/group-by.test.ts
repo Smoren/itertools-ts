@@ -10,24 +10,33 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Single Group By Test", (input, groupKeyFunction, itemKeyFunction, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[
+  Iterable<unknown>|Iterator<unknown>,
+  (item: unknown) => string,
+  ((item: unknown) => string) | undefined,
+  Array<unknown>
+]>)(
+  "Single Group By Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    groupKeyFunction: (item: unknown) => string,
+    itemKeyFunction: ((item: unknown) => string) | undefined,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of single.groupBy(
-      input as Iterable<unknown>,
-      groupKeyFunction as (item: unknown) => string,
-      itemKeyFunction as undefined | ((item: unknown) => string)
-    )) {
-      result.push(item);
-    }
+      // When
+      for (const item of single.groupBy(input, groupKeyFunction, itemKeyFunction)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

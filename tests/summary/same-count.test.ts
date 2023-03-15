@@ -2,11 +2,14 @@
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from '../fixture';
 import { summary } from '../../src';
 
-describe.each(dataProviderForTrue())("Summary Same Count Test True", (...input) => {
-  it("", () => {
-    expect(summary.sameCount(...(input as Array<Iterable<unknown> | Iterator<unknown>>))).toBeTruthy();
-  });
-});
+describe.each(dataProviderForTrue() as Array<[Array<Iterable<unknown>|Iterator<unknown>>]>)(
+  "Summary Same Count Test True",
+  (...input: Array<Iterable<unknown>|Iterator<unknown>>) => {
+    it("", () => {
+      expect(summary.sameCount(...input)).toBeTruthy();
+    });
+  }
+);
 
 function dataProviderForTrue(): Array<unknown> {
   return [
@@ -102,11 +105,14 @@ function dataProviderForTrue(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForFalse())("Summary Same Count Test False", (...input) => {
-  it("", () => {
-    expect(summary.sameCount(...(input as Array<Iterable<unknown> | Iterator<unknown>>))).toBeFalsy();
-  });
-});
+describe.each(dataProviderForFalse() as Array<[Array<Iterable<unknown>|Iterator<unknown>>]>)(
+  "Summary Same Count Test False",
+  (...input: Array<Iterable<unknown>|Iterator<unknown>>) => {
+    it("", () => {
+      expect(summary.sameCount(...input)).toBeFalsy();
+    });
+  }
+);
 
 function dataProviderForFalse(): Array<unknown> {
   return [

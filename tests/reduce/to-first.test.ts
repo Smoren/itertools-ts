@@ -10,25 +10,34 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Reduce To First Test", (input, expected) => {
-  it("", () => {
-    // When
-    const result = reduce.toFirst(input as Iterable<number>);
+] as Array<[Iterable<unknown>|Iterator<unknown>, unknown]>)(
+  "Reduce To First Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    expected: unknown
+  ) => {
+    it("", () => {
+      // When
+      const result = reduce.toFirst(input);
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 describe.each([
   ...dataProviderForError(),
-])("Reduce To First Error Test", (input) => {
-  it("", () => {
-    expect(() => {
-      reduce.toFirst(input as Iterable<unknown>);
-    }).toThrow(LengthError);
-  });
-});
+] as Array<[Iterable<unknown>|Iterator<unknown>]>)(
+  "Reduce To First Error Test",
+  (input: Iterable<unknown>|Iterator<unknown>) => {
+    it("", () => {
+      expect(() => {
+        reduce.toFirst(input);
+      }).toThrow(LengthError);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

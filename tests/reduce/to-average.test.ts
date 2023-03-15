@@ -9,19 +9,25 @@ describe.each([
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
-])("Reduce To Average Test", (input, expected) => {
-  it("", () => {
-    // When
-    const result = reduce.toAverage(input as Iterable<number>);
+] as Array<[Iterable<number>|Iterator<number>, number]>)(
+  "Reduce To Average Test",
+  (
+    input: Iterable<number>|Iterator<number>,
+    expected: number
+  ) => {
+    it("", () => {
+      // When
+      const result = reduce.toAverage(input);
 
-    // Then
-    if (expected === undefined) {
-      expect(result).toEqual(expected);
-    } else {
-      expect(result).toBeCloseTo(expected as number);
-    }
-  });
-});
+      // Then
+      if (expected === undefined) {
+        expect(result).toEqual(expected);
+      } else {
+        expect(result).toBeCloseTo(expected);
+      }
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

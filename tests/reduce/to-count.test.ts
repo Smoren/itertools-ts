@@ -10,15 +10,21 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Reduce To Count Test", (input, expected) => {
-  it("", () => {
-    // When
-    const result = reduce.toCount(input as Iterable<number>);
+] as Array<[Iterable<unknown>|Iterator<unknown>, number]>)(
+  "Reduce To Count Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    expected: number
+  ) => {
+    it("", () => {
+      // When
+      const result = reduce.toCount(input);
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

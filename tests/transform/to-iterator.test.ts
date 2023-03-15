@@ -2,24 +2,30 @@
 import { createGeneratorFixture, createIterableFixture } from '../fixture';
 import { transform, summary, InvalidArgumentError } from '../../src';
 
-describe.each(dataProviderForSuccess())("Transform To Iterator Test Success", (input, expected) => {
-  it("", () => {
-    // Given
-    const iterator = transform.toIterator(input as Iterable<unknown>|Iterator<unknown>);
-    const result = [];
+describe.each(dataProviderForSuccess() as Array<[Iterable<unknown>|Iterator<unknown>, Array<unknown>]>)(
+  "Transform To Iterator Test Success",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const iterator = transform.toIterator(input as Iterable<unknown>|Iterator<unknown>);
+      const result = [];
 
-    // Then
-    expect(summary.isIterator(iterator)).toBeTruthy();
+      // Then
+      expect(summary.isIterator(iterator)).toBeTruthy();
 
-    // And when
-    for (const item of transform.toIterable(iterator)) {
-      result.push(item);
-    }
+      // And when
+      for (const item of transform.toIterable(iterator)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForSuccess(): Array<unknown> {
   return [
@@ -90,13 +96,16 @@ function dataProviderForSuccess(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForError())("Transform To Iterable Test Error", (input) => {
-  it("", () => {
-    expect(() => {
-      transform.toIterator(input as Iterable<unknown>|Iterator<unknown>);
-    }).toThrow(InvalidArgumentError);
-  });
-});
+describe.each(dataProviderForError() as Array<[Iterable<unknown>|Iterator<unknown>]>)(
+  "Transform To Iterable Test Error",
+  (input: Iterable<unknown>|Iterator<unknown>) => {
+    it("", () => {
+      expect(() => {
+        transform.toIterator(input);
+      }).toThrow(InvalidArgumentError);
+    });
+  }
+);
 
 function dataProviderForError(): Array<unknown> {
   return [

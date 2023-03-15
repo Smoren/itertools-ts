@@ -10,15 +10,21 @@ describe.each([
   ...dataProviderForStringsTrue(),
   ...dataProviderForSetsTrue(),
   ...dataProviderForMapsTrue(),
-])("Stream Summary Test True", (input, streamFactory) => {
-  it("", () => {
-    // Given
-    const result = (streamFactory as (data: unknown) => Stream)(input);
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream]>)(
+  "Stream Summary Test True",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    streamFactory: (data: unknown) => Stream
+  ) => {
+    it("", () => {
+      // Given
+      const result = streamFactory(input);
 
-    // Then
-    expect(result).toBeTruthy();
-  });
-});
+      // Then
+      expect(result).toBeTruthy();
+    });
+  }
+);
 
 
 describe.each([
@@ -29,15 +35,21 @@ describe.each([
   ...dataProviderForStringsFalse(),
   ...dataProviderForSetsFalse(),
   ...dataProviderForMapsFalse(),
-])("Stream Summary Test False", (input, streamFactory) => {
-  it("", () => {
-    // Given
-    const result = (streamFactory as (data: unknown) => Stream)(input);
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream]>)(
+  "Stream Summary Test False",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    streamFactory: (data: unknown) => Stream
+  ) => {
+    it("", () => {
+      // Given
+      const result = streamFactory(input);
 
-    // Then
-    expect(result).toBeFalsy();
-  });
-});
+      // Then
+      expect(result).toBeFalsy();
+    });
+  }
+);
 
 function dataProviderForArraysTrue(): Array<unknown> {
   return [

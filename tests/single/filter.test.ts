@@ -10,20 +10,27 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Single Filter Test", (input, predicate, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Iterable<unknown>|Iterator<unknown>, (datum: unknown) => boolean, Array<unknown>]>)(
+  "Single Filter Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    predicate: (datum: unknown) => boolean,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of single.filter(input as Iterable<unknown>, predicate as (datum: unknown) => boolean)) {
-      result.push(item);
-    }
+      // When
+      for (const item of single.filter(input, predicate)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

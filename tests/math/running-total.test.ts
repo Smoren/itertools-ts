@@ -1,23 +1,30 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { math } from "../../src";
+import { math, Stream } from "../../src";
 
 describe.each([
   ...dataProviderForArraysWithInitialValue(),
-])("Math Running Total Test With Initial Value", (input, initialValue, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Iterable<unknown>|Iterator<unknown>, number|undefined, Array<unknown>]>)(
+  "Math Running Total Test With Initial Value",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    initialValue: number|undefined,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of math.runningTotal(input as Iterable<unknown>, initialValue as number|undefined)) {
-      result.push(item);
-    }
+      // When
+      for (const item of math.runningTotal(input, initialValue)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+  );
 
 function dataProviderForArraysWithInitialValue(): Array<unknown> {
   return [
@@ -76,13 +83,18 @@ describe.each([
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
-])("Math Running Total Test", (input, expected) => {
+] as Array<[Iterable<unknown>|Iterator<unknown>, Array<unknown>]>)(
+  "Math Running Total Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    expected: Array<unknown>
+  ) => {
   it("", () => {
     // Given
     const result = [];
 
     // When
-    for (const item of math.runningTotal(input as Iterable<unknown>)) {
+    for (const item of math.runningTotal(input)) {
       result.push(item);
     }
 

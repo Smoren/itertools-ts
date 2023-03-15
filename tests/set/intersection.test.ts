@@ -10,20 +10,26 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMixed(),
-])("Set Intersection Test", (input, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Array<Iterable<unknown>|Iterator<unknown>>, Array<unknown>]>)(
+  "Set Intersection Test",
+  (
+    input: Array<Iterable<unknown>|Iterator<unknown>>,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of set.intersection(...input as Array<Iterable<unknown>>)) {
-      result.push(item);
-    }
+      // When
+      for (const item of set.intersection(...input)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

@@ -10,27 +10,34 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Single Flatten Test", (input, dimensions, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Iterable<unknown>|Iterator<unknown>, number, Array<unknown>]>)(
+  "Single Flatten Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    dimensions: number,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of single.flatten(input as Iterable<unknown>, dimensions as number)) {
-      result.push(item);
-    }
+      // When
+      for (const item of single.flatten(input, dimensions)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
-  });
-});
+      // Then
+      expect(JSON.stringify(result)).toEqual(JSON.stringify(expected));
+    });
+  }
+);
 
 test("Single Flatten Test With Default Dimensions Count", () => {
   // Given
   const result = [];
 
   // When
-  for (const item of single.flatten([1, 2, 3] as Iterable<unknown>)) {
+  for (const item of single.flatten([1, 2, 3])) {
     result.push(item);
   }
 

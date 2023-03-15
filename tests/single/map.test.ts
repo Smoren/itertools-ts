@@ -10,20 +10,27 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Single Map Test", (input, mapper, expected) => {
-  it("", () => {
-    // Given
-    const result = [];
+] as Array<[Iterable<unknown>|Iterator<unknown>, (datum: unknown) => unknown, Array<unknown>]>)(
+  "Single Map Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    mapper: (datum: unknown) => unknown,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const result = [];
 
-    // When
-    for (const item of single.map(input as Iterable<unknown>, mapper as (datum: unknown) => unknown)) {
-      result.push(item);
-    }
+      // When
+      for (const item of single.map(input, mapper)) {
+        result.push(item);
+      }
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForArrays(): Array<unknown> {
   return [

@@ -10,27 +10,41 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-])("Reduce To Max Test", (input, compareBy, expected) => {
-  it("", () => {
-    // When
-    const result = reduce.toMax(input as Iterable<unknown>, compareBy as ((datum: unknown) => unknown)|undefined);
+] as Array<[Iterable<unknown>|Iterator<unknown>, ((datum: unknown) => unknown)|undefined, unknown]>)(
+  "Reduce To Max Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    compareBy: ((datum: unknown) => unknown)|undefined,
+    expected: unknown
+  ) => {
+    it("", () => {
+      // When
+      const result = reduce.toMax(input, compareBy);
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 describe.each([
   ...dataProviderForUsingCustomComparator(),
-])("Reduce To Min Using Custom Comparator Test", (input, compareBy, expected) => {
-  it("", () => {
-    // When
-    const result = reduce.toMax(input as Iterable<unknown>, compareBy as (datum: unknown) => unknown);
+] as Array<[Iterable<unknown>|Iterator<unknown>, ((datum: unknown) => unknown)|undefined, unknown]>)(
+  "Reduce To Min Using Custom Comparator Test",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    compareBy: ((datum: unknown) => unknown)|undefined,
+    expected: unknown
+  ) => {
+    it("", () => {
+      // When
+      const result = reduce.toMax(input, compareBy);
 
-    // Then
-    expect(result).toEqual(expected);
-  });
-});
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
 
 function dataProviderForUsingCustomComparator(): Array<unknown> {
   return [

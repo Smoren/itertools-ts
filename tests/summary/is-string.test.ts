@@ -2,11 +2,14 @@
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from '../fixture';
 import { summary } from '../../src';
 
-describe.each(dataProviderForTrue())("Summary Is String Test True", (input) => {
-  it("", () => {
-    expect(summary.isString(input)).toBeTruthy();
-  });
-});
+describe.each(dataProviderForTrue() as Array<[unknown]>)(
+  "Summary Is String Test True",
+  (input: unknown) => {
+    it("", () => {
+      expect(summary.isString(input)).toBeTruthy();
+    });
+  }
+);
 
 function dataProviderForTrue(): Array<unknown> {
   return [
@@ -32,11 +35,14 @@ function dataProviderForTrue(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForFalse())("Summary Is String Test False", (input) => {
-  it("", () => {
-    expect(summary.isString(input)).toBeFalsy();
-  });
-});
+describe.each(dataProviderForFalse() as Array<[unknown]>)(
+  "Summary Is String Test False",
+  (input: unknown) => {
+    it("", () => {
+      expect(summary.isString(input)).toBeFalsy();
+    });
+  }
+);
 
 function dataProviderForFalse(): Array<unknown> {
   return [
