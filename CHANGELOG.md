@@ -5,8 +5,10 @@
 ### New Features
 * summary
   * `allMatch()`
+  * `anyMatch()`
 * Stream
   * `allMatch()`
+  * `anyMatch()`
 
 ## v1.7.0 - 2023-03-15
 
