@@ -43,7 +43,7 @@ import {
 
 import { Stream } from "./stream";
 
-import { isIterable, isIterator, isString, same, sameCount } from "./summary";
+import { allMatch, isIterable, isIterator, isString, same, sameCount } from "./summary";
 
 import { toArray, toIterable, toIterator } from "./transform";
 
@@ -98,6 +98,7 @@ export const reduce = {
 };
 
 export const summary = {
+  allMatch,
   isIterable,
   isIterator,
   isString,

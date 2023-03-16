@@ -1,6 +1,29 @@
 import { zipEqual } from "./multi";
 import { pairwise } from "./single";
 import { toCount } from "./reduce";
+import { toIterable } from "./transform";
+
+/**
+ * Returns true if all elements match the predicate function.
+ *
+ * Empty iterables return true.
+ *
+ * @param data
+ * @param predicate
+ */
+export function allMatch<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): boolean {
+
+  for (const datum of toIterable(data)) {
+    if (!predicate(datum)) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 /**
  * Return true if given input is an Iterable instance.

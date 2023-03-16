@@ -1,5 +1,13 @@
 # IterTools Typescript Change Log
 
+## v1.8.0 - TBD
+
+### New Features
+* summary
+  * `allMatch()`
+* Stream
+  * `allMatch()`
+
 ## v1.7.0 - 2023-03-15
 
 ### New Features
@@ -9,13 +17,11 @@
   * `sameCountWith()`
 
 ### Improvements
-
 * Type annotations added to tests (to repair github workflow).
 
 ## v1.6.1 - 2023-03-14
 
 ### Improvements
-
 * Reduced package size by including fewer tests.
 
 ## v1.6.0 - 2023-03-14
@@ -77,5 +83,4 @@
   * `toAverage()`
 
 ## v1.0.0 - 2023-03-11
-
 Initial release.
