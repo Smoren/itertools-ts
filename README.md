@@ -116,13 +116,16 @@ Quick Reference
 | [`union`](#Union)                              | Union of iterables                | `set.union(...iterables)`                         |
 
 #### Summary
-| Summary                      | Description                               | Code Snippet                        |
-|------------------------------|-------------------------------------------|-------------------------------------|
-| [`isIterable`](#Is-Iterable) | True if given data is iterable            | `summary.isIterable(data)`          |
-| [`isIterator`](#Is-Iterator) | True if given data is iterator            | `summary.isIterator(data)`          |
-| [`isString`](#Is-String)     | True if given data is string              | `summary.isString(data)`            |
-| [`same`](#Same)              | True if collections are the same          | `summary.same(...collections)`      |
-| [`sameCount`](#Same-Count)   | True if collections have the same lengths | `summary.sameCount(...collections)` |
+| Summary                      | Description                                       | Code Snippet                         |
+|------------------------------|---------------------------------------------------|--------------------------------------|
+| [`allMatch`](#All-Match)     | True if all items are true according to predicate | `summary.allMatch(data, predicate)`  |
+| [`anyMatch`](#Any-Match)     | True if any item is true according to predicate   | `summary.anyMatch(data, predicate)`  |
+| [`isIterable`](#Is-Iterable) | True if given data is iterable                    | `summary.isIterable(data)`           |
+| [`isIterator`](#Is-Iterator) | True if given data is iterator                    | `summary.isIterator(data)`           |
+| [`isString`](#Is-String)     | True if given data is string                      | `summary.isString(data)`             |
+| [`noneMatch`](#None-Match)   | True if none of items true according to predicate | `summary.noneMatch(data, predicate)` |
+| [`same`](#Same)              | True if collections are the same                  | `summary.same(...collections)`       |
+| [`sameCount`](#Same-Count)   | True if collections have the same lengths         | `summary.sameCount(...collections)`  |
 
 #### Transform
 | Iterator                     | Description                       | Code Snippet                 |
@@ -187,6 +190,9 @@ Quick Reference
 ##### Summary Terminal Operations
 | Terminal Operation                  | Description                                                            | Code Snippet                           |
 |-------------------------------------|------------------------------------------------------------------------|----------------------------------------|
+| [`allMatch`](#All-Match-1)          | Returns true if all items in stream match predicate                    | `stream.allMatch(predicate)`           |
+| [`anyMatch`](#Any-Match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
+| [`noneMatch`](#None-Match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
 | [`sameWith`](#Same-With)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |
 | [`sameCountWith`](#Same-Count-With) | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)` |
 
@@ -1017,6 +1023,55 @@ for (const item of set.symmetricDifference(a, b, c)) {
 ```
 
 ## Summary
+### All Match
+Returns true if all elements match the predicate function.
+
+```
+function allMatch<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): boolean
+```
+
+Empty collections return true.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const finalFantasyNumbers = [4, 5, 6];
+const isOnSuperNintendo   = (ff) => ff >= 4 && ff <= 6;
+
+const trueResult = summary.allMatch(finalFantasyNumbers, isOnSuperNintendo);
+// true
+
+const isOnPlaystation = (ff) => ff >= 7 && ff <= 9;
+
+const falseResult = summary.allMatch(finalFantasyNumbers, isOnPlaystation);
+// false
+```
+
+### Any Match
+Returns true if any element matches the predicate function.
+
+```
+function anyMatch<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): boolean
+```
+
+Empty collections return false.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const answers          = ['fish', 'towel', 42, "don't panic"];
+const isUltimateAnswer = (a) => a == 42;
+
+const trueResult = summary.anyMatch(answers, isUltimateAnswer);
+// true
+```
+
 ### Is Iterable
 Returns true if given data is an `Iterable` instance.
 
@@ -1065,6 +1120,28 @@ summary.isString('') // true
 summary.isString('abc') // true
 summary.isString(String('abc')) // true
 summary.isString(1); // false
+```
+
+### None Match
+Returns true if no element matches the predicate function.
+
+```
+function noneMatch<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): boolean
+```
+
+Empty collections return true.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const grades         = [45, 50, 61, 0];
+const isPassingGrade = (grade) => grade >= 70;
+
+const trueResult = summary.noneMatch(grades, isPassingGrade);
+// true
 ```
 
 ### Same
@@ -1936,6 +2013,66 @@ const result = Stream.of(input)
 ```
 
 #### Stream Summary Terminal Operations
+##### All Match
+Returns true if all elements of stream match the predicate function.
+
+```
+allMatch(predicate: (item: unknown) => boolean): boolean
+```
+
+For empty stream returns true.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const finalFantasyNumbers = [4, 5, 6];
+const isOnSuperNintendo   = (ff) => ff >= 4 && ff <= 6;
+
+const trueResult = Stream.of(finalFantasyNumbers)
+  .allMatch(isOnSuperNintendo);
+// true
+```
+
+##### Any Match
+Returns true if any element of stream matches the predicate function.
+
+```
+anyMatch(predicate: (item: unknown) => boolean): boolean
+```
+
+For empty stream returns false.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const answers          = ['fish', 'towel', 42, "don't panic"];
+const isUltimateAnswer = (a) => a == 42;
+
+const trueResult = Stream.of(answers)
+  .anyMatch(answers, isUltimateAnswer);
+// true
+```
+
+##### None Match
+Returns true if no element of stream matches the predicate function.
+
+```
+noneMatch(predicate: (item: unknown) => boolean): boolean
+```
+
+For empty stream returns true.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const grades         = [45, 50, 61, 0];
+const isPassingGrade = (grade) => grade >= 70;
+
+const trueResult = Stream.of(grades)
+  .noneMatch(isPassingGrade);
+// true
+```
+
 ##### Same With
 Returns true if stream and all given collections are the same.
 
