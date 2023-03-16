@@ -6,7 +6,7 @@ import { toIterable } from "./transform";
 /**
  * Returns true if all elements match the predicate function.
  *
- * Empty iterables return true.
+ * Empty collections return true.
  *
  * @param data
  * @param predicate
@@ -15,14 +15,32 @@ export function allMatch<T>(
   data: Iterable<T> | Iterator<T>,
   predicate: (item: T) => boolean
 ): boolean {
-
   for (const datum of toIterable(data)) {
     if (!predicate(datum)) {
       return false;
     }
   }
-
   return true;
+}
+
+/**
+ * Returns true if any element matches the predicate function.
+ *
+ * Empty collections return false.
+ *
+ * @param data
+ * @param predicate
+ */
+export function anyMatch<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): boolean {
+  for (const datum of toIterable(data)) {
+    if (predicate(datum)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
