@@ -6,9 +6,11 @@
 * summary
   * `allMatch()`
   * `anyMatch()`
+  * `noneMatch()`
 * Stream
   * `allMatch()`
   * `anyMatch()`
+  * `noneMatch()`
 
 ## v1.7.0 - 2023-03-15
 
