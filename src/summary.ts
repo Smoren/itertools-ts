@@ -85,6 +85,26 @@ export function isString(input: unknown): boolean {
 }
 
 /**
+ * Returns true if no element matches the predicate function.
+ *
+ * Empty collections return true.
+ *
+ * @param data
+ * @param predicate
+ */
+export function noneMatch<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): boolean {
+  for (const datum of toIterable(data)) {
+    if (predicate(datum)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
  * Returns true if all given collections are the same.
  *
  * For single collection or empty collections list returns true.

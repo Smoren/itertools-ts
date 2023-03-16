@@ -34,7 +34,7 @@ import {
   toSum,
   toValue,
 } from "./reduce";
-import { allMatch, anyMatch, same, sameCount } from "./summary";
+import { allMatch, anyMatch, noneMatch, same, sameCount } from "./summary";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -530,6 +530,8 @@ export class Stream {
    * For empty stream returns true.
    *
    * @param predicate
+   *
+   * @see summary.allMatch
    */
   allMatch(predicate: (item: unknown) => boolean): boolean {
     return allMatch(this, predicate);
@@ -541,9 +543,24 @@ export class Stream {
    * For empty stream returns false.
    *
    * @param predicate
+   *
+   * @see summary.anyMatch
    */
   anyMatch(predicate: (item: unknown) => boolean): boolean {
     return anyMatch(this, predicate);
+  }
+
+  /**
+   * Returns true if no element of stream matches the predicate function.
+   *
+   * For empty stream returns true.
+   *
+   * @param predicate
+   *
+   * @see summary.noneMatch
+   */
+  noneMatch(predicate: (item: unknown) => boolean): boolean {
+    return noneMatch(this, predicate);
   }
 
   /**
