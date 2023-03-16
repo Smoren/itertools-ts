@@ -46,6 +46,7 @@ import { Stream } from "./stream";
 import {
   allMatch,
   anyMatch,
+  isEmpty,
   isIterable,
   isIterator,
   isString,
@@ -109,6 +110,7 @@ export const reduce = {
 export const summary = {
   allMatch,
   anyMatch,
+  isEmpty,
   isIterable,
   isIterator,
   isString,

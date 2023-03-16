@@ -44,6 +44,18 @@ export function anyMatch<T>(
 }
 
 /**
+ * Returns true if given collection is empty.
+ *
+ * @param data
+ */
+export function isEmpty(data: Iterable<unknown> | Iterator<unknown>): boolean {
+  for (const _ of toIterable(data)) {
+    return false;
+  }
+  return true;
+}
+
+/**
  * Return true if given input is an Iterable instance.
  *
  * @param input
