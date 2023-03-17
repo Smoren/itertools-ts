@@ -2,7 +2,7 @@ import { zipEqual } from "./multi";
 import { pairwise } from "./single";
 import { toCount } from "./reduce";
 import { toIterable } from "./transform";
-import { Comparable } from './types';
+import { Comparable } from "./types";
 
 /**
  * Returns true if all elements match the predicate function.
@@ -33,7 +33,9 @@ export function allMatch<T>(
  *
  * @param data
  */
-export function allUnique(data: Iterable<unknown> | Iterator<unknown>): boolean {
+export function allUnique(
+  data: Iterable<unknown> | Iterator<unknown>
+): boolean {
   const usages = new Set();
 
   for (const datum of toIterable(data)) {
@@ -72,6 +74,7 @@ export function anyMatch<T>(
  * @param data
  */
 export function isEmpty(data: Iterable<unknown> | Iterator<unknown>): boolean {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   for (const _ of toIterable(data)) {
     return false;
   }
@@ -119,7 +122,9 @@ export function isIterator(input: unknown): boolean {
  *
  * @param data
  */
-export function isReversed(data: Iterable<Comparable> | Iterator<Comparable>): boolean {
+export function isReversed(
+  data: Iterable<Comparable> | Iterator<Comparable>
+): boolean {
   for (const [lhs, rhs] of pairwise(toIterable(data))) {
     if (lhs < rhs) {
       return false;
@@ -137,7 +142,9 @@ export function isReversed(data: Iterable<Comparable> | Iterator<Comparable>): b
  *
  * @param data
  */
-export function isSorted(data: Iterable<Comparable> | Iterator<Comparable>): boolean {
+export function isSorted(
+  data: Iterable<Comparable> | Iterator<Comparable>
+): boolean {
   for (const [lhs, rhs] of pairwise(toIterable(data))) {
     if (lhs > rhs) {
       return false;

@@ -34,8 +34,17 @@ import {
   toSum,
   toValue,
 } from "./reduce";
-import { allMatch, allUnique, anyMatch, isReversed, isSorted, noneMatch, same, sameCount } from "./summary";
-import { Comparable } from './types';
+import {
+  allMatch,
+  allUnique,
+  anyMatch,
+  isReversed,
+  isSorted,
+  noneMatch,
+  same,
+  sameCount,
+} from "./summary";
+import { Comparable } from "./types";
 
 /**
  * Provides fluent interface for working with iterables.

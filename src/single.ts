@@ -2,7 +2,7 @@ import { toIterable } from "./transform";
 import { InvalidArgumentError } from "./exceptions";
 import { isIterable, isIterator, isString } from "./summary";
 import { distinct } from "./set";
-import { FlatMapper, Pair } from './types';
+import { FlatMapper, Pair } from "./types";
 
 /**
  * Map a function onto every element of the iteration.
