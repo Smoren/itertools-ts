@@ -34,7 +34,8 @@ import {
   toSum,
   toValue,
 } from "./reduce";
-import { allMatch, allUnique, anyMatch, noneMatch, same, sameCount } from "./summary";
+import { allMatch, allUnique, anyMatch, isReversed, isSorted, noneMatch, same, sameCount } from "./summary";
+import { Comparable } from './types';
 
 /**
  * Provides fluent interface for working with iterables.
@@ -561,6 +562,32 @@ export class Stream {
    */
   anyMatch(predicate: (item: unknown) => boolean): boolean {
     return anyMatch(this, predicate);
+  }
+
+  /**
+   * Returns true if stream is sorted in ascending order; otherwise false.
+   *
+   * Items of stream source must be comparable.
+   *
+   * Also returns true if stream is empty or has only one element.
+   *
+   * @see summary.isSorted
+   */
+  isSorted(): boolean {
+    return isSorted(this as Iterable<Comparable>);
+  }
+
+  /**
+   * Returns true if stream is sorted in descending order; otherwise false.
+   *
+   * Items of stream source must be comparable.
+   *
+   * Also returns true if stream is empty or has only one element.
+   *
+   * @see summary.isReversed
+   */
+  isReversed(): boolean {
+    return isReversed(this as Iterable<Comparable>);
   }
 
   /**
