@@ -45,6 +45,7 @@ import { Stream } from "./stream";
 
 import {
   allMatch,
+  allUnique,
   anyMatch,
   isEmpty,
   isIterable,
@@ -109,6 +110,7 @@ export const reduce = {
 
 export const summary = {
   allMatch,
+  allUnique,
   anyMatch,
   isEmpty,
   isIterable,
