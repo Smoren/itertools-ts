@@ -89,6 +89,19 @@ function dataProviderForArraysTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((item) => (item as number) > 0)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      [5, -1, 4, -2, 3, -3, 2, -4, 1, -5],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((item) => (item as number) > 0)
+        .isReversed(),
+    ],
+    [
       [],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch(() => true),
@@ -174,6 +187,19 @@ function dataProviderForGeneratorsTrue(): Array<unknown> {
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((item) => (item as number) > 0)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      createGeneratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((item) => (item as number) > 0)
+        .isReversed(),
     ],
     [
       createGeneratorFixture([]),
@@ -263,6 +289,19 @@ function dataProviderForIterablesTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((item) => (item as number) > 0)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      createIterableFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((item) => (item as number) > 0)
+        .isReversed(),
+    ],
+    [
       createIterableFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch(() => true),
@@ -350,6 +389,19 @@ function dataProviderForIteratorsTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((item) => (item as number) > 0)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      createIteratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((item) => (item as number) > 0)
+        .isReversed(),
+    ],
+    [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch(() => true),
@@ -430,6 +482,17 @@ function dataProviderForStringsTrue(): Array<unknown> {
       '135',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => Number(x as string) > 0),
+    ],
+    [
+      '123',
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      '54321',
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .isReversed(),
     ],
     [
       '',
@@ -529,6 +592,19 @@ function dataProviderForSetsTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((item) => (item as number) > 0)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      new Set([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((item) => (item as number) > 0)
+        .isReversed(),
+    ],
+    [
       new Set([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch(() => true),
@@ -619,6 +695,21 @@ function dataProviderForMapsTrue(): Array<unknown> {
         .anyMatch((x) => (x as [unknown, number])[1] > 0),
     ],
     [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .filter((item) => (item as number) > 0)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      createMapFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .filter((item) => (item as number) > 0)
+        .isReversed(),
+    ],
+    [
       createMapFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch(() => true),
@@ -692,6 +783,17 @@ function dataProviderForArraysFalse(): Array<unknown> {
         .anyMatch((x) => (x as number) > 10),
     ],
     [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      [5, -1, 4, -2, 3, -3, 2, -4, 1, -5],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .isReversed(),
+    ],
+    [
       [1, 3, 5],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch((x) => (x as number) === 3),
@@ -752,6 +854,17 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      createGeneratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .isReversed(),
     ],
     [
       createGeneratorFixture([1, 3, 5]),
@@ -816,6 +929,17 @@ function dataProviderForIterablesFalse(): Array<unknown> {
         .anyMatch((x) => (x as number) > 10),
     ],
     [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      createIterableFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .isReversed(),
+    ],
+    [
       createIterableFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch((x) => (x as number) === 3),
@@ -876,6 +1000,17 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
       createIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      createIteratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .isReversed(),
     ],
     [
       createIteratorFixture([1, 3, 5]),
@@ -940,6 +1075,16 @@ function dataProviderForStringsFalse(): Array<unknown> {
         .anyMatch((x) => Number(x as string) > 10),
     ],
     [
+      '131',
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .isSorted(),
+    ],
+    [
+      '123',
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .isReversed(),
+    ],
+    [
       '135',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch((x) => Number(x as string) === 3),
@@ -1000,6 +1145,17 @@ function dataProviderForSetsFalse(): Array<unknown> {
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      new Set([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .isReversed(),
     ],
     [
       new Set([1, 3, 5]),
@@ -1063,6 +1219,19 @@ function dataProviderForMapsFalse(): Array<unknown> {
       createMapFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as [unknown, number])[1] > 10),
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningTotal()
+        .isSorted(),
+    ],
+    [
+      createMapFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .isReversed(),
     ],
     [
       createMapFixture([1, 3, 5]),
