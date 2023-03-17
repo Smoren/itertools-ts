@@ -2,6 +2,7 @@ import { toIterable } from "./transform";
 import { InvalidArgumentError } from "./exceptions";
 import { isIterable, isIterator, isString } from "./summary";
 import { distinct } from "./set";
+import { FlatMapper, Pair } from './types';
 
 /**
  * Map a function onto every element of the iteration.
@@ -34,11 +35,6 @@ export function* repeat<T>(item: T, repetitions: number): Iterable<T> {
     yield item;
   }
 }
-
-export type FlatMapper<TInput, TOutput> = (
-  datum: Iterable<TInput> | Iterator<TInput> | TInput,
-  mapper: FlatMapper<TInput, TOutput>
-) => TOutput | Iterable<TInput> | Iterator<TInput>;
 
 /**
  * Returns a new collection formed by applying a given callback mapper function to each element
@@ -186,8 +182,6 @@ export function* chunkwise<T>(
     yield chunk;
   }
 }
-
-export type Pair<T> = [T, T];
 
 /**
  * Return pairs of elements from given collection.

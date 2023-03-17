@@ -5,8 +5,14 @@
 ### New Features
 * summary
   * `allUnique()`
+  * `isSorted()`
+  * `isReversed()`
 * Stream
   * `allUnique()`
+  * `isSorted()`
+  * `isReversed()`
+* types
+  * `Comparable`
 
 ## v1.8.0 - 2023-03-16
 

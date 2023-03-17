@@ -2,6 +2,7 @@ import { zipEqual } from "./multi";
 import { pairwise } from "./single";
 import { toCount } from "./reduce";
 import { toIterable } from "./transform";
+import { Comparable } from './types';
 
 /**
  * Returns true if all elements match the predicate function.
@@ -107,6 +108,42 @@ export function isIterator(input: unknown): boolean {
     (input as Record<string, unknown>).next !== undefined &&
     typeof (input as Record<string, unknown>).next === "function"
   );
+}
+
+/**
+ * Returns true if given collection is sorted in descending order; otherwise false.
+ *
+ * Items of given collection must be comparable.
+ *
+ * Returns true if given collection is empty or has only one element.
+ *
+ * @param data
+ */
+export function isReversed(data: Iterable<Comparable> | Iterator<Comparable>): boolean {
+  for (const [lhs, rhs] of pairwise(toIterable(data))) {
+    if (lhs < rhs) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * Returns true if given collection is sorted in ascending order; otherwise false.
+ *
+ * Items of given collection must be comparable.
+ *
+ * Returns true if given collection is empty or has only one element.
+ *
+ * @param data
+ */
+export function isSorted(data: Iterable<Comparable> | Iterator<Comparable>): boolean {
+  for (const [lhs, rhs] of pairwise(toIterable(data))) {
+    if (lhs > rhs) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**

@@ -13,8 +13,6 @@ import {
   pairwise,
   slice,
   values,
-  FlatMapper,
-  Pair,
 } from "./single";
 
 import { runningTotal } from "./math";
@@ -50,6 +48,8 @@ import {
   isEmpty,
   isIterable,
   isIterator,
+  isReversed,
+  isSorted,
   isString,
   noneMatch,
   same,
@@ -59,6 +59,8 @@ import {
 import { toArray, toIterable, toIterator } from "./transform";
 
 import { InvalidArgumentError, LengthError } from "./exceptions";
+
+import { FlatMapper, Pair, Comparable } from "./types";
 
 export const single = {
   chunkwise,
@@ -115,6 +117,8 @@ export const summary = {
   isEmpty,
   isIterable,
   isIterator,
+  isReversed,
+  isSorted,
   isString,
   noneMatch,
   same,
@@ -129,6 +133,6 @@ export const transform = {
 
 export { Stream };
 
-export type { FlatMapper, Pair };
+export type { FlatMapper, Pair, Comparable };
 
 export { InvalidArgumentError, LengthError };
