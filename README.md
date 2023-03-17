@@ -119,9 +119,12 @@ Quick Reference
 | Summary                      | Description                                       | Code Snippet                         |
 |------------------------------|---------------------------------------------------|--------------------------------------|
 | [`allMatch`](#All-Match)     | True if all items are true according to predicate | `summary.allMatch(data, predicate)`  |
+| [`allUnique`](#All-Unique)   | True if all elements in collection are unique     | `summary.allUnique(data)`            |
 | [`anyMatch`](#Any-Match)     | True if any item is true according to predicate   | `summary.anyMatch(data, predicate)`  |
 | [`isIterable`](#Is-Iterable) | True if given data is iterable                    | `summary.isIterable(data)`           |
 | [`isIterator`](#Is-Iterator) | True if given data is iterator                    | `summary.isIterator(data)`           |
+| [`isReversed`](#Is-Reversed) | True if iterable reverse sorted                   | `summary.isReversed(data)`           |
+| [`isSorted`](#Is-Sorted)     | True if iterable sorted                           | `summary.isSorted(data)`             |
 | [`isString`](#Is-String)     | True if given data is string                      | `summary.isString(data)`             |
 | [`noneMatch`](#None-Match)   | True if none of items true according to predicate | `summary.noneMatch(data, predicate)` |
 | [`same`](#Same)              | True if collections are the same                  | `summary.same(...collections)`       |
@@ -191,7 +194,10 @@ Quick Reference
 | Terminal Operation                  | Description                                                            | Code Snippet                           |
 |-------------------------------------|------------------------------------------------------------------------|----------------------------------------|
 | [`allMatch`](#All-Match-1)          | Returns true if all items in stream match predicate                    | `stream.allMatch(predicate)`           |
+| [`allUnique`](#All-Unique-1)        | Returns true if all elements of stream are unique                      | `stream.allUnique(predicate)`          |
 | [`anyMatch`](#Any-Match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
+| [`isReversed`](#Is-Reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
+| [`isSorted`](#Is-Sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
 | [`noneMatch`](#None-Match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
 | [`sameWith`](#Same-With)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |
 | [`sameCountWith`](#Same-Count-With) | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)` |
@@ -1050,6 +1056,29 @@ const falseResult = summary.allMatch(finalFantasyNumbers, isOnPlaystation);
 // false
 ```
 
+### All Unique
+Return true if all elements in given collection are unique.
+
+```
+function allUnique(data: Iterable<unknown> | Iterator<unknown>): boolean
+```
+
+Empty collections return true.
+
+Considers different instances of data containers to be different, even if they have the same content.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const uniqueNumbers = [1, 2, 3, 4, 5];
+summary.allUnique(uniqueNumbers);
+// true
+
+const notUniqueNumbers = [1, 1, 2, 2, 3];
+summary.allUnique(notUniqueNumbers);
+// false
+```
+
 ### Any Match
 Returns true if any element matches the predicate function.
 
@@ -1104,6 +1133,54 @@ const input = [1, 2, 3, 4, 5];
 summary.isIterator(input[Symbol.iterator]()) // true
 summary.isIterator(input); // false
 summary.isIterator(1); // false
+```
+
+### Is Reversed
+Returns true if elements are reverse sorted, otherwise false.
+
+```
+function isReversed(data: Iterable<Comparable> | Iterator<Comparable>): boolean
+```
+
+- Elements must be comparable.
+- Returns true if empty or has only one element.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const reversedNumbers = [5, 4, 3, 2, 1];
+
+Summary.isReversed(reversedNumbers);
+// true
+
+const numbers = [1, 4, 3, 2, 1];
+
+Summary.isReversed(numbers);
+// false
+```
+
+### Is Sorted
+Returns true if elements are sorted, otherwise false.
+
+```
+function isSorted(data: Iterable<Comparable> | Iterator<Comparable>): boolean
+```
+
+- Elements must be comparable.
+- Returns true if empty or has only one element.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const sortedNumbers = [1, 2, 3, 4, 5];
+
+Summary.isSorted(sortedNumbers);
+// true
+
+const numbers = [3, 2, 3, 4, 5];
+
+Summary.isSorted(numbers);
+// false
 ```
 
 ### Is String
@@ -2033,6 +2110,32 @@ const trueResult = Stream.of(finalFantasyNumbers)
 // true
 ```
 
+##### All Unique
+Returns true if all elements in stream are unique.
+
+```
+stream.allUnique(): boolean
+```
+
+Empty collections return true.
+
+Considers different instances of data containers to be different, even if they have the same content.
+
+```typescript
+import { summary } from "itertools-ts";
+import { Stream } from './stream';
+
+const uniqueNumbers = [1, 2, 3, 4, 5];
+Stream.of(uniqueNumbers)
+  .allUnique();
+// true
+
+const notUniqueNumbers = [1, 1, 2, 2, 3];
+Stream.of(notUniqueNumbers)
+  .allUnique();
+// false
+```
+
 ##### Any Match
 Returns true if any element of stream matches the predicate function.
 
@@ -2051,6 +2154,60 @@ const isUltimateAnswer = (a) => a == 42;
 const trueResult = Stream.of(answers)
   .anyMatch(answers, isUltimateAnswer);
 // true
+```
+
+##### Is Reversed
+Returns true if stream is sorted in reverse descending order; otherwise false.
+
+```
+stream.isReversed(): boolean
+```
+
+Items of stream must be comparable.
+
+Returns true if iterable source is empty or has only one element.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const reversed = [5, 4, 3, 2, 1];
+
+Stream.of(reversed)
+  .isReversed();
+// true
+
+const input = [1, 2, 3, 2, 1];
+
+Stream.of(input)
+  .isReversed();
+// false
+```
+
+##### Is Sorted
+Returns true if iterable source is sorted in ascending order; otherwise false.
+
+```
+stream.isSorted(): boolean
+```
+
+Items of iterable source must be comparable.
+
+Returns true if iterable source is empty or has only one element.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const sorted = [1, 2, 3, 4, 5];
+
+Stream.of(sorted)
+  .isSorted();
+// true
+
+const input = [1, 2, 3, 2, 1];
+
+Stream.of(input)
+  .isSorted();
+// false
 ```
 
 ##### None Match
