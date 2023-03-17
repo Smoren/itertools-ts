@@ -1,6 +1,6 @@
 # IterTools Typescript Change Log
 
-## v1.9.0 - TBD
+## v1.9.0 - 2023-03-17
 
 ### New Features
 * summary
