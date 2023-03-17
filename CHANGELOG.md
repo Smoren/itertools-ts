@@ -1,5 +1,13 @@
 # IterTools Typescript Change Log
 
+## v1.9.0 - TBD
+
+### New Features
+* summary
+  * `allUnique()`
+* Stream
+  * `allUnique()`
+
 ## v1.8.0 - 2023-03-16
 
 ### New Features

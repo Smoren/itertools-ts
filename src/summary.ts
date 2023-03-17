@@ -24,6 +24,28 @@ export function allMatch<T>(
 }
 
 /**
+ * Return true if all elements in given collection are unique.
+ *
+ * Empty collections return true.
+ *
+ * Considers different instances of data containers to be different, even if they have the same content.
+ *
+ * @param data
+ */
+export function allUnique(data: Iterable<unknown> | Iterator<unknown>): boolean {
+  const usages = new Set();
+
+  for (const datum of toIterable(data)) {
+    if (usages.has(datum)) {
+      return false;
+    }
+    usages.add(datum);
+  }
+
+  return true;
+}
+
+/**
  * Returns true if any element matches the predicate function.
  *
  * Empty collections return false.

@@ -64,6 +64,21 @@ function dataProviderForArraysTrue(): Array<unknown> {
         .allMatch((x) => (x as number) > 0),
     ],
     [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      [1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      [1, '1', true, [1], [1]],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
       [1, 3, 5],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) === 3),
@@ -134,6 +149,21 @@ function dataProviderForGeneratorsTrue(): Array<unknown> {
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .allMatch((x) => (x as number) > 0),
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      createGeneratorFixture([1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      createGeneratorFixture([1, '1', true, [1], [1]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
     ],
     [
       createGeneratorFixture([1, 3, 5]),
@@ -208,6 +238,21 @@ function dataProviderForIterablesTrue(): Array<unknown> {
         .allMatch((x) => (x as number) > 0),
     ],
     [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      createIterableFixture([1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      createIterableFixture([1, '1', true, [1], [1]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
       createIterableFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) === 3),
@@ -280,6 +325,21 @@ function dataProviderForIteratorsTrue(): Array<unknown> {
         .allMatch((x) => (x as number) > 0),
     ],
     [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      createIteratorFixture([1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      createIteratorFixture([1, '1', true, [1], [1]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
       createIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) === 3),
@@ -350,6 +410,16 @@ function dataProviderForStringsTrue(): Array<unknown> {
       '135',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .allMatch((x) => Number(x as string) > 0),
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      '12345',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
     ],
     [
       '135',
@@ -429,6 +499,26 @@ function dataProviderForSetsTrue(): Array<unknown> {
         .allMatch((x) => (x as number) > 0),
     ],
     [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      new Set([1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      new Set([1, '1', true, [1], [1]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
+      new Set([1, 1, 1, 1, 1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .allUnique(),
+    ],
+    [
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) === 3),
@@ -501,6 +591,24 @@ function dataProviderForMapsTrue(): Array<unknown> {
         .allMatch((x) => (x as [unknown, number])[1] > 0),
     ],
     [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((data) => (data as [unknown, unknown])[1])
+        .allUnique(),
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((data) => (data as [unknown, unknown])[1])
+        .allUnique(),
+    ],
+    [
+      createMapFixture([1, '1', true, [1], [1]]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((data) => (data as [unknown, unknown])[1])
+        .allUnique(),
+    ],
+    [
       createMapFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as [unknown, number])[1] === 3),
@@ -569,9 +677,9 @@ function dataProviderForArraysFalse(): Array<unknown> {
         .allMatch((x) => (x as number) > 0),
     ],
     [
-      [],
+      [1, 2, 1, 3],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sameWith([1]),
+        .allUnique(),
     ],
     [
       [],
@@ -587,6 +695,11 @@ function dataProviderForArraysFalse(): Array<unknown> {
       [1, 3, 5],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch((x) => (x as number) === 3),
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameWith([1]),
     ],
     [
       [1],
@@ -626,9 +739,9 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
         .allMatch((x) => (x as number) > 0),
     ],
     [
-      createGeneratorFixture([]),
+      createGeneratorFixture([1, 2, 1, 3]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sameWith([1]),
+        .allUnique(),
     ],
     [
       createGeneratorFixture([]),
@@ -644,6 +757,11 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch((x) => (x as number) === 3),
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameWith([1]),
     ],
     [
       createGeneratorFixture([1]),
@@ -683,9 +801,9 @@ function dataProviderForIterablesFalse(): Array<unknown> {
         .allMatch((x) => (x as number) > 0),
     ],
     [
-      createIterableFixture([]),
+      createIterableFixture([1, 2, 1, 3]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sameWith([1]),
+        .allUnique(),
     ],
     [
       createIterableFixture([]),
@@ -701,6 +819,11 @@ function dataProviderForIterablesFalse(): Array<unknown> {
       createIterableFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch((x) => (x as number) === 3),
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameWith([1]),
     ],
     [
       createIterableFixture([1]),
@@ -740,9 +863,9 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
         .allMatch((x) => (x as number) > 0),
     ],
     [
-      createIteratorFixture([]),
+      createIteratorFixture([1, 2, 1, 3]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sameWith([1]),
+        .allUnique(),
     ],
     [
       createIteratorFixture([]),
@@ -758,6 +881,11 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
       createIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch((x) => (x as number) === 3),
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameWith([1]),
     ],
     [
       createIteratorFixture([1]),
@@ -797,9 +925,9 @@ function dataProviderForStringsFalse(): Array<unknown> {
         .allMatch((x) => Number(x as string) > 1),
     ],
     [
-      '',
+      '1231',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sameWith([1]),
+        .allUnique(),
     ],
     [
       '',
@@ -815,6 +943,11 @@ function dataProviderForStringsFalse(): Array<unknown> {
       '135',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch((x) => Number(x as string) === 3),
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameWith([1]),
     ],
     [
       '1',
@@ -861,11 +994,6 @@ function dataProviderForSetsFalse(): Array<unknown> {
     [
       new Set([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sameWith([1]),
-    ],
-    [
-      new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch(() => true),
     ],
     [
@@ -877,6 +1005,11 @@ function dataProviderForSetsFalse(): Array<unknown> {
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch((x) => (x as number) === 3),
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sameWith([1]),
     ],
     [
       new Set([1]),
@@ -916,10 +1049,10 @@ function dataProviderForMapsFalse(): Array<unknown> {
         .allMatch((x) => (x as [unknown, number])[1] > 0),
     ],
     [
-      createMapFixture([]),
+      createMapFixture([1, 2, 1, 3]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .map((item) => (item as [number, number])[1])
-        .sameWith([1]),
+        .allUnique(),
     ],
     [
       createMapFixture([]),
@@ -935,6 +1068,12 @@ function dataProviderForMapsFalse(): Array<unknown> {
       createMapFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .noneMatch((x) => (x as [unknown, number])[1] === 3),
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [number, number])[1])
+        .sameWith([1]),
     ],
     [
       createMapFixture([1]),

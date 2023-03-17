@@ -34,7 +34,7 @@ import {
   toSum,
   toValue,
 } from "./reduce";
-import { allMatch, anyMatch, noneMatch, same, sameCount } from "./summary";
+import { allMatch, allUnique, anyMatch, noneMatch, same, sameCount } from "./summary";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -535,6 +535,19 @@ export class Stream {
    */
   allMatch(predicate: (item: unknown) => boolean): boolean {
     return allMatch(this, predicate);
+  }
+
+  /**
+   * Returns true if all elements of stream are unique.
+   *
+   * For empty stream returns true.
+   *
+   * Considers different instances of data containers to be different, even if they have the same content.
+   *
+   * @see summary.allUnique
+   */
+  allUnique(): boolean {
+    return allUnique(this);
   }
 
   /**
