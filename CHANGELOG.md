@@ -1,5 +1,13 @@
 # IterTools Typescript Change Log
 
+## v1.10.0 - TBD
+
+### New Features
+* reduce
+  * `toFirstAndLast()`
+* Stream
+  * `toFirstAndLast()`
+
 ## v1.10.0 - 2023-03-19
 
 ### New Features

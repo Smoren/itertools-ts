@@ -222,6 +222,18 @@ function dataProviderForArrays(): Array<unknown> {
       2,
     ],
     [
+      [1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [1, 5],
+    ],
+    [
+      [2, 1, 3, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [2, 5],
+    ],
+    [
       [2, 3, 1, 5],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toLast(),
@@ -635,6 +647,18 @@ function dataProviderForGenerators(): Array<unknown> {
       2,
     ],
     [
+      createGeneratorFixture([1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [1, 5],
+    ],
+    [
+      createGeneratorFixture([2, 1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [2, 5],
+    ],
+    [
       createGeneratorFixture([2, 3, 1, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toLast(),
@@ -1036,6 +1060,18 @@ function dataProviderForIterables(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toFirst(),
       2,
+    ],
+    [
+      createIterableFixture([1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [1, 5],
+    ],
+    [
+      createIterableFixture([2, 1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [2, 5],
     ],
     [
       createIterableFixture([2, 3, 1, 5]),
@@ -1441,6 +1477,18 @@ function dataProviderForIterators(): Array<unknown> {
       2,
     ],
     [
+      createIteratorFixture([1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [1, 5],
+    ],
+    [
+      createIteratorFixture([2, 1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [2, 5],
+    ],
+    [
       createIteratorFixture([2, 3, 1, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toLast(),
@@ -1811,6 +1859,18 @@ function dataProviderForStrings(): Array<unknown> {
       '2',
     ],
     [
+      '12345',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      ['1', '5'],
+    ],
+    [
+      '2135',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      ['2', '5'],
+    ],
+    [
       '2315',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toLast(),
@@ -2080,6 +2140,18 @@ function dataProviderForSets(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toFirst(),
       2,
+    ],
+    [
+      new Set([1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [1, 5],
+    ],
+    [
+      new Set([2, 1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [2, 5],
     ],
     [
       new Set([2, 3, 1, 5]),
@@ -2517,6 +2589,18 @@ function dataProviderForMaps(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toFirst(),
       [0, 2],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [[0, 1], [4, 5]],
+    ],
+    [
+      createMapFixture([2, 1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toFirstAndLast(),
+      [[0, 2], [3, 5]],
     ],
     [
       createMapFixture([2, 3, 1, 5]),
