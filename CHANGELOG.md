@@ -1,6 +1,6 @@
 # IterTools Typescript Change Log
 
-## v1.10.0 - TBD
+## v1.11.0 - TBD
 
 ### New Features
 * reduce

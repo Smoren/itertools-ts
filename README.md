@@ -95,17 +95,18 @@ Quick Reference
 | [`runningTotal`](#Running-Total) | Running total accumulation | `math.runningTotal(numbers, [initialValue])` |
 
 #### Reduce
-| Reducer                    | Description                            | Code Snippet                                  |
-|----------------------------|----------------------------------------|-----------------------------------------------|
-| [`toAverage`](#To-Average) | Mean average of elements               | `reduce.toAverage(numbers)`                   |
-| [`toCount`](#To-Count)     | Reduce to length of iterable           | `reduce.toCount(data)`                        |
-| [`toFirst`](#To-First)     | Reduce to its first value              | `reduce.toFirst(data)`                        |
-| [`toLast`](#To-Last)       | Reduce to its last value               | `reduce.toLast(data)`                         |
-| [`toMax`](#To-Max)         | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
-| [`toMin`](#To-Min)         | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
-| [`toProduct`](#To-Product) | Reduce to the product of its elements  | `reduce.toProduct(numbers)`                   |
-| [`toSum`](#To-Sum)         | Reduce to the sum of its elements      | `reduce.toSum(numbers)`                       |
-| [`toValue`](#To-Value)     | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
+| Reducer                                | Description                            | Code Snippet                                  |
+|----------------------------------------|----------------------------------------|-----------------------------------------------|
+| [`toAverage`](#To-Average)             | Mean average of elements               | `reduce.toAverage(numbers)`                   |
+| [`toCount`](#To-Count)                 | Reduce to length of iterable           | `reduce.toCount(data)`                        |
+| [`toFirst`](#To-First)                 | Reduce to its first value              | `reduce.toFirst(data)`                        |
+| [`toFirstAndLast`](#To-First-And-Last) | Reduce to its first and last values    | `reduce.toFirstAndLast(data)`                 |
+| [`toLast`](#To-Last)                   | Reduce to its last value               | `reduce.toLast(data)`                         |
+| [`toMax`](#To-Max)                     | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
+| [`toMin`](#To-Min)                     | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
+| [`toProduct`](#To-Product)             | Reduce to the product of its elements  | `reduce.toProduct(numbers)`                   |
+| [`toSum`](#To-Sum)                     | Reduce to the sum of its elements      | `reduce.toSum(numbers)`                       |
+| [`toValue`](#To-Value)                 | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
 
 #### Set and multiset Iteration
 | Iterator                                       | Description                       | Code Snippet                                      |
@@ -179,17 +180,18 @@ Quick Reference
 | [`toArray`](#To-Array-1) | Returns array of stream elements | `stream.toArray()` |
 
 ##### Reduction Terminal Operations
-| Terminal Operation           | Description                                     | Code Snippet                            |
-|------------------------------|-------------------------------------------------|-----------------------------------------|
-| [`toAverage`](#To-Average-1) | Reduces stream to the mean average of its items | `stream.toAverage()`                    |
-| [`toCount`](#To-Count-1)     | Reduces stream to its length                    | `stream.toCount()`                      |
-| [`toFirst`](#To-First-1)     | Reduces stream to its first value               | `stream.toFirst()`                      |
-| [`toLast`](#To-Last-1)       | Reduces stream to its last value                | `stream.toLast()`                       |
-| [`toMax`](#To-Max-1)         | Reduces stream to its max value                 | `stream.toMax([compareBy])`             |
-| [`toMin`](#To-Min-1)         | Reduces stream to its min value                 | `stream.toMin([compareBy])`             |
-| [`toProduct`](#To-Product-1) | Reduces stream to the product of its items      | `stream.toProduct()`                    |
-| [`toSum`](#To-Sum-1)         | Reduces stream to the sum of its items          | `stream.toSum()`                        |
-| [`toValue`](#To-Value-1)     | Reduces stream like array.reduce() function     | `stream.toValue(reducer, initialValue)` |
+| Terminal Operation                       | Description                                     | Code Snippet                            |
+|------------------------------------------|-------------------------------------------------|-----------------------------------------|
+| [`toAverage`](#To-Average-1)             | Reduces stream to the mean average of its items | `stream.toAverage()`                    |
+| [`toCount`](#To-Count-1)                 | Reduces stream to its length                    | `stream.toCount()`                      |
+| [`toFirst`](#To-First-1)                 | Reduces stream to its first value               | `stream.toFirst()`                      |
+| [`toFirstAndLast`](#To-First-And-Last-1) | Reduces stream to its first and last values     | `sstream.toFirstAndLast()`              |
+| [`toLast`](#To-Last-1)                   | Reduces stream to its last value                | `stream.toLast()`                       |
+| [`toMax`](#To-Max-1)                     | Reduces stream to its max value                 | `stream.toMax([compareBy])`             |
+| [`toMin`](#To-Min-1)                     | Reduces stream to its min value                 | `stream.toMin([compareBy])`             |
+| [`toProduct`](#To-Product-1)             | Reduces stream to the product of its items      | `stream.toProduct()`                    |
+| [`toSum`](#To-Sum-1)                     | Reduces stream to the sum of its items          | `stream.toSum()`                        |
+| [`toValue`](#To-Value-1)                 | Reduces stream like array.reduce() function     | `stream.toValue(reducer, initialValue)` |
 
 ##### Summary Terminal Operations
 | Terminal Operation                  | Description                                                            | Code Snippet                           |
@@ -762,6 +764,24 @@ const medals = ['gold', 'silver', 'bronze'];
 
 const first = reduce.toFirst(medals);
 // gold
+```
+
+### To First And Last
+Reduces iterable to its first and last elements.
+
+```
+function toFirstAndLast<T>(data: Iterable<T> | Iterator<T>): [T, T]
+```
+
+Throws `LengthException` if collection is empty.
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const medals = ['gold', 'silver', 'bronze'];
+
+const result = reduce.toFirstAndLast(medals);
+// [gold, bronze]
 ```
 
 ### To Last
@@ -1994,6 +2014,25 @@ const input = [10, 20, 30];
 const result = Stream.of(input)
   .toFirst();
 // 10
+```
+
+##### To First And Last
+Reduces stream to its first last elements.
+
+```
+stream.toFirstAndLast(): [unknown, unknown]
+```
+
+Throws `LengthException` if stream is empty.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [10, 20, 30];
+
+const result = Stream.of(input)
+  .toFirstAndLast();
+// [10, 30]
 ```
 
 ##### To Last
