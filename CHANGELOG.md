@@ -1,5 +1,13 @@
 # IterTools Typescript Change Log
 
+## v1.10.0 - 2023-03-19
+
+### New Features
+* multi
+  * `zipFilled()`
+* Stream
+  * `zipFilledWith()`
+
 ## v1.9.0 - 2023-03-17
 
 ### New Features

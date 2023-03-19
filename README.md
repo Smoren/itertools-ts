@@ -63,12 +63,13 @@ Quick Reference
 ### Loop Iteration Tools
 
 #### Multi Iteration
-| Iterator                     | Description                                                                             | Code Snippet                          |
-|------------------------------|-----------------------------------------------------------------------------------------|---------------------------------------|
-| [`chain`](#Chain)            | Chain multiple iterables together                                                       | `multi.chain(list1, list2, ...)`      |
-| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes       | `multi.zip(list1, list2, ...)`        |
-| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal | `multi.zipEqual(list1, list2, ...)`   |
-| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes        | `multi.zipLongest(list1, list2, ...)` |
+| Iterator                     | Description                                                                                                       | Code Snippet                                 |
+|------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
+| [`chain`](#Chain)            | Chain multiple iterables together                                                                                 | `multi.chain(list1, list2, ...)`             |
+| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes                                 | `multi.zip(list1, list2, ...)`               |
+| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal                           | `multi.zipEqual(list1, list2, ...)`          |
+| [`zipFilled`](#Zip-Filled)   | Iterate multiple collections simultaneously until the longest iterator completes (with filler for uneven lengths) | `multi.zipFilled(filler, list1, list2, ...)` |
+| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes                                  | `multi.zipLongest(list1, list2, ...)`        |
 
 #### Single Iteration
 | Iterator                                 | Description                                 | Code Snippet                                            |
@@ -261,6 +262,29 @@ for (const [name, country, signatureMove] of multi.zip(names, countries, signatu
 }
 ```
 Note: For uneven lengths, iteration stops when the shortest iterable is exhausted.
+
+### Zip Filled
+Iterate multiple iterable collections simultaneously.
+
+```
+function* zipFilled(
+  filler: unknown,
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Iterable<Array<unknown>>
+```
+
+For uneven lengths, the exhausted iterables will produce `filler` value for the remaining iterations.
+
+```typescript
+import { multi } from 'itertools-ts';
+
+const letters = ['A', 'B', 'C'];
+const numbers = [1, 2];
+
+for (const [letter, number] of multi.zipFilled('filler', letters, numbers)) {
+  // ['A', 1], ['B', 2], ['C', 'filler']
+}
+```
 
 ### Zip Longest
 Iterate multiple iterable collections simultaneously.

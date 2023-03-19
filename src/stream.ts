@@ -14,7 +14,7 @@ import {
   slice,
   values,
 } from "./single";
-import { chain, zip, zipEqual, zipLongest } from "./multi";
+import { chain, zip, zipEqual, zipFilled, zipLongest } from "./multi";
 import { runningTotal } from "./math";
 import {
   distinct,
@@ -72,7 +72,7 @@ export class Stream {
   }
 
   /**
-   * Iterate iterable source with another iterable collections simultaneously.
+   * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.
    * Similar to Python's zip function.
@@ -89,13 +89,35 @@ export class Stream {
   }
 
   /**
-   * Iterate iterable source with another iterable collections simultaneously.
+   * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.
-   * Similar to Python's zip_longest function
+   * Similar to Python's zip_longest function.
    *
    * Iteration continues until the longest iterable is exhausted.
-   * For uneven lengths, the exhausted iterables will produce null for the remaining iterations.
+   * For uneven lengths, the exhausted iterables will produce `filler` value for the remaining iterations.
+   *
+   * @param filler
+   * @param iterables
+   *
+   * @see multi.zipLongest
+   */
+  zipFilledWith(
+    filler: unknown,
+    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+  ): Stream {
+    this.data = zipFilled(filler, this.data, ...iterables);
+    return this;
+  }
+
+  /**
+   * Iterate stream collection with another iterable collections simultaneously.
+   *
+   * Make an iterator that aggregates items from multiple iterators.
+   * Similar to Python's zip_longest function.
+   *
+   * Iteration continues until the longest iterable is exhausted.
+   * For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
    *
    * @param iterables
    *
@@ -109,7 +131,7 @@ export class Stream {
   }
 
   /**
-   * Iterate iterable source with another iterable collections of equal lengths simultaneously.
+   * Iterate stream collection with another iterable collections of equal lengths simultaneously.
    *
    * Works like multi.zip() method but throws LengthException if lengths not equal,
    * i.e., at least one iterator ends before the others.
@@ -126,7 +148,7 @@ export class Stream {
   }
 
   /**
-   * Chain iterable source withs given iterables together into a single iteration.
+   * Chain stream collection withs given iterables together into a single iteration.
    *
    * Makes a single continuous sequence out of multiple sequences.
    *

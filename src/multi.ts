@@ -26,11 +26,36 @@ export function* zip(
 /**
  * Iterate multiple iterable collections simultaneously.
  *
- * Make an iterator that aggregates items from multiple iterators.
- * Similar to Python's zip_longest function
+ * Make an iterable that aggregates items from multiple iterators.
+ * Similar to Python's zip_longest function.
  *
  * Iteration continues until the longest iterable is exhausted.
- * For uneven lengths, the exhausted iterables will produce null for the remaining iterations.
+ * For uneven lengths, the exhausted iterables will produce `filler` value for the remaining iterations.
+ *
+ * @param filler
+ * @param iterables
+ */
+export function* zipFilled(
+  filler: unknown,
+  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+): Iterable<Array<unknown>> {
+  for (const values of createMultipleIterator(
+    MultipleIterationMode.LONGEST,
+    filler,
+    ...iterables
+  )) {
+    yield values;
+  }
+}
+
+/**
+ * Iterate multiple iterable collections simultaneously.
+ *
+ * Make an iterable that aggregates items from multiple iterators.
+ * Similar to Python's zip_longest function.
+ *
+ * Iteration continues until the longest iterable is exhausted.
+ * For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
  *
  * @param iterables
  */

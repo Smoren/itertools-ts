@@ -17,7 +17,7 @@ import {
 
 import { runningTotal } from "./math";
 
-import { chain, zip, zipLongest, zipEqual } from "./multi";
+import { chain, zip, zipFilled, zipLongest, zipEqual } from "./multi";
 
 import {
   distinct,
@@ -86,6 +86,7 @@ export const math = {
 export const multi = {
   chain,
   zip,
+  zipFilled,
   zipLongest,
   zipEqual,
 };
