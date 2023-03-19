@@ -77,6 +77,22 @@ function dataProviderForArrays(): Array<unknown> {
       ],
     ],
     [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .zipFilledWith(
+          'filler',
+          [11, 22, 33],
+          [111, 222, 333, 444],
+        )
+        .toArray(),
+      [
+        ['filler', 11, 111],
+        ['filler', 22, 222],
+        ['filler', 33, 333],
+        ['filler', 'filler', 444],
+      ],
+    ],
+    [
       [1, 2, 3, 4, 5],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .zipWith(
@@ -184,6 +200,22 @@ function dataProviderForGenerators(): Array<unknown> {
         [undefined, 22, 222],
         [undefined, 33, 333],
         [undefined, undefined, 444],
+      ],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .zipFilledWith(
+          'filler',
+          [11, 22, 33],
+          [111, 222, 333, 444],
+        )
+        .toArray(),
+      [
+        ['filler', 11, 111],
+        ['filler', 22, 222],
+        ['filler', 33, 333],
+        ['filler', 'filler', 444],
       ],
     ],
     [
@@ -297,6 +329,22 @@ function dataProviderForIterables(): Array<unknown> {
       ],
     ],
     [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .zipFilledWith(
+          'filler',
+          [11, 22, 33],
+          [111, 222, 333, 444],
+        )
+        .toArray(),
+      [
+        ['filler', 11, 111],
+        ['filler', 22, 222],
+        ['filler', 33, 333],
+        ['filler', 'filler', 444],
+      ],
+    ],
+    [
       createIterableFixture([1, 2, 3, 4, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .zipWith(
@@ -407,6 +455,22 @@ function dataProviderForIterators(): Array<unknown> {
       ],
     ],
     [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .zipFilledWith(
+          'filler',
+          [11, 22, 33],
+          [111, 222, 333, 444],
+        )
+        .toArray(),
+      [
+        ['filler', 11, 111],
+        ['filler', 22, 222],
+        ['filler', 33, 333],
+        ['filler', 'filler', 444],
+      ],
+    ],
+    [
       createIteratorFixture([1, 2, 3, 4, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .zipWith(
@@ -514,6 +578,22 @@ function dataProviderForStrings(): Array<unknown> {
         [undefined, 22, 222],
         [undefined, 33, 333],
         [undefined, undefined, 444],
+      ],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .zipFilledWith(
+          'filler',
+          [11, 22, 33],
+          [111, 222, 333, 444],
+        )
+        .toArray(),
+      [
+        ['filler', 11, 111],
+        ['filler', 22, 222],
+        ['filler', 33, 333],
+        ['filler', 'filler', 444],
       ],
     ],
     [
@@ -632,6 +712,22 @@ function dataProviderForSets(): Array<unknown> {
       ],
     ],
     [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .zipFilledWith(
+          'filler',
+          [11, 22, 33],
+          [111, 222, 333, 444],
+        )
+        .toArray(),
+      [
+        ['filler', 11, 111],
+        ['filler', 22, 222],
+        ['filler', 33, 333],
+        ['filler', 'filler', 444],
+      ],
+    ],
+    [
       new Set([1, 2, 3, 4, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .zipWith(
@@ -747,6 +843,22 @@ function dataProviderForMaps(): Array<unknown> {
       ],
     ],
     [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .zipFilledWith(
+          'filler',
+          [11, 22, 33],
+          [111, 222, 333, 444],
+        )
+        .toArray(),
+      [
+        ['filler', 11, 111],
+        ['filler', 22, 222],
+        ['filler', 33, 333],
+        ['filler', 'filler', 444],
+      ],
+    ],
+    [
       createMapFixture([1, 2, 3, 4, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
@@ -851,6 +963,28 @@ function dataProviderForMixed(): Array<unknown> {
         [5, undefined, undefined, undefined, undefined, 'e'],
         [undefined, undefined, undefined, undefined, undefined, 'f'],
         [undefined, undefined, undefined, undefined, undefined, 'g'],
+      ],
+    ],
+    [
+      [1, 2, 3, 4, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .zipFilledWith(
+          'filler',
+          createGeneratorFixture([11, 22, 33]),
+          createIterableFixture([111, 222, 333, 444]),
+          createIteratorFixture([1111, 2222, 3333]),
+          new Set([11111, 22222, 33333]),
+          'abcdefg',
+        )
+        .toArray(),
+      [
+        [1, 11, 111, 1111, 11111, 'a'],
+        [2, 22, 222, 2222, 22222, 'b'],
+        [3, 33, 333, 3333, 33333, 'c'],
+        [4, 'filler', 444, 'filler', 'filler', 'd'],
+        [5, 'filler', 'filler', 'filler', 'filler', 'e'],
+        ['filler', 'filler', 'filler', 'filler', 'filler', 'f'],
+        ['filler', 'filler', 'filler', 'filler', 'filler', 'g'],
       ],
     ],
     [
