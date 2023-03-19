@@ -36,6 +36,7 @@ import {
   toSum,
   toValue,
   toFirst,
+  toFirstAndLast,
   toLast,
 } from "./reduce";
 
@@ -103,6 +104,7 @@ export const reduce = {
   toAverage,
   toCount,
   toFirst,
+  toFirstAndLast,
   toLast,
   toMax,
   toMin,

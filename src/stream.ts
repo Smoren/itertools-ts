@@ -26,7 +26,7 @@ import {
 import {
   toAverage,
   toCount,
-  toFirst,
+  toFirst, toFirstAndLast,
   toLast,
   toMax,
   toMin,
@@ -523,6 +523,17 @@ export class Stream {
    */
   toFirst(): unknown {
     return toFirst(this);
+  }
+
+  /**
+   * Returns the first and last elements of stream.
+   *
+   * @throws LengthError if stream is empty.
+   *
+   * @see reduce.toFirstAndLast
+   */
+  toFirstAndLast(): unknown {
+    return toFirstAndLast(this);
   }
 
   /**

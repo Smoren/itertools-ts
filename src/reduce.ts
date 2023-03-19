@@ -1,6 +1,7 @@
 import { toIterable } from "./transform";
 import { LengthError } from "./exceptions";
 import { isString } from "./summary";
+import { NoValueMonad } from "./tools";
 
 /**
  * Reduces iterable source like `array.reduce()` function.
@@ -185,4 +186,29 @@ export function toLast<T>(data: Iterable<T> | Iterator<T>): T {
   }
 
   return result as T;
+}
+
+/**
+ * Reduces given collection to its first and last values.
+ *
+ * @param data
+ *
+ * @throws LengthError if given collection is empty.
+ */
+export function toFirstAndLast<T>(data: Iterable<T> | Iterator<T>): [T, T] {
+  let first: T|NoValueMonad = NoValueMonad;
+  let last: T|NoValueMonad = NoValueMonad;
+
+  for (const value of toIterable(data)) {
+    if (first === NoValueMonad) {
+      first = value;
+    }
+    last = value;
+  }
+
+  if (first === NoValueMonad) {
+    throw new LengthError("Collection is empty");
+  }
+
+  return [first as T, last as T];
 }
