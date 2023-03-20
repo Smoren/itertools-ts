@@ -2,7 +2,7 @@ import { toIterable } from "./transform";
 import { LengthError } from "./exceptions";
 import { isString } from "./summary";
 import { NoValueMonad } from "./tools";
-import { Comparable } from './types';
+import { Comparable } from "./types";
 
 /**
  * Reduces iterable source like `array.reduce()` function.
@@ -121,21 +121,26 @@ export function toMinMax<T>(
   data: Iterable<T> | Iterator<T>,
   compareBy?: (item: T) => Comparable
 ): [T?, T?] {
-  const comparableGetter = (compareBy !== undefined)
-    ? compareBy as (item: T) => Comparable
-    : (item: T) => item as Comparable;
+  const comparableGetter =
+    compareBy !== undefined
+      ? (compareBy as (item: T) => Comparable)
+      : (item: T) => item as Comparable;
 
-  return toValue(data, (carry, datum) => {
-    carry = carry as [T?, T?];
-    return [
-      comparableGetter(datum) <= comparableGetter(carry[0] ?? datum)
-        ? datum
-        : carry[0] ?? datum,
-      comparableGetter(datum) >= comparableGetter(carry[1] ?? datum)
-        ? datum
-        : carry[1] ?? datum,
-    ];
-  }, [undefined, undefined] as [T?, T?]) as [T?, T?];
+  return toValue(
+    data,
+    (carry, datum) => {
+      carry = carry as [T?, T?];
+      return [
+        comparableGetter(datum) <= comparableGetter(carry[0] ?? datum)
+          ? datum
+          : carry[0] ?? datum,
+        comparableGetter(datum) >= comparableGetter(carry[1] ?? datum)
+          ? datum
+          : carry[1] ?? datum,
+      ];
+    },
+    [undefined, undefined] as [T?, T?]
+  ) as [T?, T?];
 }
 
 /**
@@ -230,8 +235,8 @@ export function toLast<T>(data: Iterable<T> | Iterator<T>): T {
  * @throws LengthError if given collection is empty.
  */
 export function toFirstAndLast<T>(data: Iterable<T> | Iterator<T>): [T, T] {
-  let first: T|NoValueMonad = NoValueMonad;
-  let last: T|NoValueMonad = NoValueMonad;
+  let first: T | NoValueMonad = NoValueMonad;
+  let last: T | NoValueMonad = NoValueMonad;
 
   for (const value of toIterable(data)) {
     if (first === NoValueMonad) {

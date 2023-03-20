@@ -26,10 +26,12 @@ import {
 import {
   toAverage,
   toCount,
-  toFirst, toFirstAndLast,
+  toFirst,
+  toFirstAndLast,
   toLast,
   toMax,
-  toMin, toMinMax,
+  toMin,
+  toMinMax,
   toProduct,
   toSum,
   toValue,
@@ -489,9 +491,7 @@ export class Stream {
    *
    * @see reduce.toMax
    */
-  toMax(
-    compareBy?: (datum: unknown) => Comparable
-  ): unknown | undefined {
+  toMax(compareBy?: (datum: unknown) => Comparable): unknown | undefined {
     return toMax(this, compareBy);
   }
 
@@ -508,9 +508,7 @@ export class Stream {
    *
    * @see reduce.toMin
    */
-  toMin(
-    compareBy?: (datum: unknown) => Comparable
-  ): unknown | undefined {
+  toMin(compareBy?: (datum: unknown) => Comparable): unknown | undefined {
     return toMin(this, compareBy);
   }
 
@@ -525,9 +523,7 @@ export class Stream {
    *
    * @param compareBy
    */
-  toMinMax(
-    compareBy?: (item: unknown) => Comparable
-  ): [unknown?, unknown?] {
+  toMinMax(compareBy?: (item: unknown) => Comparable): [unknown?, unknown?] {
     return toMinMax(this, compareBy);
   }
 
