@@ -104,6 +104,7 @@ Quick Reference
 | [`toLast`](#To-Last)                   | Reduce to its last value               | `reduce.toLast(data)`                         |
 | [`toMax`](#To-Max)                     | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
 | [`toMin`](#To-Min)                     | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
+| [`toMin`](#To-Min-Max)                 | Reduce to its lower and upper bounds   | `reduce.toMinMax(numbers, [compareBy])`       |
 | [`toProduct`](#To-Product)             | Reduce to the product of its elements  | `reduce.toProduct(numbers)`                   |
 | [`toSum`](#To-Sum)                     | Reduce to the sum of its elements      | `reduce.toSum(numbers)`                       |
 | [`toValue`](#To-Value)                 | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
@@ -189,6 +190,7 @@ Quick Reference
 | [`toLast`](#To-Last-1)                   | Reduces stream to its last value                | `stream.toLast()`                       |
 | [`toMax`](#To-Max-1)                     | Reduces stream to its max value                 | `stream.toMax([compareBy])`             |
 | [`toMin`](#To-Min-1)                     | Reduces stream to its min value                 | `stream.toMin([compareBy])`             |
+| [`toMin`](#To-Min-Max-1)                 | Reduce stream to its lower and upper bounds     | `stream.toMinMax([compareBy])`          |
 | [`toProduct`](#To-Product-1)             | Reduces stream to the product of its items      | `stream.toProduct()`                    |
 | [`toSum`](#To-Sum-1)                     | Reduces stream to the sum of its items          | `stream.toSum()`                        |
 | [`toValue`](#To-Value-1)                 | Reduces stream like array.reduce() function     | `stream.toValue(reducer, initialValue)` |
@@ -900,7 +902,7 @@ const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
 // }
 ```
 
-### To Min
+### To Min Max
 Reduces collection to its lower and upper bounds.
 
 ```
@@ -2108,7 +2110,7 @@ const result = Stream.of(input)
 ```
 
 ##### To Max
-Reduces iterable source to its max value.
+Reduces stream to its max value.
 
 ```
 stream.toMax<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined
@@ -2129,7 +2131,7 @@ const result = Stream.of(iterable)
 ```
 
 ##### To Min
-Reduces iterable source to its min value.
+Reduces stream to its min value.
 
 ```
 stream.toMin<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined
@@ -2147,6 +2149,27 @@ const input = [1, -1, 2, -2, 3, -3];
 const result = Stream.of(iterable)
   .toMin();
 // -3
+```
+
+##### To Min Max
+Reduces stream to its min and max values.
+
+```
+toMinMax(compareBy?: (item: unknown) => Comparable): [unknown?, unknown?]
+```
+
+- Optional callable param `compareBy` must return comparable value.
+- If `compareBy` is not provided then items of given collection must be comparable.
+- Returns `[undefined, undefined]` if collection is empty.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, -1, 2, -2, 3, -3];
+
+const result = Stream.of(iterable)
+  .toMinMax();
+// [-3, 3]
 ```
 
 ##### To Product
