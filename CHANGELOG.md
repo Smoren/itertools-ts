@@ -1,12 +1,17 @@
 # IterTools Typescript Change Log
 
-## v1.11.0 - TBD
+## v1.11.0 - 2023-03-20
 
 ### New Features
 * reduce
   * `toFirstAndLast()`
+  * `toMinMax()`
 * Stream
   * `toFirstAndLast()`
+  * `toMinMax()`
+
+### Improvements
+* `reduce.toMin()` and `reduce.toMax()` functions are refactored using `Comparable` type.
 
 ## v1.10.0 - 2023-03-19
 

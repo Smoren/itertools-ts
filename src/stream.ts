@@ -29,7 +29,7 @@ import {
   toFirst, toFirstAndLast,
   toLast,
   toMax,
-  toMin,
+  toMin, toMinMax,
   toProduct,
   toSum,
   toValue,
@@ -512,6 +512,23 @@ export class Stream {
     compareBy?: (datum: unknown) => Comparable
   ): unknown | undefined {
     return toMin(this, compareBy);
+  }
+
+  /**
+   * Reduces given collection to array of its upper and lower bounds.
+   *
+   * Callable param `compareBy` must return comparable value.
+   *
+   * If `compareBy` is not proposed then items of given collection must be comparable.
+   *
+   * Returns `[undefined, undefined]` if given collection is empty.
+   *
+   * @param compareBy
+   */
+  toMinMax(
+    compareBy?: (item: unknown) => Comparable
+  ): [unknown?, unknown?] {
+    return toMinMax(this, compareBy);
   }
 
   /**

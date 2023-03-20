@@ -374,6 +374,26 @@ function dataProviderForArrays(): Array<unknown> {
       -3,
     ],
     [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 100)
+        .toMinMax(),
+      [undefined, undefined],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toMinMax(),
+      [-3, -1],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toMinMax((item) => -(item as number)),
+      [3, -3],
+    ],
+    [
       [],
       (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
       undefined,
@@ -799,6 +819,26 @@ function dataProviderForGenerators(): Array<unknown> {
       -3,
     ],
     [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 100)
+        .toMinMax(),
+      [undefined, undefined],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toMinMax(),
+      [-3, -1],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toMinMax((item) => -(item as number)),
+      [3, -3],
+    ],
+    [
       createGeneratorFixture([]),
       (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
       undefined,
@@ -1212,6 +1252,26 @@ function dataProviderForIterables(): Array<unknown> {
         .filter((value) => (value as number) <= 0)
         .toMin(),
       -3,
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 100)
+        .toMinMax(),
+      [undefined, undefined],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toMinMax(),
+      [-3, -1],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toMinMax((item) => -(item as number)),
+      [3, -3],
     ],
     [
       createIterableFixture([]),
@@ -1629,6 +1689,26 @@ function dataProviderForIterators(): Array<unknown> {
       -3,
     ],
     [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 100)
+        .toMinMax(),
+      [undefined, undefined],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toMinMax(),
+      [-3, -1],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toMinMax((item) => -(item as number)),
+      [3, -3],
+    ],
+    [
       createIteratorFixture([]),
       (iterable: Iterable<number>) => Stream.of(iterable).toProduct(),
       undefined,
@@ -1941,6 +2021,18 @@ function dataProviderForStrings(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toMin((value) => -(value as string).charCodeAt(0)),
       'c',
+    ],
+    [
+      'abc',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toMinMax(),
+      ['a', 'c'],
+    ],
+    [
+      'abc',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toMinMax((item) => -(item as string).charCodeAt(0)),
+      ['c', 'a'],
     ],
     [
       '',
@@ -2304,6 +2396,26 @@ function dataProviderForSets(): Array<unknown> {
         .filter((value) => (value as number) <= 0)
         .toMin(),
       -3,
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 100)
+        .toMinMax(),
+      [undefined, undefined],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .filter((value) => (value as number) <= 0)
+        .toMinMax(),
+      [-3, -1],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toMinMax((item) => -(item as number)),
+      [3, -3],
     ],
     [
       new Set([]),
@@ -2717,6 +2829,28 @@ function dataProviderForMaps(): Array<unknown> {
         .filter((value) => (value as [number, number])[1] <= 0)
         .toMin((value) => (value as [number, number])[1]),
       [5, -3],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .filter((value) => (value as number) > 100)
+        .toMinMax(),
+      [undefined, undefined],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .filter((value) => (value as number) <= 0)
+        .toMinMax(),
+      [-3, -1],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .toMinMax((item) => -(item as [unknown, number])[1]),
+      [[4, 3], [5, -3]],
     ],
     [
       createMapFixture([]),
