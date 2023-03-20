@@ -1,6 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { reduce } from "../../src";
+import { reduce, Comparable } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
@@ -10,11 +10,11 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, ((datum: unknown) => unknown)|undefined, unknown]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, ((datum: unknown) => Comparable)|undefined, unknown]>)(
   "Reduce To Max Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    compareBy: ((datum: unknown) => unknown)|undefined,
+    compareBy: ((datum: unknown) => Comparable)|undefined,
     expected: unknown
   ) => {
     it("", () => {
@@ -29,11 +29,11 @@ describe.each([
 
 describe.each([
   ...dataProviderForUsingCustomComparator(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, ((datum: unknown) => unknown)|undefined, unknown]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, ((datum: unknown) => Comparable)|undefined, unknown]>)(
   "Reduce To Min Using Custom Comparator Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    compareBy: ((datum: unknown) => unknown)|undefined,
+    compareBy: ((datum: unknown) => Comparable)|undefined,
     expected: unknown
   ) => {
     it("", () => {

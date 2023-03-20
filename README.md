@@ -806,9 +806,9 @@ const first = reduce.toFirst(medals);
 Reduces to the max value.
 
 ```
-function toMax<TValue, TComparable>(
+function toMax<TValue>(
   data: Iterable<TValue>|Iterator<TValue>,
-  compareBy?: (datum: TValue) => TComparable,
+  compareBy?: (datum: TValue) => Comparable,
 ): TValue|undefined
 ```
 
@@ -855,9 +855,9 @@ const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
 Reduces to the min value.
 
 ```
-function toMin<TValue, TComparable>(
+function toMin<TValue>(
   data: Iterable<TValue>|Iterator<TValue>,
-  compareBy?: (datum: TValue) => TComparable,
+  compareBy?: (datum: TValue) => Comparable,
 ): TValue|undefined
 ```
 
@@ -898,6 +898,59 @@ const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
 //   title: 'The Matrix Resurrections',
 //   rating: 2.5,
 // }
+```
+
+### To Min
+Reduces collection to its lower and upper bounds.
+
+```
+function toMinMax<T>(
+  data: Iterable<T> | Iterator<T>,
+  compareBy?: (item: T) => Comparable
+): [T?, T?]
+```
+
+- Optional callable param `compareBy` must return comparable value.
+- If `compareBy` is not provided then items of given collection must be comparable.
+- Returns `[undefined, undefined]` if collection is empty.
+
+```typescript
+import { reduce } from 'itertools-ts';
+
+const numbers = [5, 3, 1, 2, 4];
+
+const result = reduce.toMinMax(numbers);
+// [1, 5]
+
+const movieRatings = [
+  {
+    title: 'The Matrix',
+    rating: 4.7,
+  },
+  {
+    title: 'The Matrix Reloaded',
+    rating: 4.3,
+  },
+  {
+    title: 'The Matrix Revolutions',
+    rating: 3.9,
+  },
+  {
+    title: 'The Matrix Resurrections',
+    rating: 2.5,
+  },
+];
+const compareBy = (movie) => movie.rating;
+
+const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
+// [{
+//   title: 'The Matrix Resurrections',
+//   rating: 2.5,
+// },
+// {
+//   title: 'The Matrix',
+//   rating: 4.7,
+// }]
 ```
 
 ### To Product
