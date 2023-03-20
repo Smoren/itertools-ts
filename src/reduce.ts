@@ -2,6 +2,7 @@ import { toIterable } from "./transform";
 import { LengthError } from "./exceptions";
 import { isString } from "./summary";
 import { NoValueMonad } from "./tools";
+import { Comparable } from './types';
 
 /**
  * Reduces iterable source like `array.reduce()` function.
@@ -47,6 +48,35 @@ export function toAverage(
 }
 
 /**
+ * Reduces given iterable to its max value.
+ *
+ * Optional callable param `compareBy` must return comparable value.
+ * If `compareBy` is not provided then items of given collection must be comparable.
+ *
+ * Returns `undefined` if given collection is empty.
+ *
+ * @param data
+ * @param compareBy
+ */
+export function toMax<TValue>(
+  data: Iterable<TValue> | Iterator<TValue>,
+  compareBy?: (datum: TValue) => Comparable
+): TValue | undefined {
+  if (compareBy !== undefined) {
+    return toValue(data, (carry: TValue | undefined, datum) =>
+      compareBy(datum) > compareBy(carry ?? datum) ? datum : carry ?? datum
+    );
+  }
+
+  return toValue(data, (carry, datum) => {
+    const lhs = carry ?? datum;
+    const rhs = datum;
+
+    return lhs >= rhs ? lhs : rhs;
+  });
+}
+
+/**
  * Reduces given iterable to its min value.
  *
  * Optional callable param `compareBy` must return comparable value.
@@ -57,9 +87,9 @@ export function toAverage(
  * @param data
  * @param compareBy
  */
-export function toMin<TValue, TComparable>(
+export function toMin<TValue>(
   data: Iterable<TValue> | Iterator<TValue>,
-  compareBy?: (datum: TValue) => TComparable
+  compareBy?: (datum: TValue) => Comparable
 ): TValue | undefined {
   if (compareBy !== undefined) {
     return toValue(data, (carry: TValue | undefined, datum) =>
@@ -76,32 +106,36 @@ export function toMin<TValue, TComparable>(
 }
 
 /**
- * Reduces given iterable to its max value.
+ * Reduces given collection to array of its upper and lower bounds.
  *
- * Optional callable param `compareBy` must return comparable value.
- * If `compareBy` is not provided then items of given collection must be comparable.
+ * Callable param `compareBy` must return comparable value.
  *
- * Returns `undefined` if given collection is empty.
+ * If `compareBy` is not proposed then items of given collection must be comparable.
+ *
+ * Returns `[undefined, undefined]` if given collection is empty.
  *
  * @param data
  * @param compareBy
  */
-export function toMax<TValue, TComparable>(
-  data: Iterable<TValue> | Iterator<TValue>,
-  compareBy?: (datum: TValue) => TComparable
-): TValue | undefined {
-  if (compareBy !== undefined) {
-    return toValue(data, (carry: TValue | undefined, datum) =>
-      compareBy(datum) > compareBy(carry ?? datum) ? datum : carry ?? datum
-    );
-  }
+export function toMinMax<T>(
+  data: Iterable<T> | Iterator<T>,
+  compareBy?: (item: T) => Comparable
+): [T?, T?] {
+  const comparableGetter = (compareBy !== undefined)
+    ? compareBy as (item: T) => Comparable
+    : (item: T) => item as Comparable;
 
   return toValue(data, (carry, datum) => {
-    const lhs = carry ?? datum;
-    const rhs = datum;
-
-    return lhs >= rhs ? lhs : rhs;
-  });
+    carry = carry as [T?, T?];
+    return [
+      comparableGetter(datum) <= comparableGetter(carry[0] ?? datum)
+        ? datum
+        : carry[0] ?? datum,
+      comparableGetter(datum) >= comparableGetter(carry[1] ?? datum)
+        ? datum
+        : carry[1] ?? datum,
+    ];
+  }, [undefined, undefined] as [T?, T?]) as [T?, T?];
 }
 
 /**

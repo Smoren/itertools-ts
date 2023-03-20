@@ -489,8 +489,8 @@ export class Stream {
    *
    * @see reduce.toMax
    */
-  toMax<TComparable>(
-    compareBy?: (datum: unknown) => TComparable
+  toMax(
+    compareBy?: (datum: unknown) => Comparable
   ): unknown | undefined {
     return toMax(this, compareBy);
   }
@@ -508,8 +508,8 @@ export class Stream {
    *
    * @see reduce.toMin
    */
-  toMin<TComparable>(
-    compareBy?: (datum: unknown) => TComparable
+  toMin(
+    compareBy?: (datum: unknown) => Comparable
   ): unknown | undefined {
     return toMin(this, compareBy);
   }
