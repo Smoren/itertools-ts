@@ -1,5 +1,20 @@
 # IterTools Typescript Change Log
 
+## v1.12.0 - 2023-03-21
+
+### New Features
+* transform
+  * `toMap()`
+  * `toSet()`
+* Stream
+  * `toMap()`
+  * `toSet()`
+* types
+  * `RecordKey`
+
+### Improvements
+* `transform.toIterable()` now can also accept records as input.
+
 ## v1.11.0 - 2023-03-20
 
 ### New Features

@@ -58,11 +58,11 @@ import {
   sameCount,
 } from "./summary";
 
-import { toArray, toIterable, toIterator } from "./transform";
+import { toArray, toIterable, toIterator, toMap, toSet } from "./transform";
 
 import { InvalidArgumentError, LengthError } from "./exceptions";
 
-import { FlatMapper, Pair, Comparable } from "./types";
+import { FlatMapper, Pair, Comparable, RecordKey } from "./types";
 
 export const single = {
   chunkwise,
@@ -134,10 +134,12 @@ export const transform = {
   toArray,
   toIterable,
   toIterator,
+  toMap,
+  toSet,
 };
 
 export { Stream };
 
-export type { FlatMapper, Pair, Comparable };
+export type { FlatMapper, Pair, Comparable, RecordKey };
 
 export { InvalidArgumentError, LengthError };

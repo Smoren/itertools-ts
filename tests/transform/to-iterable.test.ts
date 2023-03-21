@@ -91,6 +91,18 @@ function dataProviderForSuccess(): Array<unknown> {
       new Map([['a', 1], ['b', 2], ['c', 3]]),
       [['a', 1], ['b', 2], ['c', 3]],
     ],
+    [
+      {},
+      [],
+    ],
+    [
+      {a: 1, b: 2, c: 3},
+      [['a', 1], ['b', 2], ['c', 3]],
+    ],
+    [
+      {a: [1], b: {x: 2}, c: 3},
+      [['a', [1]], ['b', {x: 2}], ['c', 3]],
+    ],
   ];
 }
 
@@ -116,6 +128,5 @@ function dataProviderForError(): Array<unknown> {
     [NaN],
     [Infinity],
     [-Infinity],
-    [{a: 1}],
   ];
 }

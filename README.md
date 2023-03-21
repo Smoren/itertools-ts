@@ -1382,12 +1382,14 @@ const falseResult = summary.sameCount(batmanMovies, matrixMovies);
 
 ## Transform
 ### To Iterable
-Returns `Iterable` instance of given collection or iterator.
+Returns `Iterable` instance of given collection, record or iterator.
 
 Throws `InvalidArgumentError` if given data is not a collection or an iterator.
 
 ```
-function toIterable<T>(collection: Iterable<T>|Iterator<T>): Iterable<T>
+function toIterable<T>(
+  collection: Iterable<T>|Iterator<T>|Record<string|number|symbol, unknown>
+): Iterable<T>
 ```
 
 ```typescript
