@@ -1,4 +1,4 @@
-# IterTools implementation for TypeScript
+# IterTools implementation for TypeScript and JavaScript
 
 [![npm](https://img.shields.io/npm/v/itertools-ts.svg)](https://www.npmjs.com/package/itertools-ts)
 [![npm](https://img.shields.io/npm/dm/itertools-ts.svg?style=flat)](https://www.npmjs.com/package/itertools-ts)
