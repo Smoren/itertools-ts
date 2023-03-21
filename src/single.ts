@@ -30,7 +30,7 @@ export function* map<TInput, TOutput>(
  */
 export function* compress<T>(
   data: Iterable<T> | Iterator<T>,
-  selectors: Iterable<number|boolean> | Iterator<number|boolean>
+  selectors: Iterable<number | boolean> | Iterator<number | boolean>
 ): Iterable<T> {
   for (const [datum, selector] of zip(data, selectors)) {
     if (selector) {

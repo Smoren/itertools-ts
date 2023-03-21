@@ -218,7 +218,9 @@ export class Stream {
    *
    * @see single.compress()
    */
-  compress(selectors: Iterable<number|boolean> | Iterator<number|boolean>): Stream {
+  compress(
+    selectors: Iterable<number | boolean> | Iterator<number | boolean>
+  ): Stream {
     this.data = compress(this.data, selectors);
     return this;
   }
