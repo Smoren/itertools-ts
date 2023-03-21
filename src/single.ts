@@ -3,6 +3,7 @@ import { InvalidArgumentError } from "./exceptions";
 import { isIterable, isIterator, isString } from "./summary";
 import { distinct } from "./set";
 import { FlatMapper, Pair } from "./types";
+import { zip } from "./multi";
 
 /**
  * Map a function onto every element of the iteration.
@@ -16,6 +17,25 @@ export function* map<TInput, TOutput>(
 ): Iterable<TOutput> {
   for (const datum of toIterable(data)) {
     yield mapper(datum);
+  }
+}
+
+/**
+ * Compress an iterable by filtering out data that is not selected.
+ *
+ * Selectors indicate which data. True value selects item. False value filters out data.
+ *
+ * @param data
+ * @param selectors
+ */
+export function* compress<T>(
+  data: Iterable<T> | Iterator<T>,
+  selectors: Iterable<number|boolean> | Iterator<number|boolean>
+): Iterable<T> {
+  for (const [datum, selector] of zip(data, selectors)) {
+    if (selector) {
+      yield datum as T;
+    }
   }
 }
 

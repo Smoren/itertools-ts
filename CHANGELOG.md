@@ -6,9 +6,11 @@
 * transform
   * `dropWhile()`
   * `takeWhile()`
+  * `compress()`
 * Stream
   * `dropWhile()`
   * `takeWhile()`
+  * `compress()`
 
 ## v1.12.0 - 2023-03-21
 

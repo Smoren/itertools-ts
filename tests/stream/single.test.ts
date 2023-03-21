@@ -31,6 +31,100 @@ function dataProviderForArrays(): Array<unknown> {
   return [
     [
       [],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      [],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      [],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress([0, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress([0, 1])
+        .toArray(),
+      [-3],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .toArray(),
+      [],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .toArray(),
+      [1, -1, 2, -2],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .compress([0, 1, 0, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .compress([0, 1, 0, 1])
+        .toArray(),
+      [-1, -2],
+    ],
+    [
+      [],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .enumerate()
         .toArray(),
@@ -548,6 +642,100 @@ function dataProviderForArrays(): Array<unknown> {
 
 function dataProviderForGenerators(): Array<unknown> {
   return [
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createGeneratorFixture([0, 1, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createGeneratorFixture([0, 1, 1]))
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createGeneratorFixture([0, 1, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createGeneratorFixture([0, 1, 1]))
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createGeneratorFixture([0, 1, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createGeneratorFixture([0, 1, 1]))
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress(createGeneratorFixture([0, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress(createGeneratorFixture([0, 1]))
+        .toArray(),
+      [-3],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .toArray(),
+      [1, -1, 2, -2],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .compress(createGeneratorFixture([0, 1, 0, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .compress(createGeneratorFixture([0, 1, 0, 1]))
+        .toArray(),
+      [-1, -2],
+    ],
     [
       createGeneratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
@@ -1069,6 +1257,100 @@ function dataProviderForIterables(): Array<unknown> {
   return [
     [
       createIterableFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIterableFixture([0, 1, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIterableFixture([0, 1, 1]))
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIterableFixture([0, 1, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIterableFixture([0, 1, 1]))
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIterableFixture([0, 1, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIterableFixture([0, 1, 1]))
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress(createIterableFixture([0, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress(createIterableFixture([0, 1]))
+        .toArray(),
+      [-3],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .toArray(),
+      [1, -1, 2, -2],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .compress(createIterableFixture([0, 1, 0, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .compress(createIterableFixture([0, 1, 0, 1]))
+        .toArray(),
+      [-1, -2],
+    ],
+    [
+      createIterableFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .enumerate()
         .toArray(),
@@ -1586,6 +1868,100 @@ function dataProviderForIterables(): Array<unknown> {
 
 function dataProviderForIterators(): Array<unknown> {
   return [
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIteratorFixture([0, 1, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIteratorFixture([0, 1, 1]))
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIteratorFixture([0, 1, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIteratorFixture([0, 1, 1]))
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIteratorFixture([0, 1, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .filter((value) => (value as number) > 0)
+        .compress(createIteratorFixture([0, 1, 1]))
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress(createIteratorFixture([0, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress(createIteratorFixture([0, 1]))
+        .toArray(),
+      [-3],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .toArray(),
+      [1, -1, 2, -2],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .compress(createIteratorFixture([0, 1, 0, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .compress(createIteratorFixture([0, 1, 0, 1]))
+        .toArray(),
+      [-1, -2],
+    ],
     [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
@@ -2108,6 +2484,52 @@ function dataProviderForStrings(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress([0, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      '12345',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Number(value as string) < 3)
+        .compress([1, 0, 1])
+        .toArray(),
+      ['3', '5'],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Number(value as string) < 3)
+        .toArray(),
+      [],
+    ],
+    [
+      '12345',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Number(value as string) < 4)
+        .toArray(),
+      ['1', '2', '3'],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Number(value as string) < 3)
+        .compress([0, 1, 0, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      '12345',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Number(value as string) < 5)
+        .compress([0, 1, 0, 1])
+        .toArray(),
+      ['2', '4'],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [],
@@ -2542,6 +2964,52 @@ function dataProviderForStrings(): Array<unknown> {
 
 function dataProviderForSets(): Array<unknown> {
   return [
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress(new Set([0, 1]))
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value as number) < 3)
+        .compress(new Set([0, 1]))
+        .toArray(),
+      [-3],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .toArray(),
+      [1, -1, 2, -2],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .compress([0, 1, 0, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value as number) < 3)
+        .compress([0, 1, 0, 1])
+        .toArray(),
+      [-1, -2],
+    ],
     [
       new Set([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
@@ -3061,6 +3529,112 @@ function dataProviderForSets(): Array<unknown> {
 
 function dataProviderForMaps(): Array<unknown> {
   return [
+    [
+      createMapFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .values()
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .values()
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .values()
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .values()
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .values()
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .values()
+        .filter((value) => (value as number) > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+        .compress([0, 1])
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .dropWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+        .compress([0, 1])
+        .values()
+        .toArray(),
+      [-3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+        .values()
+        .toArray(),
+      [1, -1, 2, -2],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+        .compress([0, 1, 0, 1])
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .takeWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+        .compress([0, 1, 0, 1])
+        .values()
+        .toArray(),
+      [-1, -2],
+    ],
     [
       createMapFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)

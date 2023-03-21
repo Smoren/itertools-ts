@@ -2,6 +2,8 @@ import { toArray, toIterable, toMap, toSet } from "./transform";
 import {
   chunkwise,
   chunkwiseOverlap,
+  compress,
+  dropWhile,
   enumerate,
   filter,
   flatMap,
@@ -12,6 +14,7 @@ import {
   map,
   pairwise,
   slice,
+  takeWhile,
   values,
 } from "./single";
 import { chain, zip, zipEqual, zipFilled, zipLongest } from "./multi";
@@ -207,6 +210,34 @@ export class Stream {
   }
 
   /**
+   * Compress an iterable source by filtering out data that is not selected.
+   *
+   * Selectors indicate which data. True value selects item. False value filters out data.
+   *
+   * @param selectors
+   *
+   * @see single.compress()
+   */
+  compress(selectors: Iterable<number|boolean> | Iterator<number|boolean>): Stream {
+    this.data = compress(this.data, selectors);
+    return this;
+  }
+
+  /**
+   * Drop elements from the iterable source while the predicate function is true.
+   *
+   * Once the predicate function returns false once, all remaining elements are returned.
+   *
+   * @param predicate
+   *
+   * @see single.dropWhile()
+   */
+  dropWhile(predicate: (item: unknown) => boolean): Stream {
+    this.data = dropWhile(this.data, predicate);
+    return this;
+  }
+
+  /**
    * Filter out elements from the iterable source only returning elements where there predicate function is true.
    *
    * @param predicate
@@ -348,6 +379,20 @@ export class Stream {
    */
   slice(start = 0, count?: number, step = 1): Stream {
     this.data = slice(this.data, start, count, step);
+    return this;
+  }
+
+  /**
+   * Return elements from the iterable source as long as the predicate is true.
+   *
+   * If no predicate is provided, the boolean value of the data is used.
+   *
+   * @param predicate
+   *
+   * @see single.takeWhile()
+   */
+  takeWhile(predicate: (item: unknown) => boolean): Stream {
+    this.data = takeWhile(this.data, predicate);
     return this;
   }
 
