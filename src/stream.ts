@@ -1,4 +1,4 @@
-import { toArray, toIterable } from "./transform";
+import { toArray, toIterable, toMap, toSet } from "./transform";
 import {
   chunkwise,
   chunkwiseOverlap,
@@ -689,12 +689,32 @@ export class Stream {
   }
 
   /**
-   * Converts iterable source to array.
+   * Converts stream to Array.
    *
    * @see transform.toArray
    */
   toArray(): Array<unknown> {
     return toArray(this);
+  }
+
+  /**
+   * Converts stream to Map.
+   *
+   * Stream collection must contain only key-value pairs as elements.
+   *
+   * @see transform.toMap
+   */
+  toMap(): Map<unknown, unknown> {
+    return toMap(this as Iterable<[unknown, unknown]>);
+  }
+
+  /**
+   * Converts stream to Set.
+   *
+   * @see transform.toSet
+   */
+  toSet(): Set<unknown> {
+    return toSet(this);
   }
 
   /**
