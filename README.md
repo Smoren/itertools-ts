@@ -84,6 +84,7 @@ Quick Reference
 |------------------------------------------|---------------------------------------------|---------------------------------------------------------|
 | [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `single.chunkwise(data, chunkSize)`                     |
 | [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` |
+| [`compress`](#Compress)                  | Filter out elements not selected            | `single.compress(data, selectors)`                      |
 | [`dropWhile`](#Drop-While)               | Drop elements while predicate is true       | `single.dropWhile(data, predicate)`                     |
 | [`enumerate`](#Enumerate)                | Enumerates elements of collection           | `single.enumerate(data)`                                |
 | [`filter`](#Filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        |
@@ -165,7 +166,9 @@ Quick Reference
 | [`chainWith`](#Chain-With)                              | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`                                     |
 | [`chunkwise`](#Chunkwise-1)                             | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                                        |
 | [`chunkwiseOverlap`](#Chunkwise-Overlap-1)              | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)`                        |
+| [`compress`](#Compress-1)                               | Compress source by filtering out data not selected                                        | `stream.compress(selectors)`                                         |
 | [`distinct`](#Distinct-1)                               | Filter out elements: iterate only unique items                                            | `stream.distinct()`                                                  |
+| [`dropWhile`](#Drop-While-1)                            | Drop elements from the iterable source while the predicate function is true               | `stream.dropWhile(predicate)`                                        |
 | [`enumerate`](#Enumerate-1)                             | Enumerates elements of stream                                                             | `stream.enumerate()`                                                 |
 | [`filter`](#Filter-1)                                   | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                                           |
 | [`flatMap`](#Flat-Map-1)                                | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                                             |
@@ -180,6 +183,7 @@ Quick Reference
 | [`runningTotal`](#Running-Total-1)                      | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`                                |
 | [`slice`](#Slice-1)                                     | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`                             |
 | [`symmetricDifferenceWith`](#Symmetric-Difference-With) | Symmetric difference of stream and given iterables                                        | `stream.symmetricDifferenceWith(...iterables)`                       |
+| [`takeWhile`](#Take-While-1)                            | Return elements from the iterable source as long as the predicate is true                 | `stream.takeWhile(predicate)`                                        |
 | [`unionWith`](#Union-With)                              | Union of stream and given iterables                                                       | `stream.union(...iterables)`                                         |
 | [`values`](#Values-1)                                   | Iterate values of key-value pairs from stream                                             | `stream.values()`                                                    |
 | [`zipWith`](#Zip-With)                                  | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                                       |
@@ -405,6 +409,32 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 for (const chunk of single.chunkwiseOverlap(numbers, 3, 1)) {
   // [1, 2, 3], [3, 4, 5], [5, 6, 7], [7, 8, 9], [9, 10]
 }
+```
+
+### Compress
+Compress an iterable by filtering out data that is not selected.
+
+```
+function* compress<T>(
+  data: Iterable<T> | Iterator<T>,
+  selectors: Iterable<number|boolean> | Iterator<number|boolean>
+): Iterable<T>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const movies = [
+  'Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith',
+  'A New Hope', 'Empire Strikes Back', 'Return of the Jedi',
+  'The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker'
+];
+const goodMovies = [0, 0, 0, 1, 1, 1, 1, 0, 0];
+
+for (const goodMovie of single.compress(movies, goodMovies)) {
+  console.log(goodMovie);
+}
+// 'A New Hope', 'Empire Strikes Back', 'Return of the Jedi', 'The Force Awakens'
 ```
 
 ### Drop While
@@ -1659,6 +1689,26 @@ const result = Stream.of(numbers)
 // [1, 2, 3], [3, 4, 5], [5, 6, 7], [7, 8, 9]
 ```
 
+#### Compress
+Compress to a new stream by filtering out data that is not selected.
+
+```
+stream.compress(selectors: Iterable<number|boolean> | Iterator<number|boolean>): Stream
+```
+
+Selectors indicate which data. True value selects item. False value filters out data.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3];
+
+const result = Stream.of(input)
+  .compress([0, 1, 1])
+  .toArray();
+// 2, 3
+```
+
 #### Distinct
 Return a stream filtering out elements from the stream only returning distinct elements.
 
@@ -1674,6 +1724,26 @@ const stream = Stream.of(input)
   .distinct()
   .toArray();
 // 1, 2, 3, '1', '2', '3'
+```
+
+#### Drop While
+Drop elements from the stream while the predicate function is true.
+
+```
+stream.dropWhile(predicate: (item: unknown) => boolean): Stream
+```
+
+Once the predicate function returns false once, all remaining elements are returned.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5]
+
+const result = Stream.of(input)
+  .dropWhile((value) => value < 3)
+  .toArray();
+// 3, 4, 5
 ```
 
 #### Enumerate
@@ -1985,6 +2055,24 @@ const result = Stream.of(a)
   .symmetricDifferenceWith(b, c)
   .toArray();
 // 4, 5, 6, 7, 8, 9
+```
+
+#### Take While
+Keep elements from the stream as long as the predicate is true.
+
+```
+stream.takeWhile(predicate: (item: unknown) => boolean): Stream
+```
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const input = [1, -1, 2, -2, 3, -3];
+
+const result = Stream.of(input)
+  .takeWhile((value) => Math.abs(value) < 3)
+  .toArray();
+// 1, -1, 2, -2
 ```
 
 #### Union With

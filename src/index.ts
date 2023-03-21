@@ -1,6 +1,7 @@
 import {
   chunkwise,
   chunkwiseOverlap,
+  compress,
   dropWhile,
   enumerate,
   filter,
@@ -69,6 +70,7 @@ import { FlatMapper, Pair, Comparable, RecordKey } from "./types";
 export const single = {
   chunkwise,
   chunkwiseOverlap,
+  compress,
   dropWhile,
   enumerate,
   filter,
