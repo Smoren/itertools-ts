@@ -3,7 +3,7 @@
 ## v1.13.0 - TBD
 
 ### New Features
-* transform
+* single
   * `dropWhile()`
   * `takeWhile()`
   * `compress()`
