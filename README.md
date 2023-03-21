@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/itertools-ts.svg)](https://www.npmjs.com/package/itertools-ts)
 [![npm](https://img.shields.io/npm/dm/itertools-ts.svg?style=flat)](https://www.npmjs.com/package/itertools-ts)
-[![Coverage Status](https://coveralls.io/repos/github/Smoren/itertools-ts/badge.svg?branch=master)](https://coveralls.io/github/Smoren/itertools-ts?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Smoren/itertools-ts/badge.svg?branch=master&rand=123)](https://coveralls.io/github/Smoren/itertools-ts?branch=master)
 ![Build and test](https://github.com/Smoren/itertools-ts/actions/workflows/test_master.yml/badge.svg)
 [![Minified Size](https://badgen.net/bundlephobia/minzip/itertools-ts)](https://bundlephobia.com/result?p=itertools-ts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -179,8 +179,9 @@ Quick Reference
 | [`unionWith`](#Union-With)                              | Union of stream and given iterables                                                       | `stream.union(...iterables)`                                         |
 | [`values`](#Values-1)                                   | Iterate values of key-value pairs from stream                                             | `stream.values()`                                                    |
 | [`zipWith`](#Zip-With)                                  | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                                       |
-| [`zipLongestWith`](#Zip-Longest-With)                   | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`                                |
 | [`zipEqualWith`](#Zip-Equal-With)                       | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`                                  |
+| [`zipFilledWith`](#Zip-Filled-With)                     | Iterate iterable source with another iterable collections simultaneously (with filler)    | `stream.zipFilledWith(filler, ...iterables)`                         |
+| [`zipLongestWith`](#Zip-Longest-With)                   | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`                                |
 
 #### Stream Terminal Operations
 ##### Transformation Terminal Operations
@@ -1955,31 +1956,6 @@ const stream = Stream.of(input)
 // [1, 4], [2, 5], [3, 6]
 ```
 
-#### Zip Longest With
-Return a stream consisting of multiple iterable collections streamed simultaneously.
-
-```
-stream.zipLongestWith(
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Stream
-```
-
-* Iteration continues until the longest iterable is exhausted.
-* For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
-
-```typescript
-import { Stream } from "itertools-ts";
-
-const input = [1, 2, 3, 4, 5];
-
-const stream = Stream.of(input)
-  .zipLongestWith([4, 5, 6]);
-
-for (const zipped of stream) {
-  // [1, 4], [2, 5], [3, 6], [4, undefined], [5, undefined]
-}
-```
-
 #### Zip Equal With
 Return a stream consisting of multiple iterable collections of equal lengths streamed simultaneously.
 
@@ -2002,6 +1978,57 @@ const stream = Stream.of(input)
 
 for (const zipped of stream) {
     // [1, 4], [2, 5], [3, 6]
+}
+```
+
+#### Zip Filled With
+Return a stream consisting of multiple iterable collections streamed simultaneously.
+
+```
+zipFilledWith(
+  filler: unknown,
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Stream
+```
+
+* Iteration continues until the longest iterable is exhausted.
+* For uneven lengths, the exhausted iterables will produce `filler` value for the remaining iterations.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const stream = Stream.of(input)
+  .zipFilledWith('filler', [4, 5, 6]);
+
+for (const zipped of stream) {
+  // [1, 4], [2, 5], [3, 6], [4, 'filler'], [5, 'filler']
+}
+```
+
+#### Zip Longest With
+Return a stream consisting of multiple iterable collections streamed simultaneously.
+
+```
+stream.zipLongestWith(
+  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
+): Stream
+```
+
+* Iteration continues until the longest iterable is exhausted.
+* For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const stream = Stream.of(input)
+  .zipLongestWith([4, 5, 6]);
+
+for (const zipped of stream) {
+  // [1, 4], [2, 5], [3, 6], [4, undefined], [5, undefined]
 }
 ```
 
