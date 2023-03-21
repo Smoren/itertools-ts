@@ -20,6 +20,53 @@ export function* map<TInput, TOutput>(
 }
 
 /**
+ * Drop elements from the iterable while the predicate function is true.
+ *
+ * Once the predicate function returns false once, all remaining elements are returned.
+ *
+ * @param data
+ * @param predicate
+ */
+export function* dropWhile<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): Iterable<T> {
+  let drop = true;
+  for (const datum of toIterable(data)) {
+    if (drop) {
+      if (!predicate(datum)) {
+        drop = false;
+        yield datum;
+        continue;
+      }
+      continue;
+    }
+    yield datum;
+  }
+}
+
+/**
+ * Return elements from the iterable as long as the predicate is true.
+ *
+ * If no predicate is provided, the boolean value of the data is used.
+ *
+ * @param data
+ * @param predicate
+ */
+export function* takeWhile<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): Iterable<T> {
+  for (const datum of toIterable(data)) {
+    if (predicate(datum)) {
+      yield datum;
+    } else {
+      break;
+    }
+  }
+}
+
+/**
  * Repeat an item.
  *
  * @param item

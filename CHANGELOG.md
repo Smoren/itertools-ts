@@ -1,5 +1,15 @@
 # IterTools Typescript Change Log
 
+## v1.13.0 - TBD
+
+### New Features
+* transform
+  * `dropWhile()`
+  * `takeWhile()`
+* Stream
+  * `dropWhile()`
+  * `takeWhile()`
+
 ## v1.12.0 - 2023-03-21
 
 ### New Features
