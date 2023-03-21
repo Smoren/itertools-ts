@@ -1,6 +1,7 @@
 import {
   chunkwise,
   chunkwiseOverlap,
+  dropWhile,
   enumerate,
   filter,
   flatMap,
@@ -12,6 +13,7 @@ import {
   repeat,
   pairwise,
   slice,
+  takeWhile,
   values,
 } from "./single";
 
@@ -67,6 +69,7 @@ import { FlatMapper, Pair, Comparable, RecordKey } from "./types";
 export const single = {
   chunkwise,
   chunkwiseOverlap,
+  dropWhile,
   enumerate,
   filter,
   flatMap,
@@ -78,6 +81,7 @@ export const single = {
   pairwise,
   repeat,
   slice,
+  takeWhile,
   values,
 };
 

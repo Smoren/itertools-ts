@@ -84,6 +84,7 @@ Quick Reference
 |------------------------------------------|---------------------------------------------|---------------------------------------------------------|
 | [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `single.chunkwise(data, chunkSize)`                     |
 | [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` |
+| [`dropWhile`](#Drop-While)               | Drop elements while predicate is true       | `single.dropWhile(data, predicate)`                     |
 | [`enumerate`](#Enumerate)                | Enumerates elements of collection           | `single.enumerate(data)`                                |
 | [`filter`](#Filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        |
 | [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          |
@@ -95,6 +96,7 @@ Quick Reference
 | [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 |
 | [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      |
 | [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice(data, [start], [count], [step])`          |
+| [`takeWhile`](#Take-While)               | Iterate elements while predicate is true    | `single.takeWhile(data, predicate)`                     |
 | [`values`](#Values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   |
 
 #### Math Iteration
@@ -405,6 +407,30 @@ for (const chunk of single.chunkwiseOverlap(numbers, 3, 1)) {
 }
 ```
 
+### Drop While
+Drop elements from the iterable while the predicate function is true.
+
+Once the predicate function returns false once, all remaining elements are returned.
+
+```
+function* dropWhile<T>(
+  data: Iterable<T>|Iterator<T>,
+  predicate: (item: T) => boolean
+): Iterable<T>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const scores    = [50, 60, 70, 85, 65, 90];
+const predicate = (x) => x < 70;
+
+for (const score of single.dropWhile(scores, predicate)) {
+  console.log(score);
+}
+// 70, 85, 65, 90
+```
+
 ### Enumerate
 Enumerates elements of given collection.
 
@@ -669,6 +695,30 @@ for (const winterYear of single.slice(olympics, 1, 8, 2)) {
     winterOlympics.push(winterYear);
 }
 // [1994, 1998, 2002, 2006, 2010, 2014, 2018, 2022]
+```
+
+### Take While
+Return elements from the iterable as long as the predicate is true.
+
+Stops iteration as soon as the predicate returns false, even if other elements later on would eventually return true (different from filterTrue).
+
+```
+function* takeWhile<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): Iterable<T>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const prices = [0, 0, 5, 10, 0, 0, 9];
+const isFree = (price) => price == 0;
+
+for (const freePrice of single.takeWhile(prices, isFree)) {
+  console.log(freePrice);
+}
+// 0, 0
 ```
 
 ### Values
