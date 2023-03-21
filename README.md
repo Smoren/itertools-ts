@@ -147,6 +147,8 @@ Quick Reference
 | [`toArray`](#To-Array)       | Transforms collection to array    | `transform.toArray(data)`    |
 | [`toIterable`](#To-Iterable) | Transforms collection to iterable | `transform.toIterable(data)` |
 | [`toIterator`](#To-Iterator) | Transforms collection to iterator | `transform.toIterator(data)` |
+| [`toMap`](#To-Map)           | Transforms collection to map      | `transform.toMap(pairs)`     |
+| [`toSet`](#To-Set)           | Transforms collection to set      | `transform.toSet(data)`      |
 
 ### Stream Iteration Tools
 #### Stream Sources
@@ -185,9 +187,11 @@ Quick Reference
 
 #### Stream Terminal Operations
 ##### Transformation Terminal Operations
-| Terminal Operation       | Description                      | Code Snippet       |
-|--------------------------|----------------------------------|--------------------|
-| [`toArray`](#To-Array-1) | Returns array of stream elements | `stream.toArray()` |
+| Terminal Operation       | Description                                      | Code Snippet       |
+|--------------------------|--------------------------------------------------|--------------------|
+| [`toArray`](#To-Array-1) | Returns array of stream elements                 | `stream.toArray()` |
+| [`toMap`](#To-Map-1)     | Returns map of stream elements (key-value pairs) | `stream.toMap()`   |
+| [`toSet`](#To-Set-1)     | Returns set of stream elements                   | `stream.toSet()`   |
 
 ##### Reduction Terminal Operations
 | Terminal Operation                       | Description                                     | Code Snippet                            |
@@ -1381,6 +1385,24 @@ const falseResult = summary.sameCount(batmanMovies, matrixMovies);
 ```
 
 ## Transform
+### To Array
+Returns `Array` instance of given collection or iterator.
+
+```
+function toArray<T>(
+  collection: Iterable<T>|Iterator<T>
+): Array<T>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const iterator = transform.toIterator([1, 2, 3, 4, 5]);
+
+const result = transform.toArray(iterator);
+// [1, 2, 3, 4, 5]
+```
+
 ### To Iterable
 Returns `Iterable` instance of given collection, record or iterator.
 
@@ -1401,22 +1423,6 @@ const result = transform.toIterable(input);
 // [1, 2, 3, 4, 5]
 ```
 
-### To Array
-Returns `Array` instance of given collection or iterator.
-
-```
-function toArray<T>(collection: Iterable<T>|Iterator<T>): Array<T>
-```
-
-```typescript
-import { transform } from "itertools-ts";
-
-const iterator = transform.toIterator([1, 2, 3, 4, 5]);
-
-const result = transform.toArray(iterator);
-// [1, 2, 3, 4, 5]
-```
-
 ### To Iterator
 Returns `Iterator` instance of given collection or iterator.
 
@@ -1434,6 +1440,42 @@ const input = [1, 2, 3, 4, 5];
 const result = transform.toIterator(input);
 console.log(result.next !== undefined);
 // true
+```
+
+### To Map
+Converts given iterable of key-value pairs to Map.
+
+```
+function toMap<TKey, TValue>(
+  pairs: Iterable<[TKey, TValue]> | Iterator<[TKey, TValue]> | Record<string|number|symbol, unknown>
+): Map<TKey, TValue>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const input = [['a', 1], ['b', 2], ['c', 3]];
+
+const result = transform.toMap(input);
+// Map([['a', 1], ['b', 2], ['c', 3]])
+```
+
+### To Set
+Converts given iterable to Set.
+
+```
+function toSet<T>(
+  collection: Iterable<T> | Iterator<T>
+): Set<T>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const input = [1, 1, 2, 2, 3, 3];
+
+const result = transform.toSet(input);
+// Set([1, 2, 3])
 ```
 
 ## Stream
@@ -2050,6 +2092,39 @@ const result = Stream.of([1, 2, 3, 4, 5])
   .map((x) => x**2)
   .toArray();
 // [1, 4, 9, 16, 25]
+```
+
+##### To Map
+Converts stream to Map.
+
+```
+stream.toMap(): Map<unknown, unknown>
+```
+
+Stream collection must contain only key-value pairs as elements.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.of([1, 2, 3])
+  .enumerate()
+  .toMap();
+// Map([[0, 1], [1, 2], [2, 3]])
+```
+
+##### To Set
+Converts stream to Set.
+
+```
+stream.toSet(): Set<unknown>
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.of([1, 1, 2, 2, 3, 3])
+  .toMap();
+// Set([1, 2, 3])
 ```
 
 #### Reduce Terminal Operations
