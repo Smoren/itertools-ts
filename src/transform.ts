@@ -1,6 +1,6 @@
 import { InvalidArgumentError } from "./exceptions";
 import { isIterable, isIterator } from "./summary";
-import { Pair, RecordKey } from './types';
+import { RecordKey } from "./types";
 
 /**
  * Converts collection or record to Iterable instance.
@@ -24,11 +24,14 @@ export function toIterable<T>(
     };
   }
 
-  if (typeof collection === 'object' && collection !== null) {
+  if (typeof collection === "object" && collection !== null) {
     return (function* () {
       for (const key in collection) {
-        if (collection.hasOwnProperty(key)) {
-          yield [key, (collection as Record<string|number|symbol, unknown>)[key]];
+        if (Object.prototype.hasOwnProperty.call(collection, key)) {
+          yield [
+            key,
+            (collection as Record<string | number | symbol, unknown>)[key],
+          ];
         }
       }
     })() as Iterable<T>;
@@ -85,7 +88,10 @@ export function toArray<T>(collection: Iterable<T> | Iterator<T>): Array<T> {
  * @param pairs
  */
 export function toMap<TKey, TValue>(
-  pairs: Iterable<[TKey, TValue]> | Iterator<[TKey, TValue]> | Record<RecordKey, unknown>
+  pairs:
+    | Iterable<[TKey, TValue]>
+    | Iterator<[TKey, TValue]>
+    | Record<RecordKey, unknown>
 ): Map<TKey, TValue> {
   const result: Map<TKey, TValue> = new Map();
   for (const [key, value] of toIterable(pairs)) {
@@ -99,9 +105,7 @@ export function toMap<TKey, TValue>(
  *
  * @param collection
  */
-export function toSet<T>(
-  collection: Iterable<T> | Iterator<T>
-): Set<T> {
+export function toSet<T>(collection: Iterable<T> | Iterator<T>): Set<T> {
   const result: Set<T> = new Set();
   for (const datum of toIterable(collection)) {
     result.add(datum);
