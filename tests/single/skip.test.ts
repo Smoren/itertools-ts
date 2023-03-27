@@ -1,6 +1,7 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
 import { single } from "../../src";
+import { InvalidArgumentError } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
@@ -28,6 +29,24 @@ describe.each([
 
       // Then
       expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForErrors(),
+] as Array<[[number]|[number, number]]>)(
+  "Single Map Error Test",
+  (
+    config: [number]|[number, number]
+  ) => {
+    it("", () => {
+      expect(() => {
+        // When
+        for (const _ of single.skip([1, 2, 3], ...(config as [number, number]))) {
+          break;
+        }
+      }).toThrow(InvalidArgumentError);
     });
   }
 );
@@ -1394,5 +1413,18 @@ function dataProviderForMaps(): Array<unknown> {
       [10, 0],
       [],
     ],
+  ];
+}
+
+function dataProviderForErrors(): Array<unknown> {
+  return [
+    [[-1]],
+    [[-1]],
+    [[0, -1]],
+    [[0, -2]],
+    [[-1, -1]],
+    [[-2, -1]],
+    [[-1, -2]],
+    [[-2, -2]],
   ];
 }
