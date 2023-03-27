@@ -366,6 +366,33 @@ export function* keys<TKey, TValue>(
 }
 
 /**
+ * Skip n elements in the iterable after optional offset.
+ *
+ * @param data
+ * @param count
+ * @param offset
+ *
+ * @throws InvalidArgumentError if `count` or `offset` is less then 0
+ */
+export function* skip<T>(
+  data: Iterable<T> | Iterator<T>,
+  count: number,
+  offset: number = 0
+): Iterable<T> {
+  if (count < 0 || offset < 0) {
+    throw new InvalidArgumentError();
+  }
+
+  let skipped = -offset;
+  for (const datum of toIterable(data)) {
+    if (skipped < 0 || skipped >= count) {
+      yield datum;
+    }
+    ++skipped;
+  }
+}
+
+/**
  * Iterates values from the collection of key-value pairs.
  *
  * Ex: [[0, 'a'], [1, 'b'], [2, 'c']] => ['a', 'b', 'c']
