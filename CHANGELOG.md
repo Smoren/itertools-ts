@@ -1,5 +1,13 @@
 # IterTools Typescript Change Log
 
+## v1.14.0 - 2022-03-28
+
+### New Features
+* single
+  * `skip()`
+* Stream
+  * `skip()`
+
 ## v1.13.0 - 2022-03-21
 
 ### New Features
