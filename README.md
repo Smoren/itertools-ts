@@ -96,6 +96,7 @@ Quick Reference
 | [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              |
 | [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 |
 | [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      |
+| [`skip`](#Skip)                          | Iterate after skipping elements             | `single.skip(data, count, [offset])`                    |
 | [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice(data, [start], [count], [step])`          |
 | [`takeWhile`](#Take-While)               | Iterate elements while predicate is true    | `single.takeWhile(data, predicate)`                     |
 | [`values`](#Values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   |
@@ -181,6 +182,7 @@ Quick Reference
 | [`pairwise`](#Pairwise-1)                               | Return pairs of elements from iterable source                                             | `stream.pairwise()`                                                  |
 | [`partialIntersectionWith`](#Partial-Intersection-With) | Partially intersect stream and given iterables                                            | `stream.partialIntersectionWith(minIntersectionCount, ...iterables)` |
 | [`runningTotal`](#Running-Total-1)                      | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`                                |
+| [`skip`](#Skip-1)                                       | Skip some elements of the stream                                                          | `stream.skip(count, [offset])`                                       |
 | [`slice`](#Slice-1)                                     | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`                             |
 | [`symmetricDifferenceWith`](#Symmetric-Difference-With) | Symmetric difference of stream and given iterables                                        | `stream.symmetricDifferenceWith(...iterables)`                       |
 | [`takeWhile`](#Take-While-1)                            | Return elements from the iterable source as long as the predicate is true                 | `stream.takeWhile(predicate)`                                        |
@@ -701,6 +703,38 @@ for (const repeated of single.repeat(data, repetitions)) {
   console.log(repeated);
 }
 // 'Beetlejuice', 'Beetlejuice', 'Beetlejuice'
+```
+
+### Skip
+Skip n elements in the iterable after optional offset offset.
+
+```
+function* skip<T>(
+  data: Iterable<T> | Iterator<T>,
+  count: number,
+  offset: number = 0
+): Iterable<T>
+```
+
+```typescript
+import { single } from 'itertools-ts';
+
+const movies = [
+    'The Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith',
+    'A New Hope', 'The Empire Strikes Back', 'Return of the Jedi',
+    'The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker'
+];
+
+const prequelsRemoved = [];
+for (const nonPrequel of Single.skip(movies, 3)) {
+    prequelsRemoved[] = nonPrequel;
+} // Episodes IV - IX
+
+const onlyTheBest = [];
+for (const nonSequel of Single.skip(prequelsRemoved, 3, 3)) {
+  onlyTheBest[] = nonSequel;
+}
+// 'A New Hope', 'The Empire Strikes Back', 'Return of the Jedi'
 ```
 
 ### Slice
@@ -2014,6 +2048,29 @@ const result = Stream.of(input)
   .runningTotal()
   .toArray();
 // 1, 3, 6, 10, 15
+```
+
+#### Skip
+Skip some elements of the stream.
+
+```
+skip(count: number, offset = 0): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const movies = [
+    'The Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith',
+    'A New Hope', 'The Empire Strikes Back', 'Return of the Jedi',
+    'The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker'
+];
+
+const onlyTheBest = Stream.of(movies)
+  .skip(3)
+  .skip(3, 3)
+  .toArray();
+// 'A New Hope', 'The Empire Strikes Back', 'Return of the Jedi'
 ```
 
 #### Slice
