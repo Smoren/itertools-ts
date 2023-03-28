@@ -12,7 +12,7 @@ import {
   keys,
   limit,
   map,
-  pairwise,
+  pairwise, skip,
   slice,
   takeWhile,
   values,
@@ -367,6 +367,19 @@ export class Stream {
    */
   runningTotal(initialValue?: number): Stream {
     this.data = runningTotal(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Skip n elements in the stream after optional offset.
+   *
+   * @param count
+   * @param offset
+   *
+   * @see single.skip
+   */
+  skip(count: number, offset = 0): Stream {
+    this.data = skip(this.data, count, offset);
     return this;
   }
 
