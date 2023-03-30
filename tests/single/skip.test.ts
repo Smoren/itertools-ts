@@ -1,5 +1,13 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture
+  // @ts-ignore
+} from "../fixture";
 import { single } from "../../src";
 import { InvalidArgumentError } from "../../src";
 
@@ -12,7 +20,7 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, [number]|[number, number], Array<unknown>]>)(
-  "Single Map Test",
+  "Single Skip Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
     config: [number]|[number, number],
@@ -34,9 +42,46 @@ describe.each([
 );
 
 describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  [number]|[number, number],
+  Array<unknown>
+]>)(
+  "Single Skip Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    config: [number]|[number, number],
+    expected: Array<unknown>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const item of single.skipAsync(input, ...(config as [number, number]))) {
+        result.push(item);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
   ...dataProviderForErrors(),
 ] as Array<[[number]|[number, number]]>)(
-  "Single Map Error Test",
+  "Single Skip Error Test",
   (
     config: [number]|[number, number]
   ) => {
@@ -47,6 +92,27 @@ describe.each([
           break;
         }
       }).toThrow(InvalidArgumentError);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForErrors(),
+] as Array<[[number]|[number, number]]>)(
+  "Single Skip Async Error Test",
+  (
+    config: [number]|[number, number]
+  ) => {
+    it("", async () => {
+      try {
+        // When
+        for await (const _ of single.skipAsync([1, 2, 3], ...(config as [number, number]))) {
+          break;
+        }
+        expect(false).toBeTruthy();
+      } catch (e) {
+        expect(e).toBeInstanceOf(InvalidArgumentError);
+      }
     });
   }
 );
@@ -1410,6 +1476,606 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [10, 0],
+      [],
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      [0],
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      [0, 1],
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      [0, 2],
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      [3, 5],
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [0],
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [0, 0],
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [0, 1],
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [0, 2],
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [1],
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [1, 0],
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [1, 1],
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [1, 2],
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [2, 0],
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [2, 1],
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [2, 2],
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [0],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [0, 0],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 0],
+      [2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 0],
+      [3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [8, 0],
+      [9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [9, 0],
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [10, 0],
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 1],
+      [1, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 2],
+      [1, 2, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 7],
+      [1, 2, 3, 4, 5, 6, 7, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 8],
+      [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 1],
+      [1, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 2],
+      [1, 2, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 7],
+      [1, 2, 3, 4, 5, 6, 7],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [5, 2],
+      [1, 2, 8, 9],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [10, 2],
+      [1, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [0],
+      [1, 2.2, '3', 4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [0, 0],
+      [1, 2.2, '3', 4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [1, 0],
+      [2.2, '3', 4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [3, 0],
+      [4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [3, 2],
+      [1, 2.2, {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [10, 2],
+      [1, 2.2],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [10, 0],
+      [],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      [0],
+      [],
+    ],
+    [
+      createAsyncIterableFixture([]),
+      [0, 1],
+      [],
+    ],
+    [
+      createAsyncIterableFixture([]),
+      [0, 2],
+      [],
+    ],
+    [
+      createAsyncIterableFixture([]),
+      [3, 5],
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [0],
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [0, 0],
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [0, 1],
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [0, 2],
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [1],
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [1, 0],
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [1, 1],
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [1, 2],
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [2, 0],
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [2, 1],
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [2, 2],
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [0],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [0, 0],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 0],
+      [2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 0],
+      [3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [8, 0],
+      [9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [9, 0],
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [10, 0],
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 1],
+      [1, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 2],
+      [1, 2, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 7],
+      [1, 2, 3, 4, 5, 6, 7, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 8],
+      [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 1],
+      [1, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 2],
+      [1, 2, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 7],
+      [1, 2, 3, 4, 5, 6, 7],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [5, 2],
+      [1, 2, 8, 9],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [10, 2],
+      [1, 2],
+    ],
+    [
+      createAsyncIterableFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [0],
+      [1, 2.2, '3', 4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncIterableFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [0, 0],
+      [1, 2.2, '3', 4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncIterableFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [1, 0],
+      [2.2, '3', 4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncIterableFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [3, 0],
+      [4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncIterableFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [3, 2],
+      [1, 2.2, {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncIterableFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [10, 2],
+      [1, 2.2],
+    ],
+    [
+      createAsyncIterableFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [10, 0],
+      [],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      [0],
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      [0, 1],
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      [0, 2],
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      [3, 5],
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [0],
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [0, 0],
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [0, 1],
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [0, 2],
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [1],
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [1, 0],
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [1, 1],
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [1, 2],
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [2, 0],
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [2, 1],
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [2, 2],
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [0],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [0, 0],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 0],
+      [2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 0],
+      [3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [8, 0],
+      [9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [9, 0],
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [10, 0],
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 1],
+      [1, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 2],
+      [1, 2, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 7],
+      [1, 2, 3, 4, 5, 6, 7, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 8],
+      [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [1, 9],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 1],
+      [1, 4, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 2],
+      [1, 2, 5, 6, 7, 8, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [2, 7],
+      [1, 2, 3, 4, 5, 6, 7],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [5, 2],
+      [1, 2, 8, 9],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      [10, 2],
+      [1, 2],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [0],
+      [1, 2.2, '3', 4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [0, 0],
+      [1, 2.2, '3', 4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [1, 0],
+      [2.2, '3', 4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [3, 0],
+      [4, [5], {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [3, 2],
+      [1, 2.2, {a: 6}, true, false, null],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
+      [10, 2],
+      [1, 2.2],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2.2, '3', 4, [5], {a: 6}, true, false, null]),
       [10, 0],
       [],
     ],

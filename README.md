@@ -39,6 +39,8 @@ const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
   .toSum();               // 14
 ```
 
+[More about Streams](#Stream)
+
 All functions work on iterable collections and iterators:
 * `Array`
 * `Set`
@@ -47,8 +49,6 @@ All functions work on iterable collections and iterators:
 * `Generator`
 * `Iterable`
 * `Iterator`
-
-[More about Streams](#Stream)
 
 Setup
 -----

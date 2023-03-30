@@ -1,5 +1,14 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  asyncTimeout,
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture
+  // @ts-ignore
+} from "../fixture";
 import { single } from "../../src";
 
 describe.each([
@@ -23,6 +32,43 @@ describe.each([
 
       // When
       for (const item of single.takeWhile(input, predicate)) {
+        result.push(item);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  (datum: unknown) => boolean | Promise<boolean>,
+  Array<unknown>
+]>)(
+  "Single Take While Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    predicate: (datum: unknown) => boolean | Promise<boolean>,
+    expected: Array<unknown>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const item of single.takeWhileAsync(input, predicate)) {
         result.push(item);
       }
 
@@ -613,6 +659,285 @@ function dataProviderForMaps(): Array<unknown> {
       createMapFixture([50, 60, 70, 85, 65, 90]),
       (x: [number, number]) => x[1] <= 65,
       [[0, 50], [1, 60]],
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 0,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 1,
+      [0],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 2,
+      [0, 1],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 3,
+      [0, 1, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 4,
+      [0, 1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 5,
+      [0, 1, 2, 3, 4],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 6,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x > 0,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x > 1,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x > -1,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncGeneratorFixture([5, 4, 3, 2, 1, 0]),
+      (x: number) => x > 2,
+      [5, 4, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      () => true,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      [0, 1, 2, 3, 4, 5],
+      () => false,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 4, 6, 4, 1]),
+      (x: number) => x < 5,
+      [1, 4],
+    ],
+    [
+      createAsyncGeneratorFixture([50, 60, 70, 85, 65, 90]),
+      (x: number) => x < 65,
+      [50, 60],
+    ],
+    [
+      createAsyncGeneratorFixture([50, 60, 70, 85, 65, 90]),
+      (x: number) => x <= 65,
+      [50, 60],
+    ],
+    [
+      createAsyncGeneratorFixture([50, 60, 70, 85, 65, 90]),
+      async (x: number) => {
+        await asyncTimeout(1);
+        return x <= 65;
+      },
+      [50, 60],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 0,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 1,
+      [0],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 2,
+      [0, 1],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 3,
+      [0, 1, 2],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 4,
+      [0, 1, 2, 3],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 5,
+      [0, 1, 2, 3, 4],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 6,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x > 0,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x > 1,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x > -1,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIterableFixture([5, 4, 3, 2, 1, 0]),
+      (x: number) => x > 2,
+      [5, 4, 3],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      () => true,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      [0, 1, 2, 3, 4, 5],
+      () => false,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1, 4, 6, 4, 1]),
+      (x: number) => x < 5,
+      [1, 4],
+    ],
+    [
+      createAsyncIterableFixture([50, 60, 70, 85, 65, 90]),
+      (x: number) => x < 65,
+      [50, 60],
+    ],
+    [
+      createAsyncIterableFixture([50, 60, 70, 85, 65, 90]),
+      (x: number) => x <= 65,
+      [50, 60],
+    ],
+    [
+      createAsyncIterableFixture([50, 60, 70, 85, 65, 90]),
+      async (x: number) => {
+        await asyncTimeout(1);
+        return x <= 65;
+      },
+      [50, 60],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 0,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 1,
+      [0],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 2,
+      [0, 1],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 3,
+      [0, 1, 2],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 4,
+      [0, 1, 2, 3],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 5,
+      [0, 1, 2, 3, 4],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x < 6,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x > 0,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x > 1,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x > -1,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIteratorFixture([5, 4, 3, 2, 1, 0]),
+      (x: number) => x > 2,
+      [5, 4, 3],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      () => true,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      [0, 1, 2, 3, 4, 5],
+      () => false,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1, 4, 6, 4, 1]),
+      (x: number) => x < 5,
+      [1, 4],
+    ],
+    [
+      createAsyncIteratorFixture([50, 60, 70, 85, 65, 90]),
+      (x: number) => x < 65,
+      [50, 60],
+    ],
+    [
+      createAsyncIteratorFixture([50, 60, 70, 85, 65, 90]),
+      (x: number) => x <= 65,
+      [50, 60],
+    ],
+    [
+      createAsyncIteratorFixture([50, 60, 70, 85, 65, 90]),
+      async (x: number) => {
+        await asyncTimeout(1);
+        return x <= 65;
+      },
+      [50, 60],
     ],
   ];
 }

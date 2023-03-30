@@ -1,5 +1,13 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture
+  // @ts-ignore
+} from "../fixture";
 import { LengthError, reduce } from "../../src";
 
 describe.each([
@@ -27,6 +35,36 @@ describe.each([
 );
 
 describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  [unknown, unknown]
+]>)(
+  "Reduce To First And Last Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    expected: [unknown, unknown]
+  ) => {
+    it("", async () => {
+      // When
+      const result = await reduce.toFirstAndLastAsync(input);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
   ...dataProviderForError(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>]>)(
   "Reduce To First And Last Error Test",
@@ -35,6 +73,27 @@ describe.each([
       expect(() => {
         reduce.toFirstAndLast(input);
       }).toThrow(LengthError);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForError(),
+  ...dataProviderForErrorAsync(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+]>)(
+  "Reduce To First And Last Async Error Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+  ) => {
+    it("", async () => {
+      try {
+        await reduce.toFirstAndLastAsync(input);
+        expect(false).toBeTruthy();
+      } catch (e) {
+        expect(e).toBeInstanceOf(LengthError);
+      }
     });
   }
 );
@@ -342,6 +401,141 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([0]),
+      [0, 0],
+    ],
+    [
+      createAsyncGeneratorFixture([null]),
+      [null, null],
+    ],
+    [
+      createAsyncGeneratorFixture(['']),
+      ['', ''],
+    ],
+    [
+      createAsyncGeneratorFixture(['', null]),
+      ['', null],
+    ],
+    [
+      createAsyncGeneratorFixture([3, 2]),
+      [3, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      [1, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([1.1, 1.1, 2.1, 2.1, 3.1, 3.1]),
+      [1.1, 3.1],
+    ],
+    [
+      createAsyncGeneratorFixture([[1], '2', 3]),
+      [[1], 3],
+    ],
+    [
+      createAsyncGeneratorFixture([false, [1], '2', 3]),
+      [false, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([true, [1], '2', 3]),
+      [true, 3],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([0]),
+      [0, 0],
+    ],
+    [
+      createAsyncIterableFixture([null]),
+      [null, null],
+    ],
+    [
+      createAsyncIterableFixture(['']),
+      ['', ''],
+    ],
+    [
+      createAsyncIterableFixture(['', null]),
+      ['', null],
+    ],
+    [
+      createAsyncIterableFixture([3, 2]),
+      [3, 2],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      [1, 3],
+    ],
+    [
+      createAsyncIterableFixture([1.1, 1.1, 2.1, 2.1, 3.1, 3.1]),
+      [1.1, 3.1],
+    ],
+    [
+      createAsyncIterableFixture([[1], '2', 3]),
+      [[1], 3],
+    ],
+    [
+      createAsyncIterableFixture([false, [1], '2', 3]),
+      [false, 3],
+    ],
+    [
+      createAsyncIterableFixture([true, [1], '2', 3]),
+      [true, 3],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([0]),
+      [0, 0],
+    ],
+    [
+      createAsyncIteratorFixture([null]),
+      [null, null],
+    ],
+    [
+      createAsyncIteratorFixture(['']),
+      ['', ''],
+    ],
+    [
+      createAsyncIteratorFixture(['', null]),
+      ['', null],
+    ],
+    [
+      createAsyncIteratorFixture([3, 2]),
+      [3, 2],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      [1, 3],
+    ],
+    [
+      createAsyncIteratorFixture([1.1, 1.1, 2.1, 2.1, 3.1, 3.1]),
+      [1.1, 3.1],
+    ],
+    [
+      createAsyncIteratorFixture([[1], '2', 3]),
+      [[1], 3],
+    ],
+    [
+      createAsyncIteratorFixture([false, [1], '2', 3]),
+      [false, 3],
+    ],
+    [
+      createAsyncIteratorFixture([true, [1], '2', 3]),
+      [true, 3],
+    ],
+  ];
+}
+
 function dataProviderForError(): Array<unknown> {
   return [
     [
@@ -364,6 +558,20 @@ function dataProviderForError(): Array<unknown> {
     ],
     [
       createMapFixture([]),
+    ],
+  ];
+}
+
+function dataProviderForErrorAsync(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+    ],
+    [
+      createAsyncIterableFixture([]),
+    ],
+    [
+      createAsyncIteratorFixture([]),
     ],
   ];
 }

@@ -1,5 +1,18 @@
+export const asyncTimeout = (ms: number) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+
 export function *createGeneratorFixture<T>(data: Array<T>): Iterable<T> {
   for (const datum of data) {
+    yield datum;
+  }
+}
+
+export async function *createAsyncGeneratorFixture<T>(data: Array<T>): AsyncIterable<T> {
+  for (const datum of data) {
+    await asyncTimeout(1);
     yield datum;
   }
 }
@@ -17,10 +30,32 @@ export function createIteratorFixture<T>(data: Array<T>): Iterator<T> {
   };
 }
 
+export function createAsyncIteratorFixture<T>(data: Array<T>): AsyncIterator<T> {
+  let nextIndex = 0;
+  return {
+    async next(): Promise<IteratorResult<T>> {
+      await asyncTimeout(1);
+      if (nextIndex < data.length) {
+        return Promise.resolve({ value: data[nextIndex++], done: false });
+      } else {
+        return Promise.resolve({ value: nextIndex, done: true });
+      }
+    },
+  };
+}
+
 export function createIterableFixture<T>(data: Array<T>): Iterable<T> {
   return {
     [Symbol.iterator](): Iterator<T> {
       return createIteratorFixture(data);
+    }
+  };
+}
+
+export function createAsyncIterableFixture<T>(data: Array<T>): AsyncIterable<T> {
+  return {
+    [Symbol.asyncIterator](): AsyncIterator<T> {
+      return createAsyncIteratorFixture(data);
     }
   };
 }

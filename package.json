@@ -1,7 +1,7 @@
 {
   "name": "itertools-ts",
   "version": "1.15.0",
-  "description": "Extended itertools port for TypeScript and JavaScript. Provides a huge set of functions for working with iterable collections",
+  "description": "Extended itertools port for TypeScript and JavaScript. Provides a huge set of functions for working with iterable collections (including async ones)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -37,20 +37,29 @@
   ],
   "keywords": [
     "itertools",
+    "async itertools",
     "itertool",
+    "async itertool",
     "itertools-library",
     "itertools-lib",
     "iterable",
+    "async iterable",
     "iterator",
+    "async iterator",
     "iteration",
+    "async iteration",
     "generator",
+    "async generator",
     "stream",
+    "async stream",
     "streams",
     "fluentinterface",
     "map",
+    "async map",
     "filter",
     "zip",
     "loops",
+    "async loops",
     "looping"
   ],
   "devDependencies": {

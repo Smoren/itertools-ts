@@ -1,5 +1,12 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from '../fixture';
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  // @ts-ignore
+} from '../fixture';
 import { summary } from '../../src';
 
 describe.each(dataProviderForTrue() as Array<[Array<Iterable<unknown>|Iterator<unknown>>]>)(
@@ -7,6 +14,47 @@ describe.each(dataProviderForTrue() as Array<[Array<Iterable<unknown>|Iterator<u
   (...input: Array<Iterable<unknown>|Iterator<unknown>>) => {
     it("", () => {
       expect(summary.sameCount(...input)).toBeTruthy();
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForTrue(),
+  ...dataProviderForTrueAsync(),
+] as Array<[Array<
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+>]>)(
+  "Summary Same Count Async Test True",
+  (
+    ...input: Array<AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>>
+  ) => {
+    it("", async () => {
+      expect(await summary.sameCountAsync(...input)).toBeTruthy();
+    });
+  }
+);
+
+describe.each(dataProviderForFalse() as Array<[Array<Iterable<unknown>|Iterator<unknown>>]>)(
+  "Summary Same Count Test False",
+  (...input: Array<Iterable<unknown>|Iterator<unknown>>) => {
+    it("", () => {
+      expect(summary.sameCount(...input)).toBeFalsy();
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForFalse(),
+  ...dataProviderForFalseAsync(),
+] as Array<[Array<
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+>]>)(
+  "Summary Same Count Async Test False",
+  (
+    ...input: Array<AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>>
+  ) => {
+    it("", async () => {
+      expect(await summary.sameCountAsync(...input)).toBeFalsy();
     });
   }
 );
@@ -105,14 +153,57 @@ function dataProviderForTrue(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForFalse() as Array<[Array<Iterable<unknown>|Iterator<unknown>>]>)(
-  "Summary Same Count Test False",
-  (...input: Array<Iterable<unknown>|Iterator<unknown>>) => {
-    it("", () => {
-      expect(summary.sameCount(...input)).toBeFalsy();
-    });
-  }
-);
+function dataProviderForTrueAsync(): Array<unknown> {
+  return [
+    [[], createAsyncGeneratorFixture([])],
+    [[], createAsyncIteratorFixture([])],
+    [[], createAsyncIterableFixture([])],
+
+    [[], createAsyncGeneratorFixture([]), []],
+    [[], createAsyncIteratorFixture([]), []],
+    [[], createAsyncIterableFixture([]), []],
+    [[], [], createAsyncGeneratorFixture([])],
+    [[], [], createAsyncIteratorFixture([])],
+    [[], [], createAsyncIterableFixture([])],
+    [[], createAsyncGeneratorFixture([]), createAsyncIteratorFixture([])],
+    [[], createAsyncIteratorFixture([]), createAsyncIterableFixture([])],
+
+    [[], createAsyncGeneratorFixture([]), createAsyncIteratorFixture([]), createIterableFixture([]), []],
+    [[], [], createAsyncGeneratorFixture([]), createIteratorFixture([]), createAsyncIterableFixture([])],
+    [[], '', new Set([]), new Map([]), createAsyncIterableFixture([])],
+
+    [[1], createAsyncGeneratorFixture([2])],
+    [[1], createAsyncIteratorFixture([2])],
+    [[1], createAsyncIterableFixture([2])],
+
+    [[1], createAsyncGeneratorFixture([2]), [3]],
+    [[1], createAsyncIteratorFixture([2]), [3]],
+    [[1], createAsyncIterableFixture([2]), [3]],
+    [[1], [2], createAsyncGeneratorFixture([3])],
+    [[1], [2], createAsyncIteratorFixture([3])],
+    [[1], [2], createAsyncIterableFixture([3])],
+    [[1], createAsyncGeneratorFixture([2]), createAsyncIteratorFixture([3])],
+    [[1], createAsyncIteratorFixture([2]), createAsyncIterableFixture([3])],
+
+    [[1, 2], [2, 3], createAsyncGeneratorFixture([3, 4]), [4, 5]],
+    [[1, 2], [2, 3], createAsyncIteratorFixture([3, 4]), [4, 5]],
+    [[1, 2], [2, 3], createAsyncIterableFixture([3, 4]), [4, 5]],
+    [[1, 2], [2, 3], createAsyncGeneratorFixture([3, 4]), createAsyncIteratorFixture([4, 5])],
+    [[1, 2], [2, 3], createAsyncIteratorFixture([3, 4]), createAsyncIterableFixture([4, 5])],
+
+    [[1, 2, 3], [2, 3, 4], createAsyncGeneratorFixture([3, 4, 5]), [4, 5, 6]],
+    [[1, 2, 3], [2, 3, 4], createAsyncIteratorFixture([3, 4, 5]), [4, 5, 6]],
+    [[1, 2, 3], [2, 3, 4], createAsyncIterableFixture([3, 4, 5]), [4, 5, 6]],
+
+    [['a', 2], createAsyncGeneratorFixture(['b', 2]), ['c', 2], ['c', 2]],
+    [['a', 2], createAsyncIteratorFixture(['b', 2]), ['c', 2], ['c', 2]],
+    [['a', 2], createAsyncIterableFixture(['b', 2]), ['c', 2], ['c', 2]],
+
+    [[1, null], [2, null], [1, null], createAsyncGeneratorFixture([2, null])],
+    [[1, null], [2, null], [1, null], createAsyncIteratorFixture([2, null])],
+    [[1, null], [2, null], [1, null], createAsyncIterableFixture([2, null])],
+  ];
+}
 
 function dataProviderForFalse(): Array<unknown> {
   return [
@@ -136,6 +227,34 @@ function dataProviderForFalse(): Array<unknown> {
     [[1], createGeneratorFixture([1, 2, 3])],
     [[1], createIteratorFixture([1, 2, 3])],
     [[1], createIterableFixture([1, 2, 3])],
+    [[1], new Set([1, 2, 3])],
+    [[1], new Map([['a', 1], ['b', 2], ['c', 3]])],
+    [[1], '123'],
+  ];
+}
+
+function dataProviderForFalseAsync(): Array<unknown> {
+  return [
+    [[], [1]],
+    [[], createAsyncGeneratorFixture([1])],
+    [[], createAsyncIteratorFixture([1])],
+    [[], createAsyncIterableFixture([1])],
+    [[], new Set([1])],
+    [[], new Map([[0, 1]])],
+    [[], '1'],
+
+    [[1], []],
+    [[1], createAsyncGeneratorFixture([])],
+    [[1], createAsyncIteratorFixture([])],
+    [[1], createAsyncIterableFixture([])],
+    [[1], new Set([])],
+    [[1], new Map([])],
+    [[1], ''],
+
+    [[1], [1, 2, 3]],
+    [[1], createAsyncGeneratorFixture([1, 2, 3])],
+    [[1], createAsyncIteratorFixture([1, 2, 3])],
+    [[1], createAsyncIterableFixture([1, 2, 3])],
     [[1], new Set([1, 2, 3])],
     [[1], new Map([['a', 1], ['b', 2], ['c', 3]])],
     [[1], '123'],

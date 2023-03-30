@@ -1,5 +1,124 @@
 # IterTools Typescript Change Log
 
+## v1.16.0 - TBD
+
+### New features
+* multi
+  * `chainAsync()`
+  * `zipAsync()`
+  * `zipFilledAsync()`
+  * `zipLongestAsync()`
+  * `zipEqualAsync()`
+* single
+  * `chunkwiseAsync()`
+  * `chunkwiseOverlapAsync()`
+  * `compressAsync()`
+  * `dropWhileAsync()`
+  * `enumerateAsync()`
+  * `filterAsync()`
+  * `flatMapAsync()`
+  * `flattenAsync()`
+  * `groupByAsync()`
+  * `keysAsync()`
+  * `limitAsync()`
+  * `mapAsync()`
+  * `pairwiseAsync()`
+  * `repeatAsync()`
+  * `sliceAsync()`
+  * `skipAsync()`
+  * `takeWhileAsync()`
+  * `valuesAsync()`
+* set
+  * `distinctAsync()`
+  * `intersectionAsync()`
+  * `partialIntersectionAsync()`
+  * `symmetricDifferenceAsync()`
+  * `unionAsync()`
+* reduce
+  * `toValueAsync()`
+  * `toAverageAsync()`
+  * `toCountAsync()`
+  * `toFirstAsync()`
+  * `toFirstAndLastAsync()`
+  * `toLastAsync()`
+  * `toMaxAsync()`
+  * `toMinAsync()`
+  * `toMinMaxAsync()`
+  * `toProductAsync()`
+  * `toSumAsync()`
+* summary
+  * `isAsyncIterable()`
+  * `allMatchAsync()`
+  * `allUniqueAsync()`
+  * `anyMatchAsync()`
+  * `isEmptyAsync()`
+  * `isReversedAsync()`
+  * `isSortedAsync()`
+  * `noneMatchAsync()`
+  * `sameAsync()`
+  * `sameCountAsync()`
+* transform
+  * `toArrayAsync()`
+  * `toAsyncIterable()`
+  * `toAsyncIterator()`
+  * `toMapAsync()`
+  * `toSetAsync()`
+* math
+  * `runningTotalAsync()`
+* AsyncStream
+  * `of`
+  * `ofEmpty`
+  * `zipWith`
+  * `zipFilledWith`
+  * `zipLongestWith`
+  * `zipEqualWith`
+  * `chainWith`
+  * `chunkwiseOverlap`
+  * `chunkwise`
+  * `compress`
+  * `dropWhile`
+  * `filter`
+  * `enumerate`
+  * `keys`
+  * `limit`
+  * `map`
+  * `flatMap`
+  * `flatten`
+  * `groupBy`
+  * `pairwise`
+  * `runningTotal`
+  * `skip`
+  * `slice`
+  * `takeWhile`
+  * `values`
+  * `distinct`
+  * `intersectionWith`
+  * `partialIntersectionWith`
+  * `symmetricDifferenceWith`
+  * `unionWith`
+  * `toValue`
+  * `toAverage`
+  * `toCount`
+  * `toMax`
+  * `toMin`
+  * `toMinMax`
+  * `toFirst`
+  * `toFirstAndLast`
+  * `toLast`
+  * `toSum`
+  * `toProduct`
+  * `allMatch`
+  * `allUnique`
+  * `anyMatch`
+  * `isSorted`
+  * `isReversed`
+  * `noneMatch`
+  * `sameWith`
+  * `sameCountWith`
+  * `toArray`
+  * `toMap`
+  * `toSet`
+
 ## v1.15.0 - 2022-03-30
 
 ### Improvements

@@ -1,80 +1,91 @@
-import { toArray, toIterable, toMap, toSet } from "./transform";
 import {
-  chunkwise,
-  chunkwiseOverlap,
-  compress,
-  dropWhile,
-  enumerate,
-  filter,
-  flatMap,
-  flatten,
-  groupBy,
-  keys,
-  limit,
-  map,
-  pairwise,
-  skip,
-  slice,
-  takeWhile,
-  values,
+  toArrayAsync,
+  toAsyncIterable,
+  toMapAsync,
+  toSetAsync,
+} from "./transform";
+import {
+  chunkwiseAsync,
+  chunkwiseOverlapAsync,
+  compressAsync,
+  dropWhileAsync,
+  enumerateAsync,
+  filterAsync,
+  flatMapAsync,
+  flattenAsync,
+  groupByAsync,
+  keysAsync,
+  limitAsync,
+  mapAsync,
+  pairwiseAsync,
+  skipAsync,
+  sliceAsync,
+  takeWhileAsync,
+  valuesAsync,
 } from "./single";
-import { chain, zip, zipEqual, zipFilled, zipLongest } from "./multi";
-import { runningTotal } from "./math";
 import {
-  distinct,
-  intersection,
-  partialIntersection,
-  symmetricDifference,
-  union,
+  chainAsync,
+  zipAsync,
+  zipEqualAsync,
+  zipFilledAsync,
+  zipLongestAsync,
+} from "./multi";
+import { runningTotalAsync } from "./math";
+import {
+  distinctAsync,
+  intersectionAsync,
+  partialIntersectionAsync,
+  symmetricDifferenceAsync,
+  unionAsync,
 } from "./set";
 import {
-  toAverage,
-  toCount,
-  toFirst,
-  toFirstAndLast,
-  toLast,
-  toMax,
-  toMin,
-  toMinMax,
-  toProduct,
-  toSum,
-  toValue,
+  toAverageAsync,
+  toCountAsync,
+  toFirstAndLastAsync,
+  toFirstAsync,
+  toLastAsync,
+  toMaxAsync,
+  toMinAsync,
+  toMinMaxAsync,
+  toProductAsync,
+  toSumAsync,
+  toValueAsync,
 } from "./reduce";
 import {
-  allMatch,
-  allUnique,
-  anyMatch,
-  isReversed,
-  isSorted,
-  noneMatch,
-  same,
-  sameCount,
+  allMatchAsync,
+  allUniqueAsync,
+  anyMatchAsync,
+  isReversedAsync,
+  isSortedAsync,
+  noneMatchAsync,
+  sameAsync,
+  sameCountAsync,
 } from "./summary";
-import { Comparable, FlatMapper } from "./types";
+import { AsyncFlatMapper, Comparable } from "./types";
 
 /**
- * Provides fluent interface for working with iterables.
+ * Provides fluent interface for working with async iterables.
  */
-export class Stream {
+export class AsyncStream {
   /**
    * Iterable source
    */
-  protected data: Iterable<unknown>;
+  protected data: AsyncIterable<unknown>;
 
   /**
    * Creates iterable instance with fluent interface.
    *
    * @param data
    */
-  static of(data: Iterable<unknown> | Iterator<unknown>): Stream {
-    return new Stream(toIterable(data));
+  static of(data: Iterable<unknown> | Iterator<unknown>): AsyncStream {
+    return new AsyncStream(toAsyncIterable(data));
   }
 
   /**
    * Creates iterable instance with fluent interface from empty iterable source.
    */
-  static ofEmpty(): Stream {
-    return new Stream([]);
+  static ofEmpty(): AsyncStream {
+    return new AsyncStream(toAsyncIterable([]));
   }
 
   /**
@@ -87,10 +98,17 @@ export class Stream {
    *
    * @param iterables
    *
-   * @see multi.zip
+   * @see multi.zipAsync
    */
-  zipWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream {
-    this.data = zip(this.data, ...iterables);
+  zipWith(
+    ...iterables: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): AsyncStream {
+    this.data = zipAsync(this.data, ...iterables);
     return this;
   }
 
@@ -106,13 +124,18 @@ export class Stream {
    * @param filler
    * @param iterables
    *
-   * @see multi.zipLongest
+   * @see multi.zipLongestAsync
    */
   zipFilledWith(
     filler: unknown,
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream {
-    this.data = zipFilled(filler, this.data, ...iterables);
+    ...iterables: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): AsyncStream {
+    this.data = zipFilledAsync(filler, this.data, ...iterables);
     return this;
   }
 
@@ -127,12 +150,17 @@ export class Stream {
    *
    * @param iterables
    *
-   * @see multi.zipLongest
+   * @see multi.zipLongestAsync
    */
   zipLongestWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream {
-    this.data = zipLongest(this.data, ...iterables);
+    ...iterables: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): AsyncStream {
+    this.data = zipLongestAsync(this.data, ...iterables);
     return this;
   }
 
@@ -144,12 +172,17 @@ export class Stream {
    *
    * @param iterables
    *
-   * @see multi.zipEqual
+   * @see multi.zipEqualAsync
    */
   zipEqualWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream {
-    this.data = zipEqual(this.data, ...iterables);
+    ...iterables: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): AsyncStream {
+    this.data = zipEqualAsync(this.data, ...iterables);
     return this;
   }
 
@@ -160,12 +193,17 @@ export class Stream {
    *
    * @param iterables
    *
-   * @see multi.chain
+   * @see multi.chainAsync
    */
   chainWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream {
-    this.data = chain(this.data, ...iterables);
+    ...iterables: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): AsyncStream {
+    this.data = chainAsync(this.data, ...iterables);
     return this;
   }
 
@@ -180,14 +218,14 @@ export class Stream {
    * @param overlapSize
    * @param includeIncompleteTail
    *
-   * @see single.chunkwiseOverlap
+   * @see single.chunkwiseOverlapAsync
    */
   chunkwiseOverlap(
     chunkSize: number,
     overlapSize: number,
     includeIncompleteTail = true
-  ): Stream {
-    this.data = chunkwiseOverlap(
+  ): AsyncStream {
+    this.data = chunkwiseOverlapAsync(
       this.data,
       chunkSize,
       overlapSize,
@@ -203,10 +241,10 @@ export class Stream {
    *
    * @param chunkSize
    *
-   * @see single.chunkwise
+   * @see single.chunkwiseAsync
    */
-  chunkwise(chunkSize: number): Stream {
-    this.data = chunkwise(this.data, chunkSize);
+  chunkwise(chunkSize: number): AsyncStream {
+    this.data = chunkwiseAsync(this.data, chunkSize);
     return this;
   }
 
@@ -217,12 +255,16 @@ export class Stream {
    *
    * @param selectors
    *
-   * @see single.compress()
+   * @see single.compressAsync
    */
   compress(
-    selectors: Iterable<number | boolean> | Iterator<number | boolean>
-  ): Stream {
-    this.data = compress(this.data, selectors);
+    selectors:
+      | AsyncIterable<number | boolean>
+      | AsyncIterator<number | boolean>
+      | Iterable<number | boolean>
+      | Iterator<number | boolean>
+  ): AsyncStream {
+    this.data = compressAsync(this.data, selectors);
     return this;
   }
 
@@ -233,10 +275,12 @@ export class Stream {
    *
    * @param predicate
    *
-   * @see single.dropWhile()
+   * @see single.dropWhileAsync
    */
-  dropWhile(predicate: (item: unknown) => boolean): Stream {
-    this.data = dropWhile(this.data, predicate);
+  dropWhile(
+    predicate: (item: unknown) => Promise<boolean> | boolean
+  ): AsyncStream {
+    this.data = dropWhileAsync(this.data, predicate);
     return this;
   }
 
@@ -245,31 +289,37 @@ export class Stream {
    *
    * @param predicate
    *
-   * @see single.filter
+   * @see single.filterAsync
    */
-  filter(predicate: (item: unknown) => boolean): Stream {
-    this.data = filter(this.data, predicate);
+  filter(
+    predicate: (item: unknown) => Promise<boolean> | boolean
+  ): AsyncStream {
+    this.data = filterAsync(this.data, predicate);
     return this;
   }
 
   /**
    * Enumerates items of given collection.
    *
-   * @see single.enumerate
+   * @see single.enumerateAsync
    */
-  enumerate(): Stream {
-    this.data = enumerate(this.data);
+  enumerate(): AsyncStream {
+    this.data = enumerateAsync(this.data);
     return this;
   }
 
   /**
    * Iterates keys from the collection of key-value pairs.
    *
-   * @see single.keys
+   * @see single.keysAsync
    */
-  keys(): Stream {
-    this.data = keys(
-      this.data as Iterable<[unknown, unknown]> | Iterator<[unknown, unknown]>
+  keys(): AsyncStream {
+    this.data = keysAsync(
+      this.data as
+        | AsyncIterable<[unknown, unknown]>
+        | AsyncIterator<[unknown, unknown]>
+        | Iterable<[unknown, unknown]>
+        | Iterator<[unknown, unknown]>
     );
     return this;
   }
@@ -279,10 +329,10 @@ export class Stream {
    *
    * @param count
    *
-   * @see single.limit
+   * @see single.limitAsync
    */
-  limit(count: number): Stream {
-    this.data = limit(this.data, count);
+  limit(count: number): AsyncStream {
+    this.data = limitAsync(this.data, count);
     return this;
   }
 
@@ -291,10 +341,10 @@ export class Stream {
    *
    * @param mapper
    *
-   * @see single.map
+   * @see single.mapAsync
    */
-  map(mapper: (datum: unknown) => unknown): Stream {
-    this.data = map(this.data, mapper);
+  map(mapper: (datum: unknown) => Promise<unknown> | unknown): AsyncStream {
+    this.data = mapAsync(this.data, mapper);
     return this;
   }
 
@@ -304,10 +354,10 @@ export class Stream {
    *
    * @param mapper
    *
-   * @see single.flatMap
+   * @see single.flatMapAsync
    */
-  flatMap(mapper: FlatMapper<unknown, unknown>): Stream {
-    this.data = flatMap(this.data, mapper);
+  flatMap(mapper: AsyncFlatMapper<unknown, unknown>): AsyncStream {
+    this.data = flatMapAsync(this.data, mapper);
     return this;
   }
 
@@ -316,10 +366,10 @@ export class Stream {
    *
    * @param dimensions
    *
-   * @see single.flatten
+   * @see single.flattenAsync
    */
-  flatten(dimensions = Infinity): Stream {
-    this.data = flatten(this.data, dimensions);
+  flatten(dimensions = Infinity): AsyncStream {
+    this.data = flattenAsync(this.data, dimensions);
     return this;
   }
 
@@ -337,13 +387,13 @@ export class Stream {
    * @param groupKeyFunction
    * @param itemKeyFunction
    *
-   * @see single.groupBy
+   * @see single.groupByAsync
    */
   groupBy(
-    groupKeyFunction: (item: unknown) => string,
-    itemKeyFunction?: (item: unknown) => string
-  ): Stream {
-    this.data = groupBy(this.data, groupKeyFunction, itemKeyFunction);
+    groupKeyFunction: (item: unknown) => Promise<string> | string,
+    itemKeyFunction?: (item: unknown) => Promise<string> | string
+  ): AsyncStream {
+    this.data = groupByAsync(this.data, groupKeyFunction, itemKeyFunction);
     return this;
   }
 
@@ -352,10 +402,10 @@ export class Stream {
    *
    * Produces empty generator if given collection contains less than 2 elements.
    *
-   * @see single.pairwise
+   * @see single.pairwiseAsync
    */
-  pairwise(): Stream {
-    this.data = pairwise(this.data);
+  pairwise(): AsyncStream {
+    this.data = pairwiseAsync(this.data);
     return this;
   }
 
@@ -364,10 +414,10 @@ export class Stream {
    *
    * @param initialValue (Optional) If provided, the running total leads off with the initial value.
    *
-   * @see math.runningTotal
+   * @see math.runningTotalAsync
    */
-  runningTotal(initialValue?: number): Stream {
-    this.data = runningTotal(this.data, initialValue);
+  runningTotal(initialValue?: number): AsyncStream {
+    this.data = runningTotalAsync(this.data, initialValue);
     return this;
   }
 
@@ -377,10 +427,10 @@ export class Stream {
    * @param count
    * @param offset
    *
-   * @see single.skip
+   * @see single.skipAsync
    */
-  skip(count: number, offset = 0): Stream {
-    this.data = skip(this.data, count, offset);
+  skip(count: number, offset = 0): AsyncStream {
+    this.data = skipAsync(this.data, count, offset);
     return this;
   }
 
@@ -391,10 +441,10 @@ export class Stream {
    * @param count
    * @param step
    *
-   * @see single.slice
+   * @see single.sliceAsync
    */
-  slice(start = 0, count?: number, step = 1): Stream {
-    this.data = slice(this.data, start, count, step);
+  slice(start = 0, count?: number, step = 1): AsyncStream {
+    this.data = sliceAsync(this.data, start, count, step);
     return this;
   }
 
@@ -405,21 +455,27 @@ export class Stream {
    *
    * @param predicate
    *
-   * @see single.takeWhile()
+   * @see single.takeWhileAsync
    */
-  takeWhile(predicate: (item: unknown) => boolean): Stream {
-    this.data = takeWhile(this.data, predicate);
+  takeWhile(
+    predicate: (item: unknown) => Promise<boolean> | boolean
+  ): AsyncStream {
+    this.data = takeWhileAsync(this.data, predicate);
     return this;
   }
 
   /**
    * Iterates values from the collection of key-value pairs.
    *
-   * @see single.values
+   * @see single.valuesAsync
    */
-  values(): Stream {
-    this.data = values(
-      this.data as Iterable<[unknown, unknown]> | Iterator<[unknown, unknown]>
+  values(): AsyncStream {
+    this.data = valuesAsync(
+      this.data as
+        | AsyncIterable<[unknown, unknown]>
+        | AsyncIterator<[unknown, unknown]>
+        | Iterable<[unknown, unknown]>
+        | Iterator<[unknown, unknown]>
     );
     return this;
   }
@@ -427,10 +483,10 @@ export class Stream {
   /**
    * Filter out elements from the iterable source only returning unique elements.
    *
-   * @see set.distinct
+   * @see set.distinctAsync
    */
-  distinct(): Stream {
-    this.data = distinct(this.data);
+  distinct(): AsyncStream {
+    this.data = distinctAsync(this.data);
     return this;
   }
 
@@ -441,12 +497,17 @@ export class Stream {
    *
    * @param iterables
    *
-   * @see set.intersection
+   * @see set.intersectionAsync
    */
   intersectionWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream {
-    this.data = intersection(this.data, ...iterables);
+    ...iterables: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): AsyncStream {
+    this.data = intersectionAsync(this.data, ...iterables);
     return this;
   }
 
@@ -458,13 +519,18 @@ export class Stream {
    * @param minIntersectionCount
    * @param iterables
    *
-   * @see set.partialIntersection
+   * @see set.partialIntersectionAsync
    */
   partialIntersectionWith(
     minIntersectionCount: number,
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream {
-    this.data = partialIntersection(
+    ...iterables: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): AsyncStream {
+    this.data = partialIntersectionAsync(
       minIntersectionCount,
       this.data,
       ...iterables
@@ -479,12 +545,17 @@ export class Stream {
    *
    * @param iterables
    *
-   * @see set.symmetricDifference
+   * @see set.symmetricDifferenceAsync
    */
   symmetricDifferenceWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream {
-    this.data = symmetricDifference(this.data, ...iterables);
+    ...iterables: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): AsyncStream {
+    this.data = symmetricDifferenceAsync(this.data, ...iterables);
     return this;
   }
 
@@ -495,12 +566,17 @@ export class Stream {
    *
    * @param iterables
    *
-   * @see set.union
+   * @see set.unionAsync
    */
   unionWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream {
-    this.data = union(this.data, ...iterables);
+    ...iterables: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): AsyncStream {
+    this.data = unionAsync(this.data, ...iterables);
     return this;
   }
 
@@ -510,13 +586,13 @@ export class Stream {
    * @param reducer
    * @param initialValue
    *
-   * @see reduce.toValue
+   * @see reduce.toValueAsync
    */
-  toValue<T>(
-    reducer: (carry: T | undefined, datum: unknown) => T,
+  async toValue<T>(
+    reducer: (carry: T | undefined, datum: unknown) => Promise<T> | T,
     initialValue?: T
-  ): T | undefined {
-    return toValue(this, reducer, initialValue);
+  ): Promise<T | undefined> {
+    return await toValueAsync(this, reducer, initialValue);
   }
 
   /**
@@ -524,19 +600,19 @@ export class Stream {
    *
    * Returns `undefined` if iterable source is empty.
    *
-   * @see reduce.toAverage
+   * @see reduce.toAverageAsync
    */
-  toAverage(): number | undefined {
-    return toAverage(this as Iterable<number>);
+  async toAverage(): Promise<number | undefined> {
+    return await toAverageAsync(this as AsyncIterable<number>);
   }
 
   /**
    * Reduces iterable source to its length.
    *
-   * @see reduce.toCount
+   * @see reduce.toCountAsync
    */
-  toCount(): number {
-    return toCount(this as Iterable<number>);
+  async toCount(): Promise<number> {
+    return await toCountAsync(this as AsyncIterable<number>);
   }
 
   /**
@@ -550,10 +626,12 @@ export class Stream {
    *
    * @param compareBy
    *
-   * @see reduce.toMax
+   * @see reduce.toMaxAsync
    */
-  toMax(compareBy?: (datum: unknown) => Comparable): unknown | undefined {
-    return toMax(this, compareBy);
+  async toMax(
+    compareBy?: (datum: unknown) => Promise<Comparable> | Comparable
+  ): Promise<unknown | undefined> {
+    return await toMaxAsync(this, compareBy);
   }
 
   /**
@@ -567,10 +645,12 @@ export class Stream {
    *
    * @param compareBy
    *
-   * @see reduce.toMin
+   * @see reduce.toMinAsync
    */
-  toMin(compareBy?: (datum: unknown) => Comparable): unknown | undefined {
-    return toMin(this, compareBy);
+  async toMin(
+    compareBy?: (datum: unknown) => Promise<Comparable> | Comparable
+  ): Promise<unknown | undefined> {
+    return await toMinAsync(this, compareBy);
   }
 
   /**
@@ -583,9 +663,13 @@ export class Stream {
    * Returns `[undefined, undefined]` if given collection is empty.
    *
    * @param compareBy
+   *
+   * @see reduce.toMinMaxAsync
    */
-  toMinMax(compareBy?: (item: unknown) => Comparable): [unknown?, unknown?] {
-    return toMinMax(this, compareBy);
+  async toMinMax(
+    compareBy?: (item: unknown) => Promise<Comparable> | Comparable
+  ): Promise<[unknown?, unknown?]> {
+    return await toMinMaxAsync(this, compareBy);
   }
 
   /**
@@ -593,10 +677,10 @@ export class Stream {
    *
    * @throws LengthError if stream is empty.
    *
-   * @see reduce.toFirst
+   * @see reduce.toFirstAsync
    */
-  toFirst(): unknown {
-    return toFirst(this);
+  async toFirst(): Promise<unknown> {
+    return await toFirstAsync(this);
   }
 
   /**
@@ -604,10 +688,10 @@ export class Stream {
    *
    * @throws LengthError if stream is empty.
    *
-   * @see reduce.toFirstAndLast
+   * @see reduce.toFirstAndLastAsync
    */
-  toFirstAndLast(): unknown {
-    return toFirstAndLast(this);
+  async toFirstAndLast(): Promise<unknown> {
+    return await toFirstAndLastAsync(this);
   }
 
   /**
@@ -615,19 +699,19 @@ export class Stream {
    *
    * @throws LengthError if stream is empty.
    *
-   * @see reduce.toLast
+   * @see reduce.toLastAsync
    */
-  toLast(): unknown {
-    return toLast(this);
+  async toLast(): Promise<unknown> {
+    return await toLastAsync(this);
   }
 
   /**
    * Reduces iterable source to the sum of its items.
    *
-   * @see reduce.toSum
+   * @see reduce.toSumAsync
    */
-  toSum(): number {
-    return toSum(this as Iterable<number>);
+  async toSum(): Promise<number> {
+    return await toSumAsync(this as AsyncIterable<number>);
   }
 
   /**
@@ -635,10 +719,10 @@ export class Stream {
    *
    * Returns `undefined` if iterable source is empty.
    *
-   * @see reduce.toProduct
+   * @see reduce.toProductAsync
    */
-  toProduct(): number | undefined {
-    return toProduct(this as Iterable<number>);
+  async toProduct(): Promise<number | undefined> {
+    return await toProductAsync(this as AsyncIterable<number>);
   }
 
   /**
@@ -648,10 +732,12 @@ export class Stream {
    *
    * @param predicate
    *
-   * @see summary.allMatch
+   * @see summary.allMatchAsync
    */
-  allMatch(predicate: (item: unknown) => boolean): boolean {
-    return allMatch(this, predicate);
+  async allMatch(
+    predicate: (item: unknown) => Promise<boolean> | boolean
+  ): Promise<boolean> {
+    return await allMatchAsync(this, predicate);
   }
 
   /**
@@ -661,10 +747,10 @@ export class Stream {
    *
    * Considers different instances of data containers to be different, even if they have the same content.
    *
-   * @see summary.allUnique
+   * @see summary.allUniqueAsync
    */
-  allUnique(): boolean {
-    return allUnique(this);
+  async allUnique(): Promise<boolean> {
+    return await allUniqueAsync(this);
   }
 
   /**
@@ -674,10 +760,12 @@ export class Stream {
    *
    * @param predicate
    *
-   * @see summary.anyMatch
+   * @see summary.anyMatchAsync
    */
-  anyMatch(predicate: (item: unknown) => boolean): boolean {
-    return anyMatch(this, predicate);
+  async anyMatch(
+    predicate: (item: unknown) => Promise<boolean> | boolean
+  ): Promise<boolean> {
+    return await anyMatchAsync(this, predicate);
   }
 
   /**
@@ -687,10 +775,10 @@ export class Stream {
    *
    * Also returns true if stream is empty or has only one element.
    *
-   * @see summary.isSorted
+   * @see summary.isSortedAsync
    */
-  isSorted(): boolean {
-    return isSorted(this as Iterable<Comparable>);
+  async isSorted(): Promise<boolean> {
+    return await isSortedAsync(this as AsyncIterable<Comparable>);
   }
 
   /**
@@ -700,10 +788,10 @@ export class Stream {
    *
    * Also returns true if stream is empty or has only one element.
    *
-   * @see summary.isReversed
+   * @see summary.isReversedAsync
    */
-  isReversed(): boolean {
-    return isReversed(this as Iterable<Comparable>);
+  async isReversed(): Promise<boolean> {
+    return await isReversedAsync(this as AsyncIterable<Comparable>);
   }
 
   /**
@@ -713,10 +801,12 @@ export class Stream {
    *
    * @param predicate
    *
-   * @see summary.noneMatch
+   * @see summary.noneMatchAsync
    */
-  noneMatch(predicate: (item: unknown) => boolean): boolean {
-    return noneMatch(this, predicate);
+  async noneMatch(
+    predicate: (item: unknown) => Promise<boolean> | boolean
+  ): Promise<boolean> {
+    return await noneMatchAsync(this, predicate);
   }
 
   /**
@@ -726,12 +816,17 @@ export class Stream {
    *
    * @param collections
    *
-   * @see summary.same
+   * @see summary.sameAsync
    */
-  sameWith(
-    ...collections: Array<Iterable<unknown> | Iterator<unknown>>
-  ): boolean {
-    return same(this.data, ...collections);
+  async sameWith(
+    ...collections: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): Promise<boolean> {
+    return await sameAsync(this.data, ...collections);
   }
 
   /**
@@ -741,21 +836,26 @@ export class Stream {
    *
    * @param collections
    *
-   * @see summary.sameCount
+   * @see summary.sameCountAsync
    */
-  sameCountWith(
-    ...collections: Array<Iterable<unknown> | Iterator<unknown>>
-  ): boolean {
-    return sameCount(this.data, ...collections);
+  async sameCountWith(
+    ...collections: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): Promise<boolean> {
+    return await sameCountAsync(this.data, ...collections);
   }
 
   /**
    * Converts stream to Array.
    *
-   * @see transform.toArray
+   * @see transform.toArrayAsync
    */
-  toArray(): Array<unknown> {
-    return toArray(this);
+  async toArray(): Promise<Array<unknown>> {
+    return await toArrayAsync(this);
   }
 
   /**
@@ -763,26 +863,26 @@ export class Stream {
    *
    * Stream collection must contain only key-value pairs as elements.
    *
-   * @see transform.toMap
+   * @see transform.toMapAsync
    */
-  toMap(): Map<unknown, unknown> {
-    return toMap(this as Iterable<[unknown, unknown]>);
+  async toMap(): Promise<Map<unknown, unknown>> {
+    return await toMapAsync(this as AsyncIterable<[unknown, unknown]>);
   }
 
   /**
    * Converts stream to Set.
    *
-   * @see transform.toSet
+   * @see transform.toSetAsync
    */
-  toSet(): Set<unknown> {
-    return toSet(this);
+  async toSet(): Promise<Set<unknown>> {
+    return await toSetAsync(this);
   }
 
   /**
    * Aggregated iterator.
    */
-  *[Symbol.iterator](): Iterator<unknown> {
-    for (const datum of this.data) {
+  async *[Symbol.asyncIterator](): AsyncIterator<unknown> {
+    for await (const datum of this.data) {
       yield datum;
     }
   }
@@ -792,7 +892,7 @@ export class Stream {
    *
    * @param iterable
    */
-  protected constructor(iterable: Iterable<unknown>) {
+  protected constructor(iterable: AsyncIterable<unknown>) {
     this.data = iterable;
   }
 }

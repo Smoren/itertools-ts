@@ -1,13 +1,22 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  asyncTimeout,
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture
+  // @ts-ignore
+} from "../fixture";
 import { reduce } from "../../src";
 
 describe.each([
-	...dataProviderForSumReducerArrays(),
-	...dataProviderForSumReducerGenerators(),
-	...dataProviderForSumReducerIterables(),
-	...dataProviderForSumReducerIterators(),
-	...dataProviderForSumReducerSets(),
+  ...dataProviderForSumReducerArrays(),
+  ...dataProviderForSumReducerGenerators(),
+  ...dataProviderForSumReducerIterables(),
+  ...dataProviderForSumReducerIterators(),
+  ...dataProviderForSumReducerSets(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, unknown, unknown]>)(
   "Reduce To Value Sum Reducer Test",
   (
@@ -29,7 +38,76 @@ describe.each([
 );
 
 describe.each([
-	...dataProviderForSumReducerMaps(),
+  ...dataProviderForSumReducerAsyncGenerators(),
+  ...dataProviderForSumReducerAsyncIterables(),
+  ...dataProviderForSumReducerAsyncIterators(),
+  ...dataProviderForSumReducerArrays(),
+  ...dataProviderForSumReducerGenerators(),
+  ...dataProviderForSumReducerIterables(),
+  ...dataProviderForSumReducerIterators(),
+  ...dataProviderForSumReducerSets(),
+] as Array<[
+    AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  unknown,
+  unknown
+]>)(
+  "Reduce To Value Async Sum Reducer Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    initialValue: unknown,
+    expected: unknown
+  ) => {
+    it("", async () => {
+      // Given
+      const sum = async (carry: unknown, datum: unknown): Promise<unknown> => {
+        await asyncTimeout(1);
+        return (carry as number) + (datum as number)
+      };
+
+      // When
+      const result = await reduce.toValueAsync(input, sum, initialValue);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForSumReducerAsyncGenerators(),
+  ...dataProviderForSumReducerAsyncIterables(),
+  ...dataProviderForSumReducerAsyncIterators(),
+  ...dataProviderForSumReducerArrays(),
+  ...dataProviderForSumReducerGenerators(),
+  ...dataProviderForSumReducerIterables(),
+  ...dataProviderForSumReducerIterators(),
+  ...dataProviderForSumReducerSets(),
+] as Array<[
+    AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  unknown,
+  unknown
+]>)(
+  "Reduce To Value Async Sum Reducer Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    initialValue: unknown,
+    expected: unknown
+  ) => {
+    it("", async () => {
+      // Given
+      const sum = (carry: unknown, datum: unknown): unknown => (carry as number) + (datum as number);
+
+      // When
+      const result = await reduce.toValueAsync(input, sum, initialValue);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForSumReducerMaps(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, unknown, unknown]>)(
   "Reduce To Value Sum Reducer Map Test",
   (
@@ -51,12 +129,41 @@ describe.each([
 );
 
 describe.each([
-	...dataProviderForConcatReducerArrays(),
-	...dataProviderForConcatReducerGenerators(),
-	...dataProviderForConcatReducerIterables(),
-	...dataProviderForConcatReducerIterators(),
-	...dataProviderForConcatReducerStrings(),
-	...dataProviderForConcatReducerSets(),
+  ...dataProviderForSumReducerMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  unknown,
+  unknown
+]>)(
+  "Reduce To Value Async Sum Reducer Map Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    initialValue: unknown,
+    expected: unknown
+  ) => {
+    it("", async () => {
+      // Given
+      const sum = async (carry: unknown, datum: unknown): Promise<unknown> => {
+        await asyncTimeout(1);
+        return (carry as number) + (datum as Array<number>)[1]
+      };
+
+      // When
+      const result = await reduce.toValueAsync(input, sum, initialValue);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForConcatReducerArrays(),
+  ...dataProviderForConcatReducerGenerators(),
+  ...dataProviderForConcatReducerIterables(),
+  ...dataProviderForConcatReducerIterators(),
+  ...dataProviderForConcatReducerStrings(),
+  ...dataProviderForConcatReducerSets(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, unknown, unknown]>)(
   "Reduce To Value Concat Reducer Test",
   (
@@ -78,7 +185,78 @@ describe.each([
 );
 
 describe.each([
-	...dataProviderForConcatReducerMaps(),
+  ...dataProviderForConcatReducerAsyncGenerators(),
+  ...dataProviderForConcatReducerAsyncIterables(),
+  ...dataProviderForConcatReducerAsyncIterators(),
+  ...dataProviderForConcatReducerArrays(),
+  ...dataProviderForConcatReducerGenerators(),
+  ...dataProviderForConcatReducerIterables(),
+  ...dataProviderForConcatReducerIterators(),
+  ...dataProviderForConcatReducerStrings(),
+  ...dataProviderForConcatReducerSets(),
+] as Array<[
+    AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  unknown,
+  unknown
+]>)(
+  "Reduce To Value Async Concat Reducer Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    initialValue: unknown,
+    expected: unknown
+  ) => {
+    it("", async () => {
+      // Given
+      const concat = async (carry: unknown, datum: unknown): Promise<unknown> => {
+        await asyncTimeout(1);
+        return `${carry as string}${datum as string}`
+      };
+
+      // When
+      const result = await reduce.toValueAsync(input, concat, initialValue);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForConcatReducerAsyncGenerators(),
+  ...dataProviderForConcatReducerAsyncIterables(),
+  ...dataProviderForConcatReducerAsyncIterators(),
+  ...dataProviderForConcatReducerArrays(),
+  ...dataProviderForConcatReducerGenerators(),
+  ...dataProviderForConcatReducerIterables(),
+  ...dataProviderForConcatReducerIterators(),
+  ...dataProviderForConcatReducerStrings(),
+  ...dataProviderForConcatReducerSets(),
+] as Array<[
+    AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  unknown,
+  unknown
+]>)(
+  "Reduce To Value Async Concat Reducer Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    initialValue: unknown,
+    expected: unknown
+  ) => {
+    it("", async () => {
+      // Given
+      const concat = (carry: unknown, datum: unknown): unknown =>`${carry as string}${datum as string}`;
+
+      // When
+      const result = await reduce.toValueAsync(input, concat, initialValue);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForConcatReducerMaps(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, unknown, unknown]>)(
   "Reduce To Value Concat Reducer Test",
   (
@@ -92,6 +270,35 @@ describe.each([
 
       // When
       const result = reduce.toValue(input, concat, initialValue);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForConcatReducerMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  unknown,
+  unknown
+]>)(
+  "Reduce To Value Async Concat Reducer Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    initialValue: unknown,
+    expected: unknown
+  ) => {
+    it("", async () => {
+      // Given
+      const concat = async (carry: unknown, datum: unknown): Promise<unknown> => {
+        await asyncTimeout(1);
+        return `${carry as string}${(datum as Array<string>)[1]}`;
+      };
+
+      // When
+      const result = await reduce.toValueAsync(input, concat, initialValue);
 
       // Then
       expect(result).toEqual(expected);
@@ -367,6 +574,141 @@ function dataProviderForSumReducerMaps(): Array<unknown> {
 			6,
 		],
 	];
+}
+
+function dataProviderForSumReducerAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      null,
+      null,
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      0,
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      1,
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      'a',
+      'a',
+    ],
+    [
+      createAsyncGeneratorFixture([0]),
+      null,
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([null]),
+      null,
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([null, 1, 2]),
+      null,
+      3,
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      null,
+      6,
+    ],
+  ];
+}
+
+function dataProviderForSumReducerAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      null,
+      null,
+    ],
+    [
+      createAsyncIterableFixture([]),
+      0,
+      0,
+    ],
+    [
+      createAsyncIterableFixture([]),
+      1,
+      1,
+    ],
+    [
+      createAsyncIterableFixture([]),
+      'a',
+      'a',
+    ],
+    [
+      createAsyncIterableFixture([0]),
+      null,
+      0,
+    ],
+    [
+      createAsyncIterableFixture([null]),
+      null,
+      0,
+    ],
+    [
+      createAsyncIterableFixture([null, 1, 2]),
+      null,
+      3,
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      null,
+      6,
+    ],
+  ];
+}
+
+function dataProviderForSumReducerAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      null,
+      null,
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      0,
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      1,
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      'a',
+      'a',
+    ],
+    [
+      createAsyncIteratorFixture([0]),
+      null,
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([null]),
+      null,
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([null, 1, 2]),
+      null,
+      3,
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      null,
+      6,
+    ],
+  ];
 }
 
 function dataProviderForConcatReducerArrays(): Array<unknown> {
@@ -742,4 +1084,169 @@ function dataProviderForConcatReducerMaps(): Array<unknown> {
 			'nullnull23',
 		],
 	];
+}
+
+function dataProviderForConcatReducerAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      null,
+      null,
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      0,
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      1,
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      'a',
+      'a',
+    ],
+    [
+      createAsyncGeneratorFixture([0]),
+      null,
+      'null0',
+    ],
+    [
+      createAsyncGeneratorFixture([null]),
+      null,
+      'nullnull',
+    ],
+    [
+      createAsyncGeneratorFixture(['a', 'b']),
+      null,
+      'nullab',
+    ],
+    [
+      createAsyncGeneratorFixture(['one', 'TWO', '3', '四', 'cinco']),
+      null,
+      'nulloneTWO3四cinco',
+    ],
+    [
+      createAsyncGeneratorFixture(['one', 'TWO', '3', '四', 'cinco']),
+      '0',
+      '0oneTWO3四cinco',
+    ],
+    [
+      createAsyncGeneratorFixture([null, 2, 3]),
+      null,
+      'nullnull23',
+    ],
+  ];
+}
+
+function dataProviderForConcatReducerAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      null,
+      null,
+    ],
+    [
+      createAsyncIterableFixture([]),
+      0,
+      0,
+    ],
+    [
+      createAsyncIterableFixture([]),
+      1,
+      1,
+    ],
+    [
+      createAsyncIterableFixture([]),
+      'a',
+      'a',
+    ],
+    [
+      createAsyncIterableFixture([0]),
+      null,
+      'null0',
+    ],
+    [
+      createAsyncIterableFixture([null]),
+      null,
+      'nullnull',
+    ],
+    [
+      createAsyncIterableFixture(['a', 'b']),
+      null,
+      'nullab',
+    ],
+    [
+      createAsyncIterableFixture(['one', 'TWO', '3', '四', 'cinco']),
+      null,
+      'nulloneTWO3四cinco',
+    ],
+    [
+      createAsyncIterableFixture(['one', 'TWO', '3', '四', 'cinco']),
+      '0',
+      '0oneTWO3四cinco',
+    ],
+    [
+      createAsyncIterableFixture([null, 2, 3]),
+      null,
+      'nullnull23',
+    ],
+  ];
+}
+
+function dataProviderForConcatReducerAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      null,
+      null,
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      0,
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      1,
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      'a',
+      'a',
+    ],
+    [
+      createAsyncIteratorFixture([0]),
+      null,
+      'null0',
+    ],
+    [
+      createAsyncIteratorFixture([null]),
+      null,
+      'nullnull',
+    ],
+    [
+      createAsyncIteratorFixture(['a', 'b']),
+      null,
+      'nullab',
+    ],
+    [
+      createAsyncIteratorFixture(['one', 'TWO', '3', '四', 'cinco']),
+      null,
+      'nulloneTWO3四cinco',
+    ],
+    [
+      createAsyncIteratorFixture(['one', 'TWO', '3', '四', 'cinco']),
+      '0',
+      '0oneTWO3四cinco',
+    ],
+    [
+      createAsyncIteratorFixture([null, 2, 3]),
+      null,
+      'nullnull23',
+    ],
+  ];
 }

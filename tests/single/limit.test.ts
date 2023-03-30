@@ -1,5 +1,12 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture, createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture
+  // @ts-ignore
+} from "../fixture";
 import { InvalidArgumentError, single } from "../../src";
 
 describe.each([
@@ -33,6 +40,43 @@ describe.each([
 );
 
 describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  number,
+  Array<unknown>
+]>)(
+  "Single Limit Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    limit: number,
+    expected: Array<unknown>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const item of single.limitAsync(input, limit)) {
+        result.push(item);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
   ...dataProviderForError(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, number]>)(
   "Single Limit Error Test",
@@ -47,6 +91,32 @@ describe.each([
           break;
         }
       }).toThrow(InvalidArgumentError);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForErrorAsync(),
+  ...dataProviderForError(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  number
+]>)(
+  "Single Limit Async Error Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    limit: number
+  ) => {
+    it("", async () => {
+      try {
+        // When
+        for await (const _ of single.limitAsync(input, limit)) {
+          break;
+        }
+        expect(false).toBeTruthy();
+      } catch (e) {
+        expect(e).toBeInstanceOf(InvalidArgumentError);
+      }
     });
   }
 );
@@ -436,6 +506,171 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      0,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      1,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      0,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      1,
+      [0],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      2,
+      [0, 1],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      3,
+      [0, 1, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      4,
+      [0, 1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      5,
+      [0, 1, 2, 3, 4],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      6,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      7,
+      [0, 1, 2, 3, 4, 5],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      0,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([]),
+      1,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      0,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      1,
+      [0],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      2,
+      [0, 1],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      3,
+      [0, 1, 2],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      4,
+      [0, 1, 2, 3],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      5,
+      [0, 1, 2, 3, 4],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      6,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      7,
+      [0, 1, 2, 3, 4, 5],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      0,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      1,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      0,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      1,
+      [0],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      2,
+      [0, 1],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      3,
+      [0, 1, 2],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      4,
+      [0, 1, 2, 3],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      5,
+      [0, 1, 2, 3, 4],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      6,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      7,
+      [0, 1, 2, 3, 4, 5],
+    ],
+  ];
+}
+
 function dataProviderForError(): Array<unknown> {
   return [
     [
@@ -448,6 +683,23 @@ function dataProviderForError(): Array<unknown> {
     ],
     [
       [1, 2, 3],
+      -2,
+    ],
+  ];
+}
+
+function dataProviderForErrorAsync(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      -1,
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      -1,
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
       -2,
     ],
   ];

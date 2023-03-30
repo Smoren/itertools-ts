@@ -11,10 +11,10 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForArrays(),
   ...dataProviderForObjects(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, number, Array<unknown>]>)(
+] as Array<[unknown, number, Array<unknown>]>)(
   "Single Repeat Test",
   (
-    input: Iterable<unknown>|Iterator<unknown>,
+    input: unknown,
     repetitions: number,
     expected: Array<unknown>
   ) => {
@@ -33,9 +33,43 @@ describe.each([
   }
 );
 
-describe.each(dataProviderForError() as Array<[Iterable<unknown>|Iterator<unknown>]>)(
+describe.each([
+  ...dataProviderForPromises(),
+  ...dataProviderForIntegers(),
+  ...dataProviderForFloats(),
+  ...dataProviderForNulls(),
+  ...dataProviderForUndefined(),
+  ...dataProviderForBooleans(),
+  ...dataProviderForStrings(),
+  ...dataProviderForArrays(),
+  ...dataProviderForObjects(),
+] as Array<[unknown | Promise<unknown>, number, Array<unknown>]>)(
+  "Single Repeat Async Test",
+  (
+    input: unknown | Promise<unknown>,
+    repetitions: number,
+    expected: Array<unknown>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const item of single.repeatAsync(input, repetitions)) {
+        result.push(item);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForError(),
+] as Array<[unknown]>)(
   "Single Repeat Error Test",
-  (input: Iterable<unknown>|Iterator<unknown>) => {
+  (input: unknown) => {
     it("", () => {
       expect(() => {
         const repetitions = single.repeat(input, -1);
@@ -44,6 +78,26 @@ describe.each(dataProviderForError() as Array<[Iterable<unknown>|Iterator<unknow
           break;
         }
       }).toThrow(InvalidArgumentError);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForError(),
+] as Array<[unknown]>)(
+  "Single Repeat Async Error Test",
+  (input: unknown) => {
+    it("", async () => {
+      try {
+        const repetitions = single.repeatAsync(input, -1);
+
+        for await (const _ of repetitions) {
+          break;
+        }
+        expect(false).toBeTruthy();
+      } catch (e) {
+        expect(e).toBeInstanceOf(InvalidArgumentError);
+      }
     });
   }
 );
@@ -148,6 +202,19 @@ function dataProviderForObjects(): Array<unknown> {
   ];
 }
 
+function dataProviderForPromises(): Array<unknown> {
+  return [
+    [Promise.resolve(0), 0, []],
+    [Promise.resolve(1), 0, []],
+    [Promise.resolve(87384), 0, []],
+    [Promise.resolve(0), 1, [0]],
+    [Promise.resolve(1), 1, [1]],
+    [Promise.resolve(87384), 1, [87384]],
+    [Promise.resolve(87384), 5, [87384, 87384, 87384, 87384, 87384]],
+    [Promise.resolve('87384'), 5, ['87384', '87384', '87384', '87384', '87384']],
+  ];
+}
+
 function dataProviderForError(): Array<unknown> {
   return [
     [1],
@@ -161,5 +228,6 @@ function dataProviderForError(): Array<unknown> {
     [-Infinity],
     [[]],
     [{a: 1}],
+    Promise.resolve(1),
   ];
 }

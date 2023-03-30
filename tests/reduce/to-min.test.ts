@@ -1,5 +1,14 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  asyncTimeout,
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture
+  // @ts-ignore
+} from "../fixture";
 import { reduce, Comparable } from "../../src";
 
 describe.each([
@@ -28,6 +37,38 @@ describe.each([
 );
 
 describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  ((datum: unknown) => Promise<Comparable>|Comparable)|undefined,
+  unknown
+]>)(
+  "Reduce To Min Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    compareBy: ((datum: unknown) => Promise<Comparable>|Comparable)|undefined,
+    expected: unknown
+  ) => {
+    it("", async () => {
+      // When
+      const result = await reduce.toMinAsync(input, compareBy);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
   ...dataProviderForUsingCustomComparator(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, ((datum: unknown) => Comparable)|undefined, unknown]>)(
   "Reduce To Min Using Custom Comparator Test",
@@ -39,6 +80,30 @@ describe.each([
     it("", () => {
       // When
       const result = reduce.toMin(input, compareBy);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForUsingCustomComparator(),
+  ...dataProviderForUsingCustomComparatorAsync(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  ((datum: unknown) => Promise<Comparable>|Comparable)|undefined,
+  unknown
+]>)(
+  "Reduce To Min Async Using Custom Comparator Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    compareBy: ((datum: unknown) => Promise<Comparable>|Comparable)|undefined,
+    expected: unknown
+  ) => {
+    it("", async () => {
+      // When
+      const result = await reduce.toMinAsync(input, compareBy);
 
       // Then
       expect(result).toEqual(expected);
@@ -68,6 +133,39 @@ function dataProviderForUsingCustomComparator(): Array<unknown> {
         },
       ],
       (movie: Record<string, unknown>): number => movie['rating'] as number,
+      {
+        title: 'The Matrix Resurrections',
+        rating: 2.6,
+      },
+    ],
+  ];
+}
+
+function dataProviderForUsingCustomComparatorAsync(): Array<unknown> {
+  return [
+    [
+      [
+        {
+          title: 'The Matrix',
+          rating: 4.7,
+        },
+        {
+          title: 'The Matrix Reloaded',
+          rating: 4.3,
+        },
+        {
+          title: 'The Matrix Revolutions',
+          rating: 3.9,
+        },
+        {
+          title: 'The Matrix Resurrections',
+          rating: 2.6,
+        },
+      ],
+      async (movie: Record<string, unknown>): Promise<number> => {
+        await asyncTimeout(1);
+        return movie['rating'] as number;
+      },
       {
         title: 'The Matrix Resurrections',
         rating: 2.6,
@@ -2447,6 +2545,1275 @@ function dataProviderForMaps(): Array<unknown> {
       createMapFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
       (item: [number, Array<number>]) => -item[1][1],
       [0, [1, 2, 3]],
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      undefined,
+      undefined,
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      (item: number) => item,
+      undefined,
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      (item: number) => -item,
+      undefined,
+    ],
+    [
+      createAsyncGeneratorFixture([0]),
+      undefined,
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([0]),
+      (item: number) => item,
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([0]),
+      (item: number) => -item,
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([Infinity]),
+      undefined,
+      Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([Infinity]),
+      (item: number) => item,
+      Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([Infinity]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([-Infinity]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([-Infinity]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([-Infinity]),
+      (item: number) => -item,
+      -Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([Infinity, -Infinity]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([Infinity, -Infinity]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([Infinity, -Infinity]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([Infinity, -Infinity, 10, -1]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([Infinity, -Infinity, 10, -1]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([Infinity, -Infinity, 10, -1]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createAsyncGeneratorFixture([3, 2, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([3, 2, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([3, 2, 1]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createAsyncGeneratorFixture([3, 2, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([3, 2, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([3, 2, 1]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createAsyncGeneratorFixture([2.1, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([2.1, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([2.1, 1]),
+      (item: number) => -item,
+      2.1,
+    ],
+    [
+      createAsyncGeneratorFixture([2, 1.1]),
+      undefined,
+      1.1,
+    ],
+    [
+      createAsyncGeneratorFixture([2, 1.1]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createAsyncGeneratorFixture([2, 1.1]),
+      (item: number) => -item,
+      2,
+    ],
+    [
+      createAsyncGeneratorFixture([2.2, 1.1]),
+      undefined,
+      1.1,
+    ],
+    [
+      createAsyncGeneratorFixture([2.2, 1.1]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createAsyncGeneratorFixture([2.2, 1.1]),
+      (item: number) => -item,
+      2.2,
+    ],
+    [
+      createAsyncGeneratorFixture([1.1, 2.2]),
+      undefined,
+      1.1,
+    ],
+    [
+      createAsyncGeneratorFixture([1.1, 2.2]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createAsyncGeneratorFixture([1.1, 2.2]),
+      (item: number) => -item,
+      2.2,
+    ],
+    [
+      createAsyncGeneratorFixture(['a', 'b', 'c']),
+      undefined,
+      'a',
+    ],
+    [
+      createAsyncGeneratorFixture(['a', 'b', 'c']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createAsyncGeneratorFixture(['a', 'b', 'c']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createAsyncGeneratorFixture(['b', 'c', 'a']),
+      undefined,
+      'a',
+    ],
+    [
+      createAsyncGeneratorFixture(['b', 'c', 'a']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createAsyncGeneratorFixture(['b', 'c', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createAsyncGeneratorFixture(['c', 'b', 'a']),
+      undefined,
+      'a',
+    ],
+    [
+      createAsyncGeneratorFixture(['c', 'b', 'a']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createAsyncGeneratorFixture(['c', 'b', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createAsyncGeneratorFixture(['ab', 'ba', 'b']),
+      undefined,
+      'ab',
+    ],
+    [
+      createAsyncGeneratorFixture(['ab', 'ba', 'b']),
+      (item: string) => item,
+      'ab',
+    ],
+    [
+      createAsyncGeneratorFixture(['ba', 'b', 'ab']),
+      undefined,
+      'ab',
+    ],
+    [
+      createAsyncGeneratorFixture(['ba', 'b', 'ab']),
+      (item: string) => item,
+      'ab',
+    ],
+    [
+      createAsyncGeneratorFixture([[]]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[2]]),
+      undefined,
+      [2],
+    ],
+    [
+      createAsyncGeneratorFixture([[2]]),
+      (item: Array<unknown>) => item,
+      [2],
+    ],
+    [
+      createAsyncGeneratorFixture([[], []]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[], []]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[], [2]]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[], [2]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[2], []]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[2], []]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[], [null]]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[], [null]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[null], [null]]),
+      undefined,
+      [null],
+    ],
+    [
+      createAsyncGeneratorFixture([[null], [null]]),
+      (item: Array<unknown>) => item,
+      [null],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2], [2]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([[3, 2], [2]]),
+      undefined,
+      [2],
+    ],
+    [
+      createAsyncGeneratorFixture([[3, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [2],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2], [2, 1]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2], [2, 1]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([[2, 1], [1, 2]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([[2, 1], [1, 2]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([['a'], ['b']]),
+      undefined,
+      ['a'],
+    ],
+    [
+      createAsyncGeneratorFixture([['a'], ['b']]),
+      (item: Array<unknown>) => item,
+      ['a'],
+    ],
+    [
+      createAsyncGeneratorFixture([['a', 'a'], ['b']]),
+      undefined,
+      ['a', 'a'],
+    ],
+    [
+      createAsyncGeneratorFixture([['a', 'a'], ['b']]),
+      (item: Array<unknown>) => item,
+      ['a', 'a'],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      undefined,
+      [1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item,
+      [1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item[1],
+      [2, 0, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => -(item[1] as number),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([3, 2, 1]),
+      async (item: number) => {
+        await asyncTimeout(1);
+        return item;
+      },
+      1,
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      undefined,
+      undefined,
+    ],
+    [
+      createAsyncIterableFixture([]),
+      (item: number) => item,
+      undefined,
+    ],
+    [
+      createAsyncIterableFixture([]),
+      (item: number) => -item,
+      undefined,
+    ],
+    [
+      createAsyncIterableFixture([0]),
+      undefined,
+      0,
+    ],
+    [
+      createAsyncIterableFixture([0]),
+      (item: number) => item,
+      0,
+    ],
+    [
+      createAsyncIterableFixture([0]),
+      (item: number) => -item,
+      0,
+    ],
+    [
+      createAsyncIterableFixture([Infinity]),
+      undefined,
+      Infinity,
+    ],
+    [
+      createAsyncIterableFixture([Infinity]),
+      (item: number) => item,
+      Infinity,
+    ],
+    [
+      createAsyncIterableFixture([Infinity]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createAsyncIterableFixture([-Infinity]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createAsyncIterableFixture([-Infinity]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createAsyncIterableFixture([-Infinity]),
+      (item: number) => -item,
+      -Infinity,
+    ],
+    [
+      createAsyncIterableFixture([Infinity, -Infinity]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createAsyncIterableFixture([Infinity, -Infinity]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createAsyncIterableFixture([Infinity, -Infinity]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createAsyncIterableFixture([Infinity, -Infinity, 10, -1]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createAsyncIterableFixture([Infinity, -Infinity, 10, -1]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createAsyncIterableFixture([Infinity, -Infinity, 10, -1]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createAsyncIterableFixture([3, 2, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncIterableFixture([3, 2, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncIterableFixture([3, 2, 1]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createAsyncIterableFixture([3, 2, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncIterableFixture([3, 2, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncIterableFixture([3, 2, 1]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createAsyncIterableFixture([2.1, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncIterableFixture([2.1, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncIterableFixture([2.1, 1]),
+      (item: number) => -item,
+      2.1,
+    ],
+    [
+      createAsyncIterableFixture([2, 1.1]),
+      undefined,
+      1.1,
+    ],
+    [
+      createAsyncIterableFixture([2, 1.1]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createAsyncIterableFixture([2, 1.1]),
+      (item: number) => -item,
+      2,
+    ],
+    [
+      createAsyncIterableFixture([2.2, 1.1]),
+      undefined,
+      1.1,
+    ],
+    [
+      createAsyncIterableFixture([2.2, 1.1]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createAsyncIterableFixture([2.2, 1.1]),
+      (item: number) => -item,
+      2.2,
+    ],
+    [
+      createAsyncIterableFixture([1.1, 2.2]),
+      undefined,
+      1.1,
+    ],
+    [
+      createAsyncIterableFixture([1.1, 2.2]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createAsyncIterableFixture([1.1, 2.2]),
+      (item: number) => -item,
+      2.2,
+    ],
+    [
+      createAsyncIterableFixture(['a', 'b', 'c']),
+      undefined,
+      'a',
+    ],
+    [
+      createAsyncIterableFixture(['a', 'b', 'c']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createAsyncIterableFixture(['a', 'b', 'c']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createAsyncIterableFixture(['b', 'c', 'a']),
+      undefined,
+      'a',
+    ],
+    [
+      createAsyncIterableFixture(['b', 'c', 'a']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createAsyncIterableFixture(['b', 'c', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createAsyncIterableFixture(['c', 'b', 'a']),
+      undefined,
+      'a',
+    ],
+    [
+      createAsyncIterableFixture(['c', 'b', 'a']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createAsyncIterableFixture(['c', 'b', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createAsyncIterableFixture(['ab', 'ba', 'b']),
+      undefined,
+      'ab',
+    ],
+    [
+      createAsyncIterableFixture(['ab', 'ba', 'b']),
+      (item: string) => item,
+      'ab',
+    ],
+    [
+      createAsyncIterableFixture(['ba', 'b', 'ab']),
+      undefined,
+      'ab',
+    ],
+    [
+      createAsyncIterableFixture(['ba', 'b', 'ab']),
+      (item: string) => item,
+      'ab',
+    ],
+    [
+      createAsyncIterableFixture([[]]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[2]]),
+      undefined,
+      [2],
+    ],
+    [
+      createAsyncIterableFixture([[2]]),
+      (item: Array<unknown>) => item,
+      [2],
+    ],
+    [
+      createAsyncIterableFixture([[], []]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[], []]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[], [2]]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[], [2]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[2], []]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[2], []]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[], [null]]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[], [null]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[null], [null]]),
+      undefined,
+      [null],
+    ],
+    [
+      createAsyncIterableFixture([[null], [null]]),
+      (item: Array<unknown>) => item,
+      [null],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2], [2]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createAsyncIterableFixture([[3, 2], [2]]),
+      undefined,
+      [2],
+    ],
+    [
+      createAsyncIterableFixture([[3, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [2],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2], [2, 1]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2], [2, 1]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createAsyncIterableFixture([[2, 1], [1, 2]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createAsyncIterableFixture([[2, 1], [1, 2]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createAsyncIterableFixture([['a'], ['b']]),
+      undefined,
+      ['a'],
+    ],
+    [
+      createAsyncIterableFixture([['a'], ['b']]),
+      (item: Array<unknown>) => item,
+      ['a'],
+    ],
+    [
+      createAsyncIterableFixture([['a', 'a'], ['b']]),
+      undefined,
+      ['a', 'a'],
+    ],
+    [
+      createAsyncIterableFixture([['a', 'a'], ['b']]),
+      (item: Array<unknown>) => item,
+      ['a', 'a'],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      undefined,
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item,
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item[1],
+      [2, 0, 3],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => -(item[1] as number),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIterableFixture([3, 2, 1]),
+      async (item: number) => {
+        await asyncTimeout(1);
+        return item;
+      },
+      1,
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      undefined,
+      undefined,
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      (item: number) => item,
+      undefined,
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      (item: number) => -item,
+      undefined,
+    ],
+    [
+      createAsyncIteratorFixture([0]),
+      undefined,
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([0]),
+      (item: number) => item,
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([0]),
+      (item: number) => -item,
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([Infinity]),
+      undefined,
+      Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([Infinity]),
+      (item: number) => item,
+      Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([Infinity]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([-Infinity]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([-Infinity]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([-Infinity]),
+      (item: number) => -item,
+      -Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([Infinity, -Infinity]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([Infinity, -Infinity]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([Infinity, -Infinity]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([Infinity, -Infinity, 10, -1]),
+      undefined,
+      -Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([Infinity, -Infinity, 10, -1]),
+      (item: number) => item,
+      -Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([Infinity, -Infinity, 10, -1]),
+      (item: number) => -item,
+      Infinity,
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createAsyncIteratorFixture([3, 2, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([3, 2, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([3, 2, 1]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createAsyncIteratorFixture([3, 2, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([3, 2, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([3, 2, 1]),
+      (item: number) => -item,
+      3,
+    ],
+    [
+      createAsyncIteratorFixture([2.1, 1]),
+      undefined,
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([2.1, 1]),
+      (item: number) => item,
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([2.1, 1]),
+      (item: number) => -item,
+      2.1,
+    ],
+    [
+      createAsyncIteratorFixture([2, 1.1]),
+      undefined,
+      1.1,
+    ],
+    [
+      createAsyncIteratorFixture([2, 1.1]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createAsyncIteratorFixture([2, 1.1]),
+      (item: number) => -item,
+      2,
+    ],
+    [
+      createAsyncIteratorFixture([2.2, 1.1]),
+      undefined,
+      1.1,
+    ],
+    [
+      createAsyncIteratorFixture([2.2, 1.1]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createAsyncIteratorFixture([2.2, 1.1]),
+      (item: number) => -item,
+      2.2,
+    ],
+    [
+      createAsyncIteratorFixture([1.1, 2.2]),
+      undefined,
+      1.1,
+    ],
+    [
+      createAsyncIteratorFixture([1.1, 2.2]),
+      (item: number) => item,
+      1.1,
+    ],
+    [
+      createAsyncIteratorFixture([1.1, 2.2]),
+      (item: number) => -item,
+      2.2,
+    ],
+    [
+      createAsyncIteratorFixture(['a', 'b', 'c']),
+      undefined,
+      'a',
+    ],
+    [
+      createAsyncIteratorFixture(['a', 'b', 'c']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createAsyncIteratorFixture(['a', 'b', 'c']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createAsyncIteratorFixture(['b', 'c', 'a']),
+      undefined,
+      'a',
+    ],
+    [
+      createAsyncIteratorFixture(['b', 'c', 'a']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createAsyncIteratorFixture(['b', 'c', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createAsyncIteratorFixture(['c', 'b', 'a']),
+      undefined,
+      'a',
+    ],
+    [
+      createAsyncIteratorFixture(['c', 'b', 'a']),
+      (item: string) => item,
+      'a',
+    ],
+    [
+      createAsyncIteratorFixture(['c', 'b', 'a']),
+      (item: string) => -item.charCodeAt(0),
+      'c',
+    ],
+    [
+      createAsyncIteratorFixture(['ab', 'ba', 'b']),
+      undefined,
+      'ab',
+    ],
+    [
+      createAsyncIteratorFixture(['ab', 'ba', 'b']),
+      (item: string) => item,
+      'ab',
+    ],
+    [
+      createAsyncIteratorFixture(['ba', 'b', 'ab']),
+      undefined,
+      'ab',
+    ],
+    [
+      createAsyncIteratorFixture(['ba', 'b', 'ab']),
+      (item: string) => item,
+      'ab',
+    ],
+    [
+      createAsyncIteratorFixture([[]]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[2]]),
+      undefined,
+      [2],
+    ],
+    [
+      createAsyncIteratorFixture([[2]]),
+      (item: Array<unknown>) => item,
+      [2],
+    ],
+    [
+      createAsyncIteratorFixture([[], []]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[], []]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[], [2]]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[], [2]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[2], []]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[2], []]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[], [null]]),
+      undefined,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[], [null]]),
+      (item: Array<unknown>) => item,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[null], [null]]),
+      undefined,
+      [null],
+    ],
+    [
+      createAsyncIteratorFixture([[null], [null]]),
+      (item: Array<unknown>) => item,
+      [null],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2], [2]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createAsyncIteratorFixture([[3, 2], [2]]),
+      undefined,
+      [2],
+    ],
+    [
+      createAsyncIteratorFixture([[3, 2], [2]]),
+      (item: Array<unknown>) => item,
+      [2],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2], [2, 1]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2], [2, 1]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createAsyncIteratorFixture([[2, 1], [1, 2]]),
+      undefined,
+      [1, 2],
+    ],
+    [
+      createAsyncIteratorFixture([[2, 1], [1, 2]]),
+      (item: Array<unknown>) => item,
+      [1, 2],
+    ],
+    [
+      createAsyncIteratorFixture([['a'], ['b']]),
+      undefined,
+      ['a'],
+    ],
+    [
+      createAsyncIteratorFixture([['a'], ['b']]),
+      (item: Array<unknown>) => item,
+      ['a'],
+    ],
+    [
+      createAsyncIteratorFixture([['a', 'a'], ['b']]),
+      undefined,
+      ['a', 'a'],
+    ],
+    [
+      createAsyncIteratorFixture([['a', 'a'], ['b']]),
+      (item: Array<unknown>) => item,
+      ['a', 'a'],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      undefined,
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item,
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => item[1],
+      [2, 0, 3],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2, 3], [2, 0, 3], [2, 1, 3]]),
+      (item: Array<unknown>) => -(item[1] as number),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIteratorFixture([3, 2, 1]),
+      async (item: number) => {
+        await asyncTimeout(1);
+        return item;
+      },
+      1,
     ],
   ];
 }

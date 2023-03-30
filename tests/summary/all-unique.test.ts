@@ -1,5 +1,12 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from '../fixture';
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  // @ts-ignore
+} from '../fixture';
 import { summary } from '../../src';
 
 describe.each([
@@ -19,6 +26,29 @@ describe.each([
 );
 
 describe.each([
+  ...dataProviderForAsyncGeneratorsTrue(),
+  ...dataProviderForAsyncIterablesTrue(),
+  ...dataProviderForAsyncIteratorsTrue(),
+  ...dataProviderForArraysTrue(),
+  ...dataProviderForGeneratorsTrue(),
+  ...dataProviderForIterablesTrue(),
+  ...dataProviderForIteratorsTrue(),
+  ...dataProviderForStringsTrue(),
+  ...dataProviderForSetsTrue(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+]>)(
+  "Summary All Unique Async Test True",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+  ) => {
+    it("", async () => {
+      expect(await summary.allUniqueAsync(input)).toBeTruthy();
+    });
+  }
+);
+
+describe.each([
   ...dataProviderForArraysFalse(),
   ...dataProviderForGeneratorsFalse(),
   ...dataProviderForIterablesFalse(),
@@ -29,6 +59,28 @@ describe.each([
   (input: Iterable<unknown>|Iterator<unknown>) => {
     it("", () => {
       expect(summary.allUnique(input)).toBeFalsy();
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGeneratorsFalse(),
+  ...dataProviderForAsyncIterablesFalse(),
+  ...dataProviderForAsyncIteratorsFalse(),
+  ...dataProviderForArraysFalse(),
+  ...dataProviderForGeneratorsFalse(),
+  ...dataProviderForIterablesFalse(),
+  ...dataProviderForIteratorsFalse(),
+  ...dataProviderForStringsFalse(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+]>)(
+  "Summary All Unique Async Test False",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+  ) => {
+    it("", async () => {
+      expect(await summary.allUniqueAsync(input)).toBeFalsy();
     });
   }
 );
@@ -148,6 +200,69 @@ function dataProviderForSetsTrue(): Array<unknown> {
   ];
 }
 
+function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
+  return [
+    [createAsyncGeneratorFixture([])],
+    [createAsyncGeneratorFixture([undefined])],
+    [createAsyncGeneratorFixture([null])],
+    [createAsyncGeneratorFixture([false])],
+    [createAsyncGeneratorFixture([1])],
+    [createAsyncGeneratorFixture(['1'])],
+    [createAsyncGeneratorFixture([[]])],
+    [createAsyncGeneratorFixture([{}])],
+    [createAsyncGeneratorFixture([1, 2, 3])],
+    [createAsyncGeneratorFixture(['1', '2', '3'])],
+    [createAsyncGeneratorFixture(['1', 1, true])],
+    [createAsyncGeneratorFixture([0, null, undefined, false])],
+    [createAsyncGeneratorFixture([[], [], []])],
+    [createAsyncGeneratorFixture([[1], [1], [1]])],
+    [createAsyncGeneratorFixture([{}, {}, {}])],
+    [createAsyncGeneratorFixture([{a: 1}, {a: 1}, {a: 1}])],
+  ];
+}
+
+function dataProviderForAsyncIterablesTrue(): Array<unknown> {
+  return [
+    [createAsyncIterableFixture([])],
+    [createAsyncIterableFixture([undefined])],
+    [createAsyncIterableFixture([null])],
+    [createAsyncIterableFixture([false])],
+    [createAsyncIterableFixture([1])],
+    [createAsyncIterableFixture(['1'])],
+    [createAsyncIterableFixture([[]])],
+    [createAsyncIterableFixture([{}])],
+    [createAsyncIterableFixture([1, 2, 3])],
+    [createAsyncIterableFixture(['1', '2', '3'])],
+    [createAsyncIterableFixture(['1', 1, true])],
+    [createAsyncIterableFixture([0, null, undefined, false])],
+    [createAsyncIterableFixture([[], [], []])],
+    [createAsyncIterableFixture([[1], [1], [1]])],
+    [createAsyncIterableFixture([{}, {}, {}])],
+    [createAsyncIterableFixture([{a: 1}, {a: 1}, {a: 1}])],
+  ];
+}
+
+function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
+  return [
+    [createAsyncIteratorFixture([])],
+    [createAsyncIteratorFixture([undefined])],
+    [createAsyncIteratorFixture([null])],
+    [createAsyncIteratorFixture([false])],
+    [createAsyncIteratorFixture([1])],
+    [createAsyncIteratorFixture(['1'])],
+    [createAsyncIteratorFixture([[]])],
+    [createAsyncIteratorFixture([{}])],
+    [createAsyncIteratorFixture([1, 2, 3])],
+    [createAsyncIteratorFixture(['1', '2', '3'])],
+    [createAsyncIteratorFixture(['1', 1, true])],
+    [createAsyncIteratorFixture([0, null, undefined, false])],
+    [createAsyncIteratorFixture([[], [], []])],
+    [createAsyncIteratorFixture([[1], [1], [1]])],
+    [createAsyncIteratorFixture([{}, {}, {}])],
+    [createAsyncIteratorFixture([{a: 1}, {a: 1}, {a: 1}])],
+  ];
+}
+
 function dataProviderForArraysFalse(): Array<unknown> {
   return [
     [[1, 1]],
@@ -203,5 +318,41 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
     [createIteratorFixture(['1', '2', '1', '3', '1'])],
     [createIteratorFixture([0, null, undefined, false, null])],
     [createIteratorFixture([undefined, undefined, null])],
+  ];
+}
+
+function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
+  return [
+    [createAsyncGeneratorFixture([1, 1])],
+    [createAsyncGeneratorFixture([1, 1, 1])],
+    [createAsyncGeneratorFixture([1, 2, 3, 1])],
+    [createAsyncGeneratorFixture(['1', '2', '3', '1'])],
+    [createAsyncGeneratorFixture(['1', '2', '1', '3', '1'])],
+    [createAsyncGeneratorFixture([0, null, undefined, false, null])],
+    [createAsyncGeneratorFixture([undefined, undefined, null])],
+  ];
+}
+
+function dataProviderForAsyncIterablesFalse(): Array<unknown> {
+  return [
+    [createAsyncIterableFixture([1, 1])],
+    [createAsyncIterableFixture([1, 1, 1])],
+    [createAsyncIterableFixture([1, 2, 3, 1])],
+    [createAsyncIterableFixture(['1', '2', '3', '1'])],
+    [createAsyncIterableFixture(['1', '2', '1', '3', '1'])],
+    [createAsyncIterableFixture([0, null, undefined, false, null])],
+    [createAsyncIterableFixture([undefined, undefined, null])],
+  ];
+}
+
+function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
+  return [
+    [createAsyncIteratorFixture([1, 1])],
+    [createAsyncIteratorFixture([1, 1, 1])],
+    [createAsyncIteratorFixture([1, 2, 3, 1])],
+    [createAsyncIteratorFixture(['1', '2', '3', '1'])],
+    [createAsyncIteratorFixture(['1', '2', '1', '3', '1'])],
+    [createAsyncIteratorFixture([0, null, undefined, false, null])],
+    [createAsyncIteratorFixture([undefined, undefined, null])],
   ];
 }

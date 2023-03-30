@@ -1,5 +1,13 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture,
+  // @ts-ignore
+} from "../fixture";
 import { single } from "../../src";
 
 describe.each([
@@ -22,6 +30,41 @@ describe.each([
 
       // When
       for (const item of single.pairwise(input)) {
+        result.push(item);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  Array<[unknown, unknown]>
+]>)(
+  "Single Pairwise Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    expected: Array<[unknown, unknown]>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const item of single.pairwiseAsync(input)) {
         result.push(item);
       }
 
@@ -383,6 +426,165 @@ function dataProviderForMaps(): Array<unknown> {
         [[3, 'Monica'], [4, 'Joey']],
         [[4, 'Joey'], [5, 'Phoebe']],
       ],
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2]),
+      [[1, 2]],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      [[1, 2], [2, 3]],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4]),
+      [[1, 2], [2, 3], [3, 4]],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createAsyncGeneratorFixture([1.1, 2.2, 3.3, 4.4, 5.5]),
+      [[1.1, 2.2], [2.2, 3.3], [3.3, 4.4], [4.4, 5.5]],
+    ],
+    [
+      createAsyncGeneratorFixture(['1', '2', '3', '4', '5']),
+      [['1', '2'], ['2', '3'], ['3', '4'], ['4', '5']],
+    ],
+    [
+      createAsyncGeneratorFixture([[1], [2], [3], [4], [5]]),
+      [[[1], [2]], [[2], [3]], [[3], [4]], [[4], [5]]],
+    ],
+    [
+      createAsyncGeneratorFixture([true, true, false, false]),
+      [[true, true], [true, false], [false, false]],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2.2, '3', [4], true, null, 'test data']),
+      [[1, 2.2], [2.2, '3'], ['3', [4]], [[4], true], [true, null], [null, 'test data']],
+    ],
+    [
+      createAsyncGeneratorFixture(['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey', 'Phoebe']),
+      [['Ross', 'Rachel'], ['Rachel', 'Chandler'], ['Chandler', 'Monica'], ['Monica', 'Joey'], ['Joey', 'Phoebe']],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1, 2]),
+      [[1, 2]],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      [[1, 2], [2, 3]],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4]),
+      [[1, 2], [2, 3], [3, 4]],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5]),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createAsyncIterableFixture([1.1, 2.2, 3.3, 4.4, 5.5]),
+      [[1.1, 2.2], [2.2, 3.3], [3.3, 4.4], [4.4, 5.5]],
+    ],
+    [
+      createAsyncIterableFixture(['1', '2', '3', '4', '5']),
+      [['1', '2'], ['2', '3'], ['3', '4'], ['4', '5']],
+    ],
+    [
+      createAsyncIterableFixture([[1], [2], [3], [4], [5]]),
+      [[[1], [2]], [[2], [3]], [[3], [4]], [[4], [5]]],
+    ],
+    [
+      createAsyncIterableFixture([true, true, false, false]),
+      [[true, true], [true, false], [false, false]],
+    ],
+    [
+      createAsyncIterableFixture([1, 2.2, '3', [4], true, null, 'test data']),
+      [[1, 2.2], [2.2, '3'], ['3', [4]], [[4], true], [true, null], [null, 'test data']],
+    ],
+    [
+      createAsyncIterableFixture(['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey', 'Phoebe']),
+      [['Ross', 'Rachel'], ['Rachel', 'Chandler'], ['Chandler', 'Monica'], ['Monica', 'Joey'], ['Joey', 'Phoebe']],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2]),
+      [[1, 2]],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      [[1, 2], [2, 3]],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4]),
+      [[1, 2], [2, 3], [3, 4]],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+      [[1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createAsyncIteratorFixture([1.1, 2.2, 3.3, 4.4, 5.5]),
+      [[1.1, 2.2], [2.2, 3.3], [3.3, 4.4], [4.4, 5.5]],
+    ],
+    [
+      createAsyncIteratorFixture(['1', '2', '3', '4', '5']),
+      [['1', '2'], ['2', '3'], ['3', '4'], ['4', '5']],
+    ],
+    [
+      createAsyncIteratorFixture([[1], [2], [3], [4], [5]]),
+      [[[1], [2]], [[2], [3]], [[3], [4]], [[4], [5]]],
+    ],
+    [
+      createAsyncIteratorFixture([true, true, false, false]),
+      [[true, true], [true, false], [false, false]],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2.2, '3', [4], true, null, 'test data']),
+      [[1, 2.2], [2.2, '3'], ['3', [4]], [[4], true], [true, null], [null, 'test data']],
+    ],
+    [
+      createAsyncIteratorFixture(['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey', 'Phoebe']),
+      [['Ross', 'Rachel'], ['Rachel', 'Chandler'], ['Chandler', 'Monica'], ['Monica', 'Joey'], ['Joey', 'Phoebe']],
     ],
   ];
 }
