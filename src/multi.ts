@@ -35,7 +35,10 @@ export function* zip<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
  * @param filler
  * @param iterables
  */
-export function* zipFilled<T extends Array<Iterable<unknown> | Iterator<unknown>>, F>(
+export function* zipFilled<
+  T extends Array<Iterable<unknown> | Iterator<unknown>>,
+  F
+>(
   filler: F,
   ...iterables: T
 ): Iterable<{ [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F }> {
@@ -59,9 +62,13 @@ export function* zipFilled<T extends Array<Iterable<unknown> | Iterator<unknown>
  *
  * @param iterables
  */
-export function* zipLongest<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+export function* zipLongest<
+  T extends Array<Iterable<unknown> | Iterator<unknown>>
+>(
   ...iterables: T
-): Iterable<{ [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | undefined }> {
+): Iterable<{
+  [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | undefined;
+}> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.LONGEST,
     undefined,
@@ -81,9 +88,13 @@ export function* zipLongest<T extends Array<Iterable<unknown> | Iterator<unknown
  *
  * @throws LengthError if iterators lengths not equal.
  */
-export function* zipEqual<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+export function* zipEqual<
+  T extends Array<Iterable<unknown> | Iterator<unknown>>
+>(
   ...iterables: T
-): Iterable<Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }>> {
+): Iterable<
+  Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }>
+> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.STRICT_EQUAL,
     undefined,

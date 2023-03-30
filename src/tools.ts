@@ -15,7 +15,10 @@ export enum MultipleIterationMode {
  * @param noValueFiller
  * @param iterables
  */
-export function* createMultipleIterator<T extends Array<Iterable<unknown> | Iterator<unknown>>, F>(
+export function* createMultipleIterator<
+  T extends Array<Iterable<unknown> | Iterator<unknown>>,
+  F
+>(
   mode: MultipleIterationMode,
   noValueFiller: F,
   ...iterables: T
@@ -65,7 +68,9 @@ export function* createMultipleIterator<T extends Array<Iterable<unknown> | Iter
       break;
     }
 
-    yield values as { [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F };
+    yield values as {
+      [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F;
+    };
   }
 }
 
