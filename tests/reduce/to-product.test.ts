@@ -1,5 +1,12 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  // @ts-ignore
+} from "../fixture";
 import { reduce } from "../../src";
 
 describe.each([
@@ -18,6 +25,39 @@ describe.each([
     it("", () => {
       // When
       const result = reduce.toProduct(input);
+
+      // Then
+      if (expected === undefined) {
+        expect(result).toEqual(expected);
+      } else {
+        expect(result).toBeCloseTo(expected);
+      }
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+] as Array<[
+  AsyncIterable<number>|AsyncIterator<number>|Iterable<number>|Iterator<number>,
+  number|undefined
+]>)(
+  "Reduce To Product Async Test",
+  (
+    input: AsyncIterable<number>|AsyncIterator<number>|Iterable<number>|Iterator<number>,
+    expected: number|undefined
+  ) => {
+    it("", async () => {
+      // When
+      const result = await reduce.toProductAsync(input);
 
       // Then
       if (expected === undefined) {
@@ -370,6 +410,189 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1.1, 2, 3.3]),
+      7.26,
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      undefined,
+    ],
+    [
+      createAsyncGeneratorFixture([0]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([null]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([false]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([null, null]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([null, false]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([true, false]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([false, true]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([0, null, false]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([1, null, false]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([1, null, true]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([2, 2, 3]),
+      12,
+    ],
+    [
+      createAsyncGeneratorFixture([1.1, 2.2, 3.3]),
+      7.986,
+    ],
+    [
+      createAsyncGeneratorFixture([1.1, 2, 3.3]),
+      7.26,
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      undefined,
+    ],
+    [
+      createAsyncIterableFixture([0]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([null]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([false]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([null, null]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([null, false]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([true, false]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([false, true]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([0, null, false]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([1, null, false]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([1, null, true]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([2, 2, 3]),
+      12,
+    ],
+    [
+      createAsyncIterableFixture([1.1, 2.2, 3.3]),
+      7.986,
+    ],
+    [
+      createAsyncIterableFixture([1.1, 2, 3.3]),
+      7.26,
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      undefined,
+    ],
+    [
+      createAsyncIteratorFixture([0]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([null]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([false]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([null, null]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([null, false]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([true, false]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([false, true]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([0, null, false]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([1, null, false]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([1, null, true]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([2, 2, 3]),
+      12,
+    ],
+    [
+      createAsyncIteratorFixture([1.1, 2.2, 3.3]),
+      7.986,
+    ],
+    [
+      createAsyncIteratorFixture([1.1, 2, 3.3]),
       7.26,
     ],
   ];

@@ -11,17 +11,46 @@ import {
   keys,
   limit,
   map,
-  repeat,
   pairwise,
+  repeat,
   skip,
   slice,
   takeWhile,
   values,
+  chunkwiseAsync,
+  chunkwiseOverlapAsync,
+  compressAsync,
+  dropWhileAsync,
+  enumerateAsync,
+  filterAsync,
+  flatMapAsync,
+  flattenAsync,
+  groupByAsync,
+  keysAsync,
+  limitAsync,
+  mapAsync,
+  pairwiseAsync,
+  repeatAsync,
+  skipAsync,
+  sliceAsync,
+  takeWhileAsync,
+  valuesAsync,
 } from "./single";
 
-import { runningTotal } from "./math";
+import { runningTotal, runningTotalAsync } from "./math";
 
-import { chain, zip, zipFilled, zipLongest, zipEqual } from "./multi";
+import {
+  chain,
+  zip,
+  zipFilled,
+  zipLongest,
+  zipEqual,
+  chainAsync,
+  zipAsync,
+  zipFilledAsync,
+  zipLongestAsync,
+  zipEqualAsync,
+} from "./multi";
 
 import {
   distinct,
@@ -29,6 +58,11 @@ import {
   partialIntersection,
   symmetricDifference,
   union,
+  distinctAsync,
+  intersectionAsync,
+  partialIntersectionAsync,
+  symmetricDifferenceAsync,
+  unionAsync,
 } from "./set";
 
 import {
@@ -43,15 +77,29 @@ import {
   toFirst,
   toFirstAndLast,
   toLast,
+  toAverageAsync,
+  toCountAsync,
+  toFirstAsync,
+  toFirstAndLastAsync,
+  toLastAsync,
+  toMaxAsync,
+  toMinAsync,
+  toMinMaxAsync,
+  toProductAsync,
+  toSumAsync,
+  toValueAsync,
 } from "./reduce";
 
 import { Stream } from "./stream";
+
+import { AsyncStream } from "./async-stream";
 
 import {
   allMatch,
   allUnique,
   anyMatch,
   isEmpty,
+  isAsyncIterable,
   isIterable,
   isIterator,
   isReversed,
@@ -60,13 +108,39 @@ import {
   noneMatch,
   same,
   sameCount,
+  allMatchAsync,
+  allUniqueAsync,
+  anyMatchAsync,
+  isEmptyAsync,
+  isReversedAsync,
+  isSortedAsync,
+  noneMatchAsync,
+  sameAsync,
+  sameCountAsync,
 } from "./summary";
 
-import { toArray, toIterable, toIterator, toMap, toSet } from "./transform";
+import {
+  toArray,
+  toAsyncIterable,
+  toAsyncIterator,
+  toIterable,
+  toIterator,
+  toMap,
+  toSet,
+  toArrayAsync,
+  toMapAsync,
+  toSetAsync,
+} from "./transform";
 
 import { InvalidArgumentError, LengthError } from "./exceptions";
 
-import { FlatMapper, Pair, Comparable, RecordKey } from "./types";
+import {
+  AsyncFlatMapper,
+  FlatMapper,
+  Pair,
+  Comparable,
+  RecordKey,
+} from "./types";
 
 export const single = {
   chunkwise,
@@ -87,10 +161,29 @@ export const single = {
   slice,
   takeWhile,
   values,
+  chunkwiseAsync,
+  chunkwiseOverlapAsync,
+  compressAsync,
+  dropWhileAsync,
+  enumerateAsync,
+  filterAsync,
+  flatMapAsync,
+  flattenAsync,
+  groupByAsync,
+  keysAsync,
+  limitAsync,
+  mapAsync,
+  pairwiseAsync,
+  repeatAsync,
+  skipAsync,
+  sliceAsync,
+  takeWhileAsync,
+  valuesAsync,
 };
 
 export const math = {
   runningTotal,
+  runningTotalAsync,
 };
 
 export const multi = {
@@ -99,6 +192,11 @@ export const multi = {
   zipFilled,
   zipLongest,
   zipEqual,
+  chainAsync,
+  zipAsync,
+  zipFilledAsync,
+  zipLongestAsync,
+  zipEqualAsync,
 };
 
 export const set = {
@@ -107,6 +205,11 @@ export const set = {
   partialIntersection,
   symmetricDifference,
   union,
+  distinctAsync,
+  intersectionAsync,
+  partialIntersectionAsync,
+  symmetricDifferenceAsync,
+  unionAsync,
 };
 
 export const reduce = {
@@ -121,6 +224,17 @@ export const reduce = {
   toProduct,
   toSum,
   toValue,
+  toAverageAsync,
+  toCountAsync,
+  toFirstAsync,
+  toFirstAndLastAsync,
+  toLastAsync,
+  toMaxAsync,
+  toMinAsync,
+  toMinMaxAsync,
+  toProductAsync,
+  toSumAsync,
+  toValueAsync,
 };
 
 export const summary = {
@@ -128,6 +242,7 @@ export const summary = {
   allUnique,
   anyMatch,
   isEmpty,
+  isAsyncIterable,
   isIterable,
   isIterator,
   isReversed,
@@ -136,18 +251,32 @@ export const summary = {
   noneMatch,
   same,
   sameCount,
+  allMatchAsync,
+  allUniqueAsync,
+  anyMatchAsync,
+  isEmptyAsync,
+  isReversedAsync,
+  isSortedAsync,
+  noneMatchAsync,
+  sameAsync,
+  sameCountAsync,
 };
 
 export const transform = {
   toArray,
+  toAsyncIterable,
+  toAsyncIterator,
   toIterable,
   toIterator,
   toMap,
   toSet,
+  toArrayAsync,
+  toMapAsync,
+  toSetAsync,
 };
 
-export { Stream };
+export { Stream, AsyncStream };
 
-export type { FlatMapper, Pair, Comparable, RecordKey };
+export type { AsyncFlatMapper, FlatMapper, Pair, Comparable, RecordKey };
 
 export { InvalidArgumentError, LengthError };

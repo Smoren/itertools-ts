@@ -1,5 +1,13 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture
+  // @ts-ignore
+} from "../fixture";
 import { multi, LengthError } from "../../src";
 
 describe.each([
@@ -24,6 +32,115 @@ describe.each([
       // When
       for (const values of multi.zipEqual(...iterables)) {
         result.push(values);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+  ...dataProviderForMixed(),
+  ...dataProviderForMixedAsync()
+] as Array<[Array<
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+>, Array<unknown>]>)(
+  "Multi Zip Equal Async Test",
+  (
+    iterables: Array<AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>>,
+    expected: Array<unknown>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const values of multi.zipEqualAsync(...iterables)) {
+        result.push(values);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForArraysError(),
+  ...dataProviderForGeneratorsError(),
+  ...dataProviderForIterablesError(),
+  ...dataProviderForIteratorsError(),
+  ...dataProviderForStringsError(),
+  ...dataProviderForSetsError(),
+  ...dataProviderForMapsError(),
+  ...dataProviderForMixedError(),
+] as Array<[Array<Iterable<unknown>|Iterator<unknown>>, Array<unknown>]>)(
+  "Multi Zip Equal Test Error",
+  (
+    iterables: Array<Iterable<unknown>|Iterator<unknown>>,
+    expected: Array<unknown>
+  ) => {
+    // Given
+    const result: Array<unknown> = [];
+
+    it("", () => {
+      expect(() => {
+        // When
+        for (const values of multi.zipEqual(...iterables)) {
+          result.push(values);
+        }
+      }).toThrow(LengthError);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGeneratorsError(),
+  ...dataProviderForAsyncIterablesError(),
+  ...dataProviderForAsyncIteratorsError(),
+  ...dataProviderForArraysError(),
+  ...dataProviderForGeneratorsError(),
+  ...dataProviderForIterablesError(),
+  ...dataProviderForIteratorsError(),
+  ...dataProviderForStringsError(),
+  ...dataProviderForSetsError(),
+  ...dataProviderForMapsError(),
+  ...dataProviderForMixedError(),
+  ...dataProviderForMixedAsyncError(),
+] as Array<[Array<
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+>, Array<unknown>]>)(
+  "Multi Zip Equal Async Test Error",
+  (
+    iterables: Array<AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>>,
+    expected: Array<unknown>
+  ) => {
+    // Given
+    const result: Array<unknown> = [];
+
+    it("", async () => {
+      try {
+        // When
+        for await (const values of multi.zipEqualAsync(...iterables)) {
+          result.push(values);
+        }
+        expect(false).toBeTruthy();
+      } catch (e) {
+        expect(e).toBeInstanceOf(LengthError);
       }
 
       // Then
@@ -523,6 +640,216 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      [],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1]),
+      ],
+      [[1]],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2, 3]),
+      ],
+      [[1], [2], [3]],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([]),
+        createAsyncGeneratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1]),
+        createAsyncGeneratorFixture([2]),
+      ],
+      [[1, 2]],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2]),
+        createAsyncGeneratorFixture([4, 5]),
+      ],
+      [[1, 4], [2, 5]],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2, 3]),
+        createAsyncGeneratorFixture([4, 5, 6]),
+      ],
+      [[1, 4], [2, 5], [3, 6]],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+        createAsyncGeneratorFixture([4, 5, 6, 7, 8, 9, 1, 2, 3]),
+      ],
+      [[1, 4], [2, 5], [3, 6], [4, 7], [5, 8], [6, 9], [7, 1], [8, 2], [9, 3]],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2, 3]),
+        createAsyncGeneratorFixture([4, 5, 6]),
+        createAsyncGeneratorFixture([7, 8, 9]),
+      ],
+      [[1, 4, 7], [2, 5, 8], [3, 6, 9]],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      [],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1]),
+      ],
+      [[1]],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2, 3]),
+      ],
+      [[1], [2], [3]],
+    ],
+    [
+      [
+        createAsyncIterableFixture([]),
+        createAsyncIterableFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1]),
+        createAsyncIterableFixture([2]),
+      ],
+      [[1, 2]],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2]),
+        createAsyncIterableFixture([4, 5]),
+      ],
+      [[1, 4], [2, 5]],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2, 3]),
+        createAsyncIterableFixture([4, 5, 6]),
+      ],
+      [[1, 4], [2, 5], [3, 6]],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+        createAsyncIterableFixture([4, 5, 6, 7, 8, 9, 1, 2, 3]),
+      ],
+      [[1, 4], [2, 5], [3, 6], [4, 7], [5, 8], [6, 9], [7, 1], [8, 2], [9, 3]],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2, 3]),
+        createAsyncIterableFixture([4, 5, 6]),
+        createAsyncIterableFixture([7, 8, 9]),
+      ],
+      [[1, 4, 7], [2, 5, 8], [3, 6, 9]],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      [],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1]),
+      ],
+      [[1]],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2, 3]),
+      ],
+      [[1], [2], [3]],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([]),
+        createAsyncIteratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1]),
+        createAsyncIteratorFixture([2]),
+      ],
+      [[1, 2]],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2]),
+        createAsyncIteratorFixture([4, 5]),
+      ],
+      [[1, 4], [2, 5]],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2, 3]),
+        createAsyncIteratorFixture([4, 5, 6]),
+      ],
+      [[1, 4], [2, 5], [3, 6]],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+        createAsyncIteratorFixture([4, 5, 6, 7, 8, 9, 1, 2, 3]),
+      ],
+      [[1, 4], [2, 5], [3, 6], [4, 7], [5, 8], [6, 9], [7, 1], [8, 2], [9, 3]],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2, 3]),
+        createAsyncIteratorFixture([4, 5, 6]),
+        createAsyncIteratorFixture([7, 8, 9]),
+      ],
+      [[1, 4, 7], [2, 5, 8], [3, 6, 9]],
+    ],
+  ];
+}
+
 function dataProviderForMixed(): Array<unknown> {
   return [
     [
@@ -544,37 +871,38 @@ function dataProviderForMixed(): Array<unknown> {
   ];
 }
 
-describe.each([
-  ...dataProviderForArraysError(),
-  ...dataProviderForGeneratorsError(),
-  ...dataProviderForIterablesError(),
-  ...dataProviderForIteratorsError(),
-  ...dataProviderForStringsError(),
-  ...dataProviderForSetsError(),
-  ...dataProviderForMapsError(),
-  ...dataProviderForMixedError(),
-] as Array<[Array<Iterable<unknown>|Iterator<unknown>>, Array<unknown>]>)(
-  "Multi Zip Equal Test Error",
-  (
-    iterables: Array<Iterable<unknown>|Iterator<unknown>>,
-    expected: Array<unknown>
-  ) => {
-    // Given
-    const result: Array<unknown> = [];
-
-    it("", () => {
-      expect(() => {
-        // When
-        for (const values of multi.zipEqual(...iterables)) {
-          result.push(values);
-        }
-      }).toThrow(LengthError);
-
-      // Then
-      expect(result).toEqual(expected);
-    });
-  }
-);
+function dataProviderForMixedAsync(): Array<unknown> {
+  return [
+    [
+      [
+        createAsyncGeneratorFixture([2, 3, 4]),
+        createAsyncIterableFixture([3, 4, 5]),
+        createAsyncIteratorFixture([4, 5, 6]),
+      ],
+      [
+        [2, 3, 4],
+        [3, 4, 5],
+        [4, 5, 6],
+      ],
+    ],
+    [
+      [
+        [1, 2, 3],
+        createAsyncGeneratorFixture([2, 3, 4]),
+        createIterableFixture([3, 4, 5]),
+        createAsyncIteratorFixture([4, 5, 6]),
+        '567',
+        new Set(['a', 'b', 'c']),
+        new Map([['x', -1], ['y', -2], ['z', -3]]),
+      ],
+      [
+        [1, 2, 3, 4, '5', 'a', ['x', -1]],
+        [2, 3, 4, 5, '6', 'b', ['y', -2]],
+        [3, 4, 5, 6, '7', 'c', ['z', -3]],
+      ],
+    ],
+  ];
+}
 
 function dataProviderForArraysError(): Array<unknown> {
   return [
@@ -795,6 +1123,93 @@ function dataProviderForMapsError(): Array<unknown> {
   ];
 }
 
+function dataProviderForAsyncGeneratorsError(): Array<unknown> {
+  return [
+    [
+      [
+        createAsyncGeneratorFixture([1, 2, 3]),
+        createAsyncGeneratorFixture([4, 5, 6, 10]),
+        createAsyncGeneratorFixture([7, 8, 9, 11, 12]),
+      ],
+      [[1, 4, 7], [2, 5, 8], [3, 6, 9]],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2, 3]),
+        createAsyncGeneratorFixture([4, 5, 6]),
+        createAsyncGeneratorFixture([7, 8, 9, 11, 12]),
+      ],
+      [[1, 4, 7], [2, 5, 8], [3, 6, 9]],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2, 3]),
+        createAsyncGeneratorFixture([4, 5, 6]),
+        createAsyncGeneratorFixture([7]),
+      ],
+      [[1, 4, 7]],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterablesError(): Array<unknown> {
+  return [
+    [
+      [
+        createAsyncIterableFixture([1, 2, 3]),
+        createAsyncIterableFixture([4, 5, 6, 10]),
+        createAsyncIterableFixture([7, 8, 9, 11, 12]),
+      ],
+      [[1, 4, 7], [2, 5, 8], [3, 6, 9]],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2, 3]),
+        createAsyncIterableFixture([4, 5, 6]),
+        createAsyncIterableFixture([7, 8, 9, 11, 12]),
+      ],
+      [[1, 4, 7], [2, 5, 8], [3, 6, 9]],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2, 3]),
+        createAsyncIterableFixture([4, 5, 6]),
+        createAsyncIterableFixture([7]),
+      ],
+      [[1, 4, 7]],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIteratorsError(): Array<unknown> {
+  return [
+    [
+      [
+        createAsyncIteratorFixture([1, 2, 3]),
+        createAsyncIteratorFixture([4, 5, 6, 10]),
+        createAsyncIteratorFixture([7, 8, 9, 11, 12]),
+      ],
+      [[1, 4, 7], [2, 5, 8], [3, 6, 9]],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2, 3]),
+        createAsyncIteratorFixture([4, 5, 6]),
+        createAsyncIteratorFixture([7, 8, 9, 11, 12]),
+      ],
+      [[1, 4, 7], [2, 5, 8], [3, 6, 9]],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2, 3]),
+        createAsyncIteratorFixture([4, 5, 6]),
+        createAsyncIteratorFixture([7]),
+      ],
+      [[1, 4, 7]],
+    ],
+  ];
+}
+
 function dataProviderForMixedError(): Array<unknown> {
   return [
     [
@@ -818,6 +1233,49 @@ function dataProviderForMixedError(): Array<unknown> {
         createGeneratorFixture([2, 3, 4]),
         createIterableFixture([3, 4, 5]),
         createIteratorFixture([4, 5, 6]),
+        '567',
+        new Set(['a', 'b', 'c']),
+        new Map([['x', -1], ['y', -2], ['z', -3]]),
+      ],
+      [],
+    ],
+  ];
+}
+
+function dataProviderForMixedAsyncError(): Array<unknown> {
+  return [
+    [
+      [
+        createAsyncGeneratorFixture([2, 3]),
+        createAsyncIterableFixture([3, 4, 5]),
+        createAsyncIteratorFixture([4, 5, 6]),
+      ],
+      [
+        [2, 3, 4],
+        [3, 4, 5],
+      ],
+    ],
+    [
+      [
+        [1, 2],
+        createAsyncGeneratorFixture([2, 3, 4]),
+        createIterableFixture([3, 4, 5]),
+        createIteratorFixture([4, 5, 6]),
+        '567',
+        new Set(['a', 'b', 'c']),
+        new Map([['x', -1], ['y', -2], ['z', -3]]),
+      ],
+      [
+        [1, 2, 3, 4, '5', 'a', ['x', -1]],
+        [2, 3, 4, 5, '6', 'b', ['y', -2]],
+      ],
+    ],
+    [
+      [
+        [],
+        createAsyncGeneratorFixture([2, 3, 4]),
+        createAsyncIterableFixture([3, 4, 5]),
+        createAsyncIteratorFixture([4, 5, 6]),
         '567',
         new Set(['a', 'b', 'c']),
         new Map([['x', -1], ['y', -2], ['z', -3]]),

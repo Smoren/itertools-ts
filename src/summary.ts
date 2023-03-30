@@ -1,7 +1,7 @@
-import { zipEqual } from "./multi";
-import { pairwise } from "./single";
-import { toCount } from "./reduce";
-import { toIterable } from "./transform";
+import { zipEqual, zipEqualAsync } from "./multi";
+import { mapAsync, pairwise, pairwiseAsync } from "./single";
+import { toCount, toCountAsync } from "./reduce";
+import { toArrayAsync, toAsyncIterable, toIterable } from "./transform";
 import { Comparable } from "./types";
 
 /**
@@ -18,6 +18,26 @@ export function allMatch<T>(
 ): boolean {
   for (const datum of toIterable(data)) {
     if (!predicate(datum)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * Returns true if all elements of async collection match the predicate function.
+ *
+ * Empty collections return true.
+ *
+ * @param data
+ * @param predicate
+ */
+export async function allMatchAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  predicate: (item: T) => Promise<boolean> | boolean
+): Promise<boolean> {
+  for await (const datum of toAsyncIterable(data)) {
+    if (!(await predicate(datum))) {
       return false;
     }
   }
@@ -49,6 +69,34 @@ export function allUnique(
 }
 
 /**
+ * Return true if all elements in given async collection are unique.
+ *
+ * Empty collections return true.
+ *
+ * Considers different instances of data containers to be different, even if they have the same content.
+ *
+ * @param data
+ */
+export async function allUniqueAsync(
+  data:
+    | AsyncIterable<unknown>
+    | AsyncIterator<unknown>
+    | Iterable<unknown>
+    | Iterator<unknown>
+): Promise<boolean> {
+  const usages = new Set();
+
+  for await (const datum of toAsyncIterable(data)) {
+    if (usages.has(datum)) {
+      return false;
+    }
+    usages.add(datum);
+  }
+
+  return true;
+}
+
+/**
  * Returns true if any element matches the predicate function.
  *
  * Empty collections return false.
@@ -69,6 +117,26 @@ export function anyMatch<T>(
 }
 
 /**
+ * Returns true if any element of async collection matches the predicate function.
+ *
+ * Empty collections return false.
+ *
+ * @param data
+ * @param predicate
+ */
+export async function anyMatchAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  predicate: (item: T) => Promise<boolean> | boolean
+): Promise<boolean> {
+  for await (const datum of toAsyncIterable(data)) {
+    if (await predicate(datum)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/**
  * Returns true if given collection is empty.
  *
  * @param data
@@ -76,6 +144,25 @@ export function anyMatch<T>(
 export function isEmpty(data: Iterable<unknown> | Iterator<unknown>): boolean {
   /* eslint-disable @typescript-eslint/no-unused-vars */
   for (const _ of toIterable(data)) {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * Returns true if given async collection is empty.
+ *
+ * @param data
+ */
+export async function isEmptyAsync(
+  data:
+    | AsyncIterable<unknown>
+    | AsyncIterator<unknown>
+    | Iterable<unknown>
+    | Iterator<unknown>
+): Promise<boolean> {
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  for await (const _ of toAsyncIterable(data)) {
     return false;
   }
   return true;
@@ -93,6 +180,22 @@ export function isIterable(input: unknown): boolean {
 
   return (
     typeof (input as Record<string | symbol, unknown>)[Symbol.iterator] ===
+    "function"
+  );
+}
+
+/**
+ * Return true if given input is an AsyncIterable instance.
+ *
+ * @param input
+ */
+export function isAsyncIterable(input: unknown): boolean {
+  if (input === null || input === undefined) {
+    return false;
+  }
+
+  return (
+    typeof (input as Record<string | symbol, unknown>)[Symbol.asyncIterator] ===
     "function"
   );
 }
@@ -134,6 +237,30 @@ export function isReversed(
 }
 
 /**
+ * Returns true if given async collection is sorted in descending order; otherwise false.
+ *
+ * Items of given collection must be comparable.
+ *
+ * Returns true if given collection is empty or has only one element.
+ *
+ * @param data
+ */
+export async function isReversedAsync(
+  data:
+    | AsyncIterable<Comparable>
+    | AsyncIterator<Comparable>
+    | Iterable<Comparable>
+    | Iterator<Comparable>
+): Promise<boolean> {
+  for await (const [lhs, rhs] of pairwiseAsync(toAsyncIterable(data))) {
+    if (lhs < rhs) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
  * Returns true if given collection is sorted in ascending order; otherwise false.
  *
  * Items of given collection must be comparable.
@@ -146,6 +273,30 @@ export function isSorted(
   data: Iterable<Comparable> | Iterator<Comparable>
 ): boolean {
   for (const [lhs, rhs] of pairwise(toIterable(data))) {
+    if (lhs > rhs) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * Returns true if given async collection is sorted in ascending order; otherwise false.
+ *
+ * Items of given collection must be comparable.
+ *
+ * Returns true if given collection is empty or has only one element.
+ *
+ * @param data
+ */
+export async function isSortedAsync(
+  data:
+    | AsyncIterable<Comparable>
+    | AsyncIterator<Comparable>
+    | Iterable<Comparable>
+    | Iterator<Comparable>
+): Promise<boolean> {
+  for await (const [lhs, rhs] of pairwiseAsync(toAsyncIterable(data))) {
     if (lhs > rhs) {
       return false;
     }
@@ -183,6 +334,26 @@ export function noneMatch<T>(
 }
 
 /**
+ * Returns true if no element in async collection matches the predicate function.
+ *
+ * Empty collections return true.
+ *
+ * @param data
+ * @param predicate
+ */
+export async function noneMatchAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  predicate: (item: T) => Promise<boolean> | boolean
+): Promise<boolean> {
+  for await (const datum of toAsyncIterable(data)) {
+    if (await predicate(datum)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
  * Returns true if all given collections are the same.
  *
  * For single collection or empty collections list returns true.
@@ -194,6 +365,36 @@ export function same(
 ): boolean {
   try {
     for (const values of zipEqual(...collections)) {
+      for (const [lhs, rhs] of pairwise(values)) {
+        if (lhs !== rhs) {
+          return false;
+        }
+      }
+    }
+  } catch (e) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * Returns true if all given async collections are the same.
+ *
+ * For single collection or empty collections list returns true.
+ *
+ * @param collections
+ */
+export async function sameAsync(
+  ...collections: Array<
+    | AsyncIterable<unknown>
+    | AsyncIterator<unknown>
+    | Iterable<unknown>
+    | Iterator<unknown>
+  >
+): Promise<boolean> {
+  try {
+    for await (const values of zipEqualAsync(...collections)) {
       for (const [lhs, rhs] of pairwise(values)) {
         if (lhs !== rhs) {
           return false;
@@ -224,4 +425,31 @@ export function sameCount(
   const counts = collections.map((collection) => toCount(collection));
 
   return new Set(counts).size === 1;
+}
+
+/**
+ * Returns true if all given async collections have the same lengths.
+ *
+ * For single collection or empty collections list returns true.
+ *
+ * @param collections
+ */
+export async function sameCountAsync(
+  ...collections: Array<
+    | AsyncIterable<unknown>
+    | AsyncIterator<unknown>
+    | Iterable<unknown>
+    | Iterator<unknown>
+  >
+): Promise<boolean> {
+  if (collections.length <= 1) {
+    return true;
+  }
+
+  const counts = await mapAsync(
+    collections,
+    async (collection) => await toCountAsync(collection)
+  );
+
+  return new Set(await toArrayAsync(counts)).size === 1;
 }

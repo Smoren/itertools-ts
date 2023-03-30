@@ -1,5 +1,12 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  // @ts-ignore
+} from "../fixture";
 import { reduce } from "../../src";
 
 describe.each([
@@ -18,6 +25,35 @@ describe.each([
     it("", () => {
       // When
       const result = reduce.toSum(input);
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+] as Array<[
+  AsyncIterable<number>|AsyncIterator<number>|Iterable<number>|Iterator<number>,
+  number
+]>)(
+  "Reduce To Sum Async Test",
+  (
+    input: AsyncIterable<number>|AsyncIterator<number>|Iterable<number>|Iterator<number>,
+    expected: number
+  ) => {
+    it("", async () => {
+      // When
+      const result = await reduce.toSumAsync(input);
 
       // Then
       expect(result).toEqual(expected);
@@ -346,6 +382,189 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1.1, 2, 3.3]),
+      6.4,
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([0]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([null]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([false]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([null, null]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([null, false]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([true, false]),
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([false, true]),
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([0, null, false]),
+      0,
+    ],
+    [
+      createAsyncGeneratorFixture([1, null, false]),
+      1,
+    ],
+    [
+      createAsyncGeneratorFixture([1, null, true]),
+      2,
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      6,
+    ],
+    [
+      createAsyncGeneratorFixture([1.1, 2.2, 3.3]),
+      6.6,
+    ],
+    [
+      createAsyncGeneratorFixture([1.1, 2, 3.3]),
+      6.4,
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([0]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([null]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([false]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([null, null]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([null, false]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([true, false]),
+      1,
+    ],
+    [
+      createAsyncIterableFixture([false, true]),
+      1,
+    ],
+    [
+      createAsyncIterableFixture([0, null, false]),
+      0,
+    ],
+    [
+      createAsyncIterableFixture([1, null, false]),
+      1,
+    ],
+    [
+      createAsyncIterableFixture([1, null, true]),
+      2,
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      6,
+    ],
+    [
+      createAsyncIterableFixture([1.1, 2.2, 3.3]),
+      6.6,
+    ],
+    [
+      createAsyncIterableFixture([1.1, 2, 3.3]),
+      6.4,
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([0]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([null]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([false]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([null, null]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([null, false]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([true, false]),
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([false, true]),
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([0, null, false]),
+      0,
+    ],
+    [
+      createAsyncIteratorFixture([1, null, false]),
+      1,
+    ],
+    [
+      createAsyncIteratorFixture([1, null, true]),
+      2,
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      6,
+    ],
+    [
+      createAsyncIteratorFixture([1.1, 2.2, 3.3]),
+      6.6,
+    ],
+    [
+      createAsyncIteratorFixture([1.1, 2, 3.3]),
       6.4,
     ],
   ];

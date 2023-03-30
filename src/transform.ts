@@ -1,5 +1,5 @@
 import { InvalidArgumentError } from "./exceptions";
-import { isIterable, isIterator } from "./summary";
+import { isAsyncIterable, isIterable, isIterator } from "./summary";
 import { RecordKey } from "./types";
 
 /**
@@ -43,6 +43,58 @@ export function toIterable<T>(
 }
 
 /**
+ * Converts collection or record to AsyncIterable instance.
+ *
+ * If instance is already an async iterable then just return it.
+ *
+ * @param collection
+ */
+export function toAsyncIterable<T>(
+  collection:
+    | Iterable<T>
+    | Iterator<T>
+    | AsyncIterable<T>
+    | AsyncIterator<T>
+    | Record<RecordKey, unknown>
+): AsyncIterable<T> {
+  if (isAsyncIterable(collection)) {
+    return collection as AsyncIterable<T>;
+  }
+
+  if (isIterator(collection)) {
+    return {
+      async *[Symbol.asyncIterator]() {
+        while (true) {
+          const res = await (collection as AsyncIterator<T>).next();
+          if (res.done) {
+            return;
+          }
+          yield res.value;
+        }
+      },
+    };
+  }
+
+  if (typeof collection === "object" && collection !== null) {
+    collection = toIterable(collection as Record<RecordKey, unknown>);
+  }
+
+  if (isIterable(collection)) {
+    return {
+      async *[Symbol.asyncIterator]() {
+        for (const value of collection as Iterable<T>) {
+          yield value;
+        }
+      },
+    };
+  }
+
+  throw new InvalidArgumentError(
+    "Given collection is not async iterable or iterator."
+  );
+}
+
+/**
  * Converts collection to Iterator instance.
  *
  * If instance is already an iterator then just return it.
@@ -70,6 +122,31 @@ export function toIterator<T>(
 }
 
 /**
+ * Converts collection to AsyncIterator instance.
+ *
+ * @param collection
+ */
+export function toAsyncIterator<T>(
+  collection: Iterable<T> | Iterator<T> | AsyncIterable<T> | AsyncIterator<T>
+): AsyncIterator<T> {
+  if (isIterator(collection) || isIterable(collection)) {
+    collection = toAsyncIterable(collection);
+  }
+
+  if (isAsyncIterable(collection)) {
+    return (async function* () {
+      for await (const item of collection as Iterable<T>) {
+        yield item;
+      }
+    })();
+  }
+
+  throw new InvalidArgumentError(
+    "Given collection is not iterable or iterator."
+  );
+}
+
+/**
  * Converts given collection to array.
  *
  * @param collection
@@ -77,6 +154,21 @@ export function toIterator<T>(
 export function toArray<T>(collection: Iterable<T> | Iterator<T>): Array<T> {
   const result = [];
   for (const item of toIterable(collection)) {
+    result.push(item);
+  }
+  return result;
+}
+
+/**
+ * Converts given async collection to array.
+ *
+ * @param collection
+ */
+export async function toArrayAsync<T>(
+  collection: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>
+): Promise<Array<T>> {
+  const result = [];
+  for await (const item of toAsyncIterable(collection)) {
     result.push(item);
   }
   return result;
@@ -101,6 +193,26 @@ export function toMap<TKey, TValue>(
 }
 
 /**
+ * Converts async collection of key-value pairs to Map.
+ *
+ * @param pairs
+ */
+export async function toMapAsync<TKey, TValue>(
+  pairs:
+    | AsyncIterable<[TKey, TValue]>
+    | AsyncIterator<[TKey, TValue]>
+    | Iterable<[TKey, TValue]>
+    | Iterator<[TKey, TValue]>
+    | Record<RecordKey, unknown>
+): Promise<Map<TKey, TValue>> {
+  const result: Map<TKey, TValue> = new Map();
+  for await (const [key, value] of toAsyncIterable(pairs)) {
+    result.set(key, value);
+  }
+  return result;
+}
+
+/**
  * Converts given collection to Set.
  *
  * @param collection
@@ -108,6 +220,21 @@ export function toMap<TKey, TValue>(
 export function toSet<T>(collection: Iterable<T> | Iterator<T>): Set<T> {
   const result: Set<T> = new Set();
   for (const datum of toIterable(collection)) {
+    result.add(datum);
+  }
+  return result;
+}
+
+/**
+ * Converts given async collection to Set.
+ *
+ * @param collection
+ */
+export async function toSetAsync<T>(
+  collection: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>
+): Promise<Set<T>> {
+  const result: Set<T> = new Set();
+  for await (const datum of toAsyncIterable(collection)) {
     result.add(datum);
   }
   return result;

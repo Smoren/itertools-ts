@@ -1,5 +1,14 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from '../fixture';
+import {
+  asyncTimeout,
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture,
+  // @ts-ignore
+} from '../fixture';
 import { summary } from '../../src';
 
 describe.each([
@@ -23,6 +32,32 @@ describe.each([
 );
 
 describe.each([
+  ...dataProviderForAsyncGeneratorsTrue(),
+  ...dataProviderForAsyncIterablesTrue(),
+  ...dataProviderForAsyncIteratorsTrue(),
+  ...dataProviderForArraysTrue(),
+  ...dataProviderForGeneratorsTrue(),
+  ...dataProviderForIterablesTrue(),
+  ...dataProviderForIteratorsTrue(),
+  ...dataProviderForStringsTrue(),
+  ...dataProviderForSetsTrue(),
+  ...dataProviderForMapsTrue(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  (item: unknown) => Promise<boolean>|boolean
+]>)(
+  "Summary Any Match Async Test True",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    predicate: (item: unknown) => Promise<boolean>|boolean
+  ) => {
+    it("", async () => {
+      expect(await summary.anyMatchAsync(input, predicate)).toBeTruthy();
+    });
+  }
+);
+
+describe.each([
   ...dataProviderForArraysFalse(),
   ...dataProviderForGeneratorsFalse(),
   ...dataProviderForIterablesFalse(),
@@ -38,6 +73,32 @@ describe.each([
   ) => {
     it("", () => {
       expect(summary.anyMatch(input, predicate)).toBeFalsy();
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGeneratorsFalse(),
+  ...dataProviderForAsyncIterablesFalse(),
+  ...dataProviderForAsyncIteratorsFalse(),
+  ...dataProviderForArraysFalse(),
+  ...dataProviderForGeneratorsFalse(),
+  ...dataProviderForIterablesFalse(),
+  ...dataProviderForIteratorsFalse(),
+  ...dataProviderForStringsFalse(),
+  ...dataProviderForSetsFalse(),
+  ...dataProviderForMapsFalse(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  (item: unknown) => Promise<boolean>|boolean
+]>)(
+  "Summary Any Match Async Test False",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    predicate: (item: unknown) => Promise<boolean>|boolean
+  ) => {
+    it("", async () => {
+      expect(await summary.anyMatchAsync(input, predicate)).toBeFalsy();
     });
   }
 );
@@ -345,6 +406,162 @@ function dataProviderForMapsTrue(): Array<unknown> {
     [
       createMapFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
       (x: [unknown, Array<number>]) => x[1].length === 3,
+    ],
+  ];
+}
+
+function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([1]),
+      () => true,
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      (x: number) => x === 1,
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3]),
+      (x: number) => x >= 1,
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+      (x: number) => x < 4,
+    ],
+    [
+      createAsyncGeneratorFixture(['a']),
+      (x: string) => x === 'a',
+    ],
+    [
+      createAsyncGeneratorFixture(['n', 'a']),
+      (x: string) => x === 'a',
+    ],
+    [
+      createAsyncGeneratorFixture(['A', 'b', 'C']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncGeneratorFixture(['A', 'b', 'c']),
+      (x: string) => x.toLowerCase() === x,
+    ],
+    [
+      createAsyncGeneratorFixture(['OS', 'PHP', 'linux']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      (x: Array<number>) => x.length === 3,
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      async (x: Array<number>) => {
+        await asyncTimeout(1);
+        return x.length === 3;
+      },
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterablesTrue(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([1]),
+      () => true,
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      (x: number) => x === 1,
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3]),
+      (x: number) => x >= 1,
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5]),
+      (x: number) => x < 4,
+    ],
+    [
+      createAsyncIterableFixture(['a']),
+      (x: string) => x === 'a',
+    ],
+    [
+      createAsyncIterableFixture(['n', 'a']),
+      (x: string) => x === 'a',
+    ],
+    [
+      createAsyncIterableFixture(['A', 'b', 'C']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncIterableFixture(['A', 'b', 'c']),
+      (x: string) => x.toLowerCase() === x,
+    ],
+    [
+      createAsyncIterableFixture(['OS', 'PHP', 'linux']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncIterableFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      (x: Array<number>) => x.length === 3,
+    ],
+    [
+      createAsyncIterableFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      async (x: Array<number>) => {
+        await asyncTimeout(1);
+        return x.length === 3;
+      },
+    ],
+  ];
+}
+
+function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([1]),
+      () => true,
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      (x: number) => x === 1,
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3]),
+      (x: number) => x >= 1,
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+      (x: number) => x < 4,
+    ],
+    [
+      createAsyncIteratorFixture(['a']),
+      (x: string) => x === 'a',
+    ],
+    [
+      createAsyncIteratorFixture(['n', 'a']),
+      (x: string) => x === 'a',
+    ],
+    [
+      createAsyncIteratorFixture(['A', 'b', 'C']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncIteratorFixture(['A', 'b', 'c']),
+      (x: string) => x.toLowerCase() === x,
+    ],
+    [
+      createAsyncIteratorFixture(['OS', 'PHP', 'linux']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncIteratorFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      (x: Array<number>) => x.length === 3,
+    ],
+    [
+      createAsyncIteratorFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      async (x: Array<number>) => {
+        await asyncTimeout(1);
+        return x.length === 3;
+      },
     ],
   ];
 }
@@ -680,6 +897,174 @@ function dataProviderForMapsFalse(): Array<unknown> {
     [
       createMapFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
       (x: [unknown, Array<number>]) => x[1].length === 4,
+    ],
+  ];
+}
+
+function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      () => true,
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      () => false,
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      (x: number) => x === 2,
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3]),
+      (x: number) => x >= 4,
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+      (x: number) => x < 1,
+    ],
+    [
+      createAsyncGeneratorFixture(['a']),
+      (x: string) => x === 'b',
+    ],
+    [
+      createAsyncGeneratorFixture(['n', 'a']),
+      (x: string) => x === 'b',
+    ],
+    [
+      createAsyncGeneratorFixture(['a', 'b', 'c']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncGeneratorFixture(['A', 'B', 'C']),
+      (x: string) => x.toLowerCase() === x,
+    ],
+    [
+      createAsyncGeneratorFixture(['os', 'php', 'linux']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      (x: Array<number>) => x.length === 4,
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      async (x: Array<number>) => {
+        await asyncTimeout(1);
+        return x.length === 4;
+      },
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterablesFalse(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      () => true,
+    ],
+    [
+      createAsyncIterableFixture([]),
+      () => false,
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      (x: number) => x === 2,
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3]),
+      (x: number) => x >= 4,
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5]),
+      (x: number) => x < 1,
+    ],
+    [
+      createAsyncIterableFixture(['a']),
+      (x: string) => x === 'b',
+    ],
+    [
+      createAsyncIterableFixture(['n', 'a']),
+      (x: string) => x === 'b',
+    ],
+    [
+      createAsyncIterableFixture(['a', 'b', 'c']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncIterableFixture(['A', 'B', 'C']),
+      (x: string) => x.toLowerCase() === x,
+    ],
+    [
+      createAsyncIterableFixture(['os', 'php', 'linux']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncIterableFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      (x: Array<number>) => x.length === 4,
+    ],
+    [
+      createAsyncIterableFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      async (x: Array<number>) => {
+        await asyncTimeout(1);
+        return x.length === 4;
+      },
+    ],
+  ];
+}
+
+function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      () => true,
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      () => false,
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      (x: number) => x === 2,
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3]),
+      (x: number) => x >= 4,
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+      (x: number) => x < 1,
+    ],
+    [
+      createAsyncIteratorFixture(['a']),
+      (x: string) => x === 'b',
+    ],
+    [
+      createAsyncIteratorFixture(['n', 'a']),
+      (x: string) => x === 'b',
+    ],
+    [
+      createAsyncIteratorFixture(['a', 'b', 'c']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncIteratorFixture(['A', 'B', 'C']),
+      (x: string) => x.toLowerCase() === x,
+    ],
+    [
+      createAsyncIteratorFixture(['os', 'php', 'linux']),
+      (x: string) => x.toUpperCase() === x,
+    ],
+    [
+      createAsyncIteratorFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      (x: Array<number>) => x.length === 4,
+    ],
+    [
+      createAsyncIteratorFixture([[1, 3], ['a'], [1.1, 2.2, 3.3]]),
+      async (x: Array<number>) => {
+        await asyncTimeout(1);
+        return x.length === 4;
+      },
     ],
   ];
 }

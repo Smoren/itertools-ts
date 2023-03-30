@@ -1,6 +1,15 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { single, summary, FlatMapper } from "../../src";
+import {
+  createAsyncGeneratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture,
+  asyncTimeout,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  // @ts-ignore
+} from "../fixture";
+import { single, summary, FlatMapper, AsyncFlatMapper } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
@@ -23,6 +32,43 @@ describe.each([
 
       // When
       for (const item of single.flatMap(input, mapper)) {
+        result.push(item);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  (datum: unknown) => unknown | Promise<unknown>,
+  Array<unknown>
+]>)(
+  "Single Flat Map Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    mapper: (datum: unknown) => unknown | Promise<unknown>,
+    expected: Array<unknown>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const item of single.flatMapAsync(input, mapper)) {
         result.push(item);
       }
 
@@ -842,6 +888,432 @@ function dataProviderForMaps(): Array<unknown> {
       createMapFixture([5, 4, -3, 20, 17, -33, -4, 18]),
       (x: [number, number]) => x[1] < 0 ? [] : (x[1] % 2 === 0 ? [x[1]] : [x[1] - 1, 1]),
       [4, 1, 4, 20, 16, 1, 18],
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      (item: number) => [item],
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([0]),
+      (item: number) => [item],
+      [0],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      (item: number) => [item],
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([2]),
+      (item: number) => [item],
+      [2],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item],
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncGeneratorFixture([2]),
+      (item: number) => [item, item],
+      [2, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, item],
+      [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, -item],
+      [0, -0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5],
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      (item: number) => single.repeat(item, item),
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([0]),
+      (item: number) => single.repeat(item, item),
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      (item: number) => single.repeat(item, item),
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([2]),
+      (item: number) => single.repeat(item, item),
+      [2, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => single.repeat(item, item),
+      [1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5],
+    ],
+    [
+      createAsyncGeneratorFixture([
+        { 'name': 'bird', 'eggs': 2},
+        { 'name': 'lizard', 'eggs': 3},
+        { 'name': 'echidna', 'eggs': 1},
+        { 'name': 'tyrannosaur', 'eggs': 0},
+      ]),
+      (animal: Record<string, string|number>) => single.repeat(animal['name'], animal['eggs'] as number),
+      ['bird', 'bird', 'lizard', 'lizard', 'lizard', 'echidna'],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func)
+        : [item],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func)
+        : item,
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+      (item: number) => item + 1,
+      [2, 3, 4, 5, 6]
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+      (item: number) => (item % 2 === 0) ? [item, item] : item,
+      [1, 2, 2, 3, 4, 4, 5]
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, [3], [4, 5], 6, []]),
+      (x: number|Array<number>) => x,
+      [1, 2, 3, 4, 5, 6],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, item, [item]],
+      [0, 0, [0], 1, 1, [1], 2, 2, [2], 3, 3, [3], 4, 4, [4], 5, 5, [5]],
+    ],
+    [
+      createAsyncGeneratorFixture(["it's Sunny in", "", "California"]),
+      (words: string) => words.split(' '),
+      ["it's", "Sunny", "in", "", "California"],
+    ],
+    [
+      createAsyncGeneratorFixture([5, 4, -3, 20, 17, -33, -4, 18]),
+      (x: number) => x < 0 ? [] : (x % 2 === 0 ? [x] : [x - 1, 1]),
+      [4, 1, 4, 20, 16, 1, 18],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      async (item: number) => {
+        await asyncTimeout(1);
+        return [item, item];
+      },
+      [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      async (item: Array<number>|number, func: AsyncFlatMapper<number, number>) => {
+        await asyncTimeout(1);
+        return summary.isIterable(item)
+          ? single.flatMapAsync(item as Array<number>, func)
+          : item
+      },
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      (item: number) => [item],
+      [],
+    ],
+    [
+      createAsyncIterableFixture([0]),
+      (item: number) => [item],
+      [0],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      (item: number) => [item],
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([2]),
+      (item: number) => [item],
+      [2],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item],
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIterableFixture([2]),
+      (item: number) => [item, item],
+      [2, 2],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, item],
+      [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, -item],
+      [0, -0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5],
+    ],
+    [
+      createAsyncIterableFixture([]),
+      (item: number) => single.repeat(item, item),
+      [],
+    ],
+    [
+      createAsyncIterableFixture([0]),
+      (item: number) => single.repeat(item, item),
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      (item: number) => single.repeat(item, item),
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([2]),
+      (item: number) => single.repeat(item, item),
+      [2, 2],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => single.repeat(item, item),
+      [1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5],
+    ],
+    [
+      createAsyncIterableFixture([
+        { 'name': 'bird', 'eggs': 2},
+        { 'name': 'lizard', 'eggs': 3},
+        { 'name': 'echidna', 'eggs': 1},
+        { 'name': 'tyrannosaur', 'eggs': 0},
+      ]),
+      (animal: Record<string, string|number>) => single.repeat(animal['name'], animal['eggs'] as number),
+      ['bird', 'bird', 'lizard', 'lizard', 'lizard', 'echidna'],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func)
+        : [item],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func)
+        : item,
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5]),
+      (item: number) => item + 1,
+      [2, 3, 4, 5, 6]
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5]),
+      (item: number) => (item % 2 === 0) ? [item, item] : item,
+      [1, 2, 2, 3, 4, 4, 5]
+    ],
+    [
+      createAsyncIterableFixture([1, 2, [3], [4, 5], 6, []]),
+      (x: number|Array<number>) => x,
+      [1, 2, 3, 4, 5, 6],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, item, [item]],
+      [0, 0, [0], 1, 1, [1], 2, 2, [2], 3, 3, [3], 4, 4, [4], 5, 5, [5]],
+    ],
+    [
+      createAsyncIterableFixture(["it's Sunny in", "", "California"]),
+      (words: string) => words.split(' '),
+      ["it's", "Sunny", "in", "", "California"],
+    ],
+    [
+      createAsyncIterableFixture([5, 4, -3, 20, 17, -33, -4, 18]),
+      (x: number) => x < 0 ? [] : (x % 2 === 0 ? [x] : [x - 1, 1]),
+      [4, 1, 4, 20, 16, 1, 18],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      async (item: number) => {
+        await asyncTimeout(1);
+        return [item, item];
+      },
+      [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      async (item: Array<number>|number, func: AsyncFlatMapper<number, number>) => {
+        await asyncTimeout(1);
+        return summary.isIterable(item)
+          ? single.flatMapAsync(item as Array<number>, func)
+          : item
+      },
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      (item: number) => [item],
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([0]),
+      (item: number) => [item],
+      [0],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      (item: number) => [item],
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([2]),
+      (item: number) => [item],
+      [2],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item],
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIteratorFixture([2]),
+      (item: number) => [item, item],
+      [2, 2],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, item],
+      [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, -item],
+      [0, -0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5],
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      (item: number) => single.repeat(item, item),
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([0]),
+      (item: number) => single.repeat(item, item),
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      (item: number) => single.repeat(item, item),
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([2]),
+      (item: number) => single.repeat(item, item),
+      [2, 2],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => single.repeat(item, item),
+      [1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5],
+    ],
+    [
+      createAsyncIteratorFixture([
+        { 'name': 'bird', 'eggs': 2},
+        { 'name': 'lizard', 'eggs': 3},
+        { 'name': 'echidna', 'eggs': 1},
+        { 'name': 'tyrannosaur', 'eggs': 0},
+      ]),
+      (animal: Record<string, string|number>) => single.repeat(animal['name'], animal['eggs'] as number),
+      ['bird', 'bird', 'lizard', 'lizard', 'lizard', 'echidna'],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func)
+        : [item],
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func)
+        : item,
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+      (item: number) => item + 1,
+      [2, 3, 4, 5, 6]
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+      (item: number) => (item % 2 === 0) ? [item, item] : item,
+      [1, 2, 2, 3, 4, 4, 5]
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, [3], [4, 5], 6, []]),
+      (x: number|Array<number>) => x,
+      [1, 2, 3, 4, 5, 6],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (item: number) => [item, item, [item]],
+      [0, 0, [0], 1, 1, [1], 2, 2, [2], 3, 3, [3], 4, 4, [4], 5, 5, [5]],
+    ],
+    [
+      createAsyncIteratorFixture(["it's Sunny in", "", "California"]),
+      (words: string) => words.split(' '),
+      ["it's", "Sunny", "in", "", "California"],
+    ],
+    [
+      createAsyncIteratorFixture([5, 4, -3, 20, 17, -33, -4, 18]),
+      (x: number) => x < 0 ? [] : (x % 2 === 0 ? [x] : [x - 1, 1]),
+      [4, 1, 4, 20, 16, 1, 18],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      async (item: number) => {
+        await asyncTimeout(1);
+        return [item, item];
+      },
+      [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
+      async (item: Array<number>|number, func: AsyncFlatMapper<number, number>) => {
+        await asyncTimeout(1);
+        return summary.isIterable(item)
+          ? single.flatMapAsync(item as Array<number>, func)
+          : item
+      },
+      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
   ];
 }

@@ -1,5 +1,12 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  // @ts-ignore
+} from "../fixture";
 import { set } from "../../src";
 
 describe.each([
@@ -22,6 +29,40 @@ describe.each([
 
       // When
       for (const item of set.intersection(...input)) {
+        result.push(item);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMixed(),
+] as Array<[Array<
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
+>, Array<unknown>]>)(
+  "Set Intersection Async Test",
+  (
+    input: Array<AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>>,
+    expected: Array<unknown>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const item of set.intersectionAsync(...input)) {
         result.push(item);
       }
 
@@ -1063,6 +1104,582 @@ function dataProviderForSets(): Array<unknown> {
         new Set([1, 3, 5, 7, 9, 11]),
       ],
       [3, 5, 7],
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    // sets:
+    [
+      [],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([]),
+        createAsyncGeneratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([]),
+        createAsyncGeneratorFixture([]),
+        createAsyncGeneratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1]),
+        createAsyncGeneratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([]),
+        createAsyncGeneratorFixture([2]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([2]),
+        createAsyncGeneratorFixture([2]),
+      ],
+      [2],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2]),
+        createAsyncGeneratorFixture([3, 4]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2]),
+        createAsyncGeneratorFixture([2, 3]),
+      ],
+      [2],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+        createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+      ],
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+        createAsyncGeneratorFixture([1, 2, 3, '4', '5']),
+      ],
+      [1, 2, 3],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture(['1', '2', '3', 4, 5]),
+        createAsyncGeneratorFixture([1, 2, 3, '4', '5']),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([null, 1, 2, 3, 100, null]),
+        createAsyncGeneratorFixture([null, 0, 1, 2, 3, 4, null]),
+        createAsyncGeneratorFixture([null, -1, 0, 1, 2, 3, 4, 5, null]),
+        createAsyncGeneratorFixture([null, -2, -1, 0, 1, 2, 3, 4, 5, 6, null]),
+        createAsyncGeneratorFixture([null, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, null]),
+      ],
+      [null, 1, 2, 3, null],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture(['1', 2, '3.3', true, false]),
+        createAsyncGeneratorFixture([true, '2', 3.3, '4', true]),
+      ],
+      [true],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+        createAsyncGeneratorFixture(['1', '2', 3, 4, 5, 6, 7, '8', '9']),
+        createAsyncGeneratorFixture([1, 3, 5, 7, 9, 11]),
+      ],
+      [3, 5, 7],
+    ],
+    // multisets:
+    [
+      [
+        createAsyncGeneratorFixture([1, 1, 2]),
+        createAsyncGeneratorFixture([2, 2, 3]),
+      ],
+      [2],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 1, 1, 3]),
+        createAsyncGeneratorFixture([1, 1, 2]),
+      ],
+      [1, 1],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 1, 2, 4]),
+        createAsyncGeneratorFixture([1, 1, 1, 2, 3]),
+      ],
+      [1, 1, 2],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 1, 2, 2, 1, 1]),
+        createAsyncGeneratorFixture([2, 2, 1, 1, 2, 2]),
+      ],
+      [2, 1, 2, 1],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 1, 2, 2, 1, 1]),
+        createAsyncGeneratorFixture([2, 2, 1, 1, '2', '2']),
+      ],
+      [2, 1, 2, 1],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 1, 2, 2, 1, 1]),
+        createAsyncGeneratorFixture([2, 2, '1', '1', 2, 2]),
+      ],
+      [2, 2],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 1, 1, 1, 1]),
+        createAsyncGeneratorFixture([1, 2, 3, 4, 5, 1, 2, 3, 4, 5]),
+        createAsyncGeneratorFixture([5, 5, 5, 5, 5, 1, 5, 5, 1]),
+      ],
+      [1, 1],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 1, 1, 1, 'a']),
+        createAsyncGeneratorFixture([1, 2, 3, 4, 5, 'a', 2, 3, 4, 5]),
+        createAsyncGeneratorFixture([5, 5, 5, 5, 5, 'a', 5, 5, 1]),
+      ],
+      ['a', 1],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture(['l', 'l', 'm', 'n', 'p', 'q', 'q', 'r']),
+        createAsyncGeneratorFixture(['l', 'm', 'm', 'p', 'q', 'r', 'r', 'r', 'r']),
+      ],
+      ['l', 'm', 'p', 'q', 'r'],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture([1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]),
+        createAsyncGeneratorFixture([4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9]),
+      ],
+      [4, 4, 5, 5, 6, 6],
+    ],
+    [
+      [
+        createAsyncGeneratorFixture(['a', 'a', 'b', 'b', 'b', 'c', 'd', 'd']),
+        createAsyncGeneratorFixture(['b', 'b', 'c', 'c', 'c', 'd', 'd', 'e']),
+      ],
+      ['b', 'b', 'c', 'd', 'd'],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    // sets:
+    [
+      [],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([]),
+        createAsyncIterableFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([]),
+        createAsyncIterableFixture([]),
+        createAsyncIterableFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1]),
+        createAsyncIterableFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([]),
+        createAsyncIterableFixture([2]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([2]),
+        createAsyncIterableFixture([2]),
+      ],
+      [2],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2]),
+        createAsyncIterableFixture([3, 4]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2]),
+        createAsyncIterableFixture([2, 3]),
+      ],
+      [2],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2, 3, 4, 5]),
+        createAsyncIterableFixture([1, 2, 3, 4, 5]),
+      ],
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2, 3, 4, 5]),
+        createAsyncIterableFixture([1, 2, 3, '4', '5']),
+      ],
+      [1, 2, 3],
+    ],
+    [
+      [
+        createAsyncIterableFixture(['1', '2', '3', 4, 5]),
+        createAsyncIterableFixture([1, 2, 3, '4', '5']),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIterableFixture([null, 1, 2, 3, 100, null]),
+        createAsyncIterableFixture([null, 0, 1, 2, 3, 4, null]),
+        createAsyncIterableFixture([null, -1, 0, 1, 2, 3, 4, 5, null]),
+        createAsyncIterableFixture([null, -2, -1, 0, 1, 2, 3, 4, 5, 6, null]),
+        createAsyncIterableFixture([null, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, null]),
+      ],
+      [null, 1, 2, 3, null],
+    ],
+    [
+      [
+        createAsyncIterableFixture(['1', 2, '3.3', true, false]),
+        createAsyncIterableFixture([true, '2', 3.3, '4', true]),
+      ],
+      [true],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+        createAsyncIterableFixture(['1', '2', 3, 4, 5, 6, 7, '8', '9']),
+        createAsyncIterableFixture([1, 3, 5, 7, 9, 11]),
+      ],
+      [3, 5, 7],
+    ],
+    // multisets:
+    [
+      [
+        createAsyncIterableFixture([1, 1, 2]),
+        createAsyncIterableFixture([2, 2, 3]),
+      ],
+      [2],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 1, 1, 3]),
+        createAsyncIterableFixture([1, 1, 2]),
+      ],
+      [1, 1],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 1, 2, 4]),
+        createAsyncIterableFixture([1, 1, 1, 2, 3]),
+      ],
+      [1, 1, 2],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 1, 2, 2, 1, 1]),
+        createAsyncIterableFixture([2, 2, 1, 1, 2, 2]),
+      ],
+      [2, 1, 2, 1],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 1, 2, 2, 1, 1]),
+        createAsyncIterableFixture([2, 2, 1, 1, '2', '2']),
+      ],
+      [2, 1, 2, 1],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 1, 2, 2, 1, 1]),
+        createAsyncIterableFixture([2, 2, '1', '1', 2, 2]),
+      ],
+      [2, 2],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 1, 1, 1, 1]),
+        createAsyncIterableFixture([1, 2, 3, 4, 5, 1, 2, 3, 4, 5]),
+        createAsyncIterableFixture([5, 5, 5, 5, 5, 1, 5, 5, 1]),
+      ],
+      [1, 1],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 1, 1, 1, 'a']),
+        createAsyncIterableFixture([1, 2, 3, 4, 5, 'a', 2, 3, 4, 5]),
+        createAsyncIterableFixture([5, 5, 5, 5, 5, 'a', 5, 5, 1]),
+      ],
+      ['a', 1],
+    ],
+    [
+      [
+        createAsyncIterableFixture(['l', 'l', 'm', 'n', 'p', 'q', 'q', 'r']),
+        createAsyncIterableFixture(['l', 'm', 'm', 'p', 'q', 'r', 'r', 'r', 'r']),
+      ],
+      ['l', 'm', 'p', 'q', 'r'],
+    ],
+    [
+      [
+        createAsyncIterableFixture([1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]),
+        createAsyncIterableFixture([4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9]),
+      ],
+      [4, 4, 5, 5, 6, 6],
+    ],
+    [
+      [
+        createAsyncIterableFixture(['a', 'a', 'b', 'b', 'b', 'c', 'd', 'd']),
+        createAsyncIterableFixture(['b', 'b', 'c', 'c', 'c', 'd', 'd', 'e']),
+      ],
+      ['b', 'b', 'c', 'd', 'd'],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    // sets:
+    [
+      [],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([]),
+        createAsyncIteratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([]),
+        createAsyncIteratorFixture([]),
+        createAsyncIteratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1]),
+        createAsyncIteratorFixture([]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([]),
+        createAsyncIteratorFixture([2]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([2]),
+        createAsyncIteratorFixture([2]),
+      ],
+      [2],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2]),
+        createAsyncIteratorFixture([3, 4]),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2]),
+        createAsyncIteratorFixture([2, 3]),
+      ],
+      [2],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+        createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+      ],
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+        createAsyncIteratorFixture([1, 2, 3, '4', '5']),
+      ],
+      [1, 2, 3],
+    ],
+    [
+      [
+        createAsyncIteratorFixture(['1', '2', '3', 4, 5]),
+        createAsyncIteratorFixture([1, 2, 3, '4', '5']),
+      ],
+      [],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([null, 1, 2, 3, 100, null]),
+        createAsyncIteratorFixture([null, 0, 1, 2, 3, 4, null]),
+        createAsyncIteratorFixture([null, -1, 0, 1, 2, 3, 4, 5, null]),
+        createAsyncIteratorFixture([null, -2, -1, 0, 1, 2, 3, 4, 5, 6, null]),
+        createAsyncIteratorFixture([null, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, null]),
+      ],
+      [null, 1, 2, 3, null],
+    ],
+    [
+      [
+        createAsyncIteratorFixture(['1', 2, '3.3', true, false]),
+        createAsyncIteratorFixture([true, '2', 3.3, '4', true]),
+      ],
+      [true],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+        createAsyncIteratorFixture(['1', '2', 3, 4, 5, 6, 7, '8', '9']),
+        createAsyncIteratorFixture([1, 3, 5, 7, 9, 11]),
+      ],
+      [3, 5, 7],
+    ],
+    // multisets:
+    [
+      [
+        createAsyncIteratorFixture([1, 1, 2]),
+        createAsyncIteratorFixture([2, 2, 3]),
+      ],
+      [2],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 1, 1, 3]),
+        createAsyncIteratorFixture([1, 1, 2]),
+      ],
+      [1, 1],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 1, 2, 4]),
+        createAsyncIteratorFixture([1, 1, 1, 2, 3]),
+      ],
+      [1, 1, 2],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 1, 2, 2, 1, 1]),
+        createAsyncIteratorFixture([2, 2, 1, 1, 2, 2]),
+      ],
+      [2, 1, 2, 1],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 1, 2, 2, 1, 1]),
+        createAsyncIteratorFixture([2, 2, 1, 1, '2', '2']),
+      ],
+      [2, 1, 2, 1],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 1, 2, 2, 1, 1]),
+        createAsyncIteratorFixture([2, 2, '1', '1', 2, 2]),
+      ],
+      [2, 2],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 1, 1, 1, 1]),
+        createAsyncIteratorFixture([1, 2, 3, 4, 5, 1, 2, 3, 4, 5]),
+        createAsyncIteratorFixture([5, 5, 5, 5, 5, 1, 5, 5, 1]),
+      ],
+      [1, 1],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 1, 1, 1, 'a']),
+        createAsyncIteratorFixture([1, 2, 3, 4, 5, 'a', 2, 3, 4, 5]),
+        createAsyncIteratorFixture([5, 5, 5, 5, 5, 'a', 5, 5, 1]),
+      ],
+      ['a', 1],
+    ],
+    [
+      [
+        createAsyncIteratorFixture(['l', 'l', 'm', 'n', 'p', 'q', 'q', 'r']),
+        createAsyncIteratorFixture(['l', 'm', 'm', 'p', 'q', 'r', 'r', 'r', 'r']),
+      ],
+      ['l', 'm', 'p', 'q', 'r'],
+    ],
+    [
+      [
+        createAsyncIteratorFixture([1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6]),
+        createAsyncIteratorFixture([4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9]),
+      ],
+      [4, 4, 5, 5, 6, 6],
+    ],
+    [
+      [
+        createAsyncIteratorFixture(['a', 'a', 'b', 'b', 'b', 'c', 'd', 'd']),
+        createAsyncIteratorFixture(['b', 'b', 'c', 'c', 'c', 'd', 'd', 'e']),
+      ],
+      ['b', 'b', 'c', 'd', 'd'],
     ],
   ];
 }

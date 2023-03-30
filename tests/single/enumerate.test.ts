@@ -1,5 +1,13 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  createMapFixture
+  // @ts-ignore
+} from "../fixture";
 import { single } from "../../src";
 
 describe.each([
@@ -22,6 +30,41 @@ describe.each([
 
       // When
       for (const item of single.enumerate(input)) {
+        result.push(item);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  Array<unknown>
+]>)(
+  "Single Enumerate Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    expected: Array<unknown>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const item of single.enumerateAsync(input)) {
         result.push(item);
       }
 
@@ -301,6 +344,129 @@ function dataProviderForMaps(): Array<unknown> {
         [4, [4, 'Joey']],
         [5, [5, 'Phoebe']],
       ],
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1]),
+      [[0, 1]],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      [[0, 1], [1, 2], [2, 3]],
+    ],
+    [
+      createAsyncGeneratorFixture([1.1, 2.2, 3.3, 4.4, 5.5]),
+      [[0, 1.1], [1, 2.2], [2, 3.3], [3, 4.4], [4, 5.5]],
+    ],
+    [
+      createAsyncGeneratorFixture(['1', '2', '3', '4', '5']),
+      [[0, '1'], [1, '2'], [2, '3'], [3, '4'], [4, '5']],
+    ],
+    [
+      createAsyncGeneratorFixture([[1], [2], [3], [4], [5]]),
+      [[0, [1]], [1, [2]], [2, [3]], [3, [4]], [4, [5]]],
+    ],
+    [
+      createAsyncGeneratorFixture([true, true, false, false]),
+      [[0, true], [1, true], [2, false], [3, false]],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2.2, '3', [4], true, null, 'test data']),
+      [[0, 1], [1, 2.2], [2, '3'], [3, [4]], [4, true], [5, null], [6, 'test data']],
+    ],
+    [
+      createAsyncGeneratorFixture(['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey', 'Phoebe']),
+      [[0, 'Ross'], [1, 'Rachel'], [2, 'Chandler'], [3, 'Monica'], [4, 'Joey'], [5, 'Phoebe']],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1]),
+      [[0, 1]],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      [[0, 1], [1, 2], [2, 3]],
+    ],
+    [
+      createAsyncIterableFixture([1.1, 2.2, 3.3, 4.4, 5.5]),
+      [[0, 1.1], [1, 2.2], [2, 3.3], [3, 4.4], [4, 5.5]],
+    ],
+    [
+      createAsyncIterableFixture(['1', '2', '3', '4', '5']),
+      [[0, '1'], [1, '2'], [2, '3'], [3, '4'], [4, '5']],
+    ],
+    [
+      createAsyncIterableFixture([[1], [2], [3], [4], [5]]),
+      [[0, [1]], [1, [2]], [2, [3]], [3, [4]], [4, [5]]],
+    ],
+    [
+      createAsyncIterableFixture([true, true, false, false]),
+      [[0, true], [1, true], [2, false], [3, false]],
+    ],
+    [
+      createAsyncIterableFixture([1, 2.2, '3', [4], true, null, 'test data']),
+      [[0, 1], [1, 2.2], [2, '3'], [3, [4]], [4, true], [5, null], [6, 'test data']],
+    ],
+    [
+      createAsyncIterableFixture(['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey', 'Phoebe']),
+      [[0, 'Ross'], [1, 'Rachel'], [2, 'Chandler'], [3, 'Monica'], [4, 'Joey'], [5, 'Phoebe']],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1]),
+      [[0, 1]],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      [[0, 1], [1, 2], [2, 3]],
+    ],
+    [
+      createAsyncIteratorFixture([1.1, 2.2, 3.3, 4.4, 5.5]),
+      [[0, 1.1], [1, 2.2], [2, 3.3], [3, 4.4], [4, 5.5]],
+    ],
+    [
+      createAsyncIteratorFixture(['1', '2', '3', '4', '5']),
+      [[0, '1'], [1, '2'], [2, '3'], [3, '4'], [4, '5']],
+    ],
+    [
+      createAsyncIteratorFixture([[1], [2], [3], [4], [5]]),
+      [[0, [1]], [1, [2]], [2, [3]], [3, [4]], [4, [5]]],
+    ],
+    [
+      createAsyncIteratorFixture([true, true, false, false]),
+      [[0, true], [1, true], [2, false], [3, false]],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2.2, '3', [4], true, null, 'test data']),
+      [[0, 1], [1, 2.2], [2, '3'], [3, [4]], [4, true], [5, null], [6, 'test data']],
+    ],
+    [
+      createAsyncIteratorFixture(['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey', 'Phoebe']),
+      [[0, 'Ross'], [1, 'Rachel'], [2, 'Chandler'], [3, 'Monica'], [4, 'Joey'], [5, 'Phoebe']],
     ],
   ];
 }

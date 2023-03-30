@@ -1,5 +1,12 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import {
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture,
+  // @ts-ignore
+} from "../fixture";
 import { single } from "../../src";
 
 describe.each([
@@ -21,6 +28,40 @@ describe.each([
 
       // When
       for (const item of single.keys(input)) {
+        result.push(item);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[
+  AsyncIterable<[unknown, unknown]>|AsyncIterator<[unknown, unknown]>|Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>,
+  Array<unknown>
+]>)(
+  "Single Keys Async Test",
+  (
+    input: AsyncIterable<[unknown, unknown]>|AsyncIterator<[unknown, unknown]>|Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>,
+    expected: Array<unknown>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const item of single.keysAsync(input)) {
         result.push(item);
       }
 
@@ -271,6 +312,129 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       new Map([[['bondage'], ['b']], [['domination'], ['d']], [['sadism'], ['s']], [['masochism'], ['m']]]),
+      [['bondage'], ['domination'], ['sadism'], ['masochism']],
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2]]),
+      [1],
+    ],
+    [
+      createAsyncGeneratorFixture([[undefined, null]]),
+      [undefined],
+    ],
+    [
+      createAsyncGeneratorFixture([[null, undefined]]),
+      [null],
+    ],
+    [
+      createAsyncGeneratorFixture([[null, undefined], [undefined, null], [undefined, undefined], [null, null]]),
+      [null, undefined, undefined, null],
+    ],
+    [
+      createAsyncGeneratorFixture([[1, 2], [2, 3], [3, 4]]),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([['bondage', 'b'], ['domination', 'd'], ['sadism', 's'], ['masochism', 'm']]),
+      ['bondage', 'domination', 'sadism', 'masochism'],
+    ],
+    [
+      createAsyncGeneratorFixture([['bondage', ['b']], ['domination', ['d']], ['sadism', ['s']], ['masochism', ['m']]]),
+      ['bondage', 'domination', 'sadism', 'masochism'],
+    ],
+    [
+      createAsyncGeneratorFixture([[['bondage'], ['b']], [['domination'], ['d']], [['sadism'], ['s']], [['masochism'], ['m']]]),
+      [['bondage'], ['domination'], ['sadism'], ['masochism']],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      [],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2]]),
+      [1],
+    ],
+    [
+      createAsyncIterableFixture([[undefined, null]]),
+      [undefined],
+    ],
+    [
+      createAsyncIterableFixture([[null, undefined]]),
+      [null],
+    ],
+    [
+      createAsyncIterableFixture([[null, undefined], [undefined, null], [undefined, undefined], [null, null]]),
+      [null, undefined, undefined, null],
+    ],
+    [
+      createAsyncIterableFixture([[1, 2], [2, 3], [3, 4]]),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIterableFixture([['bondage', 'b'], ['domination', 'd'], ['sadism', 's'], ['masochism', 'm']]),
+      ['bondage', 'domination', 'sadism', 'masochism'],
+    ],
+    [
+      createAsyncIterableFixture([['bondage', ['b']], ['domination', ['d']], ['sadism', ['s']], ['masochism', ['m']]]),
+      ['bondage', 'domination', 'sadism', 'masochism'],
+    ],
+    [
+      createAsyncIterableFixture([[['bondage'], ['b']], [['domination'], ['d']], [['sadism'], ['s']], [['masochism'], ['m']]]),
+      [['bondage'], ['domination'], ['sadism'], ['masochism']],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2]]),
+      [1],
+    ],
+    [
+      createAsyncIteratorFixture([[undefined, null]]),
+      [undefined],
+    ],
+    [
+      createAsyncIteratorFixture([[null, undefined]]),
+      [null],
+    ],
+    [
+      createAsyncIteratorFixture([[null, undefined], [undefined, null], [undefined, undefined], [null, null]]),
+      [null, undefined, undefined, null],
+    ],
+    [
+      createAsyncIteratorFixture([[1, 2], [2, 3], [3, 4]]),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIteratorFixture([['bondage', 'b'], ['domination', 'd'], ['sadism', 's'], ['masochism', 'm']]),
+      ['bondage', 'domination', 'sadism', 'masochism'],
+    ],
+    [
+      createAsyncIteratorFixture([['bondage', ['b']], ['domination', ['d']], ['sadism', ['s']], ['masochism', ['m']]]),
+      ['bondage', 'domination', 'sadism', 'masochism'],
+    ],
+    [
+      createAsyncIteratorFixture([[['bondage'], ['b']], [['domination'], ['d']], [['sadism'], ['s']], [['masochism'], ['m']]]),
       [['bondage'], ['domination'], ['sadism'], ['masochism']],
     ],
   ];

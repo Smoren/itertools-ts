@@ -1,5 +1,11 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from "../fixture";
+import {
+  asyncTimeout,
+  createAsyncGeneratorFixture, createAsyncIterableFixture, createAsyncIteratorFixture,
+  createGeneratorFixture,
+  createIterableFixture,
+  createIteratorFixture
+  // @ts-ignore
+} from "../fixture";
 import { single } from "../../src";
 
 describe.each([
@@ -23,6 +29,43 @@ describe.each([
 
       // When
       for (const item of single.map(input, mapper)) {
+        result.push(item);
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[
+  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+  (datum: unknown) => unknown | Promise<unknown>,
+  Array<unknown>
+]>)(
+  "Single Map Async Test",
+  (
+    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
+    mapper: (datum: unknown) => unknown | Promise<unknown>,
+    expected: Array<unknown>
+  ) => {
+    it("", async () => {
+      // Given
+      const result = [];
+
+      // When
+      for await (const item of single.mapAsync(input, mapper)) {
         result.push(item);
       }
 
@@ -327,6 +370,165 @@ function dataProviderForMaps(): Array<unknown> {
     [
       new Map([['one', 'one'], ['Two', 'Two'], ['ThReE', 'ThReE'], ['FOUR', 'FOUR']]),
       (x: [string, string]) => x[1].toUpperCase(),
+      ['ONE', 'TWO', 'THREE', 'FOUR'],
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      (x: number) => x + 1,
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      (x: number) => Math.sqrt(x),
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x + 1,
+      [1, 2, 3, 4, 5, 6],
+    ],
+    [
+      createAsyncGeneratorFixture(["IterToolsTS", "MathTS", "SubnetCalculator"]),
+      (x: string) => `${x} is great!`,
+      ["IterToolsTS is great!", "MathTS is great!", "SubnetCalculator is great!"],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 4, 9, 16, 25]),
+      (x: number) => Math.sqrt(x),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncGeneratorFixture([1, -2, 3, -4, 5]),
+      (x: number) => Math.abs(x),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncGeneratorFixture(['one', 'Two', 'ThReE', 'FOUR']),
+      (x: string) => x.toUpperCase(),
+      ['ONE', 'TWO', 'THREE', 'FOUR'],
+    ],
+    [
+      createAsyncGeneratorFixture(['one', 'Two', 'ThReE', 'FOUR']),
+      async (x: string) => {
+        await asyncTimeout(1);
+        return x.toUpperCase();
+      },
+      ['ONE', 'TWO', 'THREE', 'FOUR'],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      (x: number) => x + 1,
+      [],
+    ],
+    [
+      createAsyncIterableFixture([]),
+      (x: number) => Math.sqrt(x),
+      [],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x + 1,
+      [1, 2, 3, 4, 5, 6],
+    ],
+    [
+      createAsyncIterableFixture(["IterToolsTS", "MathTS", "SubnetCalculator"]),
+      (x: string) => `${x} is great!`,
+      ["IterToolsTS is great!", "MathTS is great!", "SubnetCalculator is great!"],
+    ],
+    [
+      createAsyncIterableFixture([1, 4, 9, 16, 25]),
+      (x: number) => Math.sqrt(x),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIterableFixture([1, -2, 3, -4, 5]),
+      (x: number) => Math.abs(x),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIterableFixture(['one', 'Two', 'ThReE', 'FOUR']),
+      (x: string) => x.toUpperCase(),
+      ['ONE', 'TWO', 'THREE', 'FOUR'],
+    ],
+    [
+      createAsyncIterableFixture(['one', 'Two', 'ThReE', 'FOUR']),
+      async (x: string) => {
+        await asyncTimeout(1);
+        return x.toUpperCase();
+      },
+      ['ONE', 'TWO', 'THREE', 'FOUR'],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      (x: number) => x + 1,
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      (x: number) => Math.sqrt(x),
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x,
+      [0, 1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
+      (x: number) => x + 1,
+      [1, 2, 3, 4, 5, 6],
+    ],
+    [
+      createAsyncIteratorFixture(["IterToolsTS", "MathTS", "SubnetCalculator"]),
+      (x: string) => `${x} is great!`,
+      ["IterToolsTS is great!", "MathTS is great!", "SubnetCalculator is great!"],
+    ],
+    [
+      createAsyncIteratorFixture([1, 4, 9, 16, 25]),
+      (x: number) => Math.sqrt(x),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIteratorFixture([1, -2, 3, -4, 5]),
+      (x: number) => Math.abs(x),
+      [1, 2, 3, 4, 5],
+    ],
+    [
+      createAsyncIteratorFixture(['one', 'Two', 'ThReE', 'FOUR']),
+      (x: string) => x.toUpperCase(),
+      ['ONE', 'TWO', 'THREE', 'FOUR'],
+    ],
+    [
+      createAsyncIteratorFixture(['one', 'Two', 'ThReE', 'FOUR']),
+      async (x: string) => {
+        await asyncTimeout(1);
+        return x.toUpperCase();
+      },
       ['ONE', 'TWO', 'THREE', 'FOUR'],
     ],
   ];
