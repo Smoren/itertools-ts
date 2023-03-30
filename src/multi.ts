@@ -11,15 +11,15 @@ import { createMultipleIterator, MultipleIterationMode } from "./tools";
  *
  * @param iterables
  */
-export function* zip(
-  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-): Iterable<Array<unknown>> {
+export function* zip<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+  ...iterables: T
+): Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.SHORTEST,
     undefined,
     ...iterables
   )) {
-    yield values;
+    yield values as { [K in keyof T]: T[K] extends (infer V)[] ? V : never };
   }
 }
 
@@ -35,10 +35,10 @@ export function* zip(
  * @param filler
  * @param iterables
  */
-export function* zipFilled(
-  filler: unknown,
-  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-): Iterable<Array<unknown>> {
+export function* zipFilled<T extends Array<Iterable<unknown> | Iterator<unknown>>, F>(
+  filler: F,
+  ...iterables: T
+): Iterable<{ [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F }> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.LONGEST,
     filler,
@@ -59,9 +59,9 @@ export function* zipFilled(
  *
  * @param iterables
  */
-export function* zipLongest(
-  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-): Iterable<Array<unknown>> {
+export function* zipLongest<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+  ...iterables: T
+): Iterable<{ [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | undefined }> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.LONGEST,
     undefined,
@@ -81,15 +81,15 @@ export function* zipLongest(
  *
  * @throws LengthError if iterators lengths not equal.
  */
-export function* zipEqual(
-  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-): Iterable<Array<unknown>> {
+export function* zipEqual<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+  ...iterables: T
+): Iterable<Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.STRICT_EQUAL,
     undefined,
     ...iterables
   )) {
-    yield values;
+    yield values as { [K in keyof T]: T[K] extends (infer V)[] ? V : never };
   }
 }
 
@@ -100,9 +100,9 @@ export function* zipEqual(
  *
  * @param iterables
  */
-export function* chain(
-  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-): Iterable<unknown> {
+export function* chain<T>(
+  ...iterables: Array<Iterable<T> | Iterator<T>>
+): Iterable<T> {
   for (const iterable of iterables) {
     for (const item of toIterable(iterable)) {
       yield item;

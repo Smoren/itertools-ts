@@ -1,5 +1,11 @@
 # IterTools Typescript Change Log
 
+## v1.15.0 - 2022-03-30
+
+### Improvements
+* multi
+  * all function interfaces are clarified
+
 ## v1.14.0 - 2022-03-28
 
 ### New Features

@@ -236,9 +236,9 @@ Usage
 Chain multiple iterables together into a single continuous sequence.
 
 ```
-function* chain(
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Iterable<unknown>
+function* chain<T>(
+  ...iterables: Array<Iterable<T> | Iterator<T>>
+): Iterable<T>
 ```
 ```typescript
 import { multi } from 'itertools-ts';
@@ -256,9 +256,9 @@ for (const movie of multi.chain(prequels, originals)) {
 Iterate multiple iterable collections simultaneously.
 
 ```
-function* zip(
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Iterable<Array<unknown>>
+function* zip<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+  ...iterables: T
+): Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }>
 ```
 
 ```typescript
@@ -292,10 +292,10 @@ Note: For uneven lengths, iteration stops when the shortest iterable is exhauste
 Iterate multiple iterable collections simultaneously.
 
 ```
-function* zipFilled(
-  filler: unknown,
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Iterable<Array<unknown>>
+function* zipFilled<T extends Array<Iterable<unknown> | Iterator<unknown>>, F>(
+  filler: F,
+  ...iterables: T
+): Iterable<{ [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F }>
 ```
 
 For uneven lengths, the exhausted iterables will produce `filler` value for the remaining iterations.
@@ -315,9 +315,9 @@ for (const [letter, number] of multi.zipFilled('filler', letters, numbers)) {
 Iterate multiple iterable collections simultaneously.
 
 ```
-function* zipLongest(
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Iterable<Array<unknown>>
+function* zipLongest<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+  ...iterables: T
+): Iterable<{ [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | undefined }>
 ```
 
 For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
