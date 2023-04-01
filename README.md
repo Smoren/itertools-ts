@@ -246,7 +246,7 @@ Quick Reference
 | [`toAverage`](#To-Average-1)             | Reduces stream to the mean average of its items | `stream.toAverage()`                    |
 | [`toCount`](#To-Count-1)                 | Reduces stream to its length                    | `stream.toCount()`                      |
 | [`toFirst`](#To-First-1)                 | Reduces stream to its first value               | `stream.toFirst()`                      |
-| [`toFirstAndLast`](#To-First-And-Last-1) | Reduces stream to its first and last values     | `sstream.toFirstAndLast()`              |
+| [`toFirstAndLast`](#To-First-And-Last-1) | Reduces stream to its first and last values     | `stream.toFirstAndLast()`               |
 | [`toLast`](#To-Last-1)                   | Reduces stream to its last value                | `stream.toLast()`                       |
 | [`toMax`](#To-Max-1)                     | Reduces stream to its max value                 | `stream.toMax([compareBy])`             |
 | [`toMin`](#To-Min-1)                     | Reduces stream to its min value                 | `stream.toMin([compareBy])`             |
