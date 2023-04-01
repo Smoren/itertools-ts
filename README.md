@@ -25,21 +25,33 @@ import { multi } from 'itertools-ts';
 for (const [letter, number] of multi.zip(['a', 'b'], [1, 2])) {
   console.log(`${letter}${number}`);  // a1, b2
 }
+
+// Async example
+for await (const [letter, number] of multi.zipAsync(['a', 'b'], [1, 2])) {
+  console.log(`${letter}${number}`);  // a1, b2
+}
 ```
 
 **Stream Iteration Tools Example**
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream, AsyncStream } from 'itertools-ts';
 
-const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
+const result1 = Stream.of([1, 1, 2, 2, 3, 4, 5])
+  .distinct()             // [1, 2, 3, 4, 5]
+  .map((x) => x**2)       // [1, 4, 9, 16, 25]
+  .filter((x) => x < 10)  // [1, 4, 9]
+  .toSum();               // 14
+
+// Async example
+const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5])
   .distinct()             // [1, 2, 3, 4, 5]
   .map((x) => x**2)       // [1, 4, 9, 16, 25]
   .filter((x) => x < 10)  // [1, 4, 9]
   .toSum();               // 14
 ```
 
-[More about Streams](#Stream)
+[More about Streams](#Stream-and-Async-Stream)
 
 All functions work on iterable collections and iterators:
 * `Array`
@@ -49,6 +61,12 @@ All functions work on iterable collections and iterators:
 * `Generator`
 * `Iterable`
 * `Iterator`
+
+Every function have an analog with "Async"-suffixed name for working with async iterable and iterators (e.g. `zip` and `zipAsync`):
+* `AsyncIterable`
+* `AsyncIterator`
+
+If an asynchronous function takes other functions as input, they can also be asynchronous.
 
 Setup
 -----
@@ -71,95 +89,98 @@ Quick Reference
 ### Loop Iteration Tools
 
 #### Multi Iteration
-| Iterator                     | Description                                                                                                       | Code Snippet                                 |
-|------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------|
-| [`chain`](#Chain)            | Chain multiple iterables together                                                                                 | `multi.chain(list1, list2, ...)`             |
-| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes                                 | `multi.zip(list1, list2, ...)`               |
-| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal                           | `multi.zipEqual(list1, list2, ...)`          |
-| [`zipFilled`](#Zip-Filled)   | Iterate multiple collections simultaneously until the longest iterator completes (with filler for uneven lengths) | `multi.zipFilled(filler, list1, list2, ...)` |
-| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes                                  | `multi.zipLongest(list1, list2, ...)`        |
+| Iterator                     | Description                                                                                                       | Sync Code Snippet                            | Async Code Snippet                                |
+|------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------|---------------------------------------------------|
+| [`chain`](#Chain)            | Chain multiple iterables together                                                                                 | `multi.chain(list1, list2, ...)`             | `multi.chainAsync(list1, list2, ...)`             |
+| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes                                 | `multi.zip(list1, list2, ...)`               | `multi.zipAsync(list1, list2, ...)`               |
+| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal                           | `multi.zipEqual(list1, list2, ...)`          | `multi.zipEqualAsync(list1, list2, ...)`          |
+| [`zipFilled`](#Zip-Filled)   | Iterate multiple collections simultaneously until the longest iterator completes (with filler for uneven lengths) | `multi.zipFilled(filler, list1, list2, ...)` | `multi.zipFilledAsync(filler, list1, list2, ...)` |
+| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes                                  | `multi.zipLongest(list1, list2, ...)`        | `multi.zipLongestAsync(list1, list2, ...)`        |
 
 #### Single Iteration
-| Iterator                                 | Description                                 | Code Snippet                                            |
-|------------------------------------------|---------------------------------------------|---------------------------------------------------------|
-| [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `single.chunkwise(data, chunkSize)`                     |
-| [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` |
-| [`compress`](#Compress)                  | Filter out elements not selected            | `single.compress(data, selectors)`                      |
-| [`dropWhile`](#Drop-While)               | Drop elements while predicate is true       | `single.dropWhile(data, predicate)`                     |
-| [`enumerate`](#Enumerate)                | Enumerates elements of collection           | `single.enumerate(data)`                                |
-| [`filter`](#Filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        |
-| [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          |
-| [`flatten`](#Flatten)                    | Flatten multidimensional iterable           | `single.flatten(data, [dimensions])`                    |
-| [`groupBy`](#Group-By)                   | Group data by a common element              | `single.groupBy(data, groupKeyFunction, [itemKeyFunc])` |
-| [`limit`](#Limit)                        | Iterate up to a limit                       | `single.limit(data, limit)`                             |
-| [`keys`](#Keys)                          | Iterate keys of key-value pairs             | `single.keys(data)`                                     |
-| [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              |
-| [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 |
-| [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      |
-| [`skip`](#Skip)                          | Iterate after skipping elements             | `single.skip(data, count, [offset])`                    |
-| [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice(data, [start], [count], [step])`          |
-| [`takeWhile`](#Take-While)               | Iterate elements while predicate is true    | `single.takeWhile(data, predicate)`                     |
-| [`values`](#Values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   |
+| Iterator                                 | Description                                 | Sync Code Snippet                                       | Async Code Snippet                                           |
+|------------------------------------------|---------------------------------------------|---------------------------------------------------------|--------------------------------------------------------------|
+| [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `single.chunkwise(data, chunkSize)`                     | `single.chunkwiseAsync(data, chunkSize)`                     |
+| [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` | `single.chunkwiseOverlapAsync(data, chunkSize, overlapSize)` |
+| [`compress`](#Compress)                  | Filter out elements not selected            | `single.compress(data, selectors)`                      | `single.compressAsync(data, selectors)`                      |
+| [`dropWhile`](#Drop-While)               | Drop elements while predicate is true       | `single.dropWhile(data, predicate)`                     | `single.dropWhileAsync(data, predicate)`                     |
+| [`enumerate`](#Enumerate)                | Enumerates elements of collection           | `single.enumerate(data)`                                | `single.enumerateAsync(data)`                                |
+| [`filter`](#Filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        | `single.filterAsync(data, predicate)`                        |
+| [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          | `single.flatMapAsync(data, mapper)`                          |
+| [`flatten`](#Flatten)                    | Flatten multidimensional iterable           | `single.flatten(data, [dimensions])`                    | `single.flattenAsync(data, [dimensions])`                    |
+| [`groupBy`](#Group-By)                   | Group data by a common element              | `single.groupBy(data, groupKeyFunction, [itemKeyFunc])` | `single.groupByAsync(data, groupKeyFunction, [itemKeyFunc])` |
+| [`limit`](#Limit)                        | Iterate up to a limit                       | `single.limit(data, limit)`                             | `single.limitAsync(data, limit)`                             |
+| [`keys`](#Keys)                          | Iterate keys of key-value pairs             | `single.keys(data)`                                     | `single.keysAsync(data)`                                     |
+| [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              | `single.mapAsync(data, mapper)`                              |
+| [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 | `single.pairwiseAsync(data)`                                 |
+| [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      | `single.repeatAsync(item, repetitions)`                      |
+| [`skip`](#Skip)                          | Iterate after skipping elements             | `single.skip(data, count, [offset])`                    | `single.skipAsync(data, count, [offset])`                    |
+| [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice(data, [start], [count], [step])`          | `single.sliceAsync(data, [start], [count], [step])`          |
+| [`takeWhile`](#Take-While)               | Iterate elements while predicate is true    | `single.takeWhile(data, predicate)`                     | `single.takeWhileAsync(data, predicate)`                     |
+| [`values`](#Values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   | `single.valuesAsync(data)`                                   |
 
 #### Math Iteration
-| Iterator                         | Description                | Code Snippet                                 |
-|----------------------------------|----------------------------|----------------------------------------------|
-| [`runningTotal`](#Running-Total) | Running total accumulation | `math.runningTotal(numbers, [initialValue])` |
+| Iterator                         | Description                | Sync Code Snippet                            | Async Code Snippet                                |
+|----------------------------------|----------------------------|----------------------------------------------|---------------------------------------------------|
+| [`runningTotal`](#Running-Total) | Running total accumulation | `math.runningTotal(numbers, [initialValue])` | `math.runningTotalAsync(numbers, [initialValue])` |
 
 #### Reduce
-| Reducer                                | Description                            | Code Snippet                                  |
-|----------------------------------------|----------------------------------------|-----------------------------------------------|
-| [`toAverage`](#To-Average)             | Mean average of elements               | `reduce.toAverage(numbers)`                   |
-| [`toCount`](#To-Count)                 | Reduce to length of iterable           | `reduce.toCount(data)`                        |
-| [`toFirst`](#To-First)                 | Reduce to its first value              | `reduce.toFirst(data)`                        |
-| [`toFirstAndLast`](#To-First-And-Last) | Reduce to its first and last values    | `reduce.toFirstAndLast(data)`                 |
-| [`toLast`](#To-Last)                   | Reduce to its last value               | `reduce.toLast(data)`                         |
-| [`toMax`](#To-Max)                     | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          |
-| [`toMin`](#To-Min)                     | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          |
-| [`toMin`](#To-Min-Max)                 | Reduce to its lower and upper bounds   | `reduce.toMinMax(numbers, [compareBy])`       |
-| [`toProduct`](#To-Product)             | Reduce to the product of its elements  | `reduce.toProduct(numbers)`                   |
-| [`toSum`](#To-Sum)                     | Reduce to the sum of its elements      | `reduce.toSum(numbers)`                       |
-| [`toValue`](#To-Value)                 | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` |
+| Reducer                                | Description                            | Sync Code Snippet                             | Async Code Snippet                                 |
+|----------------------------------------|----------------------------------------|-----------------------------------------------|----------------------------------------------------|
+| [`toAverage`](#To-Average)             | Mean average of elements               | `reduce.toAverage(numbers)`                   | `reduce.toAverageAsync(numbers)`                   |
+| [`toCount`](#To-Count)                 | Reduce to length of iterable           | `reduce.toCount(data)`                        | `reduce.toCountAsync(data)`                        |
+| [`toFirst`](#To-First)                 | Reduce to its first value              | `reduce.toFirst(data)`                        | `reduce.toFirstAsync(data)`                        |
+| [`toFirstAndLast`](#To-First-And-Last) | Reduce to its first and last values    | `reduce.toFirstAndLast(data)`                 | `reduce.toFirstAndLastAsync(data)`                 |
+| [`toLast`](#To-Last)                   | Reduce to its last value               | `reduce.toLast(data)`                         | `reduce.toLastAsync(data)`                         |
+| [`toMax`](#To-Max)                     | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          | `reduce.toMaxAsync(numbers, [compareBy])`          |
+| [`toMin`](#To-Min)                     | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          | `reduce.toMinAsync(numbers, [compareBy])`          |
+| [`toMin`](#To-Min-Max)                 | Reduce to its lower and upper bounds   | `reduce.toMinMax(numbers, [compareBy])`       | `reduce.toMinMaxAsync(numbers, [compareBy])`       |
+| [`toProduct`](#To-Product)             | Reduce to the product of its elements  | `reduce.toProduct(numbers)`                   | `reduce.toProductAsync(numbers)`                   |
+| [`toSum`](#To-Sum)                     | Reduce to the sum of its elements      | `reduce.toSum(numbers)`                       | `reduce.toSumAsync(numbers)`                       |
+| [`toValue`](#To-Value)                 | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` | `reduce.toValueAsync(data, reducer, initialValue)` |
 
 #### Set and multiset Iteration
-| Iterator                                       | Description                       | Code Snippet                                      |
-|------------------------------------------------|-----------------------------------|---------------------------------------------------|
-| [`distinct`](#Distinct)                        | Iterate only distinct items       | `set.distinct(data)`                              |
-| [`intersection`](#Intersection)                | Intersection of iterables         | `set.intersection(...iterables)`                  |
-| [`partialIntersection`](#Partial-Intersection) | Partial intersection of iterables | `set.partialIntersection(minCount, ...iterables)` |
-| [`symmetricDifference`](#Symmetric-Difference) | Symmetric difference of iterables | `set.symmetricDifference(...iterables)`           |
-| [`union`](#Union)                              | Union of iterables                | `set.union(...iterables)`                         |
+| Iterator                                       | Description                       | Sync Code Snippet                                 | Async Code Snippet                                     |
+|------------------------------------------------|-----------------------------------|---------------------------------------------------|--------------------------------------------------------|
+| [`distinct`](#Distinct)                        | Iterate only distinct items       | `set.distinct(data)`                              | `set.distinctAsync(data)`                              |
+| [`intersection`](#Intersection)                | Intersection of iterables         | `set.intersection(...iterables)`                  | `set.intersectionAsync(...iterables)`                  |
+| [`partialIntersection`](#Partial-Intersection) | Partial intersection of iterables | `set.partialIntersection(minCount, ...iterables)` | `set.partialIntersectionAsync(minCount, ...iterables)` |
+| [`symmetricDifference`](#Symmetric-Difference) | Symmetric difference of iterables | `set.symmetricDifference(...iterables)`           | `set.symmetricDifferenceAsync(...iterables)`           |
+| [`union`](#Union)                              | Union of iterables                | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
 
 #### Summary
-| Summary                      | Description                                       | Code Snippet                         |
-|------------------------------|---------------------------------------------------|--------------------------------------|
-| [`allMatch`](#All-Match)     | True if all items are true according to predicate | `summary.allMatch(data, predicate)`  |
-| [`allUnique`](#All-Unique)   | True if all elements in collection are unique     | `summary.allUnique(data)`            |
-| [`anyMatch`](#Any-Match)     | True if any item is true according to predicate   | `summary.anyMatch(data, predicate)`  |
-| [`isIterable`](#Is-Iterable) | True if given data is iterable                    | `summary.isIterable(data)`           |
-| [`isIterator`](#Is-Iterator) | True if given data is iterator                    | `summary.isIterator(data)`           |
-| [`isReversed`](#Is-Reversed) | True if iterable reverse sorted                   | `summary.isReversed(data)`           |
-| [`isSorted`](#Is-Sorted)     | True if iterable sorted                           | `summary.isSorted(data)`             |
-| [`isString`](#Is-String)     | True if given data is string                      | `summary.isString(data)`             |
-| [`noneMatch`](#None-Match)   | True if none of items true according to predicate | `summary.noneMatch(data, predicate)` |
-| [`same`](#Same)              | True if collections are the same                  | `summary.same(...collections)`       |
-| [`sameCount`](#Same-Count)   | True if collections have the same lengths         | `summary.sameCount(...collections)`  |
+| Summary                                 | Description                                       | Sync Code Snippet                    | Async Code Snippet                        |
+|-----------------------------------------|---------------------------------------------------|--------------------------------------|-------------------------------------------|
+| [`allMatch`](#All-Match)                | True if all items are true according to predicate | `summary.allMatch(data, predicate)`  | `summary.allMatchAsync(data, predicate)`  |
+| [`allUnique`](#All-Unique)              | True if all elements in collection are unique     | `summary.allUnique(data)`            | `summary.allUniqueAsync(data)`            |
+| [`anyMatch`](#Any-Match)                | True if any item is true according to predicate   | `summary.anyMatch(data, predicate)`  | `summary.anyMatchAsync(data, predicate)`  |
+| [`isAsyncIterable`](#Is-Async-Iterable) | True if given data is async iterable              | `summary.isAsyncIterable(data)`      | —                                         |
+| [`isIterable`](#Is-Iterable)            | True if given data is iterable                    | `summary.isIterable(data)`           | —                                         |
+| [`isIterator`](#Is-Iterator)            | True if given data is iterator                    | `summary.isIterator(data)`           | —                                         |
+| [`isReversed`](#Is-Reversed)            | True if iterable reverse sorted                   | `summary.isReversed(data)`           | `summary.isReversedAsync(data)`           |
+| [`isSorted`](#Is-Sorted)                | True if iterable sorted                           | `summary.isSorted(data)`             | `summary.isSortedAsync(data)`             |
+| [`isString`](#Is-String)                | True if given data is string                      | `summary.isString(data)`             | `summary.isStringAsync(data)`             |
+| [`noneMatch`](#None-Match)              | True if none of items true according to predicate | `summary.noneMatch(data, predicate)` | `summary.noneMatchAsync(data, predicate)` |
+| [`same`](#Same)                         | True if collections are the same                  | `summary.same(...collections)`       | `summary.sameAsync(...collections)`       |
+| [`sameCount`](#Same-Count)              | True if collections have the same lengths         | `summary.sameCount(...collections)`  | `summary.sameCountAsync(...collections)`  |
 
 #### Transform
-| Iterator                     | Description                       | Code Snippet                 |
-|------------------------------|-----------------------------------|------------------------------|
-| [`toArray`](#To-Array)       | Transforms collection to array    | `transform.toArray(data)`    |
-| [`toIterable`](#To-Iterable) | Transforms collection to iterable | `transform.toIterable(data)` |
-| [`toIterator`](#To-Iterator) | Transforms collection to iterator | `transform.toIterator(data)` |
-| [`toMap`](#To-Map)           | Transforms collection to map      | `transform.toMap(pairs)`     |
-| [`toSet`](#To-Set)           | Transforms collection to set      | `transform.toSet(data)`      |
+| Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet             |
+|-----------------------------------------|-----------------------------------------|-----------------------------------|--------------------------------|
+| [`toArray`](#To-Array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)` |
+| [`toAsyncIterable`](#To-Async-Iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                              |
+| [`toAsyncIterator`](#To-Async-Iterator) | Transforms collection to async iterator | `transform.toAsyncIterator(data)` | —                              |
+| [`toIterable`](#To-Iterable)            | Transforms collection to iterable       | `transform.toIterable(data)`      | —                              |
+| [`toIterator`](#To-Iterator)            | Transforms collection to iterator       | `transform.toIterator(data)`      | —                              |
+| [`toMap`](#To-Map)                      | Transforms collection to map            | `transform.toMap(pairs)`          | `transform.toMapAsync(pairs)`  |
+| [`toSet`](#To-Set)                      | Transforms collection to set            | `transform.toSet(data)`           | `transform.toSetAsync(data)`   |
 
-### Stream Iteration Tools
+### Stream and AsyncStream Iteration Tools
 #### Stream Sources
-| Source                 | Description                      | Code Snippet          |
-|------------------------|----------------------------------|-----------------------|
-| [`of`](#Of)            | Create a stream from an iterable | `Stream.of(iterable)` |
-| [`ofEmpty`](#Of-Empty) | Create an empty stream           | `Stream.ofEmpty()`    |
+| Source                 | Description                      | Sync Code Snippet     | Async Code Snippet         |
+|------------------------|----------------------------------|-----------------------|----------------------------|
+| [`of`](#Of)            | Create a stream from an iterable | `Stream.of(iterable)` | `AsyncStream.of(iterable)` |
+| [`ofEmpty`](#Of-Empty) | Create an empty stream           | `Stream.ofEmpty()`    | `AsyncStream.ofEmpty()`    |
 
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
@@ -727,12 +748,12 @@ const movies = [
 
 const prequelsRemoved = [];
 for (const nonPrequel of Single.skip(movies, 3)) {
-    prequelsRemoved[] = nonPrequel;
+  prequelsRemoved.push(nonPrequel);
 } // Episodes IV - IX
 
 const onlyTheBest = [];
 for (const nonSequel of Single.skip(prequelsRemoved, 3, 3)) {
-  onlyTheBest[] = nonSequel;
+  onlyTheBest.push(nonSequel);
 }
 // 'A New Hope', 'The Empire Strikes Back', 'Return of the Jedi'
 ```
@@ -1327,6 +1348,23 @@ const trueResult = summary.anyMatch(answers, isUltimateAnswer);
 // true
 ```
 
+### Is Async Iterable
+Returns true if given data is an `AsyncIterable` instance.
+
+```
+function isAsyncIterable(input: unknown): boolean
+```
+
+```typescript
+import { summary } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+summary.isIterable(input); // false
+summary.isIterable(input[Symbol.asyncIterator]()) // false
+summary.isIterable(1); // false
+```
+
 ### Is Iterable
 Returns true if given data is an `Iterable` instance.
 
@@ -1517,6 +1555,52 @@ const result = transform.toArray(iterator);
 // [1, 2, 3, 4, 5]
 ```
 
+### To Async Iterable
+Returns `AsyncIterable` instance of given collection, record or iterator (sync or async).
+
+Throws `InvalidArgumentError` if given data is not a collection or an iterator.
+
+```
+function toAsyncIterable<T>(
+  collection:
+    | Iterable<T>
+    | Iterator<T>
+    | AsyncIterable<T>
+    | AsyncIterator<T>
+    | Record<RecordKey, unknown>
+): AsyncIterable<T>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = transform.toAsyncIterable(input);
+// AsyncIterable<[1, 2, 3, 4, 5]>
+```
+
+### To Async Iterator
+Returns `AsyncIterator` instance of given collection or iterator.
+
+Throws `InvalidArgumentError` if given data is not a collection or an iterator.
+
+```
+function toAsyncIterator<T>(
+  collection: Iterable<T> | Iterator<T> | AsyncIterable<T> | AsyncIterator<T>
+): AsyncIterator<T>
+```
+
+```typescript
+import { transform } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = transform.toAsyncIterator(input);
+console.log(result.next !== undefined);
+// true
+```
+
 ### To Iterable
 Returns `Iterable` instance of given collection, record or iterator.
 
@@ -1592,8 +1676,8 @@ const result = transform.toSet(input);
 // Set([1, 2, 3])
 ```
 
-## Stream
-Streams provide a fluent interface to transform arrays and iterables through a pipeline of operations.
+## Stream and Async Stream
+Streams provide a fluent interface to transform arrays and iterables (sync or async) through a pipeline of operations.
 
 Streams are made up of:
 
@@ -1602,7 +1686,14 @@ Streams are made up of:
 3. Terminal operation of either:
    * Stream terminal operation to transform the stream to a value or data structure.
      ```typescript
-     const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
+     const result1 = Stream.of([1, 1, 2, 2, 3, 4, 5])
+       .distinct()             // [1, 2, 3, 4, 5]
+       .map((x) => x**2)       // [1, 4, 9, 16, 25]
+       .filter((x) => x < 10)  // [1, 4, 9]
+       .toSum();               // 14
+
+     // Async example
+     const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5])
        .distinct()             // [1, 2, 3, 4, 5]
        .map((x) => x**2)       // [1, 4, 9, 16, 25]
        .filter((x) => x < 10)  // [1, 4, 9]
@@ -1610,12 +1701,22 @@ Streams are made up of:
      ```
    * The stream is iterated via a `for` loop.
      ```typescript
-     const result = Stream.of([1, 1, 2, 2, 3, 4, 5])
+     const result1 = Stream.of([1, 1, 2, 2, 3, 4, 5])
        .distinct()             // [1, 2, 3, 4, 5]
        .map((x) => x**2)       // [1, 4, 9, 16, 25]
        .filter((x) => x < 10); // [1, 4, 9]
 
      for (const item of result) {
+       // 1, 4, 9
+     }
+
+     // Async example
+     const result2 = AsyncStream.of([1, 1, 2, 2, 3, 4, 5])
+       .distinct()             // [1, 2, 3, 4, 5]
+       .map((x) => x**2)       // [1, 4, 9, 16, 25]
+       .filter((x) => x < 10); // [1, 4, 9]
+
+     for await (const item of result) {
        // 1, 4, 9
      }
      ```
