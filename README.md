@@ -7,6 +7,8 @@
 [![Minified Size](https://badgen.net/bundlephobia/minzip/itertools-ts)](https://bundlephobia.com/result?p=itertools-ts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+![IterTools Logo](docs/images/itertools-logo.png)
+
 Inspired by Python — designed for TypeScript.
 
 Features
