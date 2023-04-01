@@ -1,6 +1,6 @@
 # IterTools Typescript Change Log
 
-## v1.16.0 - TBD
+## v1.16.0 - 2023-04-01
 
 ### New features
 * multi
