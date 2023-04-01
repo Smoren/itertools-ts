@@ -68,6 +68,22 @@ Every function have an analog with "Async"-suffixed name for working with async 
 
 If an asynchronous function takes other functions as input, they can also be asynchronous.
 
+```typescript
+import { single } from 'itertools-ts';
+
+const starWarsEpisodes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+for await (const goodMovie of single.filterAsync(
+  starWarsEpisodes,
+  async (episode) => {
+    return Promise.resolve(episode > 3 && episode < 8);
+  }
+)) {
+  console.log(goodMovie);
+}
+// 4, 5, 6, 7
+```
+
 Setup
 -----
 
@@ -1706,7 +1722,7 @@ Streams are made up of:
        .map((x) => x**2)       // [1, 4, 9, 16, 25]
        .filter((x) => x < 10); // [1, 4, 9]
 
-     for (const item of result) {
+     for (const item of result1) {
        // 1, 4, 9
      }
 
@@ -1716,7 +1732,7 @@ Streams are made up of:
        .map((x) => x**2)       // [1, 4, 9, 16, 25]
        .filter((x) => x < 10); // [1, 4, 9]
 
-     for await (const item of result) {
+     for await (const item of result2) {
        // 1, 4, 9
      }
      ```
