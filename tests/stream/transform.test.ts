@@ -1,6 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { Stream } from '../../src';
+import { Stream, multi } from '../../src';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -10,10 +10,10 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown> | Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
   "Stream Transform Test",
   (
-    input: Iterable<unknown>|Iterator<unknown>,
+    input: Iterable<unknown> | Iterator<unknown>,
     streamFactory: (data: unknown) => Stream,
     expected: Array<unknown>
   ) => {
@@ -22,6 +22,39 @@ describe.each([
       const result = streamFactory(input);
 
       // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForTee(),
+] as Array<[
+    Iterable<unknown> | Iterator<unknown>,
+  number,
+  Array<(stream: Stream) => Stream>,
+  Array<unknown>
+]>)(
+  "Stream Transform Tee Test",
+  (
+    input: Iterable<unknown> | Iterator<unknown>,
+    count: number,
+    extraOperations: Array<(stream: Stream) => Stream>,
+    expected: Array<unknown>
+  ) => {
+    it("", () => {
+      // Given
+      const inputStream = Stream.of(input);
+      const result = [];
+
+      // When
+      const streams = inputStream.tee(count);
+      for (const [stream, func] of multi.zipEqual(streams, extraOperations)) {
+        result.push(func(stream).toArray());
+      }
+
+      // Then
+      expect(streams.length).toEqual(count);
       expect(result).toEqual(expected);
     });
   }
@@ -382,6 +415,112 @@ function dataProviderForMaps(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
+    ],
+  ];
+}
+
+function dataProviderForTee(): Array<unknown> {
+  return [
+    [
+      [],
+      1,
+      [
+        (stream: Stream) => stream,
+      ],
+      [
+        [],
+      ],
+    ],
+    [
+      [],
+      2,
+      [
+        (stream: Stream) => stream,
+        (stream: Stream) => stream,
+      ],
+      [
+        [],
+        [],
+      ],
+    ],
+    [
+      [1, 2, 3],
+      1,
+      [
+        (stream: Stream) => stream,
+      ],
+      [
+        [1, 2, 3],
+      ],
+    ],
+    [
+      [1, 2, 3],
+      1,
+      [
+        (stream: Stream) => stream
+          .map((datum) => (datum as number) * 2),
+      ],
+      [
+        [2, 4, 6],
+      ],
+    ],
+    [
+      [1, 2, 3],
+      2,
+      [
+        (stream: Stream) => stream,
+        (stream: Stream) => stream,
+      ],
+      [
+        [1, 2, 3],
+        [1, 2, 3],
+      ],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      2,
+      [
+        (stream: Stream) => stream,
+        (stream: Stream) => stream
+          .map((datum) => (datum as number) * 2),
+      ],
+      [
+        [1, 2, 3],
+        [2, 4, 6],
+      ],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      3,
+      [
+        (stream: Stream) => stream,
+        (stream: Stream) => stream
+          .map((datum) => (datum as number) * 2),
+        (stream: Stream) => stream
+          .map((datum) => (datum as number) ** 3),
+      ],
+      [
+        [1, 2, 3],
+        [2, 4, 6],
+        [1, 8, 27],
+      ],
+    ],
+    [
+      new Set([1, 2, 3]),
+      3,
+      [
+        (stream: Stream) => stream,
+        (stream: Stream) => stream
+          .map((datum) => (datum as number) * 2),
+        (stream: Stream) => stream
+          .map((datum) => (datum as number) ** 3)
+          .filter((datum) => (datum as number) < 10),
+      ],
+      [
+        [1, 2, 3],
+        [2, 4, 6],
+        [1, 8],
+      ],
     ],
   ];
 }

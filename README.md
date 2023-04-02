@@ -235,11 +235,12 @@ Quick Reference
 
 #### Stream Terminal Operations
 ##### Transformation Terminal Operations
-| Terminal Operation       | Description                                      | Code Snippet       |
-|--------------------------|--------------------------------------------------|--------------------|
-| [`toArray`](#To-Array-1) | Returns array of stream elements                 | `stream.toArray()` |
-| [`toMap`](#To-Map-1)     | Returns map of stream elements (key-value pairs) | `stream.toMap()`   |
-| [`toSet`](#To-Set-1)     | Returns set of stream elements                   | `stream.toSet()`   |
+| Terminal Operation       | Description                                      | Code Snippet        |
+|--------------------------|--------------------------------------------------|---------------------|
+| [`tee`](#Tee-1)          | Returns array of multiple identical Streams      | `stream.tee(count)` |
+| [`toArray`](#To-Array-1) | Returns array of stream elements                 | `stream.toArray()`  |
+| [`toMap`](#To-Map-1)     | Returns map of stream elements (key-value pairs) | `stream.toMap()`    |
+| [`toSet`](#To-Set-1)     | Returns set of stream elements                   | `stream.toSet()`    |
 
 ##### Reduction Terminal Operations
 | Terminal Operation                       | Description                                     | Code Snippet                            |
@@ -298,7 +299,7 @@ Iterate multiple iterable collections simultaneously.
 ```
 function* zip<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
   ...iterables: T
-): Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }>
+): Iterable<ZipTuple<T, never>>
 ```
 
 ```typescript
@@ -335,7 +336,7 @@ Iterate multiple iterable collections simultaneously.
 function* zipFilled<T extends Array<Iterable<unknown> | Iterator<unknown>>, F>(
   filler: F,
   ...iterables: T
-): Iterable<{ [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F }>
+): Iterable<ZipTuple<T, F>>
 ```
 
 For uneven lengths, the exhausted iterables will produce `filler` value for the remaining iterations.
@@ -357,7 +358,7 @@ Iterate multiple iterable collections simultaneously.
 ```
 function* zipLongest<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
   ...iterables: T
-): Iterable<{ [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | undefined }>
+): Iterable<ZipTuple<T, undefined>>
 ```
 
 For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
@@ -379,9 +380,9 @@ Iterate multiple iterable collections with equal lengths simultaneously.
 Throws `LengthException` if lengths are not equal, meaning that at least one iterator ends before the others.
 
 ```
-function* zipEqual(
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Iterable<Array<unknown>>
+function* zipEqual<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+  ...iterables: T
+): Iterable<ZipTuple<T, never>>
 ```
 
 ```typescript
@@ -2418,6 +2419,25 @@ for (const zipped of stream) {
 
 ### Terminal operations
 #### Transformation Terminal Operations
+##### Tee
+Return several independent (duplicated) streams.
+
+```
+stream.tee(count: number): Array<Stream>
+```
+
+```php
+import { Stream } from "itertools-ts";
+
+const daysOfWeek = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+const count = 3;
+
+const [week1Stream, week2Stream, week3Stream] = Stream.of(daysOfWeek)
+    .tee($count);
+
+// Each weekStream contains ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
+```
+
 ##### To Array
 Returns an array of stream elements.
 

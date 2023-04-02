@@ -1,6 +1,7 @@
 import { LengthError } from "./exceptions";
 import { reduce, single, Stream } from "./index";
 import { toAsyncIterator, toIterator } from "./transform";
+import { ZipTuple } from "./types";
 
 export enum MultipleIterationMode {
   SHORTEST,
@@ -23,7 +24,7 @@ export function* createMultipleIterator<
   mode: MultipleIterationMode,
   noValueFiller: F,
   ...iterables: T
-): Iterable<{ [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F }> {
+): Iterable<ZipTuple<T, F>> {
   if (iterables.length === 0) {
     return;
   }
@@ -69,9 +70,7 @@ export function* createMultipleIterator<
       break;
     }
 
-    yield values as {
-      [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F;
-    };
+    yield values as ZipTuple<T, F>;
   }
 }
 
@@ -95,9 +94,7 @@ export async function* createAsyncMultipleIterator<
   mode: MultipleIterationMode,
   noValueFiller: F,
   ...iterables: T
-): AsyncIterable<{
-  [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F;
-}> {
+): AsyncIterable<ZipTuple<T, F>> {
   if (iterables.length === 0) {
     return;
   }
@@ -146,9 +143,7 @@ export async function* createAsyncMultipleIterator<
       break;
     }
 
-    yield values as {
-      [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F;
-    };
+    yield values as ZipTuple<T, F>;
   }
 }
 
@@ -314,7 +309,7 @@ export class TeeIterator<T> {
 /**
  * Duplicated iterable.
  */
-export class RelatedIterable<T> {
+export class RelatedIterable<T> implements IterableIterator<T> {
   private parent: TeeIterator<T>;
   private readonly id: number;
 
@@ -331,19 +326,19 @@ export class RelatedIterable<T> {
     return this.parent.valid(this);
   }
 
-  public next(): { value: T | undefined; done: boolean } {
+  public next(): IteratorResult<T> {
     const result = { value: this.current(), done: !this.valid() };
     if (!result.done) {
       this.parent.next(this);
     }
-    return result;
+    return result as IteratorResult<T>;
   }
 
   public current(): T | undefined {
     return this.parent.valid(this) ? this.parent.current(this) : undefined;
   }
 
-  *[Symbol.iterator](): Iterator<T> {
+  *[Symbol.iterator](): IterableIterator<T> {
     while (this.parent.valid(this)) {
       yield this.parent.current(this);
       this.parent.next(this);

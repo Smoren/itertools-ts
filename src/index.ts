@@ -141,6 +141,7 @@ import {
   Pair,
   Comparable,
   RecordKey,
+  ZipTuple,
 } from "./types";
 
 export const single = {
@@ -279,6 +280,6 @@ export const transform = {
 
 export { Stream, AsyncStream };
 
-export type { AsyncFlatMapper, FlatMapper, Pair, Comparable, RecordKey };
+export type { AsyncFlatMapper, FlatMapper, Pair, Comparable, RecordKey, ZipTuple };
 
 export { InvalidArgumentError, LengthError };

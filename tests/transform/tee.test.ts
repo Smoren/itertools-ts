@@ -43,6 +43,38 @@ test("Transform Tee Test Example Usage Iterating Multiple Iterables", () => {
   expect(result[2]).toEqual(data);
 });
 
+test("Transform Tee Test Example Usage Zip and chain", () => {
+  // Given
+  const data = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+  const count = 5;
+
+  // And
+  const result: Array<Array<string>> = [[], [], [], [], []];
+  const [week0, week1, week2, week3, week4] = transform.tee(data, count);
+
+  // When
+  for (const [day1, day3] of multi.zipEqual(week1, week3)) {
+    result[1].push(day1);
+    result[3].push(day3);
+  }
+
+  for (const day2 of week2) {
+    result[2].push(day2);
+  }
+
+  for (const [day4, day0] of multi.zipEqual(week4, week0)) {
+    result[4].push(day4);
+    result[0].push(day0);
+  }
+
+  // Then
+  expect(result[0]).toEqual(data);
+  expect(result[1]).toEqual(data);
+  expect(result[2]).toEqual(data);
+  expect(result[3]).toEqual(data);
+  expect(result[4]).toEqual(data);
+});
+
 describe.each([
   ...dataProviderForArrays(),
   ...dataProviderForGenerators(),

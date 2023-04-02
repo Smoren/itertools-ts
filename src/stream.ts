@@ -1,4 +1,4 @@
-import { toArray, toIterable, toMap, toSet } from "./transform";
+import { toArray, toIterable, toMap, toSet, tee } from "./transform";
 import {
   chunkwise,
   chunkwiseOverlap,
@@ -747,6 +747,23 @@ export class Stream {
     ...collections: Array<Iterable<unknown> | Iterator<unknown>>
   ): boolean {
     return sameCount(this.data, ...collections);
+  }
+  /**
+   * Return several independent streams from current stream.
+   *
+   * Once a tee() has been created, the original iterable should not be used anywhere else;
+   * otherwise, the iterable could get advanced without the tee objects being informed.
+   *
+   * This tool may require significant auxiliary storage (depending on how much temporary data needs to be stored).
+   * In general, if one iterator uses most or all of the data before another iterator starts,
+   * it is faster to use toArray() instead of tee().
+   *
+   * @param count
+   *
+   * @see transform.tee
+   */
+  public tee(count: number): Array<Stream> {
+    return tee(this.data, count).map((iterable) => new Stream(iterable));
   }
 
   /**
