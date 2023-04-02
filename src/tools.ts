@@ -303,11 +303,7 @@ export class TeeIterator<T> {
    * @param relatedIterable
    */
   public valid(relatedIterable: RelatedIterable<T>): boolean {
-    const [relPos, maxPos] = [
-      this.getPosition(relatedIterable),
-      Math.max(...this.positions),
-    ];
-    return relPos !== maxPos || this.isValid;
+    return this.getPosition(relatedIterable) < this.lastCacheIndex || this.isValid;
   }
 
   /**
@@ -476,12 +472,7 @@ export class AsyncTeeIterator<T> {
     if (this.isFirstIteration) {
       await this.cacheNextValue();
     }
-
-    const [relPos, maxPos] = [
-      this.getPosition(relatedIterable),
-      Math.max(...this.positions),
-    ];
-    return relPos !== maxPos || this.isValid;
+    return this.getPosition(relatedIterable) < this.lastCacheIndex || this.isValid;
   }
 
   /**
@@ -497,12 +488,11 @@ export class AsyncTeeIterator<T> {
    * @private
    */
   private async cacheNextValue(): Promise<void> {
-    this.isFirstIteration = false;
-
     const status = await this.iterator.next();
     if (!status.done) {
       this.cache.set(this.lastCacheIndex++, status.value);
     }
+    this.isFirstIteration = false;
     this.isValid = !status.done;
   }
 
@@ -573,7 +563,9 @@ export class AsyncRelatedIterable<T> implements AsyncIterableIterator<T> {
    */
   async *[Symbol.asyncIterator](): AsyncIterableIterator<T> {
     while (await this.parent.valid(this)) {
-      yield await this.parent.current(this);
+      const r = await this.parent.current(this);
+      yield r;
+      // yield await this.parent.current(this);
       await this.parent.next(this);
     }
   }

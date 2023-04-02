@@ -5,13 +5,12 @@
 ### New features
 * Single
   * `sort()`
-  * `sortAsync()` // TODO
+  * `sortAsync()`
 * Stream
   * `peek()`
   * `peekStream()`
   * `sort()` // TODO
 * AsyncStream
-  * `peek()` // TODO
   * `peekStream()` // TODO
   * `sort()` // TODO
 * types

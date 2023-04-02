@@ -14,7 +14,7 @@ import {
   map,
   pairwise,
   skip,
-  slice,
+  slice, sort,
   takeWhile,
   values,
 } from "./single";
@@ -50,7 +50,7 @@ import {
   same,
   sameCount,
 } from "./summary";
-import { Comparable, FlatMapper } from "./types";
+import { Comparable, Comparator, FlatMapper } from "./types";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -421,6 +421,18 @@ export class Stream {
     this.data = values(
       this.data as Iterable<[unknown, unknown]> | Iterator<[unknown, unknown]>
     );
+    return this;
+  }
+
+  /**
+   * Sorts the stream.
+   *
+   * If comparator is `undefined`, then elements of the iterable source must be comparable.
+   *
+   * @see single.sort
+   */
+  sort(comparator?: Comparator<unknown>): Stream {
+    this.data = sort(this.data, comparator);
     return this;
   }
 

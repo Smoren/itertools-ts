@@ -34,6 +34,7 @@ import {
   repeatAsync,
   skipAsync,
   sliceAsync,
+  sortAsync,
   takeWhileAsync,
   valuesAsync,
 } from "./single";
@@ -183,6 +184,7 @@ export const single = {
   repeatAsync,
   skipAsync,
   sliceAsync,
+  sortAsync,
   takeWhileAsync,
   valuesAsync,
 };
