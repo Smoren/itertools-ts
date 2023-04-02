@@ -1577,7 +1577,7 @@ import { transform } from "itertools-ts";
 const daysOfWeek = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
 const count = 3;
 
-[week1, week2, week3] = transform.tee(data, count);
+const [week1, week2, week3] = transform.tee(data, count);
 // Each week contains iterator containing ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
 ```
 
