@@ -1,4 +1,5 @@
 import {
+  teeAsync,
   toArrayAsync,
   toAsyncIterable,
   toMapAsync,
@@ -77,7 +78,9 @@ export class AsyncStream {
    *
    * @param data
    */
-  static of(data: Iterable<unknown> | Iterator<unknown>): AsyncStream {
+  static of(
+    data: AsyncIterable<unknown> | AsyncIterator<unknown> | Iterable<unknown> | Iterator<unknown>
+  ): AsyncStream {
     return new AsyncStream(toAsyncIterable(data));
   }
 
@@ -847,6 +850,24 @@ export class AsyncStream {
     >
   ): Promise<boolean> {
     return await sameCountAsync(this.data, ...collections);
+  }
+
+  /**
+   * Return several independent async streams from current stream.
+   *
+   * Once a tee() has been created, the original iterable should not be used anywhere else;
+   * otherwise, the iterable could get advanced without the tee objects being informed.
+   *
+   * This tool may require significant auxiliary storage (depending on how much temporary data needs to be stored).
+   * In general, if one iterator uses most or all of the data before another iterator starts,
+   * it is faster to use toArray() instead of tee().
+   *
+   * @param count
+   *
+   * @see transform.teeAsync
+   */
+  public tee(count: number): Array<AsyncStream> {
+    return teeAsync(this.data, count).map((iterable) => new AsyncStream(iterable));
   }
 
   /**

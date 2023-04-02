@@ -1,4 +1,5 @@
 import {
+  createAsyncGeneratorFixture, createAsyncIterableFixture, createAsyncIteratorFixture,
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
@@ -20,6 +21,19 @@ test("Transform Tee Test Example Usage Transform To Array", () => {
   expect(transform.toArray(week3)).toEqual(data);
 });
 
+test("Transform Tee Async Test Example Usage Transform To Array", async () => {
+  // Given
+  const data = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+
+  // When
+  const [week1, week2, week3] = transform.teeAsync(createAsyncGeneratorFixture(data), 3);
+
+  // Then
+  expect(await transform.toArrayAsync(week2)).toEqual(data);
+  expect(await transform.toArrayAsync(week1)).toEqual(data);
+  expect(await transform.toArrayAsync(week3)).toEqual(data);
+});
+
 test("Transform Tee Test Example Usage Iterating Multiple Iterables", () => {
   // Given
   const data = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
@@ -33,6 +47,29 @@ test("Transform Tee Test Example Usage Iterating Multiple Iterables", () => {
     const resultPart: Array<string> = [];
     result.push(resultPart);
     for (const day of week) {
+      resultPart.push(day);
+    }
+  }
+
+  // Then
+  expect(result[0]).toEqual(data);
+  expect(result[1]).toEqual(data);
+  expect(result[2]).toEqual(data);
+});
+
+test("Transform Tee Async Test Example Usage Iterating Multiple Iterables", async () => {
+  // Given
+  const data = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+  const count = 3;
+
+  // And
+  const result = [];
+
+  // When
+  for (const week of transform.teeAsync(createAsyncIterableFixture(data), count)) {
+    const resultPart: Array<string> = [];
+    result.push(resultPart);
+    for await (const day of week) {
       resultPart.push(day);
     }
   }
@@ -63,6 +100,38 @@ test("Transform Tee Test Example Usage Zip and chain", () => {
   }
 
   for (const [day4, day0] of multi.zipEqual(week4, week0)) {
+    result[4].push(day4);
+    result[0].push(day0);
+  }
+
+  // Then
+  expect(result[0]).toEqual(data);
+  expect(result[1]).toEqual(data);
+  expect(result[2]).toEqual(data);
+  expect(result[3]).toEqual(data);
+  expect(result[4]).toEqual(data);
+});
+
+test("Transform Tee Async Test Example Usage Zip and chain", async () => {
+  // Given
+  const data = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+  const count = 5;
+
+  // And
+  const result: Array<Array<string>> = [[], [], [], [], []];
+  const [week0, week1, week2, week3, week4] = transform.teeAsync(createAsyncIteratorFixture(data), count);
+
+  // When
+  for await (const [day1, day3] of multi.zipEqualAsync(week1, week3)) {
+    result[1].push(day1);
+    result[3].push(day3);
+  }
+
+  for await (const day2 of week2) {
+    result[2].push(day2);
+  }
+
+  for await (const [day4, day0] of multi.zipEqualAsync(week4, week0)) {
     result[4].push(day4);
     result[0].push(day0);
   }
@@ -111,6 +180,44 @@ describe.each([
 );
 
 describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[AsyncIterable<unknown>|Iterable<unknown>, number, Array<Array<unknown>>]>)(
+  "Transform Tee Async Chain Test",
+  (
+    input: AsyncIterable<unknown>|Iterable<unknown>,
+    relatedCount: number,
+    expected: Array<Array<unknown>>,
+  ) => {
+    it("", async () => {
+      // Given
+      const iterables = transform.teeAsync(input, relatedCount);
+      const result: Array<Array<unknown>> = (new Array(relatedCount)).fill(undefined).map(() => []);
+
+      // When
+      let i = 0;
+      for (const iterable of iterables) {
+        for await (const value of iterable) {
+          result[i].push(value);
+        }
+        ++i;
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
   ...dataProviderForArrays(),
   ...dataProviderForGenerators(),
   ...dataProviderForIterables(),
@@ -132,6 +239,43 @@ describe.each([
 
       // When
       for (const values of multi.zipEqual(...iterables)) {
+        expect(new Set(values).size).toEqual(1);
+        for (let i = 0; i < values.length; ++i) {
+          result[i].push(values[i]);
+        }
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[AsyncIterable<unknown>|Iterable<unknown>, number, Array<Array<unknown>>]>)(
+  "Transform Tee Async Zip Test",
+  (
+    input: AsyncIterable<unknown>|Iterable<unknown>,
+    relatedCount: number,
+    expected: Array<Array<unknown>>,
+  ) => {
+    it("", async () => {
+      // Given
+      const iterables = transform.teeAsync(input, relatedCount);
+      const result: Array<Array<unknown>> = (new Array(relatedCount)).fill(undefined).map(() => []);
+
+      // When
+      for await (const values of multi.zipEqualAsync(...iterables)) {
         expect(new Set(values).size).toEqual(1);
         for (let i = 0; i < values.length; ++i) {
           result[i].push(values[i]);
@@ -185,6 +329,60 @@ describe.each([
 
           result[i].push(iterable.current());
           iterable.next();
+        }
+        ++j;
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
+  ...dataProviderForMaps(),
+] as Array<[AsyncIterable<unknown>|Iterable<unknown>, number, Array<Array<unknown>>]>)(
+  "Transform Tee Async Ladder Test",
+  (
+    input: AsyncIterable<unknown>|Iterable<unknown>,
+    relatedCount: number,
+    expected: Array<Array<unknown>>,
+  ) => {
+    it("", async () => {
+      // Given
+      const iterables = transform.teeAsync(input, relatedCount);
+      const result: Array<Array<unknown>> = (new Array(relatedCount)).fill(undefined).map(() => []);
+
+      // When
+      let j = 0;
+      while (await reduce.toValueAsync(
+        iterables,
+        (carry, datum) => carry ? carry : datum.valid(),
+        false
+      )) {
+        let i = -1;
+        for (const iterable of iterables) {
+          ++i;
+
+          if (i > j) {
+            continue;
+          }
+
+          if (!(await iterable.valid())) {
+            continue;
+          }
+
+          result[i].push(await iterable.current());
+          await iterable.next();
         }
         ++j;
       }
@@ -561,6 +759,165 @@ function dataProviderForMaps(): Array<unknown> {
         [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
         [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
         [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+      ],
+    ],
+  ];
+}
+
+function dataProviderForAsyncGenerators(): Array<unknown> {
+  return [
+    [
+      createAsyncGeneratorFixture([]),
+      1,
+      [
+        [],
+      ],
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      2,
+      [
+        [],
+        [],
+      ],
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      3,
+      [
+        [],
+        [],
+        [],
+      ],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+      1,
+      [
+        [1, 2, 3, 4, 5],
+      ],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+      2,
+      [
+        [1, 2, 3, 4, 5],
+        [1, 2, 3, 4, 5],
+      ],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
+      3,
+      [
+        [1, 2, 3, 4, 5],
+        [1, 2, 3, 4, 5],
+        [1, 2, 3, 4, 5],
+      ],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterables(): Array<unknown> {
+  return [
+    [
+      createAsyncIterableFixture([]),
+      1,
+      [
+        [],
+      ],
+    ],
+    [
+      createAsyncIterableFixture([]),
+      2,
+      [
+        [],
+        [],
+      ],
+    ],
+    [
+      createAsyncIterableFixture([]),
+      3,
+      [
+        [],
+        [],
+        [],
+      ],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5]),
+      1,
+      [
+        [1, 2, 3, 4, 5],
+      ],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5]),
+      2,
+      [
+        [1, 2, 3, 4, 5],
+        [1, 2, 3, 4, 5],
+      ],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3, 4, 5]),
+      3,
+      [
+        [1, 2, 3, 4, 5],
+        [1, 2, 3, 4, 5],
+        [1, 2, 3, 4, 5],
+      ],
+    ],
+  ];
+}
+
+function dataProviderForAsyncIterators(): Array<unknown> {
+  return [
+    [
+      createAsyncIteratorFixture([]),
+      1,
+      [
+        [],
+      ],
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      2,
+      [
+        [],
+        [],
+      ],
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      3,
+      [
+        [],
+        [],
+        [],
+      ],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+      1,
+      [
+        [1, 2, 3, 4, 5],
+      ],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+      2,
+      [
+        [1, 2, 3, 4, 5],
+        [1, 2, 3, 4, 5],
+      ],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
+      3,
+      [
+        [1, 2, 3, 4, 5],
+        [1, 2, 3, 4, 5],
+        [1, 2, 3, 4, 5],
       ],
     ],
   ];

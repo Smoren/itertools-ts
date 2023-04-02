@@ -183,16 +183,16 @@ Quick Reference
 | [`sameCount`](#Same-Count)              | True if collections have the same lengths         | `summary.sameCount(...collections)`  | `summary.sameCountAsync(...collections)`  |
 
 #### Transform
-| Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet             |
-|-----------------------------------------|-----------------------------------------|-----------------------------------|--------------------------------|
-| [`tee`](#Tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | —                              |
-| [`toArray`](#To-Array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)` |
-| [`toAsyncIterable`](#To-Async-Iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                              |
-| [`toAsyncIterator`](#To-Async-Iterator) | Transforms collection to async iterator | `transform.toAsyncIterator(data)` | —                              |
-| [`toIterable`](#To-Iterable)            | Transforms collection to iterable       | `transform.toIterable(data)`      | —                              |
-| [`toIterator`](#To-Iterator)            | Transforms collection to iterator       | `transform.toIterator(data)`      | —                              |
-| [`toMap`](#To-Map)                      | Transforms collection to map            | `transform.toMap(pairs)`          | `transform.toMapAsync(pairs)`  |
-| [`toSet`](#To-Set)                      | Transforms collection to set            | `transform.toSet(data)`           | `transform.toSetAsync(data)`   |
+| Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet                |
+|-----------------------------------------|-----------------------------------------|-----------------------------------|-----------------------------------|
+| [`tee`](#Tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | `transform.teeAsync(data, count)` |
+| [`toArray`](#To-Array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)`    |
+| [`toAsyncIterable`](#To-Async-Iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                                 |
+| [`toAsyncIterator`](#To-Async-Iterator) | Transforms collection to async iterator | `transform.toAsyncIterator(data)` | —                                 |
+| [`toIterable`](#To-Iterable)            | Transforms collection to iterable       | `transform.toIterable(data)`      | —                                 |
+| [`toIterator`](#To-Iterator)            | Transforms collection to iterator       | `transform.toIterator(data)`      | —                                 |
+| [`toMap`](#To-Map)                      | Transforms collection to map            | `transform.toMap(pairs)`          | `transform.toMapAsync(pairs)`     |
+| [`toSet`](#To-Set)                      | Transforms collection to set            | `transform.toSet(data)`           | `transform.toSetAsync(data)`      |
 
 ### Stream and AsyncStream Iteration Tools
 #### Stream Sources

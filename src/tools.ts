@@ -400,3 +400,179 @@ export class RelatedIterable<T> implements IterableIterator<T> {
     }
   }
 }
+
+/**
+ * Internal tool for duplicating another async iterators using cache.
+ */
+export class AsyncTeeIterator<T> {
+  private iterator: AsyncIterator<T>;
+  private related: Array<AsyncRelatedIterable<T>> = [];
+  private positions: Array<number> = [];
+  private cache: Map<number, T> = new Map();
+  private lastCacheIndex = 0;
+  private isValid = true;
+  private isFirstIteration = true;
+
+  /**
+   * AsyncTeeIterator constructor
+   *
+   * @param iterator
+   * @param relatedCount
+   */
+  constructor(iterator: AsyncIterator<T>, relatedCount: number) {
+    this.iterator = iterator;
+
+    for (let i = 0; i < relatedCount; ++i) {
+      this.related.push(new AsyncRelatedIterable<T>(this, i));
+      this.positions.push(0);
+    }
+  }
+
+  /**
+   * Returns current value of related iterable.
+   *
+   * @param relatedIterable
+   */
+  public async current(relatedIterable: AsyncRelatedIterable<T>): Promise<T> {
+    if (this.isFirstIteration) {
+      await this.cacheNextValue();
+    }
+
+    const index = this.getPosition(relatedIterable);
+    return this.cache.get(index) as T;
+  }
+
+  /**
+   * Moves related iterable to the next element.
+   *
+   * @param relatedIterable
+   */
+  public async next(relatedIterable: AsyncRelatedIterable<T>): Promise<void> {
+    const [relPos, minPos, maxPos] = [
+      this.getPosition(relatedIterable),
+      Math.min(...this.positions),
+      Math.max(...this.positions),
+    ];
+
+    if (relPos === maxPos) {
+      await this.cacheNextValue();
+    }
+
+    this.positions[relatedIterable.getId()]++;
+
+    if (minPos < Math.min(...this.positions)) {
+      this.cache.delete(minPos);
+    }
+  }
+
+  /**
+   * Returns true if related iterable is not done.
+   *
+   * @param relatedIterable
+   */
+  public async valid(relatedIterable: AsyncRelatedIterable<T>): Promise<boolean> {
+    if (this.isFirstIteration) {
+      await this.cacheNextValue();
+    }
+
+    const [relPos, maxPos] = [
+      this.getPosition(relatedIterable),
+      Math.max(...this.positions),
+    ];
+    return relPos !== maxPos || this.isValid;
+  }
+
+  /**
+   * Returns related iterables list.
+   */
+  public getRelatedIterables(): Array<AsyncRelatedIterable<T>> {
+    return this.related;
+  }
+
+  /**
+   * Gets and caches the next element of parent iterator.
+   *
+   * @private
+   */
+  private async cacheNextValue(): Promise<void> {
+    this.isFirstIteration = false;
+
+    const status = await this.iterator.next();
+    if (!status.done) {
+      this.cache.set(this.lastCacheIndex++, status.value);
+    }
+    this.isValid = !status.done;
+  }
+
+  /**
+   * Returns current position index of related iterable.
+   *
+   * @param related
+   */
+  private getPosition(related: AsyncRelatedIterable<T>): number {
+    return this.positions[related.getId()];
+  }
+}
+
+/**
+ * Duplicated async iterable.
+ */
+export class AsyncRelatedIterable<T> implements AsyncIterableIterator<T> {
+  private parent: AsyncTeeIterator<T>;
+  private readonly id: number;
+
+  /**
+   * AsyncRelatedIterable constructor.
+   *
+   * @param parentIterable
+   * @param id
+   */
+  constructor(parentIterable: AsyncTeeIterator<T>, id: number) {
+    this.parent = parentIterable;
+    this.id = id;
+  }
+
+  /**
+   * Id getter.
+   */
+  public getId(): number {
+    return this.id;
+  }
+
+  /**
+   * Returns true if the iterator is valid.
+   */
+  public async valid(): Promise<boolean> {
+    return await this.parent.valid(this);
+  }
+
+  /**
+   * Moves the iterator to the next element.
+   */
+  public async next(): Promise<IteratorResult<T>> {
+    const result = { value: await this.current(), done: !(await this.valid()) };
+    if (!result.done) {
+      await this.parent.next(this);
+    }
+    return result as IteratorResult<T>;
+  }
+
+  /**
+   * Returns current value of the iterator.
+   */
+  public async current(): Promise<T | undefined> {
+    return await this.parent.valid(this)
+      ? await this.parent.current(this)
+      : undefined;
+  }
+
+  /**
+   * Aggregated iterator.
+   */
+  async *[Symbol.asyncIterator](): AsyncIterableIterator<T> {
+    while (await this.parent.valid(this)) {
+      yield await this.parent.current(this);
+      await this.parent.next(this);
+    }
+  }
+}
