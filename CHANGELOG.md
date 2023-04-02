@@ -1,5 +1,16 @@
 # IterTools Typescript Change Log
 
+## v1.17.0 - TBD
+### New features
+* transform
+  * `tee()`
+
+### Bug fix
+* `multi.zipEqual()` — return type fixed
+
+### Improvements
+* Minor documentation changes
+
 ## v1.16.0 - 2023-04-01
 
 ### New features

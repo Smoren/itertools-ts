@@ -120,6 +120,7 @@ import {
 } from "./summary";
 
 import {
+  tee,
   toArray,
   toAsyncIterable,
   toAsyncIterator,
@@ -263,6 +264,7 @@ export const summary = {
 };
 
 export const transform = {
+  tee,
   toArray,
   toAsyncIterable,
   toAsyncIterator,

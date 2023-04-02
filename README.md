@@ -185,6 +185,7 @@ Quick Reference
 #### Transform
 | Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet             |
 |-----------------------------------------|-----------------------------------------|-----------------------------------|--------------------------------|
+| [`tee`](#Tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | —                              |
 | [`toArray`](#To-Array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)` |
 | [`toAsyncIterable`](#To-Async-Iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                              |
 | [`toAsyncIterator`](#To-Async-Iterator) | Transforms collection to async iterator | `transform.toAsyncIterator(data)` | —                              |
@@ -1555,6 +1556,31 @@ const falseResult = summary.sameCount(batmanMovies, matrixMovies);
 ```
 
 ## Transform
+### Tee
+Return several independent (duplicated) iterators from a single iterable.
+
+```
+function tee<T>(
+  collection: Iterable<T> | Iterator<T>,
+  count: number
+): Array<RelatedIterable<T>>
+```
+
+Once tee has been called to duplicate iterators, it is advisable to not use the original input iterator any further.
+
+Duplicating iterators can use up memory. Consider if tee is the right solution. For example, arrays and most
+iterators can be rewound and reiterated without need for duplication.
+
+```typescript
+import { transform } from "itertools-ts";
+
+const daysOfWeek = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+const count = 3;
+
+[week1, week2, week3] = transform.tee(data, count);
+// Each week contains iterator containing ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
+```
+
 ### To Array
 Returns `Array` instance of given collection or iterator.
 

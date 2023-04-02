@@ -192,9 +192,7 @@ export function* zipEqual<
   T extends Array<Iterable<unknown> | Iterator<unknown>>
 >(
   ...iterables: T
-): Iterable<
-  Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }>
-> {
+): Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.STRICT_EQUAL,
     undefined,
@@ -223,9 +221,7 @@ export async function* zipEqualAsync<
   >
 >(
   ...iterables: T
-): AsyncIterable<
-  Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }>
-> {
+): AsyncIterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }> {
   for await (const values of createAsyncMultipleIterator(
     MultipleIterationMode.STRICT_EQUAL,
     undefined,

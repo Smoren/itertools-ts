@@ -1,6 +1,7 @@
 import { InvalidArgumentError } from "./exceptions";
 import { isAsyncIterable, isIterable, isIterator } from "./summary";
 import { RecordKey } from "./types";
+import { RelatedIterable, TeeIterator } from "./tools";
 
 /**
  * Converts collection or record to Iterable instance.
@@ -238,4 +239,19 @@ export async function toSetAsync<T>(
     result.add(datum);
   }
   return result;
+}
+
+/**
+ * Return several independent (duplicated) iterables from a single iterable.
+ *
+ * Once tee has been called to duplicate iterators, it is advisable to not use the original input iterator any further.
+ *
+ * Duplicating iterators can use up memory. Consider if tee is the right solution. For example, arrays and most
+ * iterators can be rewound and reiterated without need for duplication.
+ *
+ * @param collection
+ * @param count
+ */
+export function tee<T>(collection: Iterable<T> | Iterator<T>, count: number): Array<RelatedIterable<T>> {
+  return (new TeeIterator(toIterator(collection), count)).getRelatedIterables();
 }

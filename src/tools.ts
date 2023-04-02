@@ -240,3 +240,112 @@ export class UsageMap {
  * No value filler monad.
  */
 export class NoValueMonad {}
+
+/**
+ * Tool for duplicating another iterators using cache.
+ */
+export class TeeIterator<T> {
+  private iterator: Iterator<T>;
+  private related: Array<RelatedIterable<T>> = [];
+  private positions: Array<number> = [];
+  private cache: Map<number, T> = new Map();
+  private lastCacheIndex = 0;
+  private isValid = true;
+
+  constructor(iterator: Iterator<T>, relatedCount: number) {
+    this.iterator = iterator;
+
+    for (let i = 0; i < relatedCount; ++i) {
+      this.related.push(new RelatedIterable<T>(this, i));
+      this.positions.push(0);
+    }
+
+    this.cacheNextValue();
+  }
+
+  public current(relatedIterable: RelatedIterable<T>): T {
+    const index = this.getPosition(relatedIterable);
+    return this.cache.get(index) as T;
+  }
+
+  public next(relatedIterable: RelatedIterable<T>): void {
+    const [relPos, minPos, maxPos] = [
+      this.getPosition(relatedIterable),
+      Math.min(...this.positions),
+      Math.max(...this.positions),
+    ];
+
+    if (relPos === maxPos) {
+      this.cacheNextValue();
+    }
+
+    this.positions[relatedIterable.getId()]++;
+
+    if (minPos < Math.min(...this.positions)) {
+      this.cache.delete(minPos);
+    }
+  }
+
+  public valid(relatedIterable: RelatedIterable<T>): boolean {
+    const [relPos, maxPos] = [this.getPosition(relatedIterable), Math.max(...this.positions)];
+    return relPos !== maxPos || this.isValid;
+  }
+
+  public getRelatedIterables(): Array<RelatedIterable<T>> {
+    return this.related;
+  }
+
+  private cacheNextValue(): void {
+    const status = this.iterator.next();
+    if (!status.done) {
+      this.cache.set(this.lastCacheIndex++, status.value);
+    }
+    this.isValid = !status.done;
+  }
+
+  private getPosition(related: RelatedIterable<T>): number {
+    return this.positions[related.getId()];
+  }
+}
+
+/**
+ * Duplicated iterable.
+ */
+export class RelatedIterable<T> {
+  private parent: TeeIterator<T>;
+  private readonly id: number;
+
+  constructor(parentIterable: TeeIterator<T>, id: number) {
+    this.parent = parentIterable;
+    this.id = id;
+  }
+
+  public getId(): number {
+    return this.id;
+  }
+
+  public valid(): boolean {
+    return this.parent.valid(this);
+  }
+
+  public next(): { value: T | undefined, done: boolean } {
+    const result = { value: this.current(), done: !this.valid() }
+    if (!result.done) {
+      this.parent.next(this);
+    }
+    return result;
+  }
+
+  public current(): T | undefined {
+    return this.parent.valid(this)
+      ? this.parent.current(this)
+      : undefined;
+  }
+
+  *[Symbol.iterator](): Iterator<T> {
+    while (this.parent.valid(this)) {
+      yield this.parent.current(this);
+      this.parent.next(this);
+    }
+  }
+}
