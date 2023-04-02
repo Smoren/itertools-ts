@@ -280,6 +280,13 @@ export const transform = {
 
 export { Stream, AsyncStream };
 
-export type { AsyncFlatMapper, FlatMapper, Pair, Comparable, RecordKey, ZipTuple };
+export type {
+  AsyncFlatMapper,
+  FlatMapper,
+  Pair,
+  Comparable,
+  RecordKey,
+  ZipTuple,
+};
 
 export { InvalidArgumentError, LengthError };
