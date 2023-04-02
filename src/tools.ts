@@ -287,7 +287,10 @@ export class TeeIterator<T> {
   }
 
   public valid(relatedIterable: RelatedIterable<T>): boolean {
-    const [relPos, maxPos] = [this.getPosition(relatedIterable), Math.max(...this.positions)];
+    const [relPos, maxPos] = [
+      this.getPosition(relatedIterable),
+      Math.max(...this.positions),
+    ];
     return relPos !== maxPos || this.isValid;
   }
 
@@ -328,8 +331,8 @@ export class RelatedIterable<T> {
     return this.parent.valid(this);
   }
 
-  public next(): { value: T | undefined, done: boolean } {
-    const result = { value: this.current(), done: !this.valid() }
+  public next(): { value: T | undefined; done: boolean } {
+    const result = { value: this.current(), done: !this.valid() };
     if (!result.done) {
       this.parent.next(this);
     }
@@ -337,9 +340,7 @@ export class RelatedIterable<T> {
   }
 
   public current(): T | undefined {
-    return this.parent.valid(this)
-      ? this.parent.current(this)
-      : undefined;
+    return this.parent.valid(this) ? this.parent.current(this) : undefined;
   }
 
   *[Symbol.iterator](): Iterator<T> {

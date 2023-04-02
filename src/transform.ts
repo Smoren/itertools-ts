@@ -252,6 +252,9 @@ export async function toSetAsync<T>(
  * @param collection
  * @param count
  */
-export function tee<T>(collection: Iterable<T> | Iterator<T>, count: number): Array<RelatedIterable<T>> {
-  return (new TeeIterator(toIterator(collection), count)).getRelatedIterables();
+export function tee<T>(
+  collection: Iterable<T> | Iterator<T>,
+  count: number
+): Array<RelatedIterable<T>> {
+  return new TeeIterator(toIterator(collection), count).getRelatedIterables();
 }
