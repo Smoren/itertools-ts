@@ -748,6 +748,7 @@ export class Stream {
   ): boolean {
     return sameCount(this.data, ...collections);
   }
+
   /**
    * Return several independent streams from current stream.
    *

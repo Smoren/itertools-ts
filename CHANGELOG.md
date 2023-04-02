@@ -2,7 +2,11 @@
 
 ## v1.18.0 - 2023-04-02
 ### New features
+* transform
+  * `teeAsync()`
 * Stream
+  * `tee()`
+* AsyncStream
   * `tee()`
 * types
   * `ZipTuple`
