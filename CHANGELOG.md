@@ -1,6 +1,6 @@
 # IterTools Typescript Change Log
 
-## v1.17.0 - TBD
+## v1.17.0 - 2023-04-02
 ### New features
 * transform
   * `tee()`
