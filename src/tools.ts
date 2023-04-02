@@ -237,7 +237,7 @@ export class UsageMap {
 export class NoValueMonad {}
 
 /**
- * Tool for duplicating another iterators using cache.
+ * Internal tool for duplicating another iterators using cache.
  */
 export class TeeIterator<T> {
   private iterator: Iterator<T>;
@@ -247,6 +247,12 @@ export class TeeIterator<T> {
   private lastCacheIndex = 0;
   private isValid = true;
 
+  /**
+   * TeeIterator constructor
+   *
+   * @param iterator
+   * @param relatedCount
+   */
   constructor(iterator: Iterator<T>, relatedCount: number) {
     this.iterator = iterator;
 
@@ -258,11 +264,21 @@ export class TeeIterator<T> {
     this.cacheNextValue();
   }
 
+  /**
+   * Returns current value of related iterable.
+   *
+   * @param relatedIterable
+   */
   public current(relatedIterable: RelatedIterable<T>): T {
     const index = this.getPosition(relatedIterable);
     return this.cache.get(index) as T;
   }
 
+  /**
+   * Moves related iterable to the next element.
+   *
+   * @param relatedIterable
+   */
   public next(relatedIterable: RelatedIterable<T>): void {
     const [relPos, minPos, maxPos] = [
       this.getPosition(relatedIterable),
@@ -281,6 +297,11 @@ export class TeeIterator<T> {
     }
   }
 
+  /**
+   * Returns true if related iterable is not done.
+   *
+   * @param relatedIterable
+   */
   public valid(relatedIterable: RelatedIterable<T>): boolean {
     const [relPos, maxPos] = [
       this.getPosition(relatedIterable),
@@ -289,10 +310,18 @@ export class TeeIterator<T> {
     return relPos !== maxPos || this.isValid;
   }
 
+  /**
+   * Returns related iterables list.
+   */
   public getRelatedIterables(): Array<RelatedIterable<T>> {
     return this.related;
   }
 
+  /**
+   * Gets and caches the next element of parent iterator.
+   *
+   * @private
+   */
   private cacheNextValue(): void {
     const status = this.iterator.next();
     if (!status.done) {
@@ -301,6 +330,11 @@ export class TeeIterator<T> {
     this.isValid = !status.done;
   }
 
+  /**
+   * Returns current position index of related iterable.
+   *
+   * @param related
+   */
   private getPosition(related: RelatedIterable<T>): number {
     return this.positions[related.getId()];
   }
@@ -313,19 +347,34 @@ export class RelatedIterable<T> implements IterableIterator<T> {
   private parent: TeeIterator<T>;
   private readonly id: number;
 
+  /**
+   * RelatedIterable constructor.
+   *
+   * @param parentIterable
+   * @param id
+   */
   constructor(parentIterable: TeeIterator<T>, id: number) {
     this.parent = parentIterable;
     this.id = id;
   }
 
+  /**
+   * Id getter.
+   */
   public getId(): number {
     return this.id;
   }
 
+  /**
+   * Returns true if the iterator is valid.
+   */
   public valid(): boolean {
     return this.parent.valid(this);
   }
 
+  /**
+   * Moves the iterator to the next element.
+   */
   public next(): IteratorResult<T> {
     const result = { value: this.current(), done: !this.valid() };
     if (!result.done) {
@@ -334,10 +383,16 @@ export class RelatedIterable<T> implements IterableIterator<T> {
     return result as IteratorResult<T>;
   }
 
+  /**
+   * Returns current value of the iterator.
+   */
   public current(): T | undefined {
     return this.parent.valid(this) ? this.parent.current(this) : undefined;
   }
 
+  /**
+   * Aggregated iterator.
+   */
   *[Symbol.iterator](): IterableIterator<T> {
     while (this.parent.valid(this)) {
       yield this.parent.current(this);
