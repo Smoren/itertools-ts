@@ -15,6 +15,7 @@ import {
   repeat,
   skip,
   slice,
+  sort,
   takeWhile,
   values,
   chunkwiseAsync,
@@ -141,6 +142,7 @@ import {
   FlatMapper,
   Pair,
   Comparable,
+  Comparator,
   RecordKey,
   ZipTuple,
 } from "./types";
@@ -162,6 +164,7 @@ export const single = {
   repeat,
   skip,
   slice,
+  sort,
   takeWhile,
   values,
   chunkwiseAsync,
@@ -287,6 +290,7 @@ export type {
   FlatMapper,
   Pair,
   Comparable,
+  Comparator,
   RecordKey,
   ZipTuple,
 };

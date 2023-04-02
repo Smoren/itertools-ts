@@ -1,8 +1,8 @@
-import { toAsyncIterable, toIterable } from "./transform";
+import { toArray, toAsyncIterable, toIterable } from "./transform";
 import { InvalidArgumentError } from "./exceptions";
 import { isAsyncIterable, isIterable, isIterator, isString } from "./summary";
 import { distinct, distinctAsync } from "./set";
-import { AsyncFlatMapper, FlatMapper, Pair } from "./types";
+import { AsyncFlatMapper, Comparator, FlatMapper, Pair } from "./types";
 import { zip, zipAsync } from "./multi";
 
 /**
@@ -968,5 +968,30 @@ export async function* groupByAsync<T>(
 
   for (const group of groups) {
     yield group;
+  }
+}
+
+/**
+ * Sorts the given iterable.
+ *
+ * If comparator is null, the elements of given iterable must be comparable.
+ *
+ * @param data
+ * @param comparator
+ */
+export function* sort<T>(
+  data: Iterable<T> | Iterator<T>,
+  comparator?: Comparator<T>,
+): Iterable<T> {
+  const result = toArray(data);
+
+  if (comparator !== undefined) {
+    result.sort(comparator);
+  } else {
+    result.sort();
+  }
+
+  for (const datum of result) {
+    yield datum;
   }
 }
