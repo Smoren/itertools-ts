@@ -4,6 +4,7 @@ import {
   createMultipleIterator,
   MultipleIterationMode,
 } from "./tools";
+import { ZipTuple } from "./types";
 
 /**
  * Iterate multiple iterable collections simultaneously.
@@ -17,13 +18,13 @@ import {
  */
 export function* zip<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
   ...iterables: T
-): Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }> {
+): Iterable<ZipTuple<T, never>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.SHORTEST,
     undefined,
     ...iterables
   )) {
-    yield values as { [K in keyof T]: T[K] extends (infer V)[] ? V : never };
+    yield values as ZipTuple<T, never>;
   }
 }
 
@@ -46,13 +47,13 @@ export async function* zipAsync<
   >
 >(
   ...iterables: T
-): AsyncIterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }> {
+): AsyncIterable<ZipTuple<T, never>> {
   for await (const values of createAsyncMultipleIterator(
     MultipleIterationMode.SHORTEST,
     undefined,
     ...iterables
   )) {
-    yield values as { [K in keyof T]: T[K] extends (infer V)[] ? V : never };
+    yield values as ZipTuple<T, never>;
   }
 }
 
@@ -74,7 +75,7 @@ export function* zipFilled<
 >(
   filler: F,
   ...iterables: T
-): Iterable<{ [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F }> {
+): Iterable<ZipTuple<T, F>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.LONGEST,
     filler,
@@ -107,9 +108,7 @@ export async function* zipFilledAsync<
 >(
   filler: F,
   ...iterables: T
-): AsyncIterable<{
-  [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | F;
-}> {
+): AsyncIterable<ZipTuple<T, F>> {
   for await (const values of createAsyncMultipleIterator(
     MultipleIterationMode.LONGEST,
     filler,
@@ -134,9 +133,7 @@ export function* zipLongest<
   T extends Array<Iterable<unknown> | Iterator<unknown>>
 >(
   ...iterables: T
-): Iterable<{
-  [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | undefined;
-}> {
+): Iterable<ZipTuple<T, undefined>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.LONGEST,
     undefined,
@@ -166,9 +163,7 @@ export async function* zipLongestAsync<
   >
 >(
   ...iterables: T
-): AsyncIterable<{
-  [K in keyof T]: (T[K] extends (infer V)[] ? V : never) | undefined;
-}> {
+): AsyncIterable<ZipTuple<T, undefined>> {
   for await (const values of createAsyncMultipleIterator(
     MultipleIterationMode.LONGEST,
     undefined,
@@ -192,13 +187,13 @@ export function* zipEqual<
   T extends Array<Iterable<unknown> | Iterator<unknown>>
 >(
   ...iterables: T
-): Iterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }> {
+): Iterable<ZipTuple<T, never>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.STRICT_EQUAL,
     undefined,
     ...iterables
   )) {
-    yield values as { [K in keyof T]: T[K] extends (infer V)[] ? V : never };
+    yield values as ZipTuple<T, never>;
   }
 }
 
@@ -221,13 +216,13 @@ export async function* zipEqualAsync<
   >
 >(
   ...iterables: T
-): AsyncIterable<{ [K in keyof T]: T[K] extends (infer V)[] ? V : never }> {
+): AsyncIterable<ZipTuple<T, never>> {
   for await (const values of createAsyncMultipleIterator(
     MultipleIterationMode.STRICT_EQUAL,
     undefined,
     ...iterables
   )) {
-    yield values as { [K in keyof T]: T[K] extends (infer V)[] ? V : never };
+    yield values as ZipTuple<T, never>;
   }
 }
 
