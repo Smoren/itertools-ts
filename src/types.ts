@@ -20,5 +20,7 @@ export type AsyncFlatMapper<TInput, TOutput> = (
 ) => TOutput | Promise<TOutput> | AsyncIterable<TInput> | AsyncIterator<TInput>;
 
 export type ZipTuple<TValue, TFiller> = {
-  [K in keyof TValue]: (TValue[K] extends Iterable<(infer V)> ? V : never) | TFiller
+  [K in keyof TValue]:
+    | (TValue[K] extends Iterable<infer V> ? V : never)
+    | TFiller;
 };

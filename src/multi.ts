@@ -45,9 +45,7 @@ export async function* zipAsync<
     | Iterable<unknown>
     | Iterator<unknown>
   >
->(
-  ...iterables: T
-): AsyncIterable<ZipTuple<T, never>> {
+>(...iterables: T): AsyncIterable<ZipTuple<T, never>> {
   for await (const values of createAsyncMultipleIterator(
     MultipleIterationMode.SHORTEST,
     undefined,
@@ -72,10 +70,7 @@ export async function* zipAsync<
 export function* zipFilled<
   T extends Array<Iterable<unknown> | Iterator<unknown>>,
   F
->(
-  filler: F,
-  ...iterables: T
-): Iterable<ZipTuple<T, F>> {
+>(filler: F, ...iterables: T): Iterable<ZipTuple<T, F>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.LONGEST,
     filler,
@@ -105,10 +100,7 @@ export async function* zipFilledAsync<
     | Iterator<unknown>
   >,
   F
->(
-  filler: F,
-  ...iterables: T
-): AsyncIterable<ZipTuple<T, F>> {
+>(filler: F, ...iterables: T): AsyncIterable<ZipTuple<T, F>> {
   for await (const values of createAsyncMultipleIterator(
     MultipleIterationMode.LONGEST,
     filler,
@@ -131,9 +123,7 @@ export async function* zipFilledAsync<
  */
 export function* zipLongest<
   T extends Array<Iterable<unknown> | Iterator<unknown>>
->(
-  ...iterables: T
-): Iterable<ZipTuple<T, undefined>> {
+>(...iterables: T): Iterable<ZipTuple<T, undefined>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.LONGEST,
     undefined,
@@ -161,9 +151,7 @@ export async function* zipLongestAsync<
     | Iterable<unknown>
     | Iterator<unknown>
   >
->(
-  ...iterables: T
-): AsyncIterable<ZipTuple<T, undefined>> {
+>(...iterables: T): AsyncIterable<ZipTuple<T, undefined>> {
   for await (const values of createAsyncMultipleIterator(
     MultipleIterationMode.LONGEST,
     undefined,
@@ -185,9 +173,7 @@ export async function* zipLongestAsync<
  */
 export function* zipEqual<
   T extends Array<Iterable<unknown> | Iterator<unknown>>
->(
-  ...iterables: T
-): Iterable<ZipTuple<T, never>> {
+>(...iterables: T): Iterable<ZipTuple<T, never>> {
   for (const values of createMultipleIterator(
     MultipleIterationMode.STRICT_EQUAL,
     undefined,
@@ -214,9 +200,7 @@ export async function* zipEqualAsync<
     | Iterable<unknown>
     | Iterator<unknown>
   >
->(
-  ...iterables: T
-): AsyncIterable<ZipTuple<T, never>> {
+>(...iterables: T): AsyncIterable<ZipTuple<T, never>> {
   for await (const values of createAsyncMultipleIterator(
     MultipleIterationMode.STRICT_EQUAL,
     undefined,
