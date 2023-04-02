@@ -1,6 +1,14 @@
 # IterTools Typescript Change Log
 
+## v1.19.0 - TBD
+
+### New features
+* Stream
+  * `peek()`
+  * `peekStream()`
+
 ## v1.18.0 - 2023-04-02
+
 ### New features
 * transform
   * `teeAsync()`
@@ -16,6 +24,7 @@
   * all the zip function's interfaces are simplified
 
 ## v1.17.0 - 2023-04-02
+
 ### New features
 * transform
   * `tee()`

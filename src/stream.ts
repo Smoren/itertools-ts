@@ -505,6 +505,40 @@ export class Stream {
   }
 
   /**
+   * Peek at each element between other Stream operations to do some action without modifying the stream.
+   *
+   * Useful for debugging purposes.
+   *
+   * @param callback
+   */
+  public peek(callback: (datum: unknown) => void): Stream {
+    const [data, peekable] = tee(this.data, 2);
+    this.data = data;
+
+    for (const element of peekable) {
+      callback(element);
+    }
+
+    return this;
+  }
+
+  /**
+   * Peek at the entire stream between other Stream operations to do some action without modifying the stream.
+   *
+   * Useful for debugging purposes.
+   *
+   * @param callback
+   */
+  public peekStream(callback: (datum: Stream) => void): Stream {
+    const [data, peekable] = tee(this.data, 2);
+    this.data = data;
+
+    callback(Stream.of(peekable));
+
+    return this;
+  }
+
+  /**
    * Reduces iterable source like `array.reduce()` function.
    *
    * @param reducer
