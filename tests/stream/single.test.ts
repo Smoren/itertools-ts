@@ -679,6 +679,27 @@ function dataProviderForArrays(): Array<unknown> {
         .toArray(),
       [['pos', [1, 3]], ['neg', [-1, -3]]],
     ],
+    [
+      ['b', 'f', 'c', 'e', 'd', 'a'],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort()
+        .toArray(),
+      ['a', 'b', 'c', 'd', 'e', 'f'],
+    ],
+    [
+      [2, 3, 1, 2, -3, -2, 5, 7, 3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
+        .toArray(),
+      [-3, -2, 1, 2, 2, 3, 3, 5, 7],
+    ],
+    [
+      [2, 3, 1, 2, -3, -2, 5, 7, 3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
+        .toArray(),
+      [7, 5, 3, 3, 2, 2, 1, -2, -3],
+    ],
   ];
 }
 
@@ -1333,6 +1354,27 @@ function dataProviderForGenerators(): Array<unknown> {
         .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
         .toArray(),
       [['pos', [1, 3]], ['neg', [-1, -3]]],
+    ],
+    [
+      createGeneratorFixture(['b', 'f', 'c', 'e', 'd', 'a']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort()
+        .toArray(),
+      ['a', 'b', 'c', 'd', 'e', 'f'],
+    ],
+    [
+      createGeneratorFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
+        .toArray(),
+      [-3, -2, 1, 2, 2, 3, 3, 5, 7],
+    ],
+    [
+      createGeneratorFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
+        .toArray(),
+      [7, 5, 3, 3, 2, 2, 1, -2, -3],
     ],
   ];
 }
@@ -1989,6 +2031,27 @@ function dataProviderForIterables(): Array<unknown> {
         .toArray(),
       [['pos', [1, 3]], ['neg', [-1, -3]]],
     ],
+    [
+      createIterableFixture(['b', 'f', 'c', 'e', 'd', 'a']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort()
+        .toArray(),
+      ['a', 'b', 'c', 'd', 'e', 'f'],
+    ],
+    [
+      createIterableFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
+        .toArray(),
+      [-3, -2, 1, 2, 2, 3, 3, 5, 7],
+    ],
+    [
+      createIterableFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
+        .toArray(),
+      [7, 5, 3, 3, 2, 2, 1, -2, -3],
+    ],
   ];
 }
 
@@ -2644,6 +2707,27 @@ function dataProviderForIterators(): Array<unknown> {
         .toArray(),
       [['pos', [1, 3]], ['neg', [-1, -3]]],
     ],
+    [
+      createIteratorFixture(['b', 'f', 'c', 'e', 'd', 'a']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort()
+        .toArray(),
+      ['a', 'b', 'c', 'd', 'e', 'f'],
+    ],
+    [
+      createIteratorFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
+        .toArray(),
+      [-3, -2, 1, 2, 2, 3, 3, 5, 7],
+    ],
+    [
+      createIteratorFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
+        .toArray(),
+      [7, 5, 3, 3, 2, 2, 1, -2, -3],
+    ],
   ];
 }
 
@@ -3168,6 +3252,27 @@ function dataProviderForStrings(): Array<unknown> {
         .groupBy((item) => Number(item as string) % 2 === 0 ? 'even' : 'odd')
         .toArray(),
       [['odd', ['1', '3', '5']], ['even', ['2', '4', '6']]],
+    ],
+    [
+      'bfceda',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort()
+        .toArray(),
+      ['a', 'b', 'c', 'd', 'e', 'f'],
+    ],
+    [
+      '231232573',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
+        .toArray(),
+      ['1', '2', '2', '2', '3', '3', '3', '5', '7'],
+    ],
+    [
+      '231232573',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
+        .toArray(),
+      ['7', '5', '3', '3', '3', '2', '2', '2', '1'],
     ],
   ];
 }
@@ -3775,6 +3880,27 @@ function dataProviderForSets(): Array<unknown> {
         .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
         .toArray(),
       [['pos', [1, 3]], ['neg', [-1, -3]]],
+    ],
+    [
+      new Set(['b', 'f', 'c', 'e', 'd', 'a']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort()
+        .toArray(),
+      ['a', 'b', 'c', 'd', 'e', 'f'],
+    ],
+    [
+      new Set([2, 3, 1, -3, -2, 5, 7]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
+        .toArray(),
+      [-3, -2, 1, 2, 3, 5, 7],
+    ],
+    [
+      new Set([2, 3, 1, -3, -2, 5, 7]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
+        .toArray(),
+      [7, 5, 3, 2, 1, -2, -3],
     ],
   ];
 }
@@ -4442,6 +4568,30 @@ function dataProviderForMaps(): Array<unknown> {
         .groupBy((item) => (item as [number, number])[1] > 0 ? 'pos' : 'neg')
         .toArray(),
       [['pos', [[0, 1], [4, 3]]], ['neg', [[1, -1], [5, -3]]]],
+    ],
+    [
+      createMapFixture(['b', 'f', 'c', 'e', 'd', 'a']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .sort()
+        .toArray(),
+      ['a', 'b', 'c', 'd', 'e', 'f'],
+    ],
+    [
+      createMapFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
+        .toArray(),
+      [-3, -2, 1, 2, 2, 3, 3, 5, 7],
+    ],
+    [
+      createMapFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .values()
+        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
+        .toArray(),
+      [7, 5, 3, 3, 2, 2, 1, -2, -3],
     ],
   ];
 }

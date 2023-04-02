@@ -20,7 +20,7 @@ import {
   mapAsync,
   pairwiseAsync,
   skipAsync,
-  sliceAsync,
+  sliceAsync, sortAsync,
   takeWhileAsync,
   valuesAsync,
 } from "./single";
@@ -62,7 +62,7 @@ import {
   sameAsync,
   sameCountAsync,
 } from "./summary";
-import { AsyncFlatMapper, Comparable } from "./types";
+import { AsyncFlatMapper, Comparable, Comparator } from "./types";
 
 /**
  * Provides fluent interface for working with async iterables.
@@ -488,6 +488,18 @@ export class AsyncStream {
   }
 
   /**
+   * Sorts the stream.
+   *
+   * If comparator is `undefined`, then elements of the iterable source must be comparable.
+   *
+   * @see single.sort
+   */
+  sort(comparator?: Comparator<unknown>): AsyncStream {
+    this.data = sortAsync(this.data, comparator);
+    return this;
+  }
+
+  /**
    * Filter out elements from the iterable source only returning unique elements.
    *
    * @see set.distinctAsync
@@ -584,6 +596,42 @@ export class AsyncStream {
     >
   ): AsyncStream {
     this.data = unionAsync(this.data, ...iterables);
+    return this;
+  }
+
+  /**
+   * Peek at each element between other Stream operations to do some action without modifying the stream.
+   *
+   * Useful for debugging purposes.
+   *
+   * @param callback
+   */
+  public peek(callback: (datum: unknown) => void): AsyncStream {
+    const [data, peekable] = teeAsync(this.data, 2);
+    this.data = data;
+
+    (async () => {
+      for await (const element of peekable) {
+        callback(element);
+      }
+    })();
+
+    return this;
+  }
+
+  /**
+   * Peek at the entire stream between other Stream operations to do some action without modifying the stream.
+   *
+   * Useful for debugging purposes.
+   *
+   * @param callback
+   */
+  public peekStream(callback: (datum: AsyncStream) => void): AsyncStream {
+    const [data, peekable] = teeAsync(this.data, 2);
+    this.data = data;
+
+    callback(AsyncStream.of(peekable));
+
     return this;
   }
 
