@@ -470,7 +470,9 @@ export class AsyncTeeIterator<T> {
    *
    * @param relatedIterable
    */
-  public async valid(relatedIterable: AsyncRelatedIterable<T>): Promise<boolean> {
+  public async valid(
+    relatedIterable: AsyncRelatedIterable<T>
+  ): Promise<boolean> {
     if (this.isFirstIteration) {
       await this.cacheNextValue();
     }
@@ -561,7 +563,7 @@ export class AsyncRelatedIterable<T> implements AsyncIterableIterator<T> {
    * Returns current value of the iterator.
    */
   public async current(): Promise<T | undefined> {
-    return await this.parent.valid(this)
+    return (await this.parent.valid(this))
       ? await this.parent.current(this)
       : undefined;
   }
