@@ -4,6 +4,8 @@
 ### New features
 * Stream
   * `tee()`
+* types
+  * `ZipTuple`
 
 ### Improvements
 * multi
