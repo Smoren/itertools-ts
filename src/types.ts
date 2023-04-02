@@ -2,6 +2,8 @@ export type RecordKey = string | number | symbol;
 
 export type Comparable = string | number | boolean | Array<unknown>;
 
+export type Comparator<T> = (lhs: T, rhs: T) => 1|0|-1;
+
 export type Pair<T> = [T, T];
 
 export type FlatMapper<TInput, TOutput> = (

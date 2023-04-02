@@ -3,9 +3,19 @@
 ## v1.19.0 - TBD
 
 ### New features
+* Single
+  * `sort()`
+  * `sortAsync()` // TODO
 * Stream
   * `peek()`
   * `peekStream()`
+  * `sort()` // TODO
+* AsyncStream
+  * `peek()` // TODO
+  * `peekStream()` // TODO
+  * `sort()` // TODO
+* types
+  * `Comparator`
 
 ## v1.18.0 - 2023-04-02
 
