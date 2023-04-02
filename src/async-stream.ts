@@ -79,7 +79,11 @@ export class AsyncStream {
    * @param data
    */
   static of(
-    data: AsyncIterable<unknown> | AsyncIterator<unknown> | Iterable<unknown> | Iterator<unknown>
+    data:
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
   ): AsyncStream {
     return new AsyncStream(toAsyncIterable(data));
   }
@@ -867,7 +871,9 @@ export class AsyncStream {
    * @see transform.teeAsync
    */
   public tee(count: number): Array<AsyncStream> {
-    return teeAsync(this.data, count).map((iterable) => new AsyncStream(iterable));
+    return teeAsync(this.data, count).map(
+      (iterable) => new AsyncStream(iterable)
+    );
   }
 
   /**

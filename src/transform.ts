@@ -1,7 +1,12 @@
 import { InvalidArgumentError } from "./exceptions";
 import { isAsyncIterable, isIterable, isIterator } from "./summary";
 import { RecordKey } from "./types";
-import { AsyncRelatedIterable, AsyncTeeIterator, RelatedIterable, TeeIterator } from "./tools";
+import {
+  AsyncRelatedIterable,
+  AsyncTeeIterator,
+  RelatedIterable,
+  TeeIterator,
+} from "./tools";
 
 /**
  * Converts collection or record to Iterable instance.
@@ -274,5 +279,8 @@ export function teeAsync<T>(
   collection: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
   count: number
 ): Array<AsyncRelatedIterable<T>> {
-  return new AsyncTeeIterator(toAsyncIterator(collection), count).getRelatedIterables();
+  return new AsyncTeeIterator(
+    toAsyncIterator(collection),
+    count
+  ).getRelatedIterables();
 }
