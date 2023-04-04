@@ -39,7 +39,12 @@ import {
   valuesAsync,
 } from "./single";
 
-import { runningTotal, runningTotalAsync } from "./math";
+import {
+  runningTotal,
+  runningTotalAsync,
+  runningProduct,
+  runningProductAsync
+} from "./math";
 
 import {
   chain,
@@ -192,6 +197,8 @@ export const single = {
 export const math = {
   runningTotal,
   runningTotalAsync,
+  runningProduct,
+  runningProductAsync
 };
 
 export const multi = {
