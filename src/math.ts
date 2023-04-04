@@ -41,3 +41,45 @@ export async function* runningTotalAsync<T>(
     yield total as number;
   }
 }
+
+/**
+ * Accumulate the running product over a list of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running product leads off with the initial value.
+ */
+export function* runningProduct<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number> {
+  if (initialValue !== undefined) {
+    yield initialValue;
+  }
+
+  let product = initialValue ?? 1;
+  for (const num of toIterable(numbers)) {
+    product *= Number(num as number);
+    yield product as number;
+  }
+}
+
+/**
+ * Accumulate the running product over a async collection of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running product leads off with the initial value.
+ */
+export async function* runningProductAsync<T>(
+  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  initialValue?: number
+): AsyncIterable<number> {
+  if (initialValue !== undefined) {
+    yield initialValue;
+  }
+
+  let product = initialValue ?? 1;
+  for await (const num of toAsyncIterable(numbers)) {
+    product *= Number(num as number);
+    yield product as number;
+  }
+}
