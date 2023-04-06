@@ -31,7 +31,7 @@ import {
   zipFilledAsync,
   zipLongestAsync,
 } from "./multi";
-import { runningTotalAsync } from "./math";
+import { runningTotalAsync, runningProductAsync } from "./math";
 import {
   distinctAsync,
   intersectionAsync,
@@ -425,6 +425,18 @@ export class AsyncStream {
    */
   runningTotal(initialValue?: number): AsyncStream {
     this.data = runningTotalAsync(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running product over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running product leads off with the initial value.
+   *
+   * @see math.runningProductAsync
+   */
+  runningProduct(initialValue?: number): AsyncStream {
+    this.data = runningProductAsync(this.data, initialValue);
     return this;
   }
 
