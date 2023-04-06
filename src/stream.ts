@@ -20,7 +20,7 @@ import {
   values,
 } from "./single";
 import { chain, zip, zipEqual, zipFilled, zipLongest } from "./multi";
-import { runningTotal } from "./math";
+import { runningTotal, runningProduct } from "./math";
 import {
   distinct,
   intersection,
@@ -369,6 +369,18 @@ export class Stream {
    */
   runningTotal(initialValue?: number): Stream {
     this.data = runningTotal(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running product over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running product leads off with the initial value.
+   *
+   * @see math.runningProduct
+   */
+  runningProduct(initialValue?: number): Stream {
+    this.data = runningProduct(this.data, initialValue);
     return this;
   }
 
