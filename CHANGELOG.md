@@ -1,5 +1,16 @@
 # IterTools Typescript Change Log
 
+## v1.20.0 - TBD
+
+### New features
+* Math
+  * `runningProduct()`
+  * `runningProductAsync()`
+* Stream
+  * `runningProduct()`
+* AsyncStream
+  * `runningProduct()`
+
 ## v1.19.0 - 2023-04-08
 
 ### New features
