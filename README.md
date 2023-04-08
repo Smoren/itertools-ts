@@ -134,6 +134,7 @@ Quick Reference
 | [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      | `single.repeatAsync(item, repetitions)`                      |
 | [`skip`](#Skip)                          | Iterate after skipping elements             | `single.skip(data, count, [offset])`                    | `single.skipAsync(data, count, [offset])`                    |
 | [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice(data, [start], [count], [step])`          | `single.sliceAsync(data, [start], [count], [step])`          |
+| [`sort`](#Sort)                          | Iterate a sorted collection                 | `single.sort(data, [comparator])`                       | `single.sortAsync(data, [comparator])`                       |
 | [`takeWhile`](#Take-While)               | Iterate elements while predicate is true    | `single.takeWhile(data, predicate)`                     | `single.takeWhileAsync(data, predicate)`                     |
 | [`values`](#Values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   | `single.valuesAsync(data)`                                   |
 
@@ -224,6 +225,7 @@ Quick Reference
 | [`runningTotal`](#Running-Total-1)                      | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`                                |
 | [`skip`](#Skip-1)                                       | Skip some elements of the stream                                                          | `stream.skip(count, [offset])`                                       |
 | [`slice`](#Slice-1)                                     | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`                             |
+| [`sort`](#Sort-1)                                       | Sorts the stream                                                                          | `stream.sort([comparator])`                                          |
 | [`symmetricDifferenceWith`](#Symmetric-Difference-With) | Symmetric difference of stream and given iterables                                        | `stream.symmetricDifferenceWith(...iterables)`                       |
 | [`takeWhile`](#Take-While-1)                            | Return elements from the iterable source as long as the predicate is true                 | `stream.takeWhile(predicate)`                                        |
 | [`unionWith`](#Union-With)                              | Union of stream and given iterables                                                       | `stream.union(...iterables)`                                         |
@@ -268,6 +270,12 @@ Quick Reference
 | [`noneMatch`](#None-Match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
 | [`sameWith`](#Same-With)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |
 | [`sameCountWith`](#Same-Count-With) | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)` |
+
+#### Stream Debug Operations
+| Debug Operation              | Description                                    | Code Snippet                  |
+|------------------------------|------------------------------------------------|-------------------------------|
+| [`peek`](#Peek)              | Peek at each element between stream operations | `stream.peek(peekFunc)`       |
+| [`peekStream`](#Peek-Stream) | Peek at the entire stream between operations   | `stream.peekStream(peekFunc)` |
 
 Usage
 -----
@@ -800,6 +808,29 @@ for (const winterYear of single.slice(olympics, 1, 8, 2)) {
     winterOlympics.push(winterYear);
 }
 // [1994, 1998, 2002, 2006, 2010, 2014, 2018, 2022]
+```
+
+### Sort
+Iterate the collection sorted.
+
+```
+function* sort<T>(
+  data: Iterable<T> | Iterator<T>,
+  comparator?: Comparator<T>,
+): Iterable<T>
+```
+
+Uses default sorting if optional comparator function not provided.
+
+```typescript
+import { single } from 'itertools-ts';
+
+const data = [3, 4, 5, 9, 8, 7, 1, 6, 2];
+
+for (const datum of single.sort(data)) {
+  console.log(datum);
+}
+// 1, 2, 3, 4, 5, 6, 7, 8, 9
 ```
 
 ### Take While
@@ -2237,6 +2268,26 @@ const summerOlympics = Stream.of(olympics)
 // [1992, 1996, 2000, 2004, 2008, 2012, 2016, 2020]
 ```
 
+#### Sort
+Sorts the stream.
+
+```
+stream.sort(comparator?: Comparator<unknown>): Stream
+```
+
+If comparator is not provided, the elements of the iterable source must be comparable.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [3, 4, 5, 9, 8, 7, 1, 6, 2];
+
+const result = Stream.of(input)
+  .sort()
+  .toArray();
+// 1, 2, 3, 4, 5, 6, 7, 8, 9
+```
+
 #### Symmetric difference With
 Return a stream of the symmetric difference of the stream and the given iterables.
 
@@ -2433,7 +2484,7 @@ const daysOfWeek = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
 const count = 3;
 
 const [week1Stream, week2Stream, week3Stream] = Stream.of(daysOfWeek)
-    .tee($count);
+    .tee(count);
 
 // Each weekStream contains ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
 ```
@@ -2885,6 +2936,43 @@ const trueResult = Stream.of(input)
 const falseResult = Stream.of(input)
   .sameCountWith([1, 2, 3]);
 // false
+```
+
+#### Stream Debug Operations
+#### Peek
+Peek at each element between other Stream operations to do some action without modifying the stream.
+
+```
+stream.peek(callback: (datum: unknown) => void): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.of(['some', 'items'])
+  .peek((x) => console.log(x)) // 'some', 'items'
+  .toArray();
+
+console.log(result);
+// ['some', 'items']
+```
+
+#### Peek Stream
+Peek at the entire stream between other Stream operations to do some action without modifying the stream.
+
+```
+stream.peekStream(callback: (datum: Stream) => void): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.of(['some', 'items'])
+  .peekStream((stream) => console.log(stream.toArray())) // ['some', 'items']
+  .toArray();
+
+console.log(result);
+// ['some', 'items']
 ```
 
 Unit testing

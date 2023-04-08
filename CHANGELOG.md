@@ -1,6 +1,6 @@
 # IterTools Typescript Change Log
 
-## v1.19.0 - TBD
+## v1.19.0 - 2023-04-08
 
 ### New features
 * Single
@@ -9,10 +9,11 @@
 * Stream
   * `peek()`
   * `peekStream()`
-  * `sort()` // TODO
+  * `sort()`
 * AsyncStream
-  * `peekStream()` // TODO
-  * `sort()` // TODO
+  * `peek()`
+  * `peekStream()`
+  * `sort()`
 * types
   * `Comparator`
 
