@@ -567,9 +567,7 @@ export class AsyncRelatedIterable<T> implements AsyncIterableIterator<T> {
    */
   async *[Symbol.asyncIterator](): AsyncIterableIterator<T> {
     while (await this.parent.valid(this)) {
-      const r = await this.parent.current(this);
-      yield r;
-      // yield await this.parent.current(this);
+      yield await this.parent.current(this);
       await this.parent.next(this);
     }
   }
