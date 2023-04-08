@@ -1,4 +1,9 @@
-import {toArray, toArrayAsync, toAsyncIterable, toIterable} from "./transform";
+import {
+  toArray,
+  toArrayAsync,
+  toAsyncIterable,
+  toIterable,
+} from "./transform";
 import { InvalidArgumentError } from "./exceptions";
 import { isAsyncIterable, isIterable, isIterator, isString } from "./summary";
 import { distinct, distinctAsync } from "./set";
@@ -981,7 +986,7 @@ export async function* groupByAsync<T>(
  */
 export function* sort<T>(
   data: Iterable<T> | Iterator<T>,
-  comparator?: Comparator<T>,
+  comparator?: Comparator<T>
 ): Iterable<T> {
   const result = toArray(data);
 
@@ -1006,7 +1011,7 @@ export function* sort<T>(
  */
 export async function* sortAsync<T>(
   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
-  comparator?: Comparator<T>,
+  comparator?: Comparator<T>
 ): AsyncIterable<T> {
   const result = await toArrayAsync(data);
 

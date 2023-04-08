@@ -3,10 +3,7 @@
     "target": "ES6",
     "module": "commonjs",
     "moduleResolution": "Node",
-    "lib": [
-      "es6",
-      "es2018.asynciterable"
-    ],
+    "lib": ["es6", "es2018.asynciterable"],
     "rootDir": "./src",
     "allowJs": false,
     "outDir": "./dist",
