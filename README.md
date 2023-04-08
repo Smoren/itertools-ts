@@ -154,7 +154,7 @@ Quick Reference
 | [`toLast`](#To-Last)                   | Reduce to its last value               | `reduce.toLast(data)`                         | `reduce.toLastAsync(data)`                         |
 | [`toMax`](#To-Max)                     | Reduce to its greatest element         | `reduce.toMax(numbers, [compareBy])`          | `reduce.toMaxAsync(numbers, [compareBy])`          |
 | [`toMin`](#To-Min)                     | Reduce to its smallest element         | `reduce.toMin(numbers, [compareBy])`          | `reduce.toMinAsync(numbers, [compareBy])`          |
-| [`toMin`](#To-Min-Max)                 | Reduce to its lower and upper bounds   | `reduce.toMinMax(numbers, [compareBy])`       | `reduce.toMinMaxAsync(numbers, [compareBy])`       |
+| [`toMinMax`](#To-Min-Max)              | Reduce to its lower and upper bounds   | `reduce.toMinMax(numbers, [compareBy])`       | `reduce.toMinMaxAsync(numbers, [compareBy])`       |
 | [`toProduct`](#To-Product)             | Reduce to the product of its elements  | `reduce.toProduct(numbers)`                   | `reduce.toProductAsync(numbers)`                   |
 | [`toSum`](#To-Sum)                     | Reduce to the sum of its elements      | `reduce.toSum(numbers)`                       | `reduce.toSumAsync(numbers)`                       |
 | [`toValue`](#To-Value)                 | Reduce to value using callable reducer | `reduce.toValue(data, reducer, initialValue)` | `reduce.toValueAsync(data, reducer, initialValue)` |
