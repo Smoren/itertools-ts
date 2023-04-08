@@ -139,9 +139,10 @@ Quick Reference
 | [`values`](#Values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   | `single.valuesAsync(data)`                                   |
 
 #### Math Iteration
-| Iterator                         | Description                | Sync Code Snippet                            | Async Code Snippet                                |
-|----------------------------------|----------------------------|----------------------------------------------|---------------------------------------------------|
-| [`runningTotal`](#Running-Total) | Running total accumulation | `math.runningTotal(numbers, [initialValue])` | `math.runningTotalAsync(numbers, [initialValue])` |
+| Iterator                             | Description                  | Sync Code Snippet                              | Async Code Snippet                                  |
+|--------------------------------------|------------------------------|------------------------------------------------|-----------------------------------------------------|
+| [`runningProduct`](#Running-Product) | Running product accumulation | `math.runningProduct(numbers, [initialValue])` | `math.runningProductAsync(numbers, [initialValue])` |
+| [`runningTotal`](#Running-Total)     | Running total accumulation   | `math.runningTotal(numbers, [initialValue])`   | `math.runningTotalAsync(numbers, [initialValue])`   |
 
 #### Reduce
 | Reducer                                | Description                            | Sync Code Snippet                             | Async Code Snippet                                 |
@@ -222,6 +223,7 @@ Quick Reference
 | [`map`](#Map-1)                                         | Map function onto elements                                                                | `stream.map(mapper)`                                                 |
 | [`pairwise`](#Pairwise-1)                               | Return pairs of elements from iterable source                                             | `stream.pairwise()`                                                  |
 | [`partialIntersectionWith`](#Partial-Intersection-With) | Partially intersect stream and given iterables                                            | `stream.partialIntersectionWith(minIntersectionCount, ...iterables)` |
+| [`runningProduct`](#Running-Product-1)                  | Accumulate the running product over iterable source                                       | `stream.runningProduct([initialValue])`                              |
 | [`runningTotal`](#Running-Total-1)                      | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`                                |
 | [`skip`](#Skip-1)                                       | Skip some elements of the stream                                                          | `stream.skip(count, [offset])`                                       |
 | [`slice`](#Slice-1)                                     | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`                             |
@@ -878,6 +880,42 @@ for (const value of single.keys(dict)) {
 ```
 
 ## Math Iteration
+
+### Running Product
+Accumulate the running product over a list of numbers.
+
+```
+function* runningProduct<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number>
+```
+
+```typescript
+import { math } from 'itertools-ts';
+
+const numbers = [1, 2, 3, 4, 5];
+
+for (const runningProduct of math.runningProduct(numbers)) {
+  console.log(runningProduct);
+}
+// 1, 2, 6, 24, 120
+```
+
+Provide an optional initial value to lead off the running product.
+
+```typescript
+import { math } from 'itertools-ts';
+
+const numbers = [1, 2, 3, 4, 5];
+const initialValue = 5;
+
+for (const runningProduct of math.runningProduct(numbers, initialValue)) {
+  console.log(runningProduct);
+}
+// 5, 5, 10, 30, 120, 600
+```
+
 ### Running Total
 Accumulate the running total over a list of numbers.
 
@@ -2207,6 +2245,24 @@ const result = Stream.of(staticallyTyped)
   .partialIntersectionWith(2, dynamicallyTyped, supportsInterfaces)
   .toArray();
 // c++, java, c#, go, php
+```
+
+#### Running Product
+Return a stream accumulating the running product over the stream.
+
+```
+stream.runningProduct(initialValue?: number): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const input = [1, 2, 3, 4, 5];
+
+const result = Stream.of(input)
+  .runningProduct()
+  .toArray();
+// 1, 2, 6, 24, 120
 ```
 
 #### Running Total
