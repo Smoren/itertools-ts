@@ -14,7 +14,8 @@ import {
   map,
   pairwise,
   skip,
-  slice, sort,
+  slice,
+  sort,
   takeWhile,
   values,
 } from "./single";

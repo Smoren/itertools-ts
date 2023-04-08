@@ -20,7 +20,8 @@ import {
   mapAsync,
   pairwiseAsync,
   skipAsync,
-  sliceAsync, sortAsync,
+  sliceAsync,
+  sortAsync,
   takeWhileAsync,
   valuesAsync,
 } from "./single";

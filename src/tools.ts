@@ -303,7 +303,9 @@ export class TeeIterator<T> {
    * @param relatedIterable
    */
   public valid(relatedIterable: RelatedIterable<T>): boolean {
-    return this.getPosition(relatedIterable) < this.lastCacheIndex || this.isValid;
+    return (
+      this.getPosition(relatedIterable) < this.lastCacheIndex || this.isValid
+    );
   }
 
   /**
@@ -472,7 +474,9 @@ export class AsyncTeeIterator<T> {
     if (this.isFirstIteration) {
       await this.cacheNextValue();
     }
-    return this.getPosition(relatedIterable) < this.lastCacheIndex || this.isValid;
+    return (
+      this.getPosition(relatedIterable) < this.lastCacheIndex || this.isValid
+    );
   }
 
   /**
