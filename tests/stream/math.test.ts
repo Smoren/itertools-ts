@@ -113,6 +113,48 @@ function dataProviderForArrays(): Array<unknown> {
         .toArray(),
       [1, 1, 2, 6],
     ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [],
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      ['1', '2', '3'],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      ['1', 2, '3'],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(0)
+        .toArray(),
+      [0, -1, -3, -6],
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(1)
+        .toArray(),
+      [1, 0, -2, -5],
+    ],
   ];
 }
 
@@ -201,6 +243,48 @@ function dataProviderForGenerators(): Array<unknown> {
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createGeneratorFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createGeneratorFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(0)
+        .toArray(),
+      [0, -1, -3, -6],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(1)
+        .toArray(),
+      [1, 0, -2, -5],
     ],
   ];
 }
@@ -291,6 +375,48 @@ function dataProviderForIterables(): Array<unknown> {
         .toArray(),
       [1, 1, 2, 6],
     ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createIterableFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createIterableFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(0)
+        .toArray(),
+      [0, -1, -3, -6],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(1)
+        .toArray(),
+      [1, 0, -2, -5],
+    ],
   ];
 }
 
@@ -380,6 +506,48 @@ function dataProviderForIterators(): Array<unknown> {
         .toArray(),
       [1, 1, 2, 6],
     ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createIteratorFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createIteratorFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(0)
+        .toArray(),
+      [0, -1, -3, -6],
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(1)
+        .toArray(),
+      [1, 0, -2, -5],
+    ],
   ];
 }
 
@@ -454,6 +622,41 @@ function dataProviderForStrings(): Array<unknown> {
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [],
+    ],
+    [
+      '1',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(0)
+        .toArray(),
+      [0, -1, -3, -6],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(1)
+        .toArray(),
+      [1, 0, -2, -5],
     ],
   ];
 }
@@ -543,6 +746,48 @@ function dataProviderForSets(): Array<unknown> {
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      new Set(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      new Set(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(0)
+        .toArray(),
+      [0, -1, -3, -6],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningDifference(1)
+        .toArray(),
+      [1, 0, -2, -5],
     ],
   ];
 }
@@ -644,6 +889,54 @@ function dataProviderForMaps(): Array<unknown> {
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningDifference()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createMapFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createMapFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningDifference()
+        .toArray(),
+      [-1, -3, -6],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningDifference(0)
+        .toArray(),
+      [0, -1, -3, -6],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningDifference(1)
+        .toArray(),
+      [1, 0, -2, -5],
     ],
   ];
 }
