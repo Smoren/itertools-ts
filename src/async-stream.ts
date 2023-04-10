@@ -32,7 +32,11 @@ import {
   zipFilledAsync,
   zipLongestAsync,
 } from "./multi";
-import { runningTotalAsync, runningProductAsync } from "./math";
+import {
+  runningTotalAsync,
+  runningProductAsync,
+  runningDifferenceAsync,
+} from "./math";
 import {
   distinctAsync,
   intersectionAsync,
@@ -438,6 +442,18 @@ export class AsyncStream {
    */
   runningProduct(initialValue?: number): AsyncStream {
     this.data = runningProductAsync(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running difference over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running difference leads off with the initial value.
+   *
+   * @see math.runningDifferenceAsync
+   */
+  runningDifference(initialValue?: number): AsyncStream {
+    this.data = runningDifferenceAsync(this.data, initialValue);
     return this;
   }
 

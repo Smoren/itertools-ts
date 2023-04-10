@@ -42,8 +42,10 @@ import {
 import {
   runningProduct,
   runningTotal,
+  runningDifference,
   runningProductAsync,
   runningTotalAsync,
+  runningDifferenceAsync,
 } from "./math";
 
 import {
@@ -197,8 +199,10 @@ export const single = {
 export const math = {
   runningProduct,
   runningTotal,
+  runningDifference,
   runningProductAsync,
   runningTotalAsync,
+  runningDifferenceAsync,
 };
 
 export const multi = {

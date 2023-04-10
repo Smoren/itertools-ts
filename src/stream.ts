@@ -20,7 +20,11 @@ import {
   values,
 } from "./single";
 import { chain, zip, zipEqual, zipFilled, zipLongest } from "./multi";
-import { runningTotal, runningProduct } from "./math";
+import {
+  runningTotal,
+  runningProduct,
+  runningDifference,
+} from "./math";
 import {
   distinct,
   intersection,
@@ -381,6 +385,18 @@ export class Stream {
    */
   runningProduct(initialValue?: number): Stream {
     this.data = runningProduct(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running difference over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running difference leads off with the initial value.
+   *
+   * @see math.runningDifference
+   */
+  runningDifference(initialValue?: number): Stream {
+    this.data = runningDifference(this.data, initialValue);
     return this;
   }
 
@@ -858,7 +874,7 @@ export class Stream {
   /**
    * Aggregated iterator.
    */
-  *[Symbol.iterator](): Iterator<unknown> {
+  * [Symbol.iterator](): Iterator<unknown> {
     for (const datum of this.data) {
       yield datum;
     }
