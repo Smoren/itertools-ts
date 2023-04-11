@@ -20,11 +20,7 @@ import {
   values,
 } from "./single";
 import { chain, zip, zipEqual, zipFilled, zipLongest } from "./multi";
-import {
-  runningTotal,
-  runningProduct,
-  runningDifference,
-} from "./math";
+import { runningTotal, runningProduct, runningDifference } from "./math";
 import {
   distinct,
   intersection,
@@ -874,7 +870,7 @@ export class Stream {
   /**
    * Aggregated iterator.
    */
-  * [Symbol.iterator](): Iterator<unknown> {
+  *[Symbol.iterator](): Iterator<unknown> {
     for (const datum of this.data) {
       yield datum;
     }
