@@ -4,11 +4,15 @@
 
 ### New features
 * Math
+  * `runningDifference()` // TODO docs
+  * `runningDifferenceAsync()`
   * `runningProduct()`
   * `runningProductAsync()`
 * Stream
+  * `runningDifference()` // TODO docs
   * `runningProduct()`
 * AsyncStream
+  * `runningDifference()`
   * `runningProduct()`
 
 ## v1.19.0 - 2023-04-08
