@@ -20,7 +20,12 @@ import {
   values,
 } from "./single";
 import { chain, zip, zipEqual, zipFilled, zipLongest } from "./multi";
-import { runningTotal, runningProduct, runningDifference } from "./math";
+import {
+  runningTotal,
+  runningProduct,
+  runningDifference,
+  runningMax,
+} from "./math";
 import {
   distinct,
   intersection,
@@ -393,6 +398,18 @@ export class Stream {
    */
   runningDifference(initialValue?: number): Stream {
     this.data = runningDifference(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running max over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running max leads off with the initial value.
+   *
+   * @see math.runningMax
+   */
+  runningMax(initialValue?: number): Stream {
+    this.data = runningMax(this.data, initialValue);
     return this;
   }
 

@@ -262,6 +262,48 @@ function dataProviderForGenerators(): Array<unknown> {
     [
       createGeneratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createGeneratorFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createGeneratorFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
@@ -389,6 +431,48 @@ function dataProviderForIterables(): Array<unknown> {
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createIterableFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createIterableFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
     ],
     [
       createIterableFixture([]),
@@ -524,6 +608,48 @@ function dataProviderForIterators(): Array<unknown> {
     [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createIteratorFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createIteratorFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
@@ -641,6 +767,41 @@ function dataProviderForStrings(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      '1',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
@@ -719,6 +880,48 @@ function dataProviderForSets(): Array<unknown> {
         .runningTotal(1)
         .toArray(),
       [1, 2, 4, 7],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      new Set(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      new Set(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
     ],
     [
       new Set([]),
@@ -909,6 +1112,54 @@ function dataProviderForMaps(): Array<unknown> {
       createMapFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .map((item) => (item as [unknown, number])[1])
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createMapFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createMapFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
         .runningDifference()
         .toArray(),
       [],
@@ -1045,6 +1296,48 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     [
       createAsyncGeneratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
@@ -1172,6 +1465,48 @@ function dataProviderForAsyncIterables(): Array<unknown> {
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
+    ],
+    [
+      createAsyncIterableFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIterableFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIterableFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
     ],
     [
       createAsyncIterableFixture([]),
