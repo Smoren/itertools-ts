@@ -40,14 +40,14 @@ import {
 } from "./single";
 
 import {
+  runningDifference,
+  runningMax,
   runningProduct,
   runningTotal,
-  runningDifference,
+  runningDifferenceAsync,
+  runningMaxAsync,
   runningProductAsync,
   runningTotalAsync,
-  runningDifferenceAsync,
-  runningMax,
-  runningMaxAsync,
 } from "./math";
 
 import {
@@ -199,14 +199,14 @@ export const single = {
 };
 
 export const math = {
-  runningProduct,
-  runningTotal,
   runningDifference,
   runningMax,
-  runningProductAsync,
-  runningTotalAsync,
+  runningProduct,
+  runningTotal,
   runningDifferenceAsync,
   runningMaxAsync,
+  runningProductAsync,
+  runningTotalAsync,
 };
 
 export const multi = {

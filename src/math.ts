@@ -167,4 +167,3 @@ export async function* runningMaxAsync<T>(
     yield max as number;
   }
 }
-
