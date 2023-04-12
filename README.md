@@ -139,10 +139,12 @@ Quick Reference
 | [`values`](#Values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   | `single.valuesAsync(data)`                                   |
 
 #### Math Iteration
-| Iterator                             | Description                  | Sync Code Snippet                              | Async Code Snippet                                  |
-|--------------------------------------|------------------------------|------------------------------------------------|-----------------------------------------------------|
-| [`runningProduct`](#Running-Product) | Running product accumulation | `math.runningProduct(numbers, [initialValue])` | `math.runningProductAsync(numbers, [initialValue])` |
-| [`runningTotal`](#Running-Total)     | Running total accumulation   | `math.runningTotal(numbers, [initialValue])`   | `math.runningTotalAsync(numbers, [initialValue])`   |
+| Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
+|--------------------------------------------|---------------------------------|---------------------------------------------------|--------------------------------------------------------|
+| [`runningDifference`](#Running-Difference) | Running difference accumulation | `math.runningDifference(numbers, [initialValue])` | `math.runningDifferenceAsync(numbers, [initialValue])` |
+| [`runningMax`](#Running-Max)               | Running maximum accumulation    | `math.runningMax(numbers, [initialValue])`        | `math.runningMax(numbers, [initialValue])`             |
+| [`runningProduct`](#Running-Product)       | Running product accumulation    | `math.runningProduct(numbers, [initialValue])`    | `math.runningProductAsync(numbers, [initialValue])`    |
+| [`runningTotal`](#Running-Total)           | Running total accumulation      | `math.runningTotal(numbers, [initialValue])`      | `math.runningTotalAsync(numbers, [initialValue])`      |
 
 #### Reduce
 | Reducer                                | Description                            | Sync Code Snippet                             | Async Code Snippet                                 |
@@ -223,6 +225,8 @@ Quick Reference
 | [`map`](#Map-1)                                         | Map function onto elements                                                                | `stream.map(mapper)`                                                 |
 | [`pairwise`](#Pairwise-1)                               | Return pairs of elements from iterable source                                             | `stream.pairwise()`                                                  |
 | [`partialIntersectionWith`](#Partial-Intersection-With) | Partially intersect stream and given iterables                                            | `stream.partialIntersectionWith(minIntersectionCount, ...iterables)` |
+| [`runningDifference`](#Running-Difference-1)            | Accumulate the running difference over iterable source                                    | `stream.runningDifference([initialValue])`                           |
+| [`runningMax`](#Running-Max-1)                          | Accumulate the running max over iterable source                                           | `stream.runningMax([initialValue])`                                  |
 | [`runningProduct`](#Running-Product-1)                  | Accumulate the running product over iterable source                                       | `stream.runningProduct([initialValue])`                              |
 | [`runningTotal`](#Running-Total-1)                      | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`                                |
 | [`skip`](#Skip-1)                                       | Skip some elements of the stream                                                          | `stream.skip(count, [offset])`                                       |
@@ -880,6 +884,62 @@ for (const value of single.keys(dict)) {
 ```
 
 ## Math Iteration
+
+### Running Difference
+Accumulate the running difference over a list of numbers.
+
+```
+function* runningDifference<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number>
+```
+
+```typescript
+import { math } from 'itertools-ts';
+
+const credits = [1, 2, 3, 4, 5];
+
+for (const runningDifference of math.runningDifference(credits)) {
+    console.log(runningDifference);
+}
+// -1, -3, -6, -10, -15
+```
+
+Provide an optional initial value to lead off the running difference.
+
+```typescript
+import { math } from 'itertools-ts';
+
+const dartsScores   = [50, 50, 25, 50];
+const startingScore = 501;
+
+for (const runningScore of math.runningDifference(dartsScores, startingScore)) {
+  console.log(runningScore);
+}
+// 501, 451, 401, 376, 326
+```
+
+### Running Max
+Accumulate the running maximum over a list of numbers.
+
+```
+function* runningMax<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number>
+```
+
+```typescript
+import { math } from 'itertools-ts';
+
+const numbers = [1, 2, 1, 3, 5];
+
+for (const runningMax of math.runningMax(numbers)) {
+  console.log(runningMax);
+}
+// 1, 2, 2, 3, 5
+```
 
 ### Running Product
 Accumulate the running product over a list of numbers.
@@ -2245,6 +2305,42 @@ const result = Stream.of(staticallyTyped)
   .partialIntersectionWith(2, dynamicallyTyped, supportsInterfaces)
   .toArray();
 // c++, java, c#, go, php
+```
+
+#### Running Difference
+Return a stream accumulating the running difference over the stream.
+
+```
+stream.runningDifference(initialValue?: number): Stream
+```
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const input = [1, 2, 3, 4, 5];
+
+const result = Stream.of(input)
+  .runningDifference()
+  .toArray();
+// -1, -3, -6, -10, -15
+```
+
+#### Running Max
+Return a stream accumulating the running max over the stream.
+
+```
+stream.runningMax(initialValue?: number): Stream
+```
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const input = [1, -1, 2, -2, 3, -3];
+
+const result = Stream.of(input)
+  .runningMax()
+  .toArray();
+// 1, 1, 2, 2, 3, 3
 ```
 
 #### Running Product

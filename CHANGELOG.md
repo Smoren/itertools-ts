@@ -4,15 +4,15 @@
 
 ### New features
 * Math
-  * `runningDifference()` // TODO docs
+  * `runningDifference()`
   * `runningDifferenceAsync()`
-  * `runningMax()` // TODO docs
+  * `runningMax()`
   * `runningMaxAsync()`
   * `runningProduct()`
   * `runningProductAsync()`
 * Stream
-  * `runningDifference()` // TODO docs
-  * `runningMax()` // TODO docs
+  * `runningDifference()`
+  * `runningMax()`
   * `runningProduct()`
 * AsyncStream
   * `runningDifference()`
