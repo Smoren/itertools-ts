@@ -36,6 +36,7 @@ import {
   runningTotalAsync,
   runningProductAsync,
   runningDifferenceAsync,
+  runningMaxAsync,
 } from "./math";
 import {
   distinctAsync,
@@ -454,6 +455,18 @@ export class AsyncStream {
    */
   runningDifference(initialValue?: number): AsyncStream {
     this.data = runningDifferenceAsync(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running max over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running max leads off with the initial value.
+   *
+   * @see math.runningMaxAsync
+   */
+  runningMax(initialValue?: number): AsyncStream {
+    this.data = runningMaxAsync(this.data, initialValue);
     return this;
   }
 
