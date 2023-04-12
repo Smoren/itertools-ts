@@ -131,6 +131,48 @@ function dataProviderForArrays(): Array<unknown> {
     [
       [],
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      ['1', '2', '3'],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      ['1', 2, '3'],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
@@ -884,48 +926,6 @@ function dataProviderForSets(): Array<unknown> {
     [
       new Set([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [],
-    ],
-    [
-      new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      new Set(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      new Set(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax(0)
-        .toArray(),
-      [0, 1, 2, 3],
-    ],
-    [
-      new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax(1)
-        .toArray(),
-      [1, 1, 2, 3],
-    ],
-    [
-      new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [],
@@ -964,6 +964,48 @@ function dataProviderForSets(): Array<unknown> {
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      new Set(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      new Set(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
     ],
     [
       new Set([]),
@@ -1638,6 +1680,48 @@ function dataProviderForAsyncIterators(): Array<unknown> {
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIteratorFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIteratorFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(0)
+        .toArray(),
+      [0, 1, 2, 3],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningMax(1)
+        .toArray(),
+      [1, 1, 2, 3],
     ],
     [
       createAsyncIteratorFixture([]),
