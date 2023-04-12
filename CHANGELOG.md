@@ -6,13 +6,17 @@
 * Math
   * `runningDifference()` // TODO docs
   * `runningDifferenceAsync()`
+  * `runningMax()` // TODO docs
+  * `runningMaxAsync()`
   * `runningProduct()`
   * `runningProductAsync()`
 * Stream
   * `runningDifference()` // TODO docs
+  * `runningMax()` // TODO docs
   * `runningProduct()`
 * AsyncStream
   * `runningDifference()`
+  * `runningMax()`
   * `runningProduct()`
 
 ## v1.19.0 - 2023-04-08
