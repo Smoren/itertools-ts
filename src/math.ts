@@ -125,3 +125,46 @@ export async function* runningDifferenceAsync<T>(
     yield difference as number;
   }
 }
+
+/**
+ * Accumulate the running max over a list of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running max leads off with the initial value.
+ */
+export function* runningMax<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number> {
+  if (initialValue !== undefined) {
+    yield initialValue;
+  }
+
+  let max = initialValue ?? -Infinity;
+  for (const num of toIterable(numbers)) {
+    max = Math.max(max, num as number);
+    yield max as number;
+  }
+}
+
+/**
+ * Accumulate the running max over a async collection of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running max leads off with the initial value.
+ */
+export async function* runningMaxAsync<T>(
+  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  initialValue?: number
+): AsyncIterable<number> {
+  if (initialValue !== undefined) {
+    yield initialValue;
+  }
+
+  let max = initialValue ?? -Infinity;
+  for await (const num of toAsyncIterable(numbers)) {
+    max = Math.max(max, num as number);
+    yield max as number;
+  }
+}
+
