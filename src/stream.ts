@@ -21,11 +21,11 @@ import {
 } from "./single";
 import { chain, zip, zipEqual, zipFilled, zipLongest } from "./multi";
 import {
-  runningTotal,
-  runningProduct,
   runningDifference,
   runningMax,
   runningMin,
+  runningProduct,
+  runningTotal,
 } from "./math";
 import {
   distinct,
@@ -367,42 +367,6 @@ export class Stream {
   }
 
   /**
-   * Accumulate the running total over the stream.
-   *
-   * @param initialValue (Optional) If provided, the running total leads off with the initial value.
-   *
-   * @see math.runningTotal
-   */
-  runningTotal(initialValue?: number): Stream {
-    this.data = runningTotal(this.data, initialValue);
-    return this;
-  }
-
-  /**
-   * Accumulate the running product over the stream.
-   *
-   * @param initialValue (Optional) If provided, the running product leads off with the initial value.
-   *
-   * @see math.runningProduct
-   */
-  runningProduct(initialValue?: number): Stream {
-    this.data = runningProduct(this.data, initialValue);
-    return this;
-  }
-
-  /**
-   * Accumulate the running min over the stream.
-   *
-   * @param initialValue (Optional) If provided, the running min leads off with the initial value.
-   *
-   * @see math.runningMin
-   */
-  runningMin(initialValue?: number): Stream {
-    this.data = runningMin(this.data, initialValue);
-    return this;
-  }
-
-  /**
    * Accumulate the running difference over the stream.
    *
    * @param initialValue (Optional) If provided, the running difference leads off with the initial value.
@@ -423,6 +387,42 @@ export class Stream {
    */
   runningMax(initialValue?: number): Stream {
     this.data = runningMax(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running min over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running min leads off with the initial value.
+   *
+   * @see math.runningMin
+   */
+  runningMin(initialValue?: number): Stream {
+    this.data = runningMin(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running product over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running product leads off with the initial value.
+   *
+   * @see math.runningProduct
+   */
+  runningProduct(initialValue?: number): Stream {
+    this.data = runningProduct(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running total over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running total leads off with the initial value.
+   *
+   * @see math.runningTotal
+   */
+  runningTotal(initialValue?: number): Stream {
+    this.data = runningTotal(this.data, initialValue);
     return this;
   }
 
