@@ -25,6 +25,7 @@ import {
   runningProduct,
   runningDifference,
   runningMax,
+  runningMin,
 } from "./math";
 import {
   distinct,
@@ -386,6 +387,18 @@ export class Stream {
    */
   runningProduct(initialValue?: number): Stream {
     this.data = runningProduct(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running min over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running min leads off with the initial value.
+   *
+   * @see math.runningMin
+   */
+  runningMin(initialValue?: number): Stream {
+    this.data = runningMin(this.data, initialValue);
     return this;
   }
 

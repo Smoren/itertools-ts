@@ -48,6 +48,8 @@ import {
   runningMaxAsync,
   runningProductAsync,
   runningTotalAsync,
+  runningMin,
+  runningMinAsync,
 } from "./math";
 
 import {
@@ -201,10 +203,12 @@ export const single = {
 export const math = {
   runningDifference,
   runningMax,
+  runningMin,
   runningProduct,
   runningTotal,
   runningDifferenceAsync,
   runningMaxAsync,
+  runningMinAsync,
   runningProductAsync,
   runningTotalAsync,
 };

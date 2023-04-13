@@ -167,3 +167,45 @@ export async function* runningMaxAsync<T>(
     yield max as number;
   }
 }
+
+/**
+ * Accumulate the running min over a list of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running min leads off with the initial value.
+ */
+export function* runningMin<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number> {
+  if (initialValue !== undefined) {
+    yield initialValue;
+  }
+
+  let min = initialValue ?? Infinity;
+  for (const num of toIterable(numbers)) {
+    min = Math.min(min, num as number);
+    yield min as number;
+  }
+}
+
+/**
+ * Accumulate the running min over a async collection of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running min leads off with the initial value.
+ */
+export async function* runningMinAsync<T>(
+  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  initialValue?: number
+): AsyncIterable<number> {
+  if (initialValue !== undefined) {
+    yield initialValue;
+  }
+
+  let min = initialValue ?? Infinity;
+  for await (const num of toAsyncIterable(numbers)) {
+    min = Math.min(min, num as number);
+    yield min as number;
+  }
+}
