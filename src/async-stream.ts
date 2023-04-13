@@ -33,11 +33,11 @@ import {
   zipLongestAsync,
 } from "./multi";
 import {
-  runningTotalAsync,
-  runningProductAsync,
   runningDifferenceAsync,
   runningMaxAsync,
   runningMinAsync,
+  runningProductAsync,
+  runningTotalAsync,
 } from "./math";
 import {
   distinctAsync,
@@ -424,42 +424,6 @@ export class AsyncStream {
   }
 
   /**
-   * Accumulate the running total over the stream.
-   *
-   * @param initialValue (Optional) If provided, the running total leads off with the initial value.
-   *
-   * @see math.runningTotalAsync
-   */
-  runningTotal(initialValue?: number): AsyncStream {
-    this.data = runningTotalAsync(this.data, initialValue);
-    return this;
-  }
-
-  /**
-   * Accumulate the running product over the stream.
-   *
-   * @param initialValue (Optional) If provided, the running product leads off with the initial value.
-   *
-   * @see math.runningProductAsync
-   */
-  runningProduct(initialValue?: number): AsyncStream {
-    this.data = runningProductAsync(this.data, initialValue);
-    return this;
-  }
-
-  /**
-   * Accumulate the running min over the stream.
-   *
-   * @param initialValue (Optional) If provided, the running min leads off with the initial value.
-   *
-   * @see math.runningMinAsync
-   */
-  runningMin(initialValue?: number): AsyncStream {
-    this.data = runningMinAsync(this.data, initialValue);
-    return this;
-  }
-
-  /**
    * Accumulate the running difference over the stream.
    *
    * @param initialValue (Optional) If provided, the running difference leads off with the initial value.
@@ -480,6 +444,42 @@ export class AsyncStream {
    */
   runningMax(initialValue?: number): AsyncStream {
     this.data = runningMaxAsync(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running min over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running min leads off with the initial value.
+   *
+   * @see math.runningMinAsync
+   */
+  runningMin(initialValue?: number): AsyncStream {
+    this.data = runningMinAsync(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running product over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running product leads off with the initial value.
+   *
+   * @see math.runningProductAsync
+   */
+  runningProduct(initialValue?: number): AsyncStream {
+    this.data = runningProductAsync(this.data, initialValue);
+    return this;
+  }
+
+  /**
+   * Accumulate the running total over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running total leads off with the initial value.
+   *
+   * @see math.runningTotalAsync
+   */
+  runningTotal(initialValue?: number): AsyncStream {
+    this.data = runningTotalAsync(this.data, initialValue);
     return this;
   }
 
