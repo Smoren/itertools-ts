@@ -7,16 +7,20 @@
   * `runningDifference()`
   * `runningDifferenceAsync()`
   * `runningMax()`
+  * `runningMin()` // TODO
+  * `runningMinAsync()`
   * `runningMaxAsync()`
   * `runningProduct()`
   * `runningProductAsync()`
 * Stream
   * `runningDifference()`
   * `runningMax()`
+  * `runningMin()` // TODO
   * `runningProduct()`
 * AsyncStream
   * `runningDifference()`
   * `runningMax()`
+  * `runningMin()`
   * `runningProduct()`
 
 ## v1.19.0 - 2023-04-08
