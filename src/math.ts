@@ -1,86 +1,38 @@
 import { toAsyncIterable, toIterable } from "./transform";
 
 /**
- * Accumulate the running total over a list of numbers
+ * Accumulate the running average (mean) over a list of numbers
  *
  * @param numbers
- * @param initialValue (Optional) If provided, the running total leads off with the initial value.
+ * @param initialValue (Optional) If provided, the running average leads off with the initial value.
  */
-export function* runningTotal<T>(
+export function* runningAverage<T>(
   numbers: Iterable<T> | Iterator<T>,
   initialValue?: number
 ): Iterable<number> {
-  if (initialValue !== undefined) {
-    yield initialValue;
-  }
 
-  let total = initialValue ?? 0;
-  for (const num of toIterable(numbers)) {
-    total += Number(num as number);
-    yield total as number;
+  let n = 0;
+  for (const total of runningTotal(toIterable(numbers), initialValue)) {
+    n++;
+    yield total / n as number;
   }
 }
 
 /**
- * Accumulate the running total over a async collection of numbers
+ * Accumulate the running average (mean) over a async collection of numbers
  *
  * @param numbers
- * @param initialValue (Optional) If provided, the running total leads off with the initial value.
+ * @param initialValue (Optional) If provided, the running average leads off with the initial value.
  */
-export async function* runningTotalAsync<T>(
+export async function* runningAverageAsync<T>(
   numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
   initialValue?: number
 ): AsyncIterable<number> {
-  if (initialValue !== undefined) {
-    yield initialValue;
-  }
 
-  let total = initialValue ?? 0;
-  for await (const num of toAsyncIterable(numbers)) {
-    total += Number(num as number);
-    yield total as number;
-  }
-}
-
-/**
- * Accumulate the running product over a list of numbers
- *
- * @param numbers
- * @param initialValue (Optional) If provided, the running product leads off with the initial value.
- */
-export function* runningProduct<T>(
-  numbers: Iterable<T> | Iterator<T>,
-  initialValue?: number
-): Iterable<number> {
-  if (initialValue !== undefined) {
-    yield initialValue;
-  }
-
-  let product = initialValue ?? 1;
-  for (const num of toIterable(numbers)) {
-    product *= Number(num as number);
-    yield product as number;
-  }
-}
-
-/**
- * Accumulate the running product over a async collection of numbers
- *
- * @param numbers
- * @param initialValue (Optional) If provided, the running product leads off with the initial value.
- */
-export async function* runningProductAsync<T>(
-  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
-  initialValue?: number
-): AsyncIterable<number> {
-  if (initialValue !== undefined) {
-    yield initialValue;
-  }
-
-  let product = initialValue ?? 1;
-  for await (const num of toAsyncIterable(numbers)) {
-    product *= Number(num as number);
-    yield product as number;
+  let n = 0;
+  for await (const total of runningTotalAsync(toAsyncIterable(numbers), initialValue)) {
+    n++;
+    yield total / n as number;
   }
 }
 
@@ -209,3 +161,88 @@ export async function* runningMinAsync<T>(
     yield min as number;
   }
 }
+
+/**
+ * Accumulate the running product over a list of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running product leads off with the initial value.
+ */
+export function* runningProduct<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number> {
+  if (initialValue !== undefined) {
+    yield initialValue;
+  }
+
+  let product = initialValue ?? 1;
+  for (const num of toIterable(numbers)) {
+    product *= Number(num as number);
+    yield product as number;
+  }
+}
+
+/**
+ * Accumulate the running product over a async collection of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running product leads off with the initial value.
+ */
+export async function* runningProductAsync<T>(
+  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  initialValue?: number
+): AsyncIterable<number> {
+  if (initialValue !== undefined) {
+    yield initialValue;
+  }
+
+  let product = initialValue ?? 1;
+  for await (const num of toAsyncIterable(numbers)) {
+    product *= Number(num as number);
+    yield product as number;
+  }
+}
+
+/**
+ * Accumulate the running total over a list of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running total leads off with the initial value.
+ */
+export function* runningTotal<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number> {
+  if (initialValue !== undefined) {
+    yield initialValue;
+  }
+
+  let total = initialValue ?? 0;
+  for (const num of toIterable(numbers)) {
+    total += Number(num as number);
+    yield total as number;
+  }
+}
+
+/**
+ * Accumulate the running total over a async collection of numbers
+ *
+ * @param numbers
+ * @param initialValue (Optional) If provided, the running total leads off with the initial value.
+ */
+export async function* runningTotalAsync<T>(
+  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  initialValue?: number
+): AsyncIterable<number> {
+  if (initialValue !== undefined) {
+    yield initialValue;
+  }
+
+  let total = initialValue ?? 0;
+  for await (const num of toAsyncIterable(numbers)) {
+    total += Number(num as number);
+    yield total as number;
+  }
+}
+

@@ -21,6 +21,7 @@ import {
 } from "./single";
 import { chain, zip, zipEqual, zipFilled, zipLongest } from "./multi";
 import {
+  runningAverage,
   runningDifference,
   runningMax,
   runningMin,
@@ -363,6 +364,18 @@ export class Stream {
    */
   pairwise(): Stream {
     this.data = pairwise(this.data);
+    return this;
+  }
+
+  /**
+   * Accumulate the running average (mean) over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running average leads off with the initial value.
+   *
+   * @see math.runningAverage
+   */
+  runningAverage(initialValue?: number): Stream {
+    this.data = runningAverage(this.data, initialValue);
     return this;
   }
 
