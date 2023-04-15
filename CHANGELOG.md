@@ -1,13 +1,13 @@
 # IterTools Typescript Change Log
 
-## v1.20.0 - TBD
+## v1.20.0 - 2023-04-15
 
 ### New features
 * Math
   * `runningDifference()`
   * `runningDifferenceAsync()`
   * `runningMax()`
-  * `runningMin()` // TODO
+  * `runningMin()`
   * `runningMinAsync()`
   * `runningMaxAsync()`
   * `runningProduct()`
@@ -15,7 +15,7 @@
 * Stream
   * `runningDifference()`
   * `runningMax()`
-  * `runningMin()` // TODO
+  * `runningMin()`
   * `runningProduct()`
 * AsyncStream
   * `runningDifference()`
