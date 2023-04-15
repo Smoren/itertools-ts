@@ -40,16 +40,18 @@ import {
 } from "./single";
 
 import {
+  runningAverage,
   runningDifference,
   runningMax,
+  runningMin,
   runningProduct,
   runningTotal,
+  runningAverageAsync,
   runningDifferenceAsync,
   runningMaxAsync,
+  runningMinAsync,
   runningProductAsync,
   runningTotalAsync,
-  runningMin,
-  runningMinAsync,
 } from "./math";
 
 import {
@@ -201,11 +203,13 @@ export const single = {
 };
 
 export const math = {
+  runningAverage,
   runningDifference,
   runningMax,
   runningMin,
   runningProduct,
   runningTotal,
+  runningAverageAsync,
   runningDifferenceAsync,
   runningMaxAsync,
   runningMinAsync,
