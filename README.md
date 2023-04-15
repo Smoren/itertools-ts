@@ -143,6 +143,7 @@ Quick Reference
 |--------------------------------------------|---------------------------------|---------------------------------------------------|--------------------------------------------------------|
 | [`runningDifference`](#Running-Difference) | Running difference accumulation | `math.runningDifference(numbers, [initialValue])` | `math.runningDifferenceAsync(numbers, [initialValue])` |
 | [`runningMax`](#Running-Max)               | Running maximum accumulation    | `math.runningMax(numbers, [initialValue])`        | `math.runningMax(numbers, [initialValue])`             |
+| [`runningMin`](#Running-Min)               | Running minimum accumulation    | `math.runningMin(numbers, [initialValue])`        | `math.runningMinAsync(numbers, [initialValue])`        |
 | [`runningProduct`](#Running-Product)       | Running product accumulation    | `math.runningProduct(numbers, [initialValue])`    | `math.runningProductAsync(numbers, [initialValue])`    |
 | [`runningTotal`](#Running-Total)           | Running total accumulation      | `math.runningTotal(numbers, [initialValue])`      | `math.runningTotalAsync(numbers, [initialValue])`      |
 
@@ -227,6 +228,7 @@ Quick Reference
 | [`partialIntersectionWith`](#Partial-Intersection-With) | Partially intersect stream and given iterables                                            | `stream.partialIntersectionWith(minIntersectionCount, ...iterables)` |
 | [`runningDifference`](#Running-Difference-1)            | Accumulate the running difference over iterable source                                    | `stream.runningDifference([initialValue])`                           |
 | [`runningMax`](#Running-Max-1)                          | Accumulate the running max over iterable source                                           | `stream.runningMax([initialValue])`                                  |
+| [`runningMin`](#Running-Min-1)                          | Accumulate the running min over iterable source                                           | `stream.runningMin([initialValue])`                                  |
 | [`runningProduct`](#Running-Product-1)                  | Accumulate the running product over iterable source                                       | `stream.runningProduct([initialValue])`                              |
 | [`runningTotal`](#Running-Total-1)                      | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`                                |
 | [`skip`](#Skip-1)                                       | Skip some elements of the stream                                                          | `stream.skip(count, [offset])`                                       |
@@ -939,6 +941,27 @@ for (const runningMax of math.runningMax(numbers)) {
   console.log(runningMax);
 }
 // 1, 2, 2, 3, 5
+```
+
+### Running Min
+Accumulate the running minimum over a list of numbers.
+
+```
+function* runningMin<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number>
+```
+
+```typescript
+import { math } from 'itertools-ts';
+
+const numbers = [3, 4, 2, 5, 1];
+
+for (const runningMin of math.runningMin(numbers)) {
+    console.log(runningMin);
+}
+// 3, 3, 2, 2, 1
 ```
 
 ### Running Product
@@ -2341,6 +2364,24 @@ const result = Stream.of(input)
   .runningMax()
   .toArray();
 // 1, 1, 2, 2, 3, 3
+```
+
+#### Running Min
+Return a stream accumulating the running min over the stream.
+
+```
+stream.runningMin(initialValue?: number): Stream
+```
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const input = [1, -1, 2, -2, 3, -3];
+
+const result = Stream.of(input)
+  .runningMin()
+  .toArray();
+// 1, -1, -1, -2, -2, -3
 ```
 
 #### Running Product
