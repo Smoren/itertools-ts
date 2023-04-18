@@ -33,6 +33,8 @@ import {
   zipLongestAsync,
 } from "./multi";
 import {
+  runningAverage,
+  runningAverageAsync,
   runningDifferenceAsync,
   runningMaxAsync,
   runningMinAsync,
@@ -420,6 +422,18 @@ export class AsyncStream {
    */
   pairwise(): AsyncStream {
     this.data = pairwiseAsync(this.data);
+    return this;
+  }
+
+  /**
+   * Accumulate the running average (mean) over the stream.
+   *
+   * @param initialValue (Optional) If provided, the running average leads off with the initial value.
+   *
+   * @see math.runningAverageAsync
+   */
+  runningAverage(initialValue?: number): AsyncStream {
+    this.data = runningAverageAsync(this.data, initialValue);
     return this;
   }
 

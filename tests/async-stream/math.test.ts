@@ -47,6 +47,48 @@ function dataProviderForArrays(): Array<unknown> {
     [
       [],
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [],
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      ['1', '2', '3'],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      ['1', 2, '3'],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(0)
+        .toArray(),
+      [0, 0.5, 1, 1.5],
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(1)
+        .toArray(),
+      [1, 1, 4/3, 7/4],
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
@@ -259,6 +301,48 @@ function dataProviderForArrays(): Array<unknown> {
 
 function dataProviderForGenerators(): Array<unknown> {
   return [
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createGeneratorFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createGeneratorFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(0)
+        .toArray(),
+      [0, 0.5, 1, 1.5],
+    ],
+    [
+      createGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(1)
+        .toArray(),
+      [1, 1, 4/3, 7/4],
+    ],
     [
       createGeneratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
@@ -477,6 +561,48 @@ function dataProviderForIterables(): Array<unknown> {
     [
       createIterableFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createIterableFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createIterableFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(0)
+        .toArray(),
+      [0, 0.5, 1, 1.5],
+    ],
+    [
+      createIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(1)
+        .toArray(),
+      [1, 1, 4/3, 7/4],
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
@@ -689,6 +815,48 @@ function dataProviderForIterables(): Array<unknown> {
 
 function dataProviderForIterators(): Array<unknown> {
   return [
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [],
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createIteratorFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createIteratorFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(0)
+        .toArray(),
+      [0, 0.5, 1, 1.5],
+    ],
+    [
+      createIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(1)
+        .toArray(),
+      [1, 1, 4/3, 7/4],
+    ],
     [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
@@ -907,6 +1075,41 @@ function dataProviderForStrings(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [],
+    ],
+    [
+      '1',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(0)
+        .toArray(),
+      [0, 0.5, 1, 1.5],
+    ],
+    [
+      '123',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(1)
+        .toArray(),
+      [1, 1, 4/3, 7/4],
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
@@ -1084,6 +1287,48 @@ function dataProviderForStrings(): Array<unknown> {
 
 function dataProviderForSets(): Array<unknown> {
   return [
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      new Set(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      new Set(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(0)
+        .toArray(),
+      [0, 0.5, 1, 1.5],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(1)
+        .toArray(),
+      [1, 1, 4/3, 7/4],
+    ],
     [
       new Set([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
@@ -1299,6 +1544,54 @@ function dataProviderForSets(): Array<unknown> {
 
 function dataProviderForMaps(): Array<unknown> {
   return [
+    [
+      createMapFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningAverage()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createMapFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createMapFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningAverage(0)
+        .toArray(),
+      [0, 0.5, 1, 1.5],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .map((item) => (item as [unknown, number])[1])
+        .runningAverage(1)
+        .toArray(),
+      [1, 1, 4/3, 7/4],
+    ],
     [
       createMapFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
@@ -1547,6 +1840,48 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     [
       createAsyncGeneratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createAsyncGeneratorFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createAsyncGeneratorFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(0)
+        .toArray(),
+      [0, 0.5, 1, 1.5],
+    ],
+    [
+      createAsyncGeneratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(1)
+        .toArray(),
+      [1, 1, 4/3, 7/4],
+    ],
+    [
+      createAsyncGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
@@ -1762,6 +2097,48 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     [
       createAsyncIterableFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createAsyncIterableFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createAsyncIterableFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(0)
+        .toArray(),
+      [0, 0.5, 1, 1.5],
+    ],
+    [
+      createAsyncIterableFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(1)
+        .toArray(),
+      [1, 1, 4/3, 7/4],
+    ],
+    [
+      createAsyncIterableFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
@@ -1974,6 +2351,48 @@ function dataProviderForAsyncIterables(): Array<unknown> {
 
 function dataProviderForAsyncIterators(): Array<unknown> {
   return [
+    [
+      createAsyncIteratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createAsyncIteratorFixture(['1', '2', '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createAsyncIteratorFixture(['1', 2, '3']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage()
+        .toArray(),
+      [1, 1.5, 2],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(0)
+        .toArray(),
+      [0, 0.5, 1, 1.5],
+    ],
+    [
+      createAsyncIteratorFixture([1, 2, 3]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningAverage(1)
+        .toArray(),
+      [1, 1, 4/3, 7/4],
+    ],
     [
       createAsyncIteratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
