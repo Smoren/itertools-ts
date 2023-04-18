@@ -8,7 +8,7 @@ import {
   createMapFixture
   // @ts-ignore
 } from "../fixture";
-import { AsyncStream } from '../../src';
+import { AsyncStream, Comparable, Stream } from '../../src';
 
 describe.each([
   ...dataProviderForAsyncGenerators(),
@@ -85,6 +85,23 @@ function dataProviderForArrays(): Array<unknown> {
         .distinct()
         .toArray(),
       [1, 2, 3, '1', '2', '3'],
+    ],
+    [
+      [
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Mary', 'id': 3 },
+        { 'name': 'John', 'id': 4 },
+        { 'name': 'Jane', 'id': 5 },
+      ],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+        .toArray(),
+      [
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Jane', 'id': 5 },
+      ],
     ],
     [
       [
@@ -200,6 +217,23 @@ function dataProviderForGenerators(): Array<unknown> {
       [1, 2, 3, '1', '2', '3'],
     ],
     [
+      createGeneratorFixture([
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Mary', 'id': 3 },
+        { 'name': 'John', 'id': 4 },
+        { 'name': 'Jane', 'id': 5 },
+      ]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+        .toArray(),
+      [
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Jane', 'id': 5 },
+      ],
+    ],
+    [
       [
         createGeneratorFixture([1, 2, 3, 4, 5]),
         createGeneratorFixture([2, 3, 4, 5, 6, 7]),
@@ -311,6 +345,23 @@ function dataProviderForIterables(): Array<unknown> {
         .distinct()
         .toArray(),
       [1, 2, 3, '1', '2', '3'],
+    ],
+    [
+      createIterableFixture([
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Mary', 'id': 3 },
+        { 'name': 'John', 'id': 4 },
+        { 'name': 'Jane', 'id': 5 },
+      ]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+        .toArray(),
+      [
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Jane', 'id': 5 },
+      ],
     ],
     [
       [
@@ -426,6 +477,23 @@ function dataProviderForIterators(): Array<unknown> {
       [1, 2, 3, '1', '2', '3'],
     ],
     [
+      createIteratorFixture([
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Mary', 'id': 3 },
+        { 'name': 'John', 'id': 4 },
+        { 'name': 'Jane', 'id': 5 },
+      ]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+        .toArray(),
+      [
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Jane', 'id': 5 },
+      ],
+    ],
+    [
       [
         createIteratorFixture([1, 2, 3, 4, 5]),
         createIteratorFixture([2, 3, 4, 5, 6, 7]),
@@ -532,6 +600,13 @@ function dataProviderForStrings(): Array<unknown> {
       ['a', '1', 'b', '2', 'c', '3', 'd', '4'],
     ],
     [
+      'a1b2c3abcd1234',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .distinct((datum: unknown) => 1)
+        .toArray(),
+      ['a'],
+    ],
+    [
       [
         '12345',
         '23456',
@@ -582,6 +657,23 @@ function dataProviderForSets(): Array<unknown> {
         .distinct()
         .toArray(),
       [1, 2, 3, '1', '2', '3'],
+    ],
+    [
+      new Set([
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Mary', 'id': 3 },
+        { 'name': 'John', 'id': 4 },
+        { 'name': 'Jane', 'id': 5 },
+      ]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+        .toArray(),
+      [
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Jane', 'id': 5 },
+      ],
     ],
     [
       [
@@ -684,6 +776,24 @@ function dataProviderForMaps(): Array<unknown> {
       [1, 2, 3, '1', '2', '3'],
     ],
     [
+      createMapFixture([
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Mary', 'id': 3 },
+        { 'name': 'John', 'id': 4 },
+        { 'name': 'Jane', 'id': 5 },
+      ]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .distinct((datum: unknown) => (datum as [unknown, Record<string, unknown>])[1]['name'] as Comparable)
+        .values()
+        .toArray(),
+      [
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Jane', 'id': 5 },
+      ],
+    ],
+    [
       [
         createMapFixture([1, 2, 3, 4, 5]),
         [2, 3, 4, 5, 6, 7],
@@ -773,6 +883,23 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
         .distinct()
         .toArray(),
       [1, 2, 3, '1', '2', '3'],
+    ],
+    [
+      createAsyncGeneratorFixture([
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Mary', 'id': 3 },
+        { 'name': 'John', 'id': 4 },
+        { 'name': 'Jane', 'id': 5 },
+      ]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+        .toArray(),
+      [
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Jane', 'id': 5 },
+      ],
     ],
     [
       [
@@ -888,6 +1015,23 @@ function dataProviderForAsyncIterables(): Array<unknown> {
       [1, 2, 3, '1', '2', '3'],
     ],
     [
+      createAsyncIterableFixture([
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Mary', 'id': 3 },
+        { 'name': 'John', 'id': 4 },
+        { 'name': 'Jane', 'id': 5 },
+      ]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+        .toArray(),
+      [
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Jane', 'id': 5 },
+      ],
+    ],
+    [
       [
         createAsyncIterableFixture([1, 2, 3, 4, 5]),
         createAsyncIterableFixture([2, 3, 4, 5, 6, 7]),
@@ -999,6 +1143,23 @@ function dataProviderForAsyncIterators(): Array<unknown> {
         .distinct()
         .toArray(),
       [1, 2, 3, '1', '2', '3'],
+    ],
+    [
+      createAsyncIteratorFixture([
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Mary', 'id': 3 },
+        { 'name': 'John', 'id': 4 },
+        { 'name': 'Jane', 'id': 5 },
+      ]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+        .toArray(),
+      [
+        { 'name': 'John', 'id': 1 },
+        { 'name': 'Mary', 'id': 2 },
+        { 'name': 'Jane', 'id': 5 },
+      ],
     ],
     [
       [

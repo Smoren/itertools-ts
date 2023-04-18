@@ -7,7 +7,7 @@ import {
   UsageMap,
 } from "./tools";
 import { enumerate } from "./single";
-import { single } from "./index";
+import { Comparable, single } from "./index";
 
 /**
  * Iterate only the distinct elements.
@@ -15,22 +15,36 @@ import { single } from "./index";
  * Always treats different instances of objects and arrays as unequal.
  *
  * @param data
+ * @param compareBy
  */
-export function* distinct<T>(data: Iterable<T> | Iterator<T>): Iterable<T> {
+export function* distinct<T>(
+  data: Iterable<T> | Iterator<T>,
+  compareBy?: (datum: T) => Comparable
+): Iterable<T> {
   const used = new Set();
 
   if (data instanceof Map) {
+    if (compareBy === undefined) {
+      compareBy = (datum: T) => (datum as [unknown, Comparable])[1];
+    }
+
     for (const datum of data) {
-      if (!used.has(datum[1])) {
+      const comparable = compareBy(datum as T);
+      if (!used.has(comparable)) {
         yield datum as T;
-        used.add(datum[1]);
+        used.add(comparable);
       }
     }
   } else {
+    if (compareBy === undefined) {
+      compareBy = (datum: T) => datum as Comparable;
+    }
+
     for (const datum of toIterable(data)) {
-      if (!used.has(datum)) {
+      const comparable = compareBy(datum);
+      if (!used.has(comparable)) {
         yield datum;
-        used.add(datum);
+        used.add(comparable);
       }
     }
   }
@@ -42,24 +56,28 @@ export function* distinct<T>(data: Iterable<T> | Iterator<T>): Iterable<T> {
  * Always treats different instances of objects and arrays as unequal.
  *
  * @param data
+ * @param compareBy
  */
 export async function* distinctAsync<T>(
-  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  compareBy?: (datum: T) => Comparable
 ): AsyncIterable<T> {
   const used = new Set();
 
   if (data instanceof Map) {
-    for (const datum of data) {
-      if (!used.has(datum[1])) {
-        yield datum as T;
-        used.add(datum[1]);
-      }
+    for (const datum of distinct(data as Iterable<T>, compareBy)) {
+      yield await datum;
     }
   } else {
+    if (compareBy === undefined) {
+      compareBy = (datum: T) => datum as Comparable;
+    }
+
     for await (const datum of toAsyncIterable(data)) {
-      if (!used.has(datum)) {
+      const comparable = compareBy(datum);
+      if (!used.has(comparable)) {
         yield datum;
-        used.add(datum);
+        used.add(comparable);
       }
     }
   }

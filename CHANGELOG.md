@@ -1,5 +1,11 @@
 # IterTools Typescript Change Log
 
+## v1.21.0 - 2023-04-18
+
+### Improvements
+* set
+  * `distinct()` supports optional comparable getter param.
+
 ## v1.20.0 - 2023-04-15
 
 ### New features

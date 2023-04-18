@@ -1335,7 +1335,10 @@ const result = reduce.toValue(input, sum, 0);
 Filter out elements from the iterable only returning distinct elements.
 
 ```
-function* distinct<T>(data: Iterable<T> | Iterator<T>): Iterable<T>
+function* distinct<T>(
+  data: Iterable<T>|Iterator<T>,
+  compareBy?: (datum: T) => Comparable
+): Iterable<T>
 ```
 
 Always treats different instances of objects and arrays as unequal.
@@ -1349,6 +1352,20 @@ for (const chessPiece of set.distinct(chessSet)) {
   console.log(chessPiece);
 }
 // rook, knight, bishop, king, queen, pawn
+
+
+const users = [
+  { 'name': 'John', 'id': 1 },
+  { 'name': 'Mary', 'id': 2 },
+  { 'name': 'Mary', 'id': 3 },
+  { 'name': 'John', 'id': 4 },
+  { 'name': 'Jane', 'id': 5 },
+];
+
+for (const user of set.distinct(users, (item) => item['name'])) {
+  console.log(user);
+}
+// { 'name': 'John', 'id': 1 }, { 'name': 'Mary', 'id': 2 }, { 'name': 'Jane', 'id': 5 }
 ```
 
 ### Intersection
@@ -2045,17 +2062,35 @@ const result = Stream.of(input)
 Return a stream filtering out elements from the stream only returning distinct elements.
 
 ```
-stream.distinct(): Stream
+stream.distinct(compareBy?: (datum: unknown) => Comparable): Stream
 ```
 
 ```typescript
 import { Stream } from "itertools-ts";
 
 const input = [1, 2, 1, 2, 3, 3, '1', '1', '2', '3'];
-const stream = Stream.of(input)
+const numbers = Stream.of(input)
   .distinct()
   .toArray();
 // 1, 2, 3, '1', '2', '3'
+
+const users = [
+  { 'name': 'John', 'id': 1 },
+  { 'name': 'Mary', 'id': 2 },
+  { 'name': 'Mary', 'id': 3 },
+  { 'name': 'John', 'id': 4 },
+  { 'name': 'Jane', 'id': 5 },
+];
+const result = Stream.of(input)
+  .distinct((item) => item['name'])
+  .toArray();
+/*
+[
+  { 'name': 'John', 'id': 1 },
+  { 'name': 'Mary', 'id': 2 },
+  { 'name': 'Jane', 'id': 5 },
+]
+*/
 ```
 
 #### Drop While
