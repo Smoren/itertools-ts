@@ -494,10 +494,12 @@ export class Stream {
   /**
    * Filter out elements from the iterable source only returning unique elements.
    *
+   * @param compareBy
+   *
    * @see set.distinct
    */
-  distinct(): Stream {
-    this.data = distinct(this.data);
+  distinct(compareBy?: (datum: unknown) => Comparable): Stream {
+    this.data = distinct(this.data, compareBy);
     return this;
   }
 

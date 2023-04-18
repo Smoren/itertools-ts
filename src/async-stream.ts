@@ -557,10 +557,12 @@ export class AsyncStream {
   /**
    * Filter out elements from the iterable source only returning unique elements.
    *
+   * @param compareBy
+   *
    * @see set.distinctAsync
    */
-  distinct(): AsyncStream {
-    this.data = distinctAsync(this.data);
+  distinct(compareBy?: (datum: unknown) => Comparable): AsyncStream {
+    this.data = distinctAsync(this.data, compareBy);
     return this;
   }
 
