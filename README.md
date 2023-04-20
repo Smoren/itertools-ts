@@ -141,6 +141,7 @@ Quick Reference
 #### Math Iteration
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
 |--------------------------------------------|---------------------------------|---------------------------------------------------|--------------------------------------------------------|
+| [`runningAverage`](#Running-Average)       | Running average accumulation    | `math.runningAverage(numbers, [initialValue])`    | `math.runningAverageAsync(numbers, [initialValue])`    |
 | [`runningDifference`](#Running-Difference) | Running difference accumulation | `math.runningDifference(numbers, [initialValue])` | `math.runningDifferenceAsync(numbers, [initialValue])` |
 | [`runningMax`](#Running-Max)               | Running maximum accumulation    | `math.runningMax(numbers, [initialValue])`        | `math.runningMax(numbers, [initialValue])`             |
 | [`runningMin`](#Running-Min)               | Running minimum accumulation    | `math.runningMin(numbers, [initialValue])`        | `math.runningMinAsync(numbers, [initialValue])`        |
@@ -226,6 +227,7 @@ Quick Reference
 | [`map`](#Map-1)                                         | Map function onto elements                                                                | `stream.map(mapper)`                                                 |
 | [`pairwise`](#Pairwise-1)                               | Return pairs of elements from iterable source                                             | `stream.pairwise()`                                                  |
 | [`partialIntersectionWith`](#Partial-Intersection-With) | Partially intersect stream and given iterables                                            | `stream.partialIntersectionWith(minIntersectionCount, ...iterables)` |
+| [`runningAverage`](#Running-Average-1)                  | Accumulate the running average (mean) over iterable source                                | `stream.runningAverage([initialValue])`                              |
 | [`runningDifference`](#Running-Difference-1)            | Accumulate the running difference over iterable source                                    | `stream.runningDifference([initialValue])`                           |
 | [`runningMax`](#Running-Max-1)                          | Accumulate the running max over iterable source                                           | `stream.runningMax([initialValue])`                                  |
 | [`runningMin`](#Running-Min-1)                          | Accumulate the running min over iterable source                                           | `stream.runningMin([initialValue])`                                  |
@@ -886,6 +888,27 @@ for (const value of single.keys(dict)) {
 ```
 
 ## Math Iteration
+
+### Running Average
+Accumulate the running average over a list of numbers.
+
+```
+function* runningAverage<T>(
+  numbers: Iterable<T> | Iterator<T>,
+  initialValue?: number
+): Iterable<number>
+```
+
+```typescript
+import { math } from 'itertools-ts';
+
+const grades = [100, 80, 80, 90, 85];
+
+for (const runningAverage of math.runningAverage(grades)) {
+  console.log(runningAverage);
+}
+// 100, 90, 86.667, 87.5, 87
+```
 
 ### Running Difference
 Accumulate the running difference over a list of numbers.
@@ -2363,6 +2386,24 @@ const result = Stream.of(staticallyTyped)
   .partialIntersectionWith(2, dynamicallyTyped, supportsInterfaces)
   .toArray();
 // c++, java, c#, go, php
+```
+
+#### Running Average
+Return a stream accumulating the running average (mean) over the stream.
+
+```
+stream.runningAverage(initialValue?: number): Stream
+```
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const input = [1, 3, 5];
+
+const result = Stream.of(input)
+  .runningAverage()
+  .toArray();
+// 1, 2, 3
 ```
 
 #### Running Difference

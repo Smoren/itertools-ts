@@ -1,5 +1,16 @@
 # IterTools Typescript Change Log
 
+## v1.22.0 - 2023-04-20
+
+### New features
+* math
+  * `runningAverage()`
+  * `runningAverageAsync()`
+* Stream
+  * `runningAverage()`
+* AsyncStream
+  * `runningAverage()`
+
 ## v1.21.0 - 2023-04-18
 
 ### Improvements
@@ -9,7 +20,7 @@
 ## v1.20.0 - 2023-04-15
 
 ### New features
-* Math
+* math
   * `runningDifference()`
   * `runningDifferenceAsync()`
   * `runningMax()`
