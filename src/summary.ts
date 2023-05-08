@@ -137,6 +137,74 @@ export async function anyMatchAsync<T>(
 }
 
 /**
+ * Returns true if exactly n items in the iterable are true where the predicate function is true.
+ *
+ * Default predicate if not provided is the boolean value of each data item.
+ *
+ * @param data
+ * @param n
+ * @param predicate
+ */
+export function exactlyN<T>(
+  data: Iterable<T> | Iterator<T>,
+  n: number,
+  predicate?: (item: T) => boolean,
+): boolean {
+
+  if (n < 0) {
+    return false
+  }
+  if (predicate === undefined) {
+    predicate = (datum) => Boolean(datum);
+  }
+
+  let count = 0;
+  for (const datum of toIterable(data)) {
+    if (predicate(datum)) {
+      count++;
+      if (count > n) {
+        return false
+      }
+    }
+  }
+  return count === n;
+}
+
+/**
+ * Returns true if exactly n items in the async iterable are true where the predicate function is true.
+ *
+ * Default predicate if not provided is the boolean value of each data item.
+ *
+ * @param data
+ * @param n
+ * @param predicate
+ */
+export async function exactlyNAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T>,
+  n: number,
+  predicate?: (item: T) => Promise<boolean> | boolean,
+): Promise<boolean> {
+
+  if (n < 0) {
+    return false
+  }
+  if (predicate === undefined) {
+    predicate = (datum) => Boolean(datum);
+  }
+
+  let count = 0;
+  for await (const datum of toAsyncIterable(data)) {
+    if (await predicate(datum)) {
+      count++;
+      if (count > n) {
+        return false
+      }
+    }
+  }
+  return count === n;
+}
+
+/**
  * Returns true if given collection is empty.
  *
  * @param data
