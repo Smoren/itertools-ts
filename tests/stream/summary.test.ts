@@ -89,6 +89,21 @@ function dataProviderForArraysTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
+    ],
+    [
+      [''],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(3),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: Iterable<number>) => Stream.of(iterable)
         .filter((item) => (item as number) > 0)
@@ -187,6 +202,21 @@ function dataProviderForGeneratorsTrue(): Array<unknown> {
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
+    ],
+    [
+      createGeneratorFixture(['']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
+    ],
+    [
+      createGeneratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(3),
     ],
     [
       createGeneratorFixture([1, -1, 2, -2, 3, -3]),
@@ -289,6 +319,21 @@ function dataProviderForIterablesTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
+    ],
+    [
+      createIterableFixture(['']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
+    ],
+    [
+      createIterableFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(3),
+    ],
+    [
       createIterableFixture([1, -1, 2, -2, 3, -3]),
       (iterable: Iterable<number>) => Stream.of(iterable)
         .filter((item) => (item as number) > 0)
@@ -389,6 +434,21 @@ function dataProviderForIteratorsTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
+    ],
+    [
+      createIteratorFixture(['']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
+    ],
+    [
+      createIteratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(3),
+    ],
+    [
       createIteratorFixture([1, -1, 2, -2, 3, -3]),
       (iterable: Iterable<number>) => Stream.of(iterable)
         .filter((item) => (item as number) > 0)
@@ -482,6 +542,11 @@ function dataProviderForStringsTrue(): Array<unknown> {
       '135',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => Number(x as string) > 0),
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
     ],
     [
       '123',
@@ -590,6 +655,21 @@ function dataProviderForSetsTrue(): Array<unknown> {
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
+    ],
+    [
+      new Set(['']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(0),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(3),
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
@@ -783,6 +863,21 @@ function dataProviderForArraysFalse(): Array<unknown> {
         .anyMatch((x) => (x as number) > 10),
     ],
     [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
+      [''],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(4),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: Iterable<number>) => Stream.of(iterable)
         .runningTotal()
@@ -854,6 +949,21 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
+      createGeneratorFixture(['']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
+      createGeneratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(4),
     ],
     [
       createGeneratorFixture([1, -1, 2, -2, 3, -3]),
@@ -929,6 +1039,21 @@ function dataProviderForIterablesFalse(): Array<unknown> {
         .anyMatch((x) => (x as number) > 10),
     ],
     [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
+      createIterableFixture(['']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
+      createIterableFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(4),
+    ],
+    [
       createIterableFixture([1, -1, 2, -2, 3, -3]),
       (iterable: Iterable<number>) => Stream.of(iterable)
         .runningTotal()
@@ -1000,6 +1125,21 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
       createIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
+      createIteratorFixture(['']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
+      createIteratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(4),
     ],
     [
       createIteratorFixture([1, -1, 2, -2, 3, -3]),
@@ -1075,6 +1215,11 @@ function dataProviderForStringsFalse(): Array<unknown> {
         .anyMatch((x) => Number(x as string) > 10),
     ],
     [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
       '131',
       (iterable: Iterable<number>) => Stream.of(iterable)
         .isSorted(),
@@ -1145,6 +1290,21 @@ function dataProviderForSetsFalse(): Array<unknown> {
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
+      new Set(['']),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(1),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .exactlyN(4),
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
