@@ -52,6 +52,7 @@ import {
   allMatch,
   allUnique,
   anyMatch,
+  exactlyN,
   isReversed,
   isSorted,
   noneMatch,
@@ -796,6 +797,19 @@ export class Stream {
     return anyMatch(this, predicate);
   }
 
+  /**
+   * Returns true if exactly n items in the iterable are true where the predicate function is true.
+   *
+   * Default predicate if not provided is the boolean value of each data item.
+   *
+   * @param n
+   * @param predicate
+   *
+   * @see summary.exactlyN
+   */
+  exactlyN(n: number, predicate?: (item: unknown) => boolean): boolean {
+    return exactlyN(this, n, predicate)
+  }
   /**
    * Returns true if stream is sorted in ascending order; otherwise false.
    *

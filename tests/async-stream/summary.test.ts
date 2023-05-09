@@ -109,6 +109,21 @@ function dataProviderForArraysTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      [],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      [''],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(3),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
@@ -207,6 +222,21 @@ function dataProviderForGeneratorsTrue(): Array<unknown> {
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createGeneratorFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createGeneratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(3),
     ],
     [
       createGeneratorFixture([1, -1, 2, -2, 3, -3]),
@@ -309,6 +339,21 @@ function dataProviderForIterablesTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createIterableFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createIterableFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(3),
+    ],
+    [
       createIterableFixture([1, -1, 2, -2, 3, -3]),
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
@@ -409,6 +454,21 @@ function dataProviderForIteratorsTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createIteratorFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createIteratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(3),
+    ],
+    [
       createIteratorFixture([1, -1, 2, -2, 3, -3]),
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
@@ -502,6 +562,11 @@ function dataProviderForStringsTrue(): Array<unknown> {
       '135',
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => Number(x as string) > 0),
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
     ],
     [
       '123',
@@ -610,6 +675,21 @@ function dataProviderForSetsTrue(): Array<unknown> {
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      new Set(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(3),
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
@@ -824,6 +904,21 @@ function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      createAsyncGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createAsyncGeneratorFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createAsyncGeneratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(3),
+    ],
+    [
       createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
@@ -931,6 +1026,21 @@ function dataProviderForAsyncIterablesTrue(): Array<unknown> {
       createAsyncIterableFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
+    ],
+    [
+      createAsyncIterableFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createAsyncIterableFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createAsyncIterableFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(3),
     ],
     [
       createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
@@ -1042,6 +1152,21 @@ function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
         .anyMatch((x) => (x as number) > 0),
     ],
     [
+      createAsyncIteratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createAsyncIteratorFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(0),
+    ],
+    [
+      createAsyncIteratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(3),
+    ],
+    [
       createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
@@ -1130,6 +1255,21 @@ function dataProviderForArraysFalse(): Array<unknown> {
         .anyMatch((x) => (x as number) > 10),
     ],
     [
+      [],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      [''],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(4),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .runningTotal()
@@ -1201,6 +1341,21 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createGeneratorFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createGeneratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(4),
     ],
     [
       createGeneratorFixture([1, -1, 2, -2, 3, -3]),
@@ -1276,6 +1431,21 @@ function dataProviderForIterablesFalse(): Array<unknown> {
         .anyMatch((x) => (x as number) > 10),
     ],
     [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createIterableFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createIterableFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(4),
+    ],
+    [
       createIterableFixture([1, -1, 2, -2, 3, -3]),
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .runningTotal()
@@ -1347,6 +1517,21 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
       createIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createIteratorFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createIteratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(4),
     ],
     [
       createIteratorFixture([1, -1, 2, -2, 3, -3]),
@@ -1422,6 +1607,11 @@ function dataProviderForStringsFalse(): Array<unknown> {
         .anyMatch((x) => Number(x as string) > 10),
     ],
     [
+      '',
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
       '131',
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .isSorted(),
@@ -1492,6 +1682,21 @@ function dataProviderForSetsFalse(): Array<unknown> {
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      new Set(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(4),
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
@@ -1653,6 +1858,21 @@ function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
         .anyMatch((x) => (x as number) > 10),
     ],
     [
+      createAsyncGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createAsyncGeneratorFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createAsyncGeneratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(4),
+    ],
+    [
       createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .runningTotal()
@@ -1735,6 +1955,21 @@ function dataProviderForAsyncIterablesFalse(): Array<unknown> {
         .anyMatch((x) => (x as number) > 10),
     ],
     [
+      createAsyncIterableFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createAsyncIterableFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createAsyncIterableFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(4),
+    ],
+    [
       createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .runningTotal()
@@ -1815,6 +2050,21 @@ function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
       createAsyncIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      createAsyncIteratorFixture([]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createAsyncIteratorFixture(['']),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(1),
+    ],
+    [
+      createAsyncIteratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .exactlyNAsync(4),
     ],
     [
       createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),

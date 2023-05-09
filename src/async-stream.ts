@@ -65,6 +65,7 @@ import {
   allMatchAsync,
   allUniqueAsync,
   anyMatchAsync,
+  exactlyNAsync,
   isReversedAsync,
   isSortedAsync,
   noneMatchAsync,
@@ -892,6 +893,20 @@ export class AsyncStream {
     predicate: (item: unknown) => Promise<boolean> | boolean
   ): Promise<boolean> {
     return await anyMatchAsync(this, predicate);
+  }
+
+  /**
+   * Returns true if exactly n items in the async iterable are true where the predicate function is true.
+   *
+   * Default predicate if not provided is the boolean value of each data item.
+   *
+   * @param n
+   * @param predicate
+   *
+   * @see summary.exactlyNAsync
+   */
+  async exactlyNAsync(n: number, predicate?: (item: unknown) => Promise<boolean> | boolean): Promise<boolean> {
+    return exactlyNAsync(this, n, predicate)
   }
 
   /**
