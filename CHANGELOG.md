@@ -1,5 +1,16 @@
 # IterTools Typescript Change Log
 
+## v1.22.0 - 2023-05-25
+
+### New features
+* summary
+  * `exactlyN()`
+  * `exactlyNAsync()`
+* Stream
+  * `exactlyN()`
+* AsyncStream
+  * `exactlyN()`
+
 ## v1.22.0 - 2023-04-20
 
 ### New features
