@@ -173,20 +173,21 @@ Quick Reference
 | [`union`](#Union)                              | Union of iterables                | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
 
 #### Summary
-| Summary                                 | Description                                       | Sync Code Snippet                    | Async Code Snippet                        |
-|-----------------------------------------|---------------------------------------------------|--------------------------------------|-------------------------------------------|
-| [`allMatch`](#All-Match)                | True if all items are true according to predicate | `summary.allMatch(data, predicate)`  | `summary.allMatchAsync(data, predicate)`  |
-| [`allUnique`](#All-Unique)              | True if all elements in collection are unique     | `summary.allUnique(data)`            | `summary.allUniqueAsync(data)`            |
-| [`anyMatch`](#Any-Match)                | True if any item is true according to predicate   | `summary.anyMatch(data, predicate)`  | `summary.anyMatchAsync(data, predicate)`  |
-| [`isAsyncIterable`](#Is-Async-Iterable) | True if given data is async iterable              | `summary.isAsyncIterable(data)`      | —                                         |
-| [`isIterable`](#Is-Iterable)            | True if given data is iterable                    | `summary.isIterable(data)`           | —                                         |
-| [`isIterator`](#Is-Iterator)            | True if given data is iterator                    | `summary.isIterator(data)`           | —                                         |
-| [`isReversed`](#Is-Reversed)            | True if iterable reverse sorted                   | `summary.isReversed(data)`           | `summary.isReversedAsync(data)`           |
-| [`isSorted`](#Is-Sorted)                | True if iterable sorted                           | `summary.isSorted(data)`             | `summary.isSortedAsync(data)`             |
-| [`isString`](#Is-String)                | True if given data is string                      | `summary.isString(data)`             | `summary.isStringAsync(data)`             |
-| [`noneMatch`](#None-Match)              | True if none of items true according to predicate | `summary.noneMatch(data, predicate)` | `summary.noneMatchAsync(data, predicate)` |
-| [`same`](#Same)                         | True if collections are the same                  | `summary.same(...collections)`       | `summary.sameAsync(...collections)`       |
-| [`sameCount`](#Same-Count)              | True if collections have the same lengths         | `summary.sameCount(...collections)`  | `summary.sameCountAsync(...collections)`  |
+| Summary                                 | Description                                             | Sync Code Snippet                      | Async Code Snippet                          |
+|-----------------------------------------|---------------------------------------------------------|----------------------------------------|---------------------------------------------|
+| [`allMatch`](#All-Match)                | True if all items are true according to predicate       | `summary.allMatch(data, predicate)`    | `summary.allMatchAsync(data, predicate)`    |
+| [`allUnique`](#All-Unique)              | True if all elements in collection are unique           | `summary.allUnique(data)`              | `summary.allUniqueAsync(data)`              |
+| [`anyMatch`](#Any-Match)                | True if any item is true according to predicate         | `summary.anyMatch(data, predicate)`    | `summary.anyMatchAsync(data, predicate)`    |
+| [`exactlyN`](#Exactly-N)                | True if exactly n items are true according to predicate | `summary.exactlyN(data, n, predicate)` | `summary.exactlyNAsync(data, n, predicate)` |
+| [`isAsyncIterable`](#Is-Async-Iterable) | True if given data is async iterable                    | `summary.isAsyncIterable(data)`        | —                                           |
+| [`isIterable`](#Is-Iterable)            | True if given data is iterable                          | `summary.isIterable(data)`             | —                                           |
+| [`isIterator`](#Is-Iterator)            | True if given data is iterator                          | `summary.isIterator(data)`             | —                                           |
+| [`isReversed`](#Is-Reversed)            | True if iterable reverse sorted                         | `summary.isReversed(data)`             | `summary.isReversedAsync(data)`             |
+| [`isSorted`](#Is-Sorted)                | True if iterable sorted                                 | `summary.isSorted(data)`               | `summary.isSortedAsync(data)`               |
+| [`isString`](#Is-String)                | True if given data is string                            | `summary.isString(data)`               | `summary.isStringAsync(data)`               |
+| [`noneMatch`](#None-Match)              | True if none of items true according to predicate       | `summary.noneMatch(data, predicate)`   | `summary.noneMatchAsync(data, predicate)`   |
+| [`same`](#Same)                         | True if collections are the same                        | `summary.same(...collections)`         | `summary.sameAsync(...collections)`         |
+| [`sameCount`](#Same-Count)              | True if collections have the same lengths               | `summary.sameCount(...collections)`    | `summary.sameCountAsync(...collections)`    |
 
 #### Transform
 | Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet                |
@@ -275,6 +276,7 @@ Quick Reference
 | [`allMatch`](#All-Match-1)          | Returns true if all items in stream match predicate                    | `stream.allMatch(predicate)`           |
 | [`allUnique`](#All-Unique-1)        | Returns true if all elements of stream are unique                      | `stream.allUnique(predicate)`          |
 | [`anyMatch`](#Any-Match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
+| [`exactlyN`](#Exactly-N-1)          | Returns true if exactly n items are true according to predicate        | `stream.exactlyN(n, predicate)`        |
 | [`isReversed`](#Is-Reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
 | [`isSorted`](#Is-Sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
 | [`noneMatch`](#None-Match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
@@ -1558,6 +1560,37 @@ const isUltimateAnswer = (a) => a == 42;
 
 const trueResult = summary.anyMatch(answers, isUltimateAnswer);
 // true
+```
+
+### Exactly N
+Returns true if exactly n items are true according to a predicate function.
+
+- Predicate is optional.
+- Default predicate is boolean value of each item.
+
+```
+function exactlyN<T>(
+  data: Iterable<T> | Iterator<T>,
+  n: number,
+  predicate?: (item: T) => boolean,
+): boolean
+```
+
+```typescript
+import { summary } from "itertools-ts";
+
+const twoTruthsAndALie = [true, true, false];
+const n = 2;
+
+const trueResult = summary.exactlyN(twoTruthsAndALie, n);
+// true
+
+const ages = [18, 21, 24, 54];
+const m = 4;
+const predicate = (age) => age >= 21;
+
+const falseResult = Summary::exactlyN(ages, m, predicate);
+// false
 ```
 
 ### Is Async Iterable
@@ -3084,6 +3117,28 @@ const isUltimateAnswer = (a) => a == 42;
 
 const trueResult = Stream.of(answers)
   .anyMatch(answers, isUltimateAnswer);
+// true
+```
+
+##### Exactly N
+Returns true if exactly n items are true according to a predicate function.
+
+- Predicate is optional.
+- Default predicate is boolean value of each item.
+
+```
+stream.exactlyN(n: number, predicate?: (item: unknown) => boolean): boolean
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+import stream = require("node:stream");
+
+const twoTruthsAndALie = [true, true, false];
+const n = 2;
+
+const boolean = stream.of(twoTruthsAndALie)
+  .exactlyN(n);
 // true
 ```
 
