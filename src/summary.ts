@@ -150,10 +150,10 @@ export function exactlyN<T>(
   n: number,
   predicate?: (item: T) => boolean,
 ): boolean {
-
   if (n < 0) {
-    return false
+    return false;
   }
+
   if (predicate === undefined) {
     predicate = (datum) => Boolean(datum);
   }
@@ -180,14 +180,14 @@ export function exactlyN<T>(
  * @param predicate
  */
 export async function exactlyNAsync<T>(
-  data: AsyncIterable<T> | AsyncIterator<T>,
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
   n: number,
   predicate?: (item: T) => Promise<boolean> | boolean,
 ): Promise<boolean> {
-
   if (n < 0) {
-    return false
+    return false;
   }
+
   if (predicate === undefined) {
     predicate = (datum) => Boolean(datum);
   }

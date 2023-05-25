@@ -9,6 +9,7 @@ import {
   // @ts-ignore
 } from '../fixture';
 import { summary } from '../../src';
+import { toAsyncIterable } from "../../src/transform";
 
 describe.each([
   ...dataProviderForArraysExactlyNWithPredicateZero(),
@@ -44,6 +45,26 @@ describe.each([
   ) => {
     it("", () => {
       expect(summary.exactlyN(input, -1)).toBeFalsy();
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForArraysExactlyNWithNegativePredicate(),
+  ...dataProviderForGeneratorsExactlyNWithNegativePredicate(),
+  ...dataProviderForIterablesExactlyNWithNegativePredicate(),
+  ...dataProviderForIteratorsExactlyNWithNegativePredicate(),
+  ...dataProviderForStringsExactlyNWithNegativePredicate(),
+  ...dataProviderForSetsExactlyNWithNegativePredicate(),
+] as Array<[Iterable<unknown>|Iterator<unknown>, -1]>)(
+  "Summary Exactly N Test With Negative Default Predicate When N Doesn't Match",
+  (
+    input: Iterable<unknown>|Iterator<unknown>,
+    n: number
+  ) => {
+    it("", async () => {
+      expect(await summary.exactlyNAsync(input, -1)).toBeFalsy();
+      expect(await summary.exactlyNAsync(toAsyncIterable(input), -1)).toBeFalsy();
     });
   }
 );
