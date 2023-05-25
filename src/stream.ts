@@ -808,7 +808,7 @@ export class Stream {
    * @see summary.exactlyN
    */
   exactlyN(n: number, predicate?: (item: unknown) => boolean): boolean {
-    return exactlyN(this, n, predicate)
+    return exactlyN(this, n, predicate);
   }
   /**
    * Returns true if stream is sorted in ascending order; otherwise false.

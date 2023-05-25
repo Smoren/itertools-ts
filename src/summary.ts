@@ -148,7 +148,7 @@ export async function anyMatchAsync<T>(
 export function exactlyN<T>(
   data: Iterable<T> | Iterator<T>,
   n: number,
-  predicate?: (item: T) => boolean,
+  predicate?: (item: T) => boolean
 ): boolean {
   if (n < 0) {
     return false;
@@ -163,7 +163,7 @@ export function exactlyN<T>(
     if (predicate(datum)) {
       count++;
       if (count > n) {
-        return false
+        return false;
       }
     }
   }
@@ -182,7 +182,7 @@ export function exactlyN<T>(
 export async function exactlyNAsync<T>(
   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
   n: number,
-  predicate?: (item: T) => Promise<boolean> | boolean,
+  predicate?: (item: T) => Promise<boolean> | boolean
 ): Promise<boolean> {
   if (n < 0) {
     return false;
@@ -197,7 +197,7 @@ export async function exactlyNAsync<T>(
     if (await predicate(datum)) {
       count++;
       if (count > n) {
-        return false
+        return false;
       }
     }
   }

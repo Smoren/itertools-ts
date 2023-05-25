@@ -33,7 +33,6 @@ import {
   zipLongestAsync,
 } from "./multi";
 import {
-  runningAverage,
   runningAverageAsync,
   runningDifferenceAsync,
   runningMaxAsync,
@@ -905,8 +904,11 @@ export class AsyncStream {
    *
    * @see summary.exactlyNAsync
    */
-  async exactlyNAsync(n: number, predicate?: (item: unknown) => Promise<boolean> | boolean): Promise<boolean> {
-    return exactlyNAsync(this, n, predicate)
+  async exactlyNAsync(
+    n: number,
+    predicate?: (item: unknown) => Promise<boolean> | boolean
+  ): Promise<boolean> {
+    return exactlyNAsync(this, n, predicate);
   }
 
   /**

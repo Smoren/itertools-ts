@@ -10,11 +10,10 @@ export function* runningAverage<T>(
   numbers: Iterable<T> | Iterator<T>,
   initialValue?: number
 ): Iterable<number> {
-
   let n = 0;
   for (const total of runningTotal(toIterable(numbers), initialValue)) {
     n++;
-    yield total / n as number;
+    yield (total / n) as number;
   }
 }
 
@@ -28,11 +27,13 @@ export async function* runningAverageAsync<T>(
   numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
   initialValue?: number
 ): AsyncIterable<number> {
-
   let n = 0;
-  for await (const total of runningTotalAsync(toAsyncIterable(numbers), initialValue)) {
+  for await (const total of runningTotalAsync(
+    toAsyncIterable(numbers),
+    initialValue
+  )) {
     n++;
-    yield total / n as number;
+    yield (total / n) as number;
   }
 }
 
@@ -245,4 +246,3 @@ export async function* runningTotalAsync<T>(
     yield total as number;
   }
 }
-
