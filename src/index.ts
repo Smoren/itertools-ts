@@ -87,6 +87,7 @@ import {
   toMin,
   toMinMax,
   toProduct,
+  toRange,
   toSum,
   toValue,
   toFirst,
@@ -101,6 +102,7 @@ import {
   toMinAsync,
   toMinMaxAsync,
   toProductAsync,
+  toRangeAsync,
   toSumAsync,
   toValueAsync,
 } from "./reduce";
@@ -255,6 +257,7 @@ export const reduce = {
   toMin,
   toMinMax,
   toProduct,
+  toRange,
   toSum,
   toValue,
   toAverageAsync,
@@ -266,6 +269,7 @@ export const reduce = {
   toMinAsync,
   toMinMaxAsync,
   toProductAsync,
+  toRangeAsync,
   toSumAsync,
   toValueAsync,
 };
