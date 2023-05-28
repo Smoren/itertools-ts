@@ -308,6 +308,38 @@ export async function toMinMaxAsync<T>(
 }
 
 /**
+ * Reduces given collection to its range.
+ *
+ * Returns 0 if given collection is empty.
+ *
+ * @param numbers
+ */
+export function toRange(numbers: Iterable<number> | Iterator<number>): number {
+  const [min, max] = toMinMax(numbers);
+
+  return (max ?? 0) - (min ?? 0);
+}
+
+/**
+ * Reduces given async collection to its range.
+ *
+ * Returns 0 if given async collection is empty.
+ *
+ * @param numbers
+ */
+export async function toRangeAsync(
+  numbers:
+    | AsyncIterable<number>
+    | AsyncIterator<number>
+    | Iterable<number>
+    | Iterator<number>
+): Promise<number> {
+  const [min, max] = await toMinMaxAsync(numbers);
+
+  return (max ?? 0) - (min ?? 0);
+}
+
+/**
  * Reduces given collection to the sum of its items.
  *
  * @param data

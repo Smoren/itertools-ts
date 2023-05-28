@@ -57,6 +57,7 @@ import {
   toMinAsync,
   toMinMaxAsync,
   toProductAsync,
+  toRangeAsync,
   toSumAsync,
   toValueAsync,
 } from "./reduce";
@@ -849,6 +850,17 @@ export class AsyncStream {
    */
   async toProduct(): Promise<number | undefined> {
     return await toProductAsync(this as AsyncIterable<number>);
+  }
+
+  /**
+   * Reduces given collection to its range.
+   *
+   * Returns 0 if given collection is empty.
+   *
+   * @see reduce.toRangeAsync
+   */
+  async toRange(): Promise<number> {
+    return await toRangeAsync(this as AsyncIterable<number>);
   }
 
   /**

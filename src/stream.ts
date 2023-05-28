@@ -45,6 +45,7 @@ import {
   toMin,
   toMinMax,
   toProduct,
+  toRange,
   toSum,
   toValue,
 } from "./reduce";
@@ -756,6 +757,17 @@ export class Stream {
    */
   toProduct(): number | undefined {
     return toProduct(this as Iterable<number>);
+  }
+
+  /**
+   * Reduces given collection to its range.
+   *
+   * Returns 0 if given collection is empty.
+   *
+   * @see reduce.toRange
+   */
+  toRange(): number {
+    return toRange(this as Iterable<number>);
   }
 
   /**
