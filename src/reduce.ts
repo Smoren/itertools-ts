@@ -3,7 +3,7 @@ import { LengthError } from "./exceptions";
 import { isString } from "./summary";
 import { NoValueMonad } from "./tools";
 import { Comparable } from "./types";
-import { map, mapAsync } from './single';
+import { map, mapAsync } from "./single";
 
 /**
  * Reduces iterable source like `array.reduce()` function.
@@ -315,7 +315,9 @@ export async function toMinMaxAsync<T>(
  *
  * @param numbers
  */
-export function toRange(numbers: Iterable<number|string> | Iterator<number|string>): number {
+export function toRange(
+  numbers: Iterable<number | string> | Iterator<number | string>
+): number {
   const [min, max] = toMinMax(map(numbers, (n) => Number(n)));
 
   return (max ?? 0) - (min ?? 0);
