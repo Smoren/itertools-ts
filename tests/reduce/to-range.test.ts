@@ -1,8 +1,11 @@
 import {
-  createAsyncGeneratorFixture, createAsyncIterableFixture, createAsyncIteratorFixture,
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
+  roundEpsilon,
   // @ts-ignore
 } from "../fixture";
 import { reduce } from "../../src";
@@ -25,7 +28,7 @@ describe.each([
       const result = reduce.toRange(input);
 
       // Then
-      expect(result).toEqual(expected);
+      expect(roundEpsilon(result)).toEqual(expected);
     });
   }
 );
@@ -52,7 +55,7 @@ describe.each([
       const result = await reduce.toRangeAsync(input);
 
       // Then
-      expect(result).toEqual(expected);
+      expect(roundEpsilon(result)).toEqual(expected);
     });
   }
 );
@@ -95,6 +98,18 @@ function dataProviderForArrays(): Array<unknown> {
       [2, -3.3, '-1.1', 2.2, '5'],
       8.3,
     ],
+    [
+      [2.2, 3.3, 1.1],
+      2.2,
+    ],
+    [
+      [2, 3.3, 1.1],
+      2.2,
+    ],
+    [
+      ['2.2', '-3.3', '-1.1', '2.2', '5.5'],
+      8.8,
+    ],
   ];
 }
 
@@ -135,6 +150,18 @@ function dataProviderForGenerators(): Array<unknown> {
     [
       createGeneratorFixture([2, -3.3, '-1.1', 2.2, '5']),
       8.3,
+    ],
+    [
+      createGeneratorFixture([2.2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createGeneratorFixture([2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createGeneratorFixture(['2.2', '-3.3', '-1.1', '2.2', '5.5']),
+      8.8,
     ],
   ];
 }
@@ -177,6 +204,18 @@ function dataProviderForIterables(): Array<unknown> {
       createIterableFixture([2, -3.3, '-1.1', 2.2, '5']),
       8.3,
     ],
+    [
+      createIterableFixture([2.2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createIterableFixture([2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createIterableFixture(['2.2', '-3.3', '-1.1', '2.2', '5.5']),
+      8.8,
+    ],
   ];
 }
 
@@ -218,22 +257,42 @@ function dataProviderForIterators(): Array<unknown> {
       createIteratorFixture([2, -3.3, '-1.1', 2.2, '5']),
       8.3,
     ],
+    [
+      createIteratorFixture([2.2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createIteratorFixture([2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createIteratorFixture(['2.2', '-3.3', '-1.1', '2.2', '5.5']),
+      8.8,
+    ],
   ];
 }
 
 function dataProviderForStrings(): Array<unknown> {
   return [
     [
-      [''],
+      '',
       0,
     ],
     [
-      ['', ''],
-      0,
+      '01',
+      1,
     ],
     [
-      ['1', '2', '3'],
+      '123',
       2,
+    ],
+    [
+      '7213835',
+      7,
+    ],
+    [
+      '72138350',
+      8,
     ],
   ];
 }
@@ -271,6 +330,18 @@ function dataProviderForSets(): Array<unknown> {
     [
       new Set([2, -3.3, '-1.1', 2.2, '5']),
       8.3,
+    ],
+    [
+      new Set([2.2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      new Set([2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      new Set(['2.2', '-3.3', '-1.1', '2.2', '5.5']),
+      8.8,
     ],
   ];
 }
@@ -313,6 +384,18 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
       createAsyncGeneratorFixture([2, -3.3, '-1.1', 2.2, '5']),
       8.3,
     ],
+    [
+      createAsyncGeneratorFixture([2.2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createAsyncGeneratorFixture([2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createAsyncGeneratorFixture(['2.2', '-3.3', '-1.1', '2.2', '5.5']),
+      8.8,
+    ],
   ];
 }
 
@@ -354,6 +437,18 @@ function dataProviderForAsyncIterables(): Array<unknown> {
       createAsyncIterableFixture([2, -3.3, '-1.1', 2.2, '5']),
       8.3,
     ],
+    [
+      createAsyncIterableFixture([2.2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createAsyncIterableFixture([2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createAsyncIterableFixture(['2.2', '-3.3', '-1.1', '2.2', '5.5']),
+      8.8,
+    ],
   ];
 }
 
@@ -394,6 +489,18 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     [
       createAsyncIteratorFixture([2, -3.3, '-1.1', 2.2, '5']),
       8.3,
+    ],
+    [
+      createAsyncIteratorFixture([2.2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createAsyncIteratorFixture([2, 3.3, 1.1]),
+      2.2,
+    ],
+    [
+      createAsyncIteratorFixture(['2.2', '-3.3', '-1.1', '2.2', '5.5']),
+      8.8,
     ],
   ];
 }

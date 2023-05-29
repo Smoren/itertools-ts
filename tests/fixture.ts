@@ -69,3 +69,7 @@ export function createMapFixture<T>(data: Array<T>): Map<number, T> {
 
   return result;
 }
+
+export function roundEpsilon(n: number|string): number {
+  return Math.round((Number(n) + Number.EPSILON) * 100) / 100;
+}

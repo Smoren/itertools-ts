@@ -1,5 +1,16 @@
 # IterTools Typescript Change Log
 
+## v1.24.0 - TBD
+
+### New features
+* summary
+  * `toRange()`
+  * `toRangeAsync()`
+* Stream
+  * `toRange()`
+* AsyncStream
+  * `toRange()`
+
 ## v1.23.0 - 2023-05-25
 
 ### New features

@@ -12,14 +12,14 @@ import { summary } from '../../src';
 import { toAsyncIterable } from "../../src/transform";
 
 describe.each([
-  ...dataProviderForArraysExactlyNWithPredicateZero(),
-  ...dataProviderForGeneratorsExactlyNWithPredicateZero(),
-  ...dataProviderForIterablesExactlyNWithPredicateZero(),
-  ...dataProviderForIteratorsExactlyNWithPredicateZero(),
-  ...dataProviderForStringsExactlyNWithPredicateZero(),
-  ...dataProviderForSetsExactlyNWithPredicateZero(),
+  ...dataProviderForArraysExactlyNWithDefaultPredicateZeroTrue(),
+  ...dataProviderForGeneratorsExactlyNWithDefaultPredicateZeroTrue(),
+  ...dataProviderForIterablesExactlyNWithDefaultPredicateZeroTrue(),
+  ...dataProviderForIteratorsExactlyNWithDefaultPredicateZeroTrue(),
+  ...dataProviderForStringsExactlyNWithDefaultPredicateZeroTrue(),
+  ...dataProviderForSetsExactlyNWithDefaultPredicateZeroTrue(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, 0]>)(
-  "Summary Exactly N Test With Default Predicate Zero When N Matches",
+  "Summary Exactly N Test With Default Predicate When N is Zero",
   (
     input: Iterable<unknown>|Iterator<unknown>,
     n: number
@@ -31,14 +31,14 @@ describe.each([
 );
 
 describe.each([
-  ...dataProviderForArraysExactlyNWithNegativePredicate(),
-  ...dataProviderForGeneratorsExactlyNWithNegativePredicate(),
-  ...dataProviderForIterablesExactlyNWithNegativePredicate(),
-  ...dataProviderForIteratorsExactlyNWithNegativePredicate(),
-  ...dataProviderForStringsExactlyNWithNegativePredicate(),
-  ...dataProviderForSetsExactlyNWithNegativePredicate(),
+  ...dataProviderForArraysExactlyNWithDefaultPredicateNegativeFalse(),
+  ...dataProviderForGeneratorsExactlyNWithDefaultPredicateNegativeFalse(),
+  ...dataProviderForIterablesExactlyNWithDefaultPredicateNegativeFalse(),
+  ...dataProviderForIteratorsExactlyNWithDefaultPredicateNegativeFalse(),
+  ...dataProviderForStringsExactlyNWithDefaultPredicateNegativeFalse(),
+  ...dataProviderForSetsExactlyNWithDefaultPredicateNegativeFalse(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, -1]>)(
-  "Summary Exactly N Test With Negative Default Predicate When N Doesn't Match",
+  "Summary Exactly N Test With Default Predicate When N is Negative",
   (
     input: Iterable<unknown>|Iterator<unknown>,
     n: number
@@ -50,14 +50,14 @@ describe.each([
 );
 
 describe.each([
-  ...dataProviderForArraysExactlyNWithNegativePredicate(),
-  ...dataProviderForGeneratorsExactlyNWithNegativePredicate(),
-  ...dataProviderForIterablesExactlyNWithNegativePredicate(),
-  ...dataProviderForIteratorsExactlyNWithNegativePredicate(),
-  ...dataProviderForStringsExactlyNWithNegativePredicate(),
-  ...dataProviderForSetsExactlyNWithNegativePredicate(),
+  ...dataProviderForArraysExactlyNWithDefaultPredicateNegativeFalse(),
+  ...dataProviderForGeneratorsExactlyNWithDefaultPredicateNegativeFalse(),
+  ...dataProviderForIterablesExactlyNWithDefaultPredicateNegativeFalse(),
+  ...dataProviderForIteratorsExactlyNWithDefaultPredicateNegativeFalse(),
+  ...dataProviderForStringsExactlyNWithDefaultPredicateNegativeFalse(),
+  ...dataProviderForSetsExactlyNWithDefaultPredicateNegativeFalse(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, -1]>)(
-  "Summary Exactly N Test With Negative Default Predicate When N Doesn't Match",
+  "Summary Exactly N Test With Default Predicate When N is Negative (false)",
   (
     input: Iterable<unknown>|Iterator<unknown>,
     n: number
@@ -70,12 +70,12 @@ describe.each([
 );
 
 describe.each([
-  ...dataProviderForArraysExactlyN(),
-  ...dataProviderForGeneratorsExactlyN(),
-  ...dataProviderForIterablesExactlyN(),
-  ...dataProviderForIteratorsExactlyN(),
-  ...dataProviderForStringsExactlyN(),
-  ...dataProviderForSetsExactlyN(),
+  ...dataProviderForArraysExactlyNTrue(),
+  ...dataProviderForGeneratorsExactlyNTrue(),
+  ...dataProviderForIterablesExactlyNTrue(),
+  ...dataProviderForIteratorsExactlyNTrue(),
+  ...dataProviderForStringsExactlyNTrue(),
+  ...dataProviderForSetsExactlyNTrue(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, number]>)(
   "Summary Exactly N Test When N Matches",
   (
@@ -89,12 +89,12 @@ describe.each([
 );
 
 describe.each([
-  ...dataProviderForArraysExactlyNotN(),
-  ...dataProviderForGeneratorsExactlyNotN(),
-  ...dataProviderForIterablesExactlyNotN(),
-  ...dataProviderForIteratorsExactlyNotN(),
-  ...dataProviderForStringsExactlyNotN(),
-  ...dataProviderForSetsExactlyNotN(),
+  ...dataProviderForArraysExactlyNFalse(),
+  ...dataProviderForGeneratorsExactlyNFalse(),
+  ...dataProviderForIterablesExactlyNFalse(),
+  ...dataProviderForIteratorsExactlyNFalse(),
+  ...dataProviderForStringsExactlyNFalse(),
+  ...dataProviderForSetsExactlyNFalse(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, number]>)(
   "Summary Exactly N Test When N Doesn't Match",
   (
@@ -108,15 +108,15 @@ describe.each([
 );
 
 describe.each([
-  ...dataProviderForAsyncGeneratorsExactlyN(),
-  ...dataProviderForAsyncIterablesExactlyN(),
-  ...dataProviderForAsyncIteratorsExactlyN(),
-  ...dataProviderForArraysExactlyN(),
-  ...dataProviderForGeneratorsExactlyN(),
-  ...dataProviderForIterablesExactlyN(),
-  ...dataProviderForIteratorsExactlyN(),
-  ...dataProviderForStringsExactlyN(),
-  ...dataProviderForSetsExactlyN(),
+  ...dataProviderForAsyncGeneratorsExactlyNTrue(),
+  ...dataProviderForAsyncIterablesExactlyNTrue(),
+  ...dataProviderForAsyncIteratorsExactlyNTrue(),
+  ...dataProviderForArraysExactlyNTrue(),
+  ...dataProviderForGeneratorsExactlyNTrue(),
+  ...dataProviderForIterablesExactlyNTrue(),
+  ...dataProviderForIteratorsExactlyNTrue(),
+  ...dataProviderForStringsExactlyNTrue(),
+  ...dataProviderForSetsExactlyNTrue(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>,
     number
@@ -133,15 +133,15 @@ describe.each([
 );
 
 describe.each([
-  ...dataProviderForAsyncGeneratorsExactlyNotN(),
-  ...dataProviderForAsyncIterablesExactlyNotN(),
-  ...dataProviderForAsyncIteratorsExactlyNotN(),
-  ...dataProviderForArraysExactlyNotN(),
-  ...dataProviderForGeneratorsExactlyNotN(),
-  ...dataProviderForIterablesExactlyNotN(),
-  ...dataProviderForIteratorsExactlyNotN(),
-  ...dataProviderForStringsExactlyNotN(),
-  ...dataProviderForSetsExactlyNotN(),
+  ...dataProviderForAsyncGeneratorsExactlyNFalse(),
+  ...dataProviderForAsyncIterablesExactlyNFalse(),
+  ...dataProviderForAsyncIteratorsExactlyNFalse(),
+  ...dataProviderForArraysExactlyNFalse(),
+  ...dataProviderForGeneratorsExactlyNFalse(),
+  ...dataProviderForIterablesExactlyNFalse(),
+  ...dataProviderForIteratorsExactlyNFalse(),
+  ...dataProviderForStringsExactlyNFalse(),
+  ...dataProviderForSetsExactlyNFalse(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>,
     number
@@ -199,7 +199,7 @@ describe.each([
   }
 );
 
-function dataProviderForArraysExactlyN(): Array<unknown> {
+function dataProviderForArraysExactlyNTrue(): Array<unknown> {
   return [
     [
       [1],
@@ -256,7 +256,7 @@ function dataProviderForArraysExactlyN(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsExactlyN(): Array<unknown> {
+function dataProviderForGeneratorsExactlyNTrue(): Array<unknown> {
   return [
     [
       createGeneratorFixture([1]),
@@ -313,7 +313,7 @@ function dataProviderForGeneratorsExactlyN(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterablesExactlyN(): Array<unknown> {
+function dataProviderForIterablesExactlyNTrue(): Array<unknown> {
   return [
     [
       createIterableFixture([1]),
@@ -370,7 +370,7 @@ function dataProviderForIterablesExactlyN(): Array<unknown> {
   ];
 }
 
-function dataProviderForIteratorsExactlyN(): Array<unknown> {
+function dataProviderForIteratorsExactlyNTrue(): Array<unknown> {
   return [
     [
       createIteratorFixture([1]),
@@ -427,36 +427,36 @@ function dataProviderForIteratorsExactlyN(): Array<unknown> {
   ];
 }
 
-function dataProviderForStringsExactlyN(): Array<unknown> {
+function dataProviderForStringsExactlyNTrue(): Array<unknown> {
   return [
     [
-      [''],
+      '',
       0,
     ],
     [
-      ['a'],
+      'a',
       1,
     ],
     [
-      ['abc'],
-      1,
+      ' c',
+      2,
     ],
     [
-      ['a', 'b', 'c'],
+      'abc',
       3,
     ],
     [
-      ['true'],
-      1,
+      'true',
+      4,
     ],
     [
-      ['false'],
-      1,
+      'false',
+      5,
     ],
   ];
 }
 
-function dataProviderForSetsExactlyN(): Array<unknown> {
+function dataProviderForSetsExactlyNTrue(): Array<unknown> {
   return [
     [
       new Set([1]),
@@ -493,7 +493,7 @@ function dataProviderForSetsExactlyN(): Array<unknown> {
   ];
 }
 
-function dataProviderForArraysExactlyNotN(): Array<unknown> {
+function dataProviderForArraysExactlyNFalse(): Array<unknown> {
   return [
     [
       [1],
@@ -558,7 +558,7 @@ function dataProviderForArraysExactlyNotN(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsExactlyNotN(): Array<unknown> {
+function dataProviderForGeneratorsExactlyNFalse(): Array<unknown> {
   return [
     [
       createGeneratorFixture([1]),
@@ -623,7 +623,7 @@ function dataProviderForGeneratorsExactlyNotN(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterablesExactlyNotN(): Array<unknown> {
+function dataProviderForIterablesExactlyNFalse(): Array<unknown> {
   return [
     [
       createIterableFixture([1]),
@@ -688,7 +688,7 @@ function dataProviderForIterablesExactlyNotN(): Array<unknown> {
   ];
 }
 
-function dataProviderForIteratorsExactlyNotN(): Array<unknown> {
+function dataProviderForIteratorsExactlyNFalse(): Array<unknown> {
   return [
     [
       createIteratorFixture([1]),
@@ -753,36 +753,32 @@ function dataProviderForIteratorsExactlyNotN(): Array<unknown> {
   ];
 }
 
-function dataProviderForStringsExactlyNotN(): Array<unknown> {
+function dataProviderForStringsExactlyNFalse(): Array<unknown> {
   return [
     [
-      [''],
+      '',
       1,
     ],
     [
-      ['a'],
+      'a',
       0,
     ],
     [
-      ['abc'],
-      3,
+      'abc',
+      4,
     ],
     [
-      ['a', 'b', 'c'],
+      'true',
       1,
     ],
     [
-      ['true'],
-      0,
-    ],
-    [
-      ['false'],
+      'false',
       0,
     ],
   ];
 }
 
-function dataProviderForSetsExactlyNotN(): Array<unknown> {
+function dataProviderForSetsExactlyNFalse(): Array<unknown> {
   return [
     [
       new Set([1]),
@@ -847,7 +843,7 @@ function dataProviderForSetsExactlyNotN(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGeneratorsExactlyN(): Array<unknown> {
+function dataProviderForAsyncGeneratorsExactlyNTrue(): Array<unknown> {
   return [
     [
       createAsyncGeneratorFixture([1]),
@@ -904,7 +900,7 @@ function dataProviderForAsyncGeneratorsExactlyN(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterablesExactlyN(): Array<unknown> {
+function dataProviderForAsyncIterablesExactlyNTrue(): Array<unknown> {
   return [
     [
       createAsyncIterableFixture([1]),
@@ -961,7 +957,7 @@ function dataProviderForAsyncIterablesExactlyN(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIteratorsExactlyN(): Array<unknown> {
+function dataProviderForAsyncIteratorsExactlyNTrue(): Array<unknown> {
   return [
     [
       createAsyncIteratorFixture([1]),
@@ -1018,7 +1014,7 @@ function dataProviderForAsyncIteratorsExactlyN(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGeneratorsExactlyNotN(): Array<unknown> {
+function dataProviderForAsyncGeneratorsExactlyNFalse(): Array<unknown> {
   return [
     [
       createAsyncGeneratorFixture([1]),
@@ -1083,7 +1079,7 @@ function dataProviderForAsyncGeneratorsExactlyNotN(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterablesExactlyNotN(): Array<unknown> {
+function dataProviderForAsyncIterablesExactlyNFalse(): Array<unknown> {
   return [
     [
       createAsyncIterableFixture([1]),
@@ -1148,7 +1144,7 @@ function dataProviderForAsyncIterablesExactlyNotN(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIteratorsExactlyNotN(): Array<unknown> {
+function dataProviderForAsyncIteratorsExactlyNFalse(): Array<unknown> {
   return [
     [
       createAsyncIteratorFixture([1]),
@@ -1213,7 +1209,7 @@ function dataProviderForAsyncIteratorsExactlyNotN(): Array<unknown> {
   ];
 }
 
-function dataProviderForArraysExactlyNWithPredicateZero(): Array<unknown> {
+function dataProviderForArraysExactlyNWithDefaultPredicateZeroTrue(): Array<unknown> {
   return [
     [
       [],
@@ -1234,7 +1230,7 @@ function dataProviderForArraysExactlyNWithPredicateZero(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsExactlyNWithPredicateZero(): Array<unknown> {
+function dataProviderForGeneratorsExactlyNWithDefaultPredicateZeroTrue(): Array<unknown> {
   return [
     [
       createGeneratorFixture([]),
@@ -1255,7 +1251,7 @@ function dataProviderForGeneratorsExactlyNWithPredicateZero(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterablesExactlyNWithPredicateZero(): Array<unknown> {
+function dataProviderForIterablesExactlyNWithDefaultPredicateZeroTrue(): Array<unknown> {
   return [
     [
       createIterableFixture([]),
@@ -1276,7 +1272,7 @@ function dataProviderForIterablesExactlyNWithPredicateZero(): Array<unknown> {
   ];
 }
 
-function dataProviderForIteratorsExactlyNWithPredicateZero(): Array<unknown> {
+function dataProviderForIteratorsExactlyNWithDefaultPredicateZeroTrue(): Array<unknown> {
   return [
     [
       createIteratorFixture([]),
@@ -1297,20 +1293,16 @@ function dataProviderForIteratorsExactlyNWithPredicateZero(): Array<unknown> {
   ];
 }
 
-function dataProviderForStringsExactlyNWithPredicateZero(): Array<unknown> {
+function dataProviderForStringsExactlyNWithDefaultPredicateZeroTrue(): Array<unknown> {
   return [
     [
-      [''],
-      0,
-    ],
-    [
-      ['', '', ''],
+      '',
       0,
     ],
   ];
 }
 
-function dataProviderForSetsExactlyNWithPredicateZero(): Array<unknown> {
+function dataProviderForSetsExactlyNWithDefaultPredicateZeroTrue(): Array<unknown> {
   return [
     [
       new Set([]),
@@ -1331,7 +1323,7 @@ function dataProviderForSetsExactlyNWithPredicateZero(): Array<unknown> {
   ];
 }
 
-function dataProviderForArraysExactlyNWithNegativePredicate(): Array<unknown> {
+function dataProviderForArraysExactlyNWithDefaultPredicateNegativeFalse(): Array<unknown> {
   return [
     [
       [],
@@ -1352,7 +1344,7 @@ function dataProviderForArraysExactlyNWithNegativePredicate(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsExactlyNWithNegativePredicate(): Array<unknown> {
+function dataProviderForGeneratorsExactlyNWithDefaultPredicateNegativeFalse(): Array<unknown> {
   return [
     [
       createGeneratorFixture([]),
@@ -1373,7 +1365,7 @@ function dataProviderForGeneratorsExactlyNWithNegativePredicate(): Array<unknown
   ];
 }
 
-function dataProviderForIterablesExactlyNWithNegativePredicate(): Array<unknown> {
+function dataProviderForIterablesExactlyNWithDefaultPredicateNegativeFalse(): Array<unknown> {
   return [
     [
       createIterableFixture([]),
@@ -1394,7 +1386,7 @@ function dataProviderForIterablesExactlyNWithNegativePredicate(): Array<unknown>
   ];
 }
 
-function dataProviderForIteratorsExactlyNWithNegativePredicate(): Array<unknown> {
+function dataProviderForIteratorsExactlyNWithDefaultPredicateNegativeFalse(): Array<unknown> {
   return [
     [
       createIteratorFixture([]),
@@ -1415,20 +1407,20 @@ function dataProviderForIteratorsExactlyNWithNegativePredicate(): Array<unknown>
   ];
 }
 
-function dataProviderForStringsExactlyNWithNegativePredicate(): Array<unknown> {
+function dataProviderForStringsExactlyNWithDefaultPredicateNegativeFalse(): Array<unknown> {
   return [
     [
-      [''],
+      '',
       -1,
     ],
     [
-      ['', '', ''],
+      '123',
       -1,
     ],
   ];
 }
 
-function dataProviderForSetsExactlyNWithNegativePredicate(): Array<unknown> {
+function dataProviderForSetsExactlyNWithDefaultPredicateNegativeFalse(): Array<unknown> {
   return [
     [
       new Set([]),
@@ -1864,6 +1856,16 @@ function dataProviderForStringsExactlyNWithPredicateTrue(): Array<unknown> {
     [
       '1',
       1,
+      (x: string) => x === '1',
+    ],
+    [
+      '111',
+      3,
+      (x: string) => x === '1',
+    ],
+    [
+      '1a1',
+      2,
       (x: string) => x === '1',
     ],
     [
@@ -2457,6 +2459,16 @@ function dataProviderForStringsExactlyNWithPredicateFalse(): Array<unknown> {
       (x: string) => x === '1',
     ],
     [
+      '11',
+      1,
+      (x: string) => x === '1',
+    ],
+    [
+      '1a1',
+      3,
+      (x: string) => x === '1',
+    ],
+    [
       'a',
       0,
       (x: string) => typeof x === 'string',
@@ -2628,6 +2640,3 @@ function dataProviderForMapsExactlyNWithPredicateFalse(): Array<unknown> {
     ],
   ];
 }
-
-
-
