@@ -3,6 +3,7 @@ import { mapAsync, pairwise, pairwiseAsync } from "./single";
 import { toCount, toCountAsync } from "./reduce";
 import { toArrayAsync, toAsyncIterable, toIterable } from "./transform";
 import { Comparable } from "./types";
+import { UsageMap } from './tools';
 
 /**
  * Returns true if all elements match the predicate function.
@@ -135,6 +136,52 @@ export async function anyMatchAsync<T>(
   }
   return false;
 }
+
+/**
+ * Returns true if given collections are permutations of each other (using strict-type comparisons).
+ *
+ * Returns true if no collections given or for single collection.
+ *
+ * @param collections
+ */
+export function arePermutations( ...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+  return arePermutationsInternal(true, ...collections)
+}
+
+/**
+ * Internal function helper for arePermutations()
+ *
+ * @param strict
+ * @param collections
+ */
+export function arePermutationsInternal(strict: boolean, ...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+  if (collections.length < 2) {
+    return true
+  }
+  const usageMap = new UsageMap();
+  let set = [] as unknown[];
+
+  try {
+    for (const values of zipEqual(...collections)) {
+      for (const collectionIndex of values) {
+        usageMap.addUsage(values[collectionIndex], String(collectionIndex));
+        set = values[collectionIndex];
+      }
+    }
+  } catch (e) {
+    return false
+  }
+
+  for (const value of set) {
+    if (!usageMap.hasSameOwnerCount(value, collections.length)) {
+      return false
+    }
+  }
+
+  return true
+}
+
+/**
 
 /**
  * Returns true if exactly n items in the iterable are true where the predicate function is true.

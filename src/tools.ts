@@ -229,6 +229,27 @@ export class UsageMap {
 
     return reduce.toSum(owners as Array<number>) as number;
   }
+
+  /**
+   * Returns true if all owners have used given value the same number of times.
+   *
+   * @param value
+   * @param ownersCount
+   */
+
+  public hasSameOwnerCount(value: unknown, ownersCount: number): boolean {
+    const map = new Map();
+
+    if (map.size !== ownersCount) {
+      return false
+    }
+
+    const differentUsageCounts = Stream.of(map)
+      .distinct()
+      .toCount()
+
+    return differentUsageCounts <= 1;
+  }
 }
 
 /**
