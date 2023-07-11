@@ -1,5 +1,5 @@
 import { zipEqual, zipEqualAsync } from "./multi";
-import { mapAsync, pairwise, pairwiseAsync } from "./single";
+import { mapAsync, pairwise, pairwiseAsync, enumerate } from "./single";
 import { toCount, toCountAsync } from "./reduce";
 import { toArrayAsync, toAsyncIterable, toIterable } from "./transform";
 import { Comparable } from "./types";
@@ -144,44 +144,32 @@ export async function anyMatchAsync<T>(
  *
  * @param collections
  */
-export function arePermutations( ...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
-  return arePermutationsInternal(true, ...collections)
-}
-
-/**
- * Internal function helper for arePermutations()
- *
- * @param strict
- * @param collections
- */
-export function arePermutationsInternal(strict: boolean, ...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+export function arePermutations(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
   if (collections.length < 2) {
-    return true
+    return true;
   }
   const usageMap = new UsageMap();
-  let set = [] as unknown[];
+  let uniques = new Set();
 
   try {
     for (const values of zipEqual(...collections)) {
-      for (const collectionIndex of values) {
-        usageMap.addUsage(values[collectionIndex], String(collectionIndex));
-        set = values[collectionIndex];
+      for (const [collectionIndex, value] of enumerate(values)) {
+        usageMap.addUsage(value, String(collectionIndex));
+        uniques.add(value);
       }
     }
   } catch (e) {
-    return false
+    return false;
   }
 
-  for (const value of set) {
+  for (const value of uniques) {
     if (!usageMap.hasSameOwnerCount(value, collections.length)) {
-      return false
+      return false;
     }
   }
 
-  return true
+  return true;
 }
-
-/**
 
 /**
  * Returns true if exactly n items in the iterable are true where the predicate function is true.

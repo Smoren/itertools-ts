@@ -236,17 +236,17 @@ export class UsageMap {
    * @param value
    * @param ownersCount
    */
-
   public hasSameOwnerCount(value: unknown, ownersCount: number): boolean {
-    const map = new Map();
+    // TODO написать тест для попадания в "new Map()" в /tests/tools/usage-map.test.ts
+    const map= this.addedMap.get(value) ?? new Map();
 
     if (map.size !== ownersCount) {
-      return false
+      return false;
     }
 
     const differentUsageCounts = Stream.of(map)
       .distinct()
-      .toCount()
+      .toCount();
 
     return differentUsageCounts <= 1;
   }
