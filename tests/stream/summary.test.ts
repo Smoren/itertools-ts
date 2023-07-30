@@ -91,6 +91,21 @@ function dataProviderForArraysTrue(): Array<unknown> {
     [
       [],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([]),
+    ],
+    [
+      [1],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([1]),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([5, 3, 1]),
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .exactlyN(0),
     ],
     [
@@ -202,6 +217,21 @@ function dataProviderForGeneratorsTrue(): Array<unknown> {
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([]),
+    ],
+    [
+      createGeneratorFixture([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([1]),
+    ],
+    [
+      createGeneratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([5, 3, 1]),
     ],
     [
       createGeneratorFixture([]),
@@ -321,6 +351,21 @@ function dataProviderForIterablesTrue(): Array<unknown> {
     [
       createIterableFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([]),
+    ],
+    [
+      createIterableFixture([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([1]),
+    ],
+    [
+      createIterableFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([5, 3, 1]),
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .exactlyN(0),
     ],
     [
@@ -436,6 +481,21 @@ function dataProviderForIteratorsTrue(): Array<unknown> {
     [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([]),
+    ],
+    [
+      createIteratorFixture([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([1]),
+    ],
+    [
+      createIteratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([5, 3, 1]),
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .exactlyN(0),
     ],
     [
@@ -542,6 +602,16 @@ function dataProviderForStringsTrue(): Array<unknown> {
       '135',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => Number(x as string) > 0),
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations(),
+    ],
+    [
+      '135',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations(['5', '3', '1']),
     ],
     [
       '',
@@ -655,6 +725,21 @@ function dataProviderForSetsTrue(): Array<unknown> {
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([]),
+    ],
+    [
+      new Set([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([1]),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([5, 3, 1]),
     ],
     [
       new Set([]),
@@ -865,6 +950,21 @@ function dataProviderForArraysFalse(): Array<unknown> {
     [
       [],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([1]),
+    ],
+    [
+      [1],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([]),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([5, 3, 7]),
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .exactlyN(1),
     ],
     [
@@ -949,6 +1049,21 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      createGeneratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([1]),
+    ],
+    [
+      createGeneratorFixture([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([]),
+    ],
+    [
+      createGeneratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([5, 3, 7]),
     ],
     [
       createGeneratorFixture([]),
@@ -1041,6 +1156,21 @@ function dataProviderForIterablesFalse(): Array<unknown> {
     [
       createIterableFixture([]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([1]),
+    ],
+    [
+      createIterableFixture([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([]),
+    ],
+    [
+      createIterableFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([5, 3, 7]),
+    ],
+    [
+      createIterableFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .exactlyN(1),
     ],
     [
@@ -1125,6 +1255,22 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
       createIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      createIteratorFixture([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([1]),
+    ],
+    [
+      createIteratorFixture([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([]),
+    ],
+    [
+      createIteratorFixture([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .runningTotal()
+        .arePermutations([5, 3, 7]),
     ],
     [
       createIteratorFixture([]),
@@ -1217,6 +1363,16 @@ function dataProviderForStringsFalse(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations('1'),
+    ],
+    [
+      '135',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations(['5', '3', '7']),
+    ],
+    [
+      '',
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
         .exactlyN(1),
     ],
     [
@@ -1290,6 +1446,21 @@ function dataProviderForSetsFalse(): Array<unknown> {
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
+    ],
+    [
+      new Set([]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([1]),
+    ],
+    [
+      new Set([1]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([]),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Iterable<unknown>) => Stream.of(iterable)
+        .arePermutations([5, 3, 7]),
     ],
     [
       new Set([]),

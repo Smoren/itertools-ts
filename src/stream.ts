@@ -53,6 +53,7 @@ import {
   allMatch,
   allUnique,
   anyMatch,
+  arePermutations, arePermutationsAsync,
   exactlyN,
   isReversed,
   isSorted,
@@ -807,6 +808,21 @@ export class Stream {
    */
   anyMatch(predicate: (item: unknown) => boolean): boolean {
     return anyMatch(this, predicate);
+  }
+
+  /**
+   * Returns true if given collections are permutations of each other (using strict-type comparisons).
+   *
+   * Returns true if no collections given or for single collection.
+   *
+   * @param collections
+   *
+   * @see summary.arePermutations
+   */
+  arePermutations(
+    ...collections: Array<Iterable<unknown> | Iterator<unknown>>
+  ): boolean {
+    return arePermutations(this, ...collections);
   }
 
   /**

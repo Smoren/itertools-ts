@@ -172,6 +172,40 @@ export function arePermutations(...collections: Array<Iterable<unknown> | Iterat
 }
 
 /**
+ * Returns true if given async collections are permutations of each other (using strict-type comparisons).
+ *
+ * Returns true if no async collections given or for single collection.
+ *
+ * @param collections
+ */
+export async function arePermutationsAsync(...collections: Array<AsyncIterable<unknown> | AsyncIterator<unknown>>): Promise<boolean> {
+  if (collections.length < 2) {
+    return true;
+  }
+  const usageMap = new UsageMap();
+  let uniques = new Set();
+
+  try {
+    for await (const values of zipEqualAsync(...collections)) {
+      for (const [collectionIndex, value] of enumerate(values)) {
+        usageMap.addUsage(value, String(collectionIndex));
+        uniques.add(value);
+      }
+    }
+  } catch (e) {
+    return false;
+  }
+
+  for (const value of uniques) {
+    if (!usageMap.hasSameOwnerCount(value, collections.length)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
  * Returns true if exactly n items in the iterable are true where the predicate function is true.
  *
  * Default predicate if not provided is the boolean value of each data item.

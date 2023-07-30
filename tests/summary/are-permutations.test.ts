@@ -38,6 +38,24 @@ describe.each([
   }
 );
 
+describe.each([
+  // ...dataProviderForAsyncArraysTrue(),
+  // ...dataProviderForAsyncGeneratorsTrue(),
+  // ...dataProviderForAsyncIterablesTrue(),
+  // ...dataProviderForAsyncIteratorsTrue(),
+  // ...dataProviderForAsyncStringsTrue(),
+  // ...dataProviderForAsyncSetsTrue(),
+] as Array<[
+  Array<AsyncIterable<unknown>|AsyncIterator<unknown>>
+]>)(
+  "Summary Are Permutations Async Test True",
+  (...inputs: Array<AsyncIterable<unknown>|AsyncIterator<unknown>>) => {
+    it("", async () => {
+      expect(await summary.arePermutationsAsync(...(inputs))).toBeTruthy();
+    });
+  }
+);
+
 function dataProviderForArraysTrue(): Array<unknown> {
   return [
     [],

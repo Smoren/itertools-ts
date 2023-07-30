@@ -65,6 +65,7 @@ import {
   allMatchAsync,
   allUniqueAsync,
   anyMatchAsync,
+  arePermutationsAsync,
   exactlyNAsync,
   isReversedAsync,
   isSortedAsync,
@@ -904,6 +905,21 @@ export class AsyncStream {
     predicate: (item: unknown) => Promise<boolean> | boolean
   ): Promise<boolean> {
     return await anyMatchAsync(this, predicate);
+  }
+
+  /**
+   * Returns true if given async collections are permutations of each other (using strict-type comparisons).
+   *
+   * Returns true if no async collections given or for single collection.
+   *
+   * @param collections
+   *
+   * @see summary.arePermutationsAsync
+   */
+  async arePermutations(
+    ...collections: Array<AsyncIterable<unknown> | AsyncIterator<unknown>>
+  ): Promise<boolean> {
+    return await arePermutationsAsync(this, ...collections);
   }
 
   /**
