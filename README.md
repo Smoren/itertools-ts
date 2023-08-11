@@ -109,34 +109,34 @@ Quick Reference
 #### Multi Iteration
 | Iterator                     | Description                                                                                                       | Sync Code Snippet                            | Async Code Snippet                                |
 |------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------|---------------------------------------------------|
-| [`chain`](#Chain)            | Chain multiple iterables together                                                                                 | `multi.chain(list1, list2, ...)`             | `multi.chainAsync(list1, list2, ...)`             |
-| [`zip`](#Zip)                | Iterate multiple collections simultaneously until the shortest iterator completes                                 | `multi.zip(list1, list2, ...)`               | `multi.zipAsync(list1, list2, ...)`               |
-| [`zipEqual`](#Zip-Equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal                           | `multi.zipEqual(list1, list2, ...)`          | `multi.zipEqualAsync(list1, list2, ...)`          |
-| [`zipFilled`](#Zip-Filled)   | Iterate multiple collections simultaneously until the longest iterator completes (with filler for uneven lengths) | `multi.zipFilled(filler, list1, list2, ...)` | `multi.zipFilledAsync(filler, list1, list2, ...)` |
-| [`zipLongest`](#Zip-Longest) | Iterate multiple collections simultaneously until the longest iterator completes                                  | `multi.zipLongest(list1, list2, ...)`        | `multi.zipLongestAsync(list1, list2, ...)`        |
+| [`chain`](#chain)            | Chain multiple iterables together                                                                                 | `multi.chain(list1, list2, ...)`             | `multi.chainAsync(list1, list2, ...)`             |
+| [`zip`](#zip)                | Iterate multiple collections simultaneously until the shortest iterator completes                                 | `multi.zip(list1, list2, ...)`               | `multi.zipAsync(list1, list2, ...)`               |
+| [`zipEqual`](#zip-equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal                           | `multi.zipEqual(list1, list2, ...)`          | `multi.zipEqualAsync(list1, list2, ...)`          |
+| [`zipFilled`](#zip-filled)   | Iterate multiple collections simultaneously until the longest iterator completes (with filler for uneven lengths) | `multi.zipFilled(filler, list1, list2, ...)` | `multi.zipFilledAsync(filler, list1, list2, ...)` |
+| [`zipLongest`](#zip-longest) | Iterate multiple collections simultaneously until the longest iterator completes                                  | `multi.zipLongest(list1, list2, ...)`        | `multi.zipLongestAsync(list1, list2, ...)`        |
 
 #### Single Iteration
 | Iterator                                 | Description                                 | Sync Code Snippet                                       | Async Code Snippet                                           |
 |------------------------------------------|---------------------------------------------|---------------------------------------------------------|--------------------------------------------------------------|
-| [`chunkwise`](#Chunkwise)                | Iterate by chunks                           | `single.chunkwise(data, chunkSize)`                     | `single.chunkwiseAsync(data, chunkSize)`                     |
-| [`chunkwiseOverlap`](#Chunkwise-Overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` | `single.chunkwiseOverlapAsync(data, chunkSize, overlapSize)` |
-| [`compress`](#Compress)                  | Filter out elements not selected            | `single.compress(data, selectors)`                      | `single.compressAsync(data, selectors)`                      |
-| [`dropWhile`](#Drop-While)               | Drop elements while predicate is true       | `single.dropWhile(data, predicate)`                     | `single.dropWhileAsync(data, predicate)`                     |
-| [`enumerate`](#Enumerate)                | Enumerates elements of collection           | `single.enumerate(data)`                                | `single.enumerateAsync(data)`                                |
-| [`filter`](#Filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        | `single.filterAsync(data, predicate)`                        |
-| [`flatMap`](#Flat-Map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          | `single.flatMapAsync(data, mapper)`                          |
-| [`flatten`](#Flatten)                    | Flatten multidimensional iterable           | `single.flatten(data, [dimensions])`                    | `single.flattenAsync(data, [dimensions])`                    |
-| [`groupBy`](#Group-By)                   | Group data by a common element              | `single.groupBy(data, groupKeyFunction, [itemKeyFunc])` | `single.groupByAsync(data, groupKeyFunction, [itemKeyFunc])` |
-| [`limit`](#Limit)                        | Iterate up to a limit                       | `single.limit(data, limit)`                             | `single.limitAsync(data, limit)`                             |
-| [`keys`](#Keys)                          | Iterate keys of key-value pairs             | `single.keys(data)`                                     | `single.keysAsync(data)`                                     |
-| [`map`](#Map)                            | Map function onto each item                 | `single.map(data, mapper)`                              | `single.mapAsync(data, mapper)`                              |
-| [`pairwise`](#Pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 | `single.pairwiseAsync(data)`                                 |
-| [`repeat`](#Repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      | `single.repeatAsync(item, repetitions)`                      |
-| [`skip`](#Skip)                          | Iterate after skipping elements             | `single.skip(data, count, [offset])`                    | `single.skipAsync(data, count, [offset])`                    |
-| [`slice`](#Slice)                        | Extract a slice of the iterable             | `single.slice(data, [start], [count], [step])`          | `single.sliceAsync(data, [start], [count], [step])`          |
-| [`sort`](#Sort)                          | Iterate a sorted collection                 | `single.sort(data, [comparator])`                       | `single.sortAsync(data, [comparator])`                       |
-| [`takeWhile`](#Take-While)               | Iterate elements while predicate is true    | `single.takeWhile(data, predicate)`                     | `single.takeWhileAsync(data, predicate)`                     |
-| [`values`](#Values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   | `single.valuesAsync(data)`                                   |
+| [`chunkwise`](#chunkwise)                | Iterate by chunks                           | `single.chunkwise(data, chunkSize)`                     | `single.chunkwiseAsync(data, chunkSize)`                     |
+| [`chunkwiseOverlap`](#chunkwise-overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` | `single.chunkwiseOverlapAsync(data, chunkSize, overlapSize)` |
+| [`compress`](#compress)                  | Filter out elements not selected            | `single.compress(data, selectors)`                      | `single.compressAsync(data, selectors)`                      |
+| [`dropWhile`](#drop-while)               | Drop elements while predicate is true       | `single.dropWhile(data, predicate)`                     | `single.dropWhileAsync(data, predicate)`                     |
+| [`enumerate`](#enumerate)                | Enumerates elements of collection           | `single.enumerate(data)`                                | `single.enumerateAsync(data)`                                |
+| [`filter`](#filter)                      | Filter for elements where predicate is true | `single.filter(data, predicate)`                        | `single.filterAsync(data, predicate)`                        |
+| [`flatMap`](#flat-map)                   | Map function onto items and flatten result  | `single.flatMap(data, mapper)`                          | `single.flatMapAsync(data, mapper)`                          |
+| [`flatten`](#flatten)                    | Flatten multidimensional iterable           | `single.flatten(data, [dimensions])`                    | `single.flattenAsync(data, [dimensions])`                    |
+| [`groupBy`](#group-by)                   | Group data by a common element              | `single.groupBy(data, groupKeyFunction, [itemKeyFunc])` | `single.groupByAsync(data, groupKeyFunction, [itemKeyFunc])` |
+| [`limit`](#limit)                        | Iterate up to a limit                       | `single.limit(data, limit)`                             | `single.limitAsync(data, limit)`                             |
+| [`keys`](#keys)                          | Iterate keys of key-value pairs             | `single.keys(data)`                                     | `single.keysAsync(data)`                                     |
+| [`map`](#map)                            | Map function onto each item                 | `single.map(data, mapper)`                              | `single.mapAsync(data, mapper)`                              |
+| [`pairwise`](#pairwise)                  | Iterate successive overlapping pairs        | `single.pairwise(data)`                                 | `single.pairwiseAsync(data)`                                 |
+| [`repeat`](#repeat)                      | Repeat an item a number of times            | `single.repeat(item, repetitions)`                      | `single.repeatAsync(item, repetitions)`                      |
+| [`skip`](#skip)                          | Iterate after skipping elements             | `single.skip(data, count, [offset])`                    | `single.skipAsync(data, count, [offset])`                    |
+| [`slice`](#slice)                        | Extract a slice of the iterable             | `single.slice(data, [start], [count], [step])`          | `single.sliceAsync(data, [start], [count], [step])`          |
+| [`sort`](#sort)                          | Iterate a sorted collection                 | `single.sort(data, [comparator])`                       | `single.sortAsync(data, [comparator])`                       |
+| [`takeWhile`](#take-while)               | Iterate elements while predicate is true    | `single.takeWhile(data, predicate)`                     | `single.takeWhileAsync(data, predicate)`                     |
+| [`values`](#values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   | `single.valuesAsync(data)`                                   |
 
 #### Math Iteration
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
@@ -167,129 +167,129 @@ Quick Reference
 #### Set and multiset Iteration
 | Iterator                                       | Description                       | Sync Code Snippet                                 | Async Code Snippet                                     |
 |------------------------------------------------|-----------------------------------|---------------------------------------------------|--------------------------------------------------------|
-| [`distinct`](#Distinct)                        | Iterate only distinct items       | `set.distinct(data)`                              | `set.distinctAsync(data)`                              |
-| [`intersection`](#Intersection)                | Intersection of iterables         | `set.intersection(...iterables)`                  | `set.intersectionAsync(...iterables)`                  |
-| [`partialIntersection`](#Partial-Intersection) | Partial intersection of iterables | `set.partialIntersection(minCount, ...iterables)` | `set.partialIntersectionAsync(minCount, ...iterables)` |
-| [`symmetricDifference`](#Symmetric-Difference) | Symmetric difference of iterables | `set.symmetricDifference(...iterables)`           | `set.symmetricDifferenceAsync(...iterables)`           |
-| [`union`](#Union)                              | Union of iterables                | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
+| [`distinct`](#distinct)                        | Iterate only distinct items       | `set.distinct(data)`                              | `set.distinctAsync(data)`                              |
+| [`intersection`](#intersection)                | Intersection of iterables         | `set.intersection(...iterables)`                  | `set.intersectionAsync(...iterables)`                  |
+| [`partialIntersection`](#partial-intersection) | Partial intersection of iterables | `set.partialIntersection(minCount, ...iterables)` | `set.partialIntersectionAsync(minCount, ...iterables)` |
+| [`symmetricDifference`](#symmetric-difference) | Symmetric difference of iterables | `set.symmetricDifference(...iterables)`           | `set.symmetricDifferenceAsync(...iterables)`           |
+| [`union`](#union)                              | Union of iterables                | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
 
 #### Summary
 | Summary                                 | Description                                             | Sync Code Snippet                      | Async Code Snippet                          |
 |-----------------------------------------|---------------------------------------------------------|----------------------------------------|---------------------------------------------|
-| [`allMatch`](#All-Match)                | True if all items are true according to predicate       | `summary.allMatch(data, predicate)`    | `summary.allMatchAsync(data, predicate)`    |
-| [`allUnique`](#All-Unique)              | True if all elements in collection are unique           | `summary.allUnique(data)`              | `summary.allUniqueAsync(data)`              |
-| [`anyMatch`](#Any-Match)                | True if any item is true according to predicate         | `summary.anyMatch(data, predicate)`    | `summary.anyMatchAsync(data, predicate)`    |
-| [`exactlyN`](#Exactly-N)                | True if exactly n items are true according to predicate | `summary.exactlyN(data, n, predicate)` | `summary.exactlyNAsync(data, n, predicate)` |
-| [`isAsyncIterable`](#Is-Async-Iterable) | True if given data is async iterable                    | `summary.isAsyncIterable(data)`        | —                                           |
-| [`isIterable`](#Is-Iterable)            | True if given data is iterable                          | `summary.isIterable(data)`             | —                                           |
-| [`isIterator`](#Is-Iterator)            | True if given data is iterator                          | `summary.isIterator(data)`             | —                                           |
-| [`isReversed`](#Is-Reversed)            | True if iterable reverse sorted                         | `summary.isReversed(data)`             | `summary.isReversedAsync(data)`             |
-| [`isSorted`](#Is-Sorted)                | True if iterable sorted                                 | `summary.isSorted(data)`               | `summary.isSortedAsync(data)`               |
-| [`isString`](#Is-String)                | True if given data is string                            | `summary.isString(data)`               | `summary.isStringAsync(data)`               |
-| [`noneMatch`](#None-Match)              | True if none of items true according to predicate       | `summary.noneMatch(data, predicate)`   | `summary.noneMatchAsync(data, predicate)`   |
-| [`same`](#Same)                         | True if collections are the same                        | `summary.same(...collections)`         | `summary.sameAsync(...collections)`         |
-| [`sameCount`](#Same-Count)              | True if collections have the same lengths               | `summary.sameCount(...collections)`    | `summary.sameCountAsync(...collections)`    |
+| [`allMatch`](#all-match)                | True if all items are true according to predicate       | `summary.allMatch(data, predicate)`    | `summary.allMatchAsync(data, predicate)`    |
+| [`allUnique`](#all-unique)              | True if all elements in collection are unique           | `summary.allUnique(data)`              | `summary.allUniqueAsync(data)`              |
+| [`anyMatch`](#any-match)                | True if any item is true according to predicate         | `summary.anyMatch(data, predicate)`    | `summary.anyMatchAsync(data, predicate)`    |
+| [`exactlyN`](#exactly-n)                | True if exactly n items are true according to predicate | `summary.exactlyN(data, n, predicate)` | `summary.exactlyNAsync(data, n, predicate)` |
+| [`isAsyncIterable`](#is-async-iterable) | True if given data is async iterable                    | `summary.isAsyncIterable(data)`        | —                                           |
+| [`isIterable`](#is-iterable)            | True if given data is iterable                          | `summary.isIterable(data)`             | —                                           |
+| [`isIterator`](#is-iterator)            | True if given data is iterator                          | `summary.isIterator(data)`             | —                                           |
+| [`isReversed`](#is-reversed)            | True if iterable reverse sorted                         | `summary.isReversed(data)`             | `summary.isReversedAsync(data)`             |
+| [`isSorted`](#is-sorted)                | True if iterable sorted                                 | `summary.isSorted(data)`               | `summary.isSortedAsync(data)`               |
+| [`isString`](#is-string)                | True if given data is string                            | `summary.isString(data)`               | `summary.isStringAsync(data)`               |
+| [`noneMatch`](#none-match)              | True if none of items true according to predicate       | `summary.noneMatch(data, predicate)`   | `summary.noneMatchAsync(data, predicate)`   |
+| [`same`](#same)                         | True if collections are the same                        | `summary.same(...collections)`         | `summary.sameAsync(...collections)`         |
+| [`sameCount`](#same-count)              | True if collections have the same lengths               | `summary.sameCount(...collections)`    | `summary.sameCountAsync(...collections)`    |
 
 #### Transform
 | Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet                |
 |-----------------------------------------|-----------------------------------------|-----------------------------------|-----------------------------------|
-| [`tee`](#Tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | `transform.teeAsync(data, count)` |
-| [`toArray`](#To-Array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)`    |
-| [`toAsyncIterable`](#To-Async-Iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                                 |
-| [`toAsyncIterator`](#To-Async-Iterator) | Transforms collection to async iterator | `transform.toAsyncIterator(data)` | —                                 |
-| [`toIterable`](#To-Iterable)            | Transforms collection to iterable       | `transform.toIterable(data)`      | —                                 |
-| [`toIterator`](#To-Iterator)            | Transforms collection to iterator       | `transform.toIterator(data)`      | —                                 |
-| [`toMap`](#To-Map)                      | Transforms collection to map            | `transform.toMap(pairs)`          | `transform.toMapAsync(pairs)`     |
-| [`toSet`](#To-Set)                      | Transforms collection to set            | `transform.toSet(data)`           | `transform.toSetAsync(data)`      |
+| [`tee`](#tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | `transform.teeAsync(data, count)` |
+| [`toArray`](#to-array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)`    |
+| [`toAsyncIterable`](#to-async-iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                                 |
+| [`toAsyncIterator`](#to-async-iterator) | Transforms collection to async iterator | `transform.toAsyncIterator(data)` | —                                 |
+| [`toIterable`](#to-iterable)            | Transforms collection to iterable       | `transform.toIterable(data)`      | —                                 |
+| [`toIterator`](#to-iterator)            | Transforms collection to iterator       | `transform.toIterator(data)`      | —                                 |
+| [`toMap`](#to-map)                      | Transforms collection to map            | `transform.toMap(pairs)`          | `transform.toMapAsync(pairs)`     |
+| [`toSet`](#to-set)                      | Transforms collection to set            | `transform.toSet(data)`           | `transform.toSetAsync(data)`      |
 
 ### Stream and AsyncStream Iteration Tools
 #### Stream Sources
 | Source                 | Description                      | Sync Code Snippet     | Async Code Snippet         |
 |------------------------|----------------------------------|-----------------------|----------------------------|
-| [`of`](#Of)            | Create a stream from an iterable | `Stream.of(iterable)` | `AsyncStream.of(iterable)` |
-| [`ofEmpty`](#Of-Empty) | Create an empty stream           | `Stream.ofEmpty()`    | `AsyncStream.ofEmpty()`    |
+| [`of`](#of)            | Create a stream from an iterable | `Stream.of(iterable)` | `AsyncStream.of(iterable)` |
+| [`ofEmpty`](#of-empty) | Create an empty stream           | `Stream.ofEmpty()`    | `AsyncStream.ofEmpty()`    |
 
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
 |---------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| [`chainWith`](#Chain-With)                              | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`                                     |
-| [`chunkwise`](#Chunkwise-1)                             | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                                        |
-| [`chunkwiseOverlap`](#Chunkwise-Overlap-1)              | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)`                        |
-| [`compress`](#Compress-1)                               | Compress source by filtering out data not selected                                        | `stream.compress(selectors)`                                         |
-| [`distinct`](#Distinct-1)                               | Filter out elements: iterate only unique items                                            | `stream.distinct()`                                                  |
-| [`dropWhile`](#Drop-While-1)                            | Drop elements from the iterable source while the predicate function is true               | `stream.dropWhile(predicate)`                                        |
-| [`enumerate`](#Enumerate-1)                             | Enumerates elements of stream                                                             | `stream.enumerate()`                                                 |
-| [`filter`](#Filter-1)                                   | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                                           |
-| [`flatMap`](#Flat-Map-1)                                | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                                             |
-| [`flatten`](#Flatten-1)                                 | Flatten multidimensional stream                                                           | `stream.flatten([dimensions])`                                       |
-| [`intersectionWith`](#Intersection-With)                | Intersect stream and given iterables                                                      | `stream.intersectionWith(...iterables)`                              |
-| [`groupBy`](#Group-By-1)                                | Group stram data by a common data element                                                 | `stream.groupBy(groupKeyFunction, [itemKeyFunc])`                    |
-| [`keys`](#Keys-1)                                       | Iterate keys of key-value pairs from stream                                               | `stream.keys()`                                                      |
-| [`limit`](#Limit-1)                                     | Limit the stream's iteration                                                              | `stream.limit(limit)`                                                |
-| [`map`](#Map-1)                                         | Map function onto elements                                                                | `stream.map(mapper)`                                                 |
-| [`pairwise`](#Pairwise-1)                               | Return pairs of elements from iterable source                                             | `stream.pairwise()`                                                  |
-| [`partialIntersectionWith`](#Partial-Intersection-With) | Partially intersect stream and given iterables                                            | `stream.partialIntersectionWith(minIntersectionCount, ...iterables)` |
-| [`runningAverage`](#Running-Average-1)                  | Accumulate the running average (mean) over iterable source                                | `stream.runningAverage([initialValue])`                              |
-| [`runningDifference`](#Running-Difference-1)            | Accumulate the running difference over iterable source                                    | `stream.runningDifference([initialValue])`                           |
-| [`runningMax`](#Running-Max-1)                          | Accumulate the running max over iterable source                                           | `stream.runningMax([initialValue])`                                  |
-| [`runningMin`](#Running-Min-1)                          | Accumulate the running min over iterable source                                           | `stream.runningMin([initialValue])`                                  |
-| [`runningProduct`](#Running-Product-1)                  | Accumulate the running product over iterable source                                       | `stream.runningProduct([initialValue])`                              |
-| [`runningTotal`](#Running-Total-1)                      | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`                                |
-| [`skip`](#Skip-1)                                       | Skip some elements of the stream                                                          | `stream.skip(count, [offset])`                                       |
-| [`slice`](#Slice-1)                                     | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`                             |
-| [`sort`](#Sort-1)                                       | Sorts the stream                                                                          | `stream.sort([comparator])`                                          |
-| [`symmetricDifferenceWith`](#Symmetric-Difference-With) | Symmetric difference of stream and given iterables                                        | `stream.symmetricDifferenceWith(...iterables)`                       |
-| [`takeWhile`](#Take-While-1)                            | Return elements from the iterable source as long as the predicate is true                 | `stream.takeWhile(predicate)`                                        |
-| [`unionWith`](#Union-With)                              | Union of stream and given iterables                                                       | `stream.union(...iterables)`                                         |
-| [`values`](#Values-1)                                   | Iterate values of key-value pairs from stream                                             | `stream.values()`                                                    |
-| [`zipWith`](#Zip-With)                                  | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                                       |
-| [`zipEqualWith`](#Zip-Equal-With)                       | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`                                  |
-| [`zipFilledWith`](#Zip-Filled-With)                     | Iterate iterable source with another iterable collections simultaneously (with filler)    | `stream.zipFilledWith(filler, ...iterables)`                         |
-| [`zipLongestWith`](#Zip-Longest-With)                   | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`                                |
+| [`chainWith`](#chain-with)                              | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`                                     |
+| [`chunkwise`](#chunkwise-1)                             | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                                        |
+| [`chunkwiseOverlap`](#chunkwise-overlap-1)              | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)`                        |
+| [`compress`](#compress-1)                               | Compress source by filtering out data not selected                                        | `stream.compress(selectors)`                                         |
+| [`distinct`](#distinct-1)                               | Filter out elements: iterate only unique items                                            | `stream.distinct()`                                                  |
+| [`dropWhile`](#drop-while-1)                            | Drop elements from the iterable source while the predicate function is true               | `stream.dropWhile(predicate)`                                        |
+| [`enumerate`](#enumerate-1)                             | Enumerates elements of stream                                                             | `stream.enumerate()`                                                 |
+| [`filter`](#filter-1)                                   | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                                           |
+| [`flatMap`](#flat-map-1)                                | Map function onto elements and flatten result                                             | `stream.flatMap(mapper)`                                             |
+| [`flatten`](#flatten-1)                                 | Flatten multidimensional stream                                                           | `stream.flatten([dimensions])`                                       |
+| [`intersectionWith`](#intersection-with)                | Intersect stream and given iterables                                                      | `stream.intersectionWith(...iterables)`                              |
+| [`groupBy`](#group-by-1)                                | Group stram data by a common data element                                                 | `stream.groupBy(groupKeyFunction, [itemKeyFunc])`                    |
+| [`keys`](#keys-1)                                       | Iterate keys of key-value pairs from stream                                               | `stream.keys()`                                                      |
+| [`limit`](#limit-1)                                     | Limit the stream's iteration                                                              | `stream.limit(limit)`                                                |
+| [`map`](#map-1)                                         | Map function onto elements                                                                | `stream.map(mapper)`                                                 |
+| [`pairwise`](#pairwise-1)                               | Return pairs of elements from iterable source                                             | `stream.pairwise()`                                                  |
+| [`partialIntersectionWith`](#partial-intersection-with) | Partially intersect stream and given iterables                                            | `stream.partialIntersectionWith(minIntersectionCount, ...iterables)` |
+| [`runningAverage`](#running-average-1)                  | Accumulate the running average (mean) over iterable source                                | `stream.runningAverage([initialValue])`                              |
+| [`runningDifference`](#running-difference-1)            | Accumulate the running difference over iterable source                                    | `stream.runningDifference([initialValue])`                           |
+| [`runningMax`](#running-max-1)                          | Accumulate the running max over iterable source                                           | `stream.runningMax([initialValue])`                                  |
+| [`runningMin`](#running-min-1)                          | Accumulate the running min over iterable source                                           | `stream.runningMin([initialValue])`                                  |
+| [`runningProduct`](#running-product-1)                  | Accumulate the running product over iterable source                                       | `stream.runningProduct([initialValue])`                              |
+| [`runningTotal`](#running-total-1)                      | Accumulate the running total over iterable source                                         | `stream.runningTotal([initialValue])`                                |
+| [`skip`](#skip-1)                                       | Skip some elements of the stream                                                          | `stream.skip(count, [offset])`                                       |
+| [`slice`](#slice-1)                                     | Extract a slice of the stream                                                             | `stream.slice([start], [count], [step])`                             |
+| [`sort`](#sort-1)                                       | Sorts the stream                                                                          | `stream.sort([comparator])`                                          |
+| [`symmetricDifferenceWith`](#symmetric-difference-with) | Symmetric difference of stream and given iterables                                        | `stream.symmetricDifferenceWith(...iterables)`                       |
+| [`takeWhile`](#take-while-1)                            | Return elements from the iterable source as long as the predicate is true                 | `stream.takeWhile(predicate)`                                        |
+| [`unionWith`](#union-with)                              | Union of stream and given iterables                                                       | `stream.union(...iterables)`                                         |
+| [`values`](#values-1)                                   | Iterate values of key-value pairs from stream                                             | `stream.values()`                                                    |
+| [`zipWith`](#zip-with)                                  | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipWith(...iterables)`                                       |
+| [`zipEqualWith`](#zip-equal-with)                       | Iterate iterable source with another iterable collections of equal lengths simultaneously | `stream.zipEqualWith(...iterables)`                                  |
+| [`zipFilledWith`](#zip-filled-with)                     | Iterate iterable source with another iterable collections simultaneously (with filler)    | `stream.zipFilledWith(filler, ...iterables)`                         |
+| [`zipLongestWith`](#zip-longest-with)                   | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`                                |
 
 #### Stream Terminal Operations
 ##### Transformation Terminal Operations
 | Terminal Operation       | Description                                      | Code Snippet        |
 |--------------------------|--------------------------------------------------|---------------------|
-| [`tee`](#Tee-1)          | Returns array of multiple identical Streams      | `stream.tee(count)` |
-| [`toArray`](#To-Array-1) | Returns array of stream elements                 | `stream.toArray()`  |
-| [`toMap`](#To-Map-1)     | Returns map of stream elements (key-value pairs) | `stream.toMap()`    |
-| [`toSet`](#To-Set-1)     | Returns set of stream elements                   | `stream.toSet()`    |
+| [`tee`](#tee-1)          | Returns array of multiple identical Streams      | `stream.tee(count)` |
+| [`toArray`](#to-array-1) | Returns array of stream elements                 | `stream.toArray()`  |
+| [`toMap`](#to-map-1)     | Returns map of stream elements (key-value pairs) | `stream.toMap()`    |
+| [`toSet`](#to-set-1)     | Returns set of stream elements                   | `stream.toSet()`    |
 
 ##### Reduction Terminal Operations
 | Terminal Operation                       | Description                                        | Code Snippet                            |
 |------------------------------------------|----------------------------------------------------|-----------------------------------------|
-| [`toAverage`](#To-Average-1)             | Reduces stream to the mean average of its items    | `stream.toAverage()`                    |
-| [`toCount`](#To-Count-1)                 | Reduces stream to its length                       | `stream.toCount()`                      |
-| [`toFirst`](#To-First-1)                 | Reduces stream to its first value                  | `stream.toFirst()`                      |
-| [`toFirstAndLast`](#To-First-And-Last-1) | Reduces stream to its first and last values        | `stream.toFirstAndLast()`               |
-| [`toLast`](#To-Last-1)                   | Reduces stream to its last value                   | `stream.toLast()`                       |
-| [`toMax`](#To-Max-1)                     | Reduces stream to its max value                    | `stream.toMax([compareBy])`             |
-| [`toMin`](#To-Min-1)                     | Reduces stream to its min value                    | `stream.toMin([compareBy])`             |
-| [`toMin`](#To-Min-Max-1)                 | Reduce stream to its lower and upper bounds        | `stream.toMinMax([compareBy])`          |
-| [`toProduct`](#To-Product-1)             | Reduces stream to the product of its items         | `stream.toProduct()`                    |
-| [`toRange`](#To-Range-1)                 | Reduces stream to difference of max and min values | `stream.toRange()`                      |
-| [`toSum`](#To-Sum-1)                     | Reduces stream to the sum of its items             | `stream.toSum()`                        |
-| [`toValue`](#To-Value-1)                 | Reduces stream like array.reduce() function        | `stream.toValue(reducer, initialValue)` |
+| [`toAverage`](#to-average-1)             | Reduces stream to the mean average of its items    | `stream.toAverage()`                    |
+| [`toCount`](#to-count-1)                 | Reduces stream to its length                       | `stream.toCount()`                      |
+| [`toFirst`](#to-first-1)                 | Reduces stream to its first value                  | `stream.toFirst()`                      |
+| [`toFirstAndLast`](#to-first-and-last-1) | Reduces stream to its first and last values        | `stream.toFirstAndLast()`               |
+| [`toLast`](#to-last-1)                   | Reduces stream to its last value                   | `stream.toLast()`                       |
+| [`toMax`](#to-max-1)                     | Reduces stream to its max value                    | `stream.toMax([compareBy])`             |
+| [`toMin`](#to-min-1)                     | Reduces stream to its min value                    | `stream.toMin([compareBy])`             |
+| [`toMin`](#to-min-max-1)                 | Reduce stream to its lower and upper bounds        | `stream.toMinMax([compareBy])`          |
+| [`toProduct`](#to-product-1)             | Reduces stream to the product of its items         | `stream.toProduct()`                    |
+| [`toRange`](#to-range-1)                 | Reduces stream to difference of max and min values | `stream.toRange()`                      |
+| [`toSum`](#to-sum-1)                     | Reduces stream to the sum of its items             | `stream.toSum()`                        |
+| [`toValue`](#to-value-1)                 | Reduces stream like array.reduce() function        | `stream.toValue(reducer, initialValue)` |
 
 ##### Summary Terminal Operations
 | Terminal Operation                  | Description                                                            | Code Snippet                           |
 |-------------------------------------|------------------------------------------------------------------------|----------------------------------------|
-| [`allMatch`](#All-Match-1)          | Returns true if all items in stream match predicate                    | `stream.allMatch(predicate)`           |
-| [`allUnique`](#All-Unique-1)        | Returns true if all elements of stream are unique                      | `stream.allUnique(predicate)`          |
-| [`anyMatch`](#Any-Match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
-| [`exactlyN`](#Exactly-N-1)          | Returns true if exactly n items are true according to predicate        | `stream.exactlyN(n, predicate)`        |
-| [`isReversed`](#Is-Reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
-| [`isSorted`](#Is-Sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
-| [`noneMatch`](#None-Match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
-| [`sameWith`](#Same-With)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |
-| [`sameCountWith`](#Same-Count-With) | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)` |
+| [`allMatch`](#all-match-1)          | Returns true if all items in stream match predicate                    | `stream.allMatch(predicate)`           |
+| [`allUnique`](#all-unique-1)        | Returns true if all elements of stream are unique                      | `stream.allUnique(predicate)`          |
+| [`anyMatch`](#any-match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
+| [`exactlyN`](#exactly-n-1)          | Returns true if exactly n items are true according to predicate        | `stream.exactlyN(n, predicate)`        |
+| [`isReversed`](#is-reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
+| [`isSorted`](#is-sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
+| [`noneMatch`](#none-match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
+| [`sameWith`](#same-with)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |
+| [`sameCountWith`](#same-count-with) | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)` |
 
 #### Stream Debug Operations
 | Debug Operation              | Description                                    | Code Snippet                  |
 |------------------------------|------------------------------------------------|-------------------------------|
-| [`peek`](#Peek)              | Peek at each element between stream operations | `stream.peek(peekFunc)`       |
-| [`peekStream`](#Peek-Stream) | Peek at the entire stream between operations   | `stream.peekStream(peekFunc)` |
+| [`peek`](#peek)              | Peek at each element between stream operations | `stream.peek(peekFunc)`       |
+| [`peekStream`](#peek-stream) | Peek at the entire stream between operations   | `stream.peekStream(peekFunc)` |
 
 Usage
 -----
