@@ -209,11 +209,11 @@ Quick Reference
 
 ### Stream and AsyncStream Iteration Tools
 #### Stream Sources
-| Source                 | Description                      | Sync Code Snippet     | Async Code Snippet         |
-|------------------------|----------------------------------|-----------------------|----------------------------|
-| [`of`](#of)            | Create a stream from an iterable | `Stream.of(iterable)` | `AsyncStream.of(iterable)` |
-| [`ofEmpty`](#of-empty) | Create an empty stream           | `Stream.ofEmpty()`    | `AsyncStream.ofEmpty()`    |
-| [`ofCount`](#of-count) | Create an infinite count stream  | `Stream.ofCount()`    | `AsyncStream.ofCount()`    |
+| Source                 | Description                      | Sync Code Snippet                 | Async Code Snippet                     |
+|------------------------|----------------------------------|-----------------------------------|----------------------------------------|
+| [`of`](#of)            | Create a stream from an iterable | `Stream.of(iterable)`             | `AsyncStream.of(iterable)`             |
+| [`ofEmpty`](#of-empty) | Create an empty stream           | `Stream.ofEmpty()`                | `AsyncStream.ofEmpty()`                |
+| [`ofCount`](#of-count) | Create an infinite count stream  | `Stream.ofCount([start], [step])` | `AsyncStream.ofCount([start], [step])` |
 
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
