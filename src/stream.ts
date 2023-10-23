@@ -61,7 +61,7 @@ import {
   sameCount,
 } from "./summary";
 import { Comparable, Comparator, FlatMapper } from "./types";
-import { infinite } from './index';
+import { infinite } from "./index";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -94,7 +94,7 @@ export class Stream {
    * @param start (optional, default 1)
    * @param step (optional, default 1)
    */
-  static ofCount(start: number = 1, step: number = 1): Stream {
+  static ofCount(start = 1, step = 1): Stream {
     return new Stream(infinite.count(start, step));
   }
 

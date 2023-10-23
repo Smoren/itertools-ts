@@ -73,7 +73,7 @@ import {
   sameCountAsync,
 } from "./summary";
 import { AsyncFlatMapper, Comparable, Comparator } from "./types";
-import { infinite } from './index';
+import { infinite } from "./index";
 
 /**
  * Provides fluent interface for working with async iterables.
@@ -112,7 +112,7 @@ export class AsyncStream {
    * @param start (optional, default 1)
    * @param step (optional, default 1)
    */
-  static ofCount(start: number = 1, step: number = 1): AsyncStream {
+  static ofCount(start = 1, step = 1): AsyncStream {
     return new AsyncStream(toAsyncIterable(infinite.count(start, step)));
   }
 

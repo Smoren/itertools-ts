@@ -39,9 +39,7 @@ import {
   valuesAsync,
 } from "./single";
 
-import {
-  count,
-} from "./infinite";
+import { count } from "./infinite";
 
 import {
   runningAverage,
