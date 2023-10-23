@@ -40,6 +40,10 @@ import {
 } from "./single";
 
 import {
+  count,
+} from "./infinite";
+
+import {
   runningAverage,
   runningDifference,
   runningMax,
@@ -204,6 +208,10 @@ export const single = {
   sortAsync,
   takeWhileAsync,
   valuesAsync,
+};
+
+export const infinite = {
+  count,
 };
 
 export const math = {

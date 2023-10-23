@@ -73,3 +73,10 @@ export function createMapFixture<T>(data: Array<T>): Map<number, T> {
 export function roundEpsilon(n: number|string): number {
   return Math.round((Number(n) + Number.EPSILON) * 100) / 100;
 }
+
+export function expectToBeCloseToArray(actual: Array<number>, expected: Array<number>) {
+  expect(actual.length).toBe(expected.length)
+  for (let i=0; i< actual.length; ++i) {
+    expect(actual[i]).toBeCloseTo(expected[i]);
+  }
+}

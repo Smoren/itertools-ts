@@ -7,7 +7,7 @@ import {
   createIteratorFixture,
   // @ts-ignore
 } from "../fixture";
-import { math, Stream } from "../../src";
+import { math } from "../../src";
 
 describe.each([
   ...dataProviderForArraysWithInitialValue(),

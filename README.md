@@ -138,6 +138,11 @@ Quick Reference
 | [`takeWhile`](#take-while)               | Iterate elements while predicate is true    | `single.takeWhile(data, predicate)`                     | `single.takeWhileAsync(data, predicate)`                     |
 | [`values`](#values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   | `single.valuesAsync(data)`                                   |
 
+#### Infinite Iteration
+| Iterator          | Description                | Code Snippet                      |
+|-------------------|----------------------------|-----------------------------------|
+| [`count`](#Count) | Count sequentially forever | `infinite.count([start], [step])` |
+
 #### Math Iteration
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
 |--------------------------------------------|---------------------------------|---------------------------------------------------|--------------------------------------------------------|
@@ -208,6 +213,7 @@ Quick Reference
 |------------------------|----------------------------------|-----------------------|----------------------------|
 | [`of`](#of)            | Create a stream from an iterable | `Stream.of(iterable)` | `AsyncStream.of(iterable)` |
 | [`ofEmpty`](#of-empty) | Create an empty stream           | `Stream.ofEmpty()`    | `AsyncStream.ofEmpty()`    |
+| [`ofCount`](#of-count) | Create an infinite count stream  | `Stream.ofCount()`    | `AsyncStream.ofCount()`    |
 
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
@@ -889,6 +895,24 @@ for (const value of single.keys(dict)) {
   console.log(value);
 }
 // 1, 2, 3
+```
+
+## Infinite Iteration
+
+### Count
+Count sequentially forever.
+
+```
+function* count<T>(start: number = 1, step: number = 1): Iterable<number>
+```
+
+```typescript
+import { infinite } from 'itertools-ts';
+
+for (const i of infinite.count()) {
+  console.log(i);
+}
+// 1, 2, 3, 4, 5, ...
 ```
 
 ## Math Iteration
@@ -2045,6 +2069,21 @@ const result = Stream.ofEmpty()
   .chainWith([1, 2, 3])
   .toArray();
 // 1, 2, 3
+```
+
+#### Of Count
+Create an infinite count stream.
+
+```
+Stream.count(start: number = 1, step: number = 1): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.count(0, 10)
+  .toArray();
+// 0, 10, 20, 30, ...
 ```
 
 ### Stream Operations
