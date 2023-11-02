@@ -9,3 +9,14 @@ export function* count(start = 1, step = 1): Iterable<number> {
     yield i;
   }
 }
+
+/**
+ * Repeat an item forever
+ *
+ * @param item
+ */
+export function* repeat<T>(item: T): Iterable<T> {
+  while (true) {
+    yield item;
+  }
+}

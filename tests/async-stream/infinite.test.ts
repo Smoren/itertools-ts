@@ -22,6 +22,26 @@ describe.each([
   }
 );
 
+describe.each([
+  ...dataProviderForOfRepeat(),
+] as Array<[Array<number>, number, Array<number>]>)(
+  "Stream Infinite Of Repeat Test",
+  (
+    itemToRepeat: unknown,
+    limit: number,
+    expected: Array<number>
+  ) => {
+    it("", async () => {
+      // When
+      const stream = AsyncStream.ofRepeat(itemToRepeat);
+      const result = await stream.limit(limit).toArray() as Array<number>;
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
 function dataProviderForOfCount(): Array<unknown> {
   return [
     [
@@ -68,6 +88,56 @@ function dataProviderForOfCount(): Array<unknown> {
       [-2.2, -1.2],
       5,
       [-2.2, -3.4, -4.6, -5.8, -7],
+    ],
+  ];
+}
+
+function dataProviderForOfRepeat(): Array<unknown> {
+  return [
+    [
+      0,
+      5,
+      [0, 0, 0, 0, 0],
+    ],
+    [
+      1,
+      5,
+      [1, 1, 1, 1, 1],
+    ],
+    [
+      1.1,
+      5,
+      [1.1, 1.1, 1.1, 1.1, 1.1],
+    ],
+    [
+      null,
+      5,
+      [null, null, null, null, null],
+    ],
+    [
+      '',
+      5,
+      ['', '', '', '', ''],
+    ],
+    [
+      [],
+      5,
+      [[], [], [], [], []],
+    ],
+    [
+      [1, 2, 3],
+      5,
+      [[1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3], [1, 2, 3]],
+    ],
+    [
+      {a: 1},
+      5,
+      [{a: 1}, {a: 1}, {a: 1}, {a: 1}, {a: 1}],
+    ],
+    [
+      {a: [[1]]},
+      3,
+      [{a: [[1]]}, {a: [[1]]}, {a: [[1]]}],
     ],
   ];
 }

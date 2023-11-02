@@ -139,9 +139,10 @@ Quick Reference
 | [`values`](#values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   | `single.valuesAsync(data)`                                   |
 
 #### Infinite Iteration
-| Iterator          | Description                | Code Snippet                      |
-|-------------------|----------------------------|-----------------------------------|
-| [`count`](#Count) | Count sequentially forever | `infinite.count([start], [step])` |
+| Iterator              | Description                | Code Snippet                      |
+|-----------------------|----------------------------|-----------------------------------|
+| [`count`](#Count)     | Count sequentially forever | `infinite.count([start], [step])` |
+| [`repeat`](#Repeat-1) | Repeat an item forever     | `infinite.repeat(item)`           |
 
 #### Math Iteration
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
@@ -209,11 +210,12 @@ Quick Reference
 
 ### Stream and AsyncStream Iteration Tools
 #### Stream Sources
-| Source                 | Description                      | Sync Code Snippet                 | Async Code Snippet                     |
-|------------------------|----------------------------------|-----------------------------------|----------------------------------------|
-| [`of`](#of)            | Create a stream from an iterable | `Stream.of(iterable)`             | `AsyncStream.of(iterable)`             |
-| [`ofEmpty`](#of-empty) | Create an empty stream           | `Stream.ofEmpty()`                | `AsyncStream.ofEmpty()`                |
-| [`ofCount`](#of-count) | Create an infinite count stream  | `Stream.ofCount([start], [step])` | `AsyncStream.ofCount([start], [step])` |
+| Source                  | Description                         | Sync Code Snippet                 | Async Code Snippet                     |
+|-------------------------|-------------------------------------|-----------------------------------|----------------------------------------|
+| [`of`](#of)             | Create a stream from an iterable    | `Stream.of(iterable)`             | `AsyncStream.of(iterable)`             |
+| [`ofEmpty`](#of-empty)  | Create an empty stream              | `Stream.ofEmpty()`                | `AsyncStream.ofEmpty()`                |
+| [`ofCount`](#of-count)  | Create an infinite count stream     | `Stream.ofCount([start], [step])` | `AsyncStream.ofCount([start], [step])` |
+| [`ofCount`](#of-repeat) | Create an infinite repeating stream | `Stream.ofRepeat(item)`           | `AsyncStream.ofRepeat(item)`           |
 
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
@@ -903,7 +905,7 @@ for (const value of single.keys(dict)) {
 Count sequentially forever.
 
 ```
-function* count<T>(start: number = 1, step: number = 1): Iterable<number>
+function* count(start: number = 1, step: number = 1): Iterable<number>
 ```
 
 ```typescript
@@ -913,6 +915,22 @@ for (const i of infinite.count()) {
   console.log(i);
 }
 // 1, 2, 3, 4, 5, ...
+```
+
+### Repeat
+Repeat an item forever.
+
+```
+function* repeat<T>(item: T): Iterable<T>
+```
+
+```typescript
+import { infinite } from 'itertools-ts';
+
+for (const item of infinite.repeat('bla')) {
+  console.log(item);
+}
+// bla, bla, bla, bla, bla, ...
 ```
 
 ## Math Iteration
@@ -2075,15 +2093,30 @@ const result = Stream.ofEmpty()
 Create an infinite count stream.
 
 ```
-Stream.count(start: number = 1, step: number = 1): Stream
+Stream.ofCount(start: number = 1, step: number = 1): Stream
 ```
 
 ```typescript
 import { Stream } from "itertools-ts";
 
-const result = Stream.count(0, 10)
+const result = Stream.ofCount(0, 10)
   .toArray();
 // 0, 10, 20, 30, ...
+```
+
+#### Of Repeat
+Create an infinite stream repeating given item.
+
+```
+Stream.ofRepeat(item: unknown): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.ofRepeat('bla')
+  .toArray();
+// bla, bla, bla, ...
 ```
 
 ### Stream Operations

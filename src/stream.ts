@@ -99,6 +99,15 @@ export class Stream {
   }
 
   /**
+   * Creates iterable instance with fluent interface from infinite item repeating.
+   *
+   * @param item
+   */
+  static ofRepeat(item: unknown): Stream {
+    return new Stream(infinite.repeat(item));
+  }
+
+  /**
    * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.
