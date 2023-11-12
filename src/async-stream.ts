@@ -117,6 +117,15 @@ export class AsyncStream {
   }
 
   /**
+   * Creates iterable instance with fluent interface from infinite collection items repeating.
+   *
+   * @param iterable
+   */
+  static ofCycle(iterable: Iterable<unknown> | Iterator<unknown>): AsyncStream {
+    return new AsyncStream(infinite.cycleAsync(iterable));
+  }
+
+  /**
    * Creates iterable instance with fluent interface from infinite item repeating.
    *
    * @param item

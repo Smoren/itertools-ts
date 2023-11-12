@@ -142,6 +142,7 @@ Quick Reference
 | Iterator              | Description                | Code Snippet                      |
 |-----------------------|----------------------------|-----------------------------------|
 | [`count`](#Count)     | Count sequentially forever | `infinite.count([start], [step])` |
+| [`cycle`](#Cycle)     | Cycle through a collection | `infinite.cycle(iterable)`        |
 | [`repeat`](#Repeat-1) | Repeat an item forever     | `infinite.repeat(item)`           |
 
 #### Math Iteration
@@ -215,6 +216,7 @@ Quick Reference
 | [`of`](#of)              | Create a stream from an iterable    | `Stream.of(iterable)`             | `AsyncStream.of(iterable)`             |
 | [`ofEmpty`](#of-empty)   | Create an empty stream              | `Stream.ofEmpty()`                | `AsyncStream.ofEmpty()`                |
 | [`ofCount`](#of-count)   | Create an infinite count stream     | `Stream.ofCount([start], [step])` | `AsyncStream.ofCount([start], [step])` |
+| [`ofCycle`](#of-cycle)   | Create an infinite cycle stream     | `Stream.ofCycle(iterable)`        | `AsyncStream.ofCycle(iterable)`        |
 | [`ofRepeat`](#of-repeat) | Create an infinite repeating stream | `Stream.ofRepeat(item)`           | `AsyncStream.ofRepeat(item)`           |
 
 #### Stream Operations
@@ -915,6 +917,22 @@ for (const i of infinite.count()) {
   console.log(i);
 }
 // 1, 2, 3, 4, 5, ...
+```
+
+### Cycle
+Cycle through the elements of a collection sequentially forever.
+
+```
+function* cycle<T>(iterable: Iterable<T> | Iterator<T>): Iterable<T>
+```
+
+```typescript
+import { infinite } from 'itertools-ts';
+
+for (const item of infinite.cycle(['rock', 'paper', 'scissors'])) {
+  console.log(item);
+}
+// 'rock', 'paper', 'scissors', 'rock', 'paper', 'scissors', 'rock', ...
 ```
 
 ### Repeat
@@ -2086,7 +2104,7 @@ import { Stream } from "itertools-ts";
 const result = Stream.ofEmpty()
   .chainWith([1, 2, 3])
   .toArray();
-// 1, 2, 3
+// [1, 2, 3]
 ```
 
 #### Of Count
@@ -2100,8 +2118,25 @@ Stream.ofCount(start: number = 1, step: number = 1): Stream
 import { Stream } from "itertools-ts";
 
 const result = Stream.ofCount(0, 10)
+  .limit(5)
   .toArray();
-// 0, 10, 20, 30, ...
+// [0, 10, 20, 30, 40]
+```
+
+#### Of Cycle
+Create an infinite cycle stream.
+
+```
+Stream.ofCycle(iterable: Iterable<unknown> | Iterator<unknown>): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.ofCycle([1, 2, 3])
+  .limit(7)
+  .toArray();
+// [1, 2, 3, 1, 2, 3, 1]
 ```
 
 #### Of Repeat
@@ -2115,8 +2150,9 @@ Stream.ofRepeat(item: unknown): Stream
 import { Stream } from "itertools-ts";
 
 const result = Stream.ofRepeat('bla')
+  .limit(5)
   .toArray();
-// bla, bla, bla, ...
+// [bla, bla, bla, bla, bla]
 ```
 
 ### Stream Operations
@@ -2138,7 +2174,7 @@ const result = Stream.of(input)
   .chainWith([4, 5, 6])
   .chainWith([7, 8, 9])
   .toArray();
-// 1, 2, 3, 4, 5, 6, 7, 8, 9
+// [1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
 #### Chunkwise
@@ -2158,7 +2194,7 @@ const friends = ['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey'];
 const result = Stream.of(friends)
   .chunkwise(2)
   .toArray();
-// ['Ross', 'Rachel'], ['Chandler', 'Monica'], ['Joey']
+// [['Ross', 'Rachel'], ['Chandler', 'Monica'], ['Joey']]
 ```
 
 #### Chunkwise Overlap
@@ -2183,7 +2219,7 @@ const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const result = Stream.of(numbers)
   .chunkwiseOverlap(3, 1)
   .toArray()
-// [1, 2, 3], [3, 4, 5], [5, 6, 7], [7, 8, 9]
+// [[1, 2, 3], [3, 4, 5], [5, 6, 7], [7, 8, 9]]
 ```
 
 #### Compress
@@ -2203,7 +2239,7 @@ const input = [1, 2, 3];
 const result = Stream.of(input)
   .compress([0, 1, 1])
   .toArray();
-// 2, 3
+// [2, 3]
 ```
 
 #### Distinct
@@ -2220,7 +2256,7 @@ const input = [1, 2, 1, 2, 3, 3, '1', '1', '2', '3'];
 const numbers = Stream.of(input)
   .distinct()
   .toArray();
-// 1, 2, 3, '1', '2', '3'
+// [1, 2, 3, '1', '2', '3']
 
 const users = [
   { 'name': 'John', 'id': 1 },
@@ -2258,7 +2294,7 @@ const input = [1, 2, 3, 4, 5]
 const result = Stream.of(input)
   .dropWhile((value) => value < 3)
   .toArray();
-// 3, 4, 5
+// [3, 4, 5]
 ```
 
 #### Enumerate
@@ -2293,7 +2329,7 @@ const input = [1, -1, 2, -2, 3, -3];
 const result = Stream.of(input)
   .filter((value) => value > 0)
   .toArray();
-// 1, 2, 3
+// [1, 2, 3]
 ```
 
 #### Flat Map
@@ -2352,7 +2388,7 @@ const shogiPieces = ['rook', 'knight', 'bishop', 'king', 'pawn', 'lance', 'gold 
 const result = Stream.of(chessPieces)
   .intersectionWith(shogiPieces)
   .toArray();
-// rook, knight, bishop, king, pawn
+// [rook, knight, bishop, king, pawn]
 ```
 
 #### Group By
@@ -2425,7 +2461,7 @@ const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
 const result = Stream.of(dict)
   .keys()
   .toArray();
-// 'a', 'b', 'c'
+// ['a', 'b', 'c']
 ```
 
 #### Limit
@@ -2446,7 +2482,7 @@ const limit = 1;
 const goodMovies = Stream.of(matrixMovies)
   .limit(limit)
   .toArray();
-// 'The Matrix' (and nothing else)
+// ['The Matrix'] (and nothing else)
 ```
 
 #### Map
@@ -2464,7 +2500,7 @@ const grades = [100, 95, 98, 89, 100];
 const result = Stream.of(grades)
   .map((grade) => grade === 100 ? 'A' : 'F')
   .toArray();
-// A, F, F, F, A
+// [A, F, F, F, A]
 ```
 
 #### Pairwise
@@ -2484,7 +2520,7 @@ const input = [1, 2, 3, 4, 5];
 const stream = Stream.of(input)
   .pairwise()
   .toArray();
-// [1, 2], [2, 3], [3, 4], [4, 5]
+// [[1, 2], [2, 3], [3, 4], [4, 5]]
 ```
 
 #### Partial Intersection With
@@ -2510,7 +2546,7 @@ const supportsInterfaces = ['php', 'java', 'c#', 'typescript'];
 const result = Stream.of(staticallyTyped)
   .partialIntersectionWith(2, dynamicallyTyped, supportsInterfaces)
   .toArray();
-// c++, java, c#, go, php
+// ['c++', 'java', 'c#', 'go', 'php']
 ```
 
 #### Running Average
@@ -2528,7 +2564,7 @@ const input = [1, 3, 5];
 const result = Stream.of(input)
   .runningAverage()
   .toArray();
-// 1, 2, 3
+// [1, 2, 3]
 ```
 
 #### Running Difference
@@ -2546,7 +2582,7 @@ const input = [1, 2, 3, 4, 5];
 const result = Stream.of(input)
   .runningDifference()
   .toArray();
-// -1, -3, -6, -10, -15
+// [-1, -3, -6, -10, -15]
 ```
 
 #### Running Max
@@ -2564,7 +2600,7 @@ const input = [1, -1, 2, -2, 3, -3];
 const result = Stream.of(input)
   .runningMax()
   .toArray();
-// 1, 1, 2, 2, 3, 3
+// [1, 1, 2, 2, 3, 3]
 ```
 
 #### Running Min
@@ -2582,7 +2618,7 @@ const input = [1, -1, 2, -2, 3, -3];
 const result = Stream.of(input)
   .runningMin()
   .toArray();
-// 1, -1, -1, -2, -2, -3
+// [1, -1, -1, -2, -2, -3]
 ```
 
 #### Running Product
@@ -2600,7 +2636,7 @@ const input = [1, 2, 3, 4, 5];
 const result = Stream.of(input)
   .runningProduct()
   .toArray();
-// 1, 2, 6, 24, 120
+// [1, 2, 6, 24, 120]
 ```
 
 #### Running Total
@@ -2618,7 +2654,7 @@ const input = [1, 2, 3, 4, 5];
 const result = Stream.of(input)
   .runningTotal()
   .toArray();
-// 1, 3, 6, 10, 15
+// [1, 3, 6, 10, 15]
 ```
 
 #### Skip
@@ -2641,7 +2677,7 @@ const onlyTheBest = Stream.of(movies)
   .skip(3)
   .skip(3, 3)
   .toArray();
-// 'A New Hope', 'The Empire Strikes Back', 'Return of the Jedi'
+// ['A New Hope', 'The Empire Strikes Back', 'Return of the Jedi']
 ```
 
 #### Slice
@@ -2679,7 +2715,7 @@ const input = [3, 4, 5, 9, 8, 7, 1, 6, 2];
 const result = Stream.of(input)
   .sort()
   .toArray();
-// 1, 2, 3, 4, 5, 6, 7, 8, 9
+// [1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
 #### Symmetric difference With
@@ -2702,7 +2738,7 @@ const c = [2, 3, 6, 9];
 const result = Stream.of(a)
   .symmetricDifferenceWith(b, c)
   .toArray();
-// 4, 5, 6, 7, 8, 9
+// [4, 5, 6, 7, 8, 9]
 ```
 
 #### Take While
@@ -2720,7 +2756,7 @@ const input = [1, -1, 2, -2, 3, -3];
 const result = Stream.of(input)
   .takeWhile((value) => Math.abs(value) < 3)
   .toArray();
-// 1, -1, 2, -2
+// [1, -1, 2, -2]
 ```
 
 #### Union With
@@ -2743,7 +2779,7 @@ const c = [3, 4, 5];
 const result = Stream.of(a)
   .unionWith(b, c)
   .toArray();
-// 1, 2, 3, 4, 5
+// [1, 2, 3, 4, 5]
 ```
 
 #### Values
@@ -2761,7 +2797,7 @@ const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
 const result = Stream.of(dict)
   .values()
   .toArray();
-// 1, 2, 3
+// [1, 2, 3]
 ```
 
 #### Zip With
@@ -2783,7 +2819,7 @@ const input = [1, 2, 3];
 const stream = Stream.of(input)
   .zipWith([4, 5, 6])
   .toArray();
-// [1, 4], [2, 5], [3, 6]
+// [[1, 4], [2, 5], [3, 6]]
 ```
 
 #### Zip Equal With

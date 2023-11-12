@@ -1,5 +1,15 @@
 # IterTools Typescript Change Log
 
+## v1.26.0 - 2023-11-12
+
+### New features
+* infinite
+  * `cycle()`
+* Stream
+  * `ofCycle()`
+* AsyncStream
+  * `ofCycle()`
+
 ## v1.25.0 - 2023-11-02
 
 ### New features
