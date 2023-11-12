@@ -1,3 +1,5 @@
+import {toAsyncIterable, toIterable} from "./transform";
+
 /**
  * Count sequentially forever
  *
@@ -8,6 +10,48 @@ export function* count(start = 1, step = 1): Iterable<number> {
   for (let i = start; true; i += step) {
     yield i;
   }
+}
+
+/**
+ * Cycle through the elements of a collection sequentially forever
+ *
+ * @param iterable
+ */
+export function* cycle<T>(iterable: Iterable<T> | Iterator<T>): Iterable<T> {
+  const data = [...toIterable(iterable)];
+
+  if (data.length === 0) {
+    return;
+  }
+
+  while (true) {
+    for (const datum of data) {
+      yield datum;
+    }
+  }
+}
+
+
+/**
+ * Cycle through the elements of a async iterable sequentially forever
+ *
+ * @param iterable
+ */
+export async function* cycleAsync<T>(
+  iterable:
+    | AsyncIterable<T>
+    | AsyncIterator<T>
+    | Iterable<T>
+    | Iterator<T>,
+): AsyncIterable<T> {
+  const data = [];
+
+  for await (const datum of toAsyncIterable(iterable)) {
+    data.push(datum);
+    yield datum;
+  }
+
+  yield *cycle(data);
 }
 
 /**

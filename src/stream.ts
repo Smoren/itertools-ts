@@ -99,6 +99,15 @@ export class Stream {
   }
 
   /**
+   * Creates iterable instance with fluent interface from infinite collection items repeating.
+   *
+   * @param iterable
+   */
+  static ofCycle(iterable: Iterable<unknown> | Iterator<unknown>): Stream {
+    return new Stream(infinite.cycle(iterable));
+  }
+
+  /**
    * Creates iterable instance with fluent interface from infinite item repeating.
    *
    * @param item
