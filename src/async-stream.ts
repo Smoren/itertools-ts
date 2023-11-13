@@ -41,6 +41,7 @@ import {
   runningTotalAsync,
 } from "./math";
 import {
+  cartesianProductAsync,
   distinctAsync,
   intersectionAsync,
   partialIntersectionAsync,
@@ -697,6 +698,25 @@ export class AsyncStream {
     >
   ): AsyncStream {
     this.data = unionAsync(this.data, ...iterables);
+    return this;
+  }
+
+  /**
+   * Iterates cartesian product of iterable source and given iterables.
+   *
+   * @param iterables
+   *
+   * @see set.cartesianProductAsync
+   */
+  cartesianProductWith(
+    ...iterables: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): AsyncStream {
+    this.data = cartesianProductAsync(this.data, ...iterables);
     return this;
   }
 

@@ -1,10 +1,22 @@
 # IterTools Typescript Change Log
 
+## v1.27.0 - 2023-11-13
+
+### New features
+* set
+  * `cartesianProduct()`
+  * `cartesianProductAsync()`
+* Stream
+  * `cartesianProductWith()`
+* AsyncStream
+  * `cartesianProductWith()`
+
 ## v1.26.0 - 2023-11-12
 
 ### New features
 * infinite
   * `cycle()`
+  * `cycleAsync()`
 * Stream
   * `ofCycle()`
 * AsyncStream

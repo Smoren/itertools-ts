@@ -29,6 +29,7 @@ import {
   runningTotal,
 } from "./math";
 import {
+  cartesianProduct,
   distinct,
   intersection,
   partialIntersection,
@@ -93,6 +94,8 @@ export class Stream {
    *
    * @param start (optional, default 1)
    * @param step (optional, default 1)
+   *
+   * @see infinite.count
    */
   static ofCount(start = 1, step = 1): Stream {
     return new Stream(infinite.count(start, step));
@@ -102,6 +105,8 @@ export class Stream {
    * Creates iterable instance with fluent interface from infinite collection items repeating.
    *
    * @param iterable
+   *
+   * @see infinite.cycle
    */
   static ofCycle(iterable: Iterable<unknown> | Iterator<unknown>): Stream {
     return new Stream(infinite.cycle(iterable));
@@ -111,6 +116,8 @@ export class Stream {
    * Creates iterable instance with fluent interface from infinite item repeating.
    *
    * @param item
+   *
+   * @see infinite.repeat
    */
   static ofRepeat(item: unknown): Stream {
     return new Stream(infinite.repeat(item));
@@ -614,6 +621,20 @@ export class Stream {
     ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
   ): Stream {
     this.data = union(this.data, ...iterables);
+    return this;
+  }
+
+  /**
+   * Iterates cartesian product of iterable source and given iterables.
+   *
+   * @param iterables
+   *
+   * @see set.cartesianProduct
+   */
+  cartesianProductWith(
+    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+  ): Stream {
+    this.data = cartesianProduct(this.data, ...iterables);
     return this;
   }
 
