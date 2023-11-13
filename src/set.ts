@@ -1,4 +1,9 @@
-import {toArray, toArrayAsync, toAsyncIterable, toIterable} from "./transform";
+import {
+  toArray,
+  toArrayAsync,
+  toAsyncIterable,
+  toIterable,
+} from "./transform";
 import {
   createAsyncMultipleIterator,
   createMultipleIterator,
@@ -6,8 +11,8 @@ import {
   NoValueMonad,
   UsageMap,
 } from "./tools";
-import {enumerate, map, mapAsync} from "./single";
-import {Comparable, single, ZipTuple} from "./index";
+import { enumerate, map, mapAsync } from "./single";
+import { Comparable, single, ZipTuple } from "./index";
 
 /**
  * Iterate only the distinct elements.
@@ -322,23 +327,26 @@ export async function* unionAsync<T>(
  *
  * @param iterables
  */
-export function* cartesianProduct<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
-  ...iterables: T
-): Iterable<ZipTuple<T, never>> {
+export function* cartesianProduct<
+  T extends Array<Iterable<unknown> | Iterator<unknown>>
+>(...iterables: T): Iterable<ZipTuple<T, never>> {
   if (iterables.length === 0) {
     return;
   }
 
   if (iterables.length === 1) {
-    for (let item of toIterable(iterables[0])) {
+    for (const item of toIterable(iterables[0])) {
       yield [item] as ZipTuple<T, never>;
     }
     return;
   }
 
   const arrays = toArray(map(iterables, (iterable) => toArray(iterable)));
-  const toIterate = arrays.reduce((acc, set) =>
-    acc.flatMap((x) => set.map((y) => [...(x as Array<unknown>), y])), [[]]);
+  const toIterate = arrays.reduce(
+    (acc, set) =>
+      acc.flatMap((x) => set.map((y) => [...(x as Array<unknown>), y])),
+    [[]]
+  );
 
   for (const item of toIterate) {
     yield item as ZipTuple<T, never>;
@@ -357,15 +365,13 @@ export async function* cartesianProductAsync<
     | Iterable<unknown>
     | Iterator<unknown>
   >
->(
-  ...iterables: T
-): AsyncIterable<ZipTuple<T, never>> {
+>(...iterables: T): AsyncIterable<ZipTuple<T, never>> {
   if (iterables.length === 0) {
     return;
   }
 
   if (iterables.length === 1) {
-    for await (let item of toAsyncIterable(iterables[0])) {
+    for await (const item of toAsyncIterable(iterables[0])) {
       yield [item] as ZipTuple<T, never>;
     }
     return;
@@ -375,8 +381,11 @@ export async function* cartesianProductAsync<
     mapAsync(iterables, async (iterable) => await toArrayAsync(iterable))
   );
 
-  const toIterate = arrays.reduce((acc, set) =>
-    acc.flatMap((x) => set.map((y) => [...(x as Array<unknown>), y])), [[]]);
+  const toIterate = arrays.reduce(
+    (acc, set) =>
+      acc.flatMap((x) => set.map((y) => [...(x as Array<unknown>), y])),
+    [[]]
+  );
 
   for (const item of toIterate) {
     yield item as ZipTuple<T, never>;
