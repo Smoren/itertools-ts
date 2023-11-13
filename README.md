@@ -2203,7 +2203,7 @@ import { Stream } from "itertools-ts";
 
 const numbers = [1, 2];
 
-const result = Stream.of(input)
+const result = Stream.of(numbers)
   .cartesianProductWith(['a', 'b'], ['!', '?'])
   .toArray();
 /*
