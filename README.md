@@ -172,13 +172,14 @@ Quick Reference
 | [`toValue`](#To-Value)                 | Reduce to value using callable reducer     | `reduce.toValue(data, reducer, initialValue)` | `reduce.toValueAsync(data, reducer, initialValue)` |
 
 #### Set and multiset Iteration
-| Iterator                                       | Description                       | Sync Code Snippet                                 | Async Code Snippet                                     |
-|------------------------------------------------|-----------------------------------|---------------------------------------------------|--------------------------------------------------------|
-| [`distinct`](#distinct)                        | Iterate only distinct items       | `set.distinct(data)`                              | `set.distinctAsync(data)`                              |
-| [`intersection`](#intersection)                | Intersection of iterables         | `set.intersection(...iterables)`                  | `set.intersectionAsync(...iterables)`                  |
-| [`partialIntersection`](#partial-intersection) | Partial intersection of iterables | `set.partialIntersection(minCount, ...iterables)` | `set.partialIntersectionAsync(minCount, ...iterables)` |
-| [`symmetricDifference`](#symmetric-difference) | Symmetric difference of iterables | `set.symmetricDifference(...iterables)`           | `set.symmetricDifferenceAsync(...iterables)`           |
-| [`union`](#union)                              | Union of iterables                | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
+| Iterator                                       | Description                            | Sync Code Snippet                                 | Async Code Snippet                                     |
+|------------------------------------------------|----------------------------------------|---------------------------------------------------|--------------------------------------------------------|
+| [`cartesianProduct`](#cartesian-product)       | Iterate cartesian product of iterables | `set.cartesianProduct(...iterables)`              | `set.cartesianProductAsync(...iterables)`              |
+| [`distinct`](#distinct)                        | Iterate only distinct items            | `set.distinct(data)`                              | `set.distinctAsync(data)`                              |
+| [`intersection`](#intersection)                | Intersection of iterables              | `set.intersection(...iterables)`                  | `set.intersectionAsync(...iterables)`                  |
+| [`partialIntersection`](#partial-intersection) | Partial intersection of iterables      | `set.partialIntersection(minCount, ...iterables)` | `set.partialIntersectionAsync(minCount, ...iterables)` |
+| [`symmetricDifference`](#symmetric-difference) | Symmetric difference of iterables      | `set.symmetricDifference(...iterables)`           | `set.symmetricDifferenceAsync(...iterables)`           |
+| [`union`](#union)                              | Union of iterables                     | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
 
 #### Summary
 | Summary                                 | Description                                             | Sync Code Snippet                      | Async Code Snippet                          |
@@ -222,6 +223,7 @@ Quick Reference
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
 |---------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| [`cartesianProductWith`](#cartesian-product-with)       | Iterate cartesian product of iterable source with another iterable collections            | `stream.cartesianProductWith(...iterables)`                          |
 | [`chainWith`](#chain-with)                              | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`                                     |
 | [`chunkwise`](#chunkwise-1)                             | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                                        |
 | [`chunkwiseOverlap`](#chunkwise-overlap-1)              | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)`                        |
@@ -1436,6 +1438,37 @@ const result = reduce.toValue(input, sum, 0);
 ```
 
 ## Set and multiset
+### Cartesian Product
+Iterates cartesian product of given iterables.
+
+```
+function* cartesianProduct<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+  ...iterables: T
+): Iterable<ZipTuple<T, never>>
+```
+
+```typescript
+import { set } from 'itertools-ts';
+
+const numbers = [1, 2];
+const letters = ['a', 'b'];
+const chars = ['!', '?'];
+
+for (const tuple of set.cartesianProduct(numbers, letters, chars)) {
+  console.log(tuple);
+}
+/*
+  [1, 'a', '!'],
+  [1, 'a', '?'],
+  [1, 'b', '!'],
+  [1, 'b', '?'],
+  [2, 'a', '!'],
+  [2, 'a', '?'],
+  [2, 'b', '!'],
+  [2, 'b', '?'],
+*/
+```
+
 ### Distinct
 Filter out elements from the iterable only returning distinct elements.
 
@@ -2156,6 +2189,37 @@ const result = Stream.ofRepeat('bla')
 ```
 
 ### Stream Operations
+#### Cartesian Product With
+Iterate cartesian product of iterable source with another iterable collections.
+
+```
+stream.cartesianProductWith(
+  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
+): Stream
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const numbers = [1, 2];
+
+const result = Stream.of(input)
+  .cartesianProductWith(['a', 'b'], ['!', '?'])
+  .toArray();
+/*
+[
+  [1, 'a', '!'],
+  [1, 'a', '?'],
+  [1, 'b', '!'],
+  [1, 'b', '?'],
+  [2, 'a', '!'],
+  [2, 'a', '?'],
+  [2, 'b', '!'],
+  [2, 'b', '?'],
+]
+*/
+```
+
 #### Chain With
 Return a stream chaining additional sources together into a single consecutive stream.
 
