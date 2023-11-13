@@ -1,4 +1,4 @@
-import { toAsyncIterable, toIterable } from "./transform";
+import {toArray, toArrayAsync, toAsyncIterable, toIterable} from "./transform";
 import {
   createAsyncMultipleIterator,
   createMultipleIterator,
@@ -6,8 +6,8 @@ import {
   NoValueMonad,
   UsageMap,
 } from "./tools";
-import { enumerate } from "./single";
-import { Comparable, single } from "./index";
+import {enumerate, map, mapAsync} from "./single";
+import {Comparable, single, ZipTuple} from "./index";
 
 /**
  * Iterate only the distinct elements.
@@ -315,4 +315,49 @@ export async function* unionAsync<T>(
   >
 ): AsyncIterable<T> {
   yield* partialIntersectionAsync(1, ...iterables);
+}
+
+/**
+ * Iterates cartesian product of given iterables.
+ *
+ * @param iterables
+ */
+export function* cartesianProduct<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+  ...iterables: T
+): Iterable<ZipTuple<T, never>> {
+  if (iterables.length === 0) {
+    return;
+  }
+
+  const a = toArray(map(iterables, (iterable) => toArray(iterable)));
+  for (const item of a.reduce((x, b) => x.flatMap((d) => b.map((e) => [d, e].flat())))) {
+    yield item as ZipTuple<T, never>;
+  }
+}
+
+/**
+ * Iterates cartesian product of given async iterables.
+ *
+ * @param iterables
+ */
+export async function* cartesianProductAsync<
+  T extends Array<
+    | AsyncIterable<unknown>
+    | AsyncIterator<unknown>
+    | Iterable<unknown>
+    | Iterator<unknown>
+  >
+>(
+  ...iterables: T
+): AsyncIterable<ZipTuple<T, never>> {
+  if (iterables.length === 0) {
+    return;
+  }
+
+  const a = await toArrayAsync(
+    mapAsync(iterables, async (iterable) => await toArrayAsync(iterable))
+  );
+  for (const item of a.reduce((x, b) => x.flatMap((d) => b.map((e) => [d, e].flat())))) {
+    yield item as ZipTuple<T, never>;
+  }
 }
