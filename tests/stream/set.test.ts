@@ -182,6 +182,63 @@ function dataProviderForArrays(): Array<unknown> {
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
     ],
+    [
+      [
+        [],
+        [],
+        [],
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        [],
+        [11, 22],
+        ['a', 'b'],
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        [1, 2],
+        [],
+        ['a', 'b'],
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        [1, 2, 3],
+        [11, 22],
+        ['a', 'b'],
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [
+        [1, 11, 'a'],
+        [1, 11, 'b'],
+        [1, 22, 'a'],
+        [1, 22, 'b'],
+        [2, 11, 'a'],
+        [2, 11, 'b'],
+        [2, 22, 'a'],
+        [2, 22, 'b'],
+        [3, 11, 'a'],
+        [3, 11, 'b'],
+        [3, 22, 'a'],
+        [3, 22, 'b'],
+      ],
+    ],
   ];
 }
 
@@ -311,6 +368,63 @@ function dataProviderForGenerators(): Array<unknown> {
         .unionWith(...iterables)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
+    ],
+    [
+      [
+        createGeneratorFixture([]),
+        createGeneratorFixture([]),
+        createGeneratorFixture([]),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        createGeneratorFixture([]),
+        createGeneratorFixture([11, 22]),
+        createGeneratorFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        createGeneratorFixture([1, 2]),
+        createGeneratorFixture([]),
+        createGeneratorFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        createGeneratorFixture([1, 2, 3]),
+        createGeneratorFixture([11, 22]),
+        createGeneratorFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [
+        [1, 11, 'a'],
+        [1, 11, 'b'],
+        [1, 22, 'a'],
+        [1, 22, 'b'],
+        [2, 11, 'a'],
+        [2, 11, 'b'],
+        [2, 22, 'a'],
+        [2, 22, 'b'],
+        [3, 11, 'a'],
+        [3, 11, 'b'],
+        [3, 22, 'a'],
+        [3, 22, 'b'],
+      ],
     ],
   ];
 }
@@ -442,6 +556,52 @@ function dataProviderForIterables(): Array<unknown> {
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
     ],
+    [
+      [
+        createIterableFixture([]),
+        createIterableFixture([11, 22]),
+        createIterableFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        createIterableFixture([1, 2]),
+        createIterableFixture([]),
+        createIterableFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        createIterableFixture([1, 2, 3]),
+        createIterableFixture([11, 22]),
+        createIterableFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [
+        [1, 11, 'a'],
+        [1, 11, 'b'],
+        [1, 22, 'a'],
+        [1, 22, 'b'],
+        [2, 11, 'a'],
+        [2, 11, 'b'],
+        [2, 22, 'a'],
+        [2, 22, 'b'],
+        [3, 11, 'a'],
+        [3, 11, 'b'],
+        [3, 22, 'a'],
+        [3, 22, 'b'],
+      ],
+    ],
   ];
 }
 
@@ -572,6 +732,52 @@ function dataProviderForIterators(): Array<unknown> {
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
     ],
+    [
+      [
+        createIteratorFixture([]),
+        createIteratorFixture([11, 22]),
+        createIteratorFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        createIteratorFixture([1, 2]),
+        createIteratorFixture([]),
+        createIteratorFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        createIteratorFixture([1, 2, 3]),
+        createIteratorFixture([11, 22]),
+        createIteratorFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [
+        [1, 11, 'a'],
+        [1, 11, 'b'],
+        [1, 22, 'a'],
+        [1, 22, 'b'],
+        [2, 11, 'a'],
+        [2, 11, 'b'],
+        [2, 22, 'a'],
+        [2, 22, 'b'],
+        [3, 11, 'a'],
+        [3, 11, 'b'],
+        [3, 22, 'a'],
+        [3, 22, 'b'],
+      ],
+    ],
   ];
 }
 
@@ -623,6 +829,30 @@ function dataProviderForStrings(): Array<unknown> {
         .unionWith(...iterables)
         .toArray(),
       ['1', '2', '3', '4', '5', '6', '7', '8'],
+    ],
+    [
+      [
+        '123',
+        'ab',
+        '!?',
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [
+        ['1', 'a', '!'],
+        ['1', 'a', '?'],
+        ['1', 'b', '!'],
+        ['1', 'b', '?'],
+        ['2', 'a', '!'],
+        ['2', 'a', '?'],
+        ['2', 'b', '!'],
+        ['2', 'b', '?'],
+        ['3', 'a', '!'],
+        ['3', 'a', '?'],
+        ['3', 'b', '!'],
+        ['3', 'b', '?'],
+      ],
     ],
   ];
 }
@@ -740,6 +970,52 @@ function dataProviderForSets(): Array<unknown> {
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
     ],
+    [
+      [
+        new Set([]),
+        new Set([11, 22]),
+        new Set(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        new Set([1, 2]),
+        new Set([]),
+        new Set(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        new Set([1, 2, 3]),
+        new Set([11, 22]),
+        new Set(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [
+        [1, 11, 'a'],
+        [1, 11, 'b'],
+        [1, 22, 'a'],
+        [1, 22, 'b'],
+        [2, 11, 'a'],
+        [2, 11, 'b'],
+        [2, 22, 'a'],
+        [2, 22, 'b'],
+        [3, 11, 'a'],
+        [3, 11, 'b'],
+        [3, 22, 'a'],
+        [3, 22, 'b'],
+      ],
+    ],
   ];
 }
 
@@ -848,6 +1124,52 @@ function dataProviderForMaps(): Array<unknown> {
         .unionWith(...iterables)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
+    ],
+    [
+      [
+        createMapFixture([]),
+        createMapFixture([11, 22]),
+        createMapFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        createMapFixture([1, 2]),
+        createMapFixture([]),
+        createMapFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [],
+    ],
+    [
+      [
+        createMapFixture([1, 2, 3]),
+        createMapFixture([11, 22]),
+        createMapFixture(['a', 'b']),
+      ],
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+        .cartesianProductWith(...iterables)
+        .toArray(),
+      [
+        [[0, 1], [0, 11], [0, 'a']],
+        [[0, 1], [0, 11], [1, 'b']],
+        [[0, 1], [1, 22], [0, 'a']],
+        [[0, 1], [1, 22], [1, 'b']],
+        [[1, 2], [0, 11], [0, 'a']],
+        [[1, 2], [0, 11], [1, 'b']],
+        [[1, 2], [1, 22], [0, 'a']],
+        [[1, 2], [1, 22], [1, 'b']],
+        [[2, 3], [0, 11], [0, 'a']],
+        [[2, 3], [0, 11], [1, 'b']],
+        [[2, 3], [1, 22], [0, 'a']],
+        [[2, 3], [1, 22], [1, 'b']],
+      ],
     ],
   ];
 }
