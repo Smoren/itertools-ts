@@ -266,13 +266,13 @@ Package Size Optimization.
   * `toMap`
   * `toSet`
 
-## v1.15.0 - 2022-03-30
+## v1.15.0 - 2023-03-30
 
 ### Improvements
 * multi
   * all function interfaces are clarified
 
-## v1.14.0 - 2022-03-28
+## v1.14.0 - 2023-03-28
 
 ### New Features
 * single
@@ -280,7 +280,7 @@ Package Size Optimization.
 * Stream
   * `skip()`
 
-## v1.13.0 - 2022-03-21
+## v1.13.0 - 2023-03-21
 
 ### New Features
 * single
