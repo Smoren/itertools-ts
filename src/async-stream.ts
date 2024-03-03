@@ -965,7 +965,7 @@ export class AsyncStream {
    *
    * @see summary.exactlyNAsync
    */
-  async exactlyNAsync(
+  async exactlyN(
     n: number,
     predicate?: (item: unknown) => Promise<boolean> | boolean
   ): Promise<boolean> {
