@@ -1,5 +1,9 @@
 # IterTools Typescript Change Log
 
+## v1.27.1 - 2024-03-03
+
+Package Size Optimization.
+
 ## v1.27.0 - 2023-11-13
 
 ### New features

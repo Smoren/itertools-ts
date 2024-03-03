@@ -111,17 +111,17 @@ function dataProviderForArraysTrue(): Array<unknown> {
     [
       [],
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       [''],
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       [1, 3, 5],
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(3),
+        .exactlyN(3),
     ],
     [
       [1, -1, 2, -2, 3, -3],
@@ -226,17 +226,17 @@ function dataProviderForGeneratorsTrue(): Array<unknown> {
     [
       createGeneratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createGeneratorFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(3),
+        .exactlyN(3),
     ],
     [
       createGeneratorFixture([1, -1, 2, -2, 3, -3]),
@@ -341,17 +341,17 @@ function dataProviderForIterablesTrue(): Array<unknown> {
     [
       createIterableFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createIterableFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createIterableFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(3),
+        .exactlyN(3),
     ],
     [
       createIterableFixture([1, -1, 2, -2, 3, -3]),
@@ -456,17 +456,17 @@ function dataProviderForIteratorsTrue(): Array<unknown> {
     [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createIteratorFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(3),
+        .exactlyN(3),
     ],
     [
       createIteratorFixture([1, -1, 2, -2, 3, -3]),
@@ -566,7 +566,7 @@ function dataProviderForStringsTrue(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       '123',
@@ -679,17 +679,17 @@ function dataProviderForSetsTrue(): Array<unknown> {
     [
       new Set([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       new Set(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(3),
+        .exactlyN(3),
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
@@ -906,17 +906,17 @@ function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
     [
       createAsyncGeneratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createAsyncGeneratorFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(3),
+        .exactlyN(3),
     ],
     [
       createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
@@ -1030,17 +1030,17 @@ function dataProviderForAsyncIterablesTrue(): Array<unknown> {
     [
       createAsyncIterableFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createAsyncIterableFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(3),
+        .exactlyN(3),
     ],
     [
       createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
@@ -1154,17 +1154,17 @@ function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
     [
       createAsyncIteratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createAsyncIteratorFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(0),
+        .exactlyN(0),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(3),
+        .exactlyN(3),
     ],
     [
       createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
@@ -1257,17 +1257,17 @@ function dataProviderForArraysFalse(): Array<unknown> {
     [
       [],
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       [''],
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       [1, 3, 5],
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(4),
+        .exactlyN(4),
     ],
     [
       [1, -1, 2, -2, 3, -3],
@@ -1345,17 +1345,17 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
     [
       createGeneratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createGeneratorFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(4),
+        .exactlyN(4),
     ],
     [
       createGeneratorFixture([1, -1, 2, -2, 3, -3]),
@@ -1433,17 +1433,17 @@ function dataProviderForIterablesFalse(): Array<unknown> {
     [
       createIterableFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createIterableFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createIterableFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(4),
+        .exactlyN(4),
     ],
     [
       createIterableFixture([1, -1, 2, -2, 3, -3]),
@@ -1521,17 +1521,17 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
     [
       createIteratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createIteratorFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(4),
+        .exactlyN(4),
     ],
     [
       createIteratorFixture([1, -1, 2, -2, 3, -3]),
@@ -1609,7 +1609,7 @@ function dataProviderForStringsFalse(): Array<unknown> {
     [
       '',
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       '131',
@@ -1686,17 +1686,17 @@ function dataProviderForSetsFalse(): Array<unknown> {
     [
       new Set([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       new Set(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       new Set([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(4),
+        .exactlyN(4),
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
@@ -1860,17 +1860,17 @@ function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
     [
       createAsyncGeneratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createAsyncGeneratorFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(4),
+        .exactlyN(4),
     ],
     [
       createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
@@ -1957,17 +1957,17 @@ function dataProviderForAsyncIterablesFalse(): Array<unknown> {
     [
       createAsyncIterableFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createAsyncIterableFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(4),
+        .exactlyN(4),
     ],
     [
       createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
@@ -2054,17 +2054,17 @@ function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
     [
       createAsyncIteratorFixture([]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createAsyncIteratorFixture(['']),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(1),
+        .exactlyN(1),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyNAsync(4),
+        .exactlyN(4),
     ],
     [
       createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
