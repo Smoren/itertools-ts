@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/itertools-ts.svg)](https://www.npmjs.com/package/itertools-ts)
 [![npm](https://img.shields.io/npm/dm/itertools-ts.svg?style=flat)](https://www.npmjs.com/package/itertools-ts)
-[![Coverage Status](https://coveralls.io/repos/github/Smoren/itertools-ts/badge.svg?branch=master&rand=123)](https://coveralls.io/github/Smoren/itertools-ts?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/Smoren/itertools-ts/badge.svg?branch=master&rand=222)](https://coveralls.io/github/Smoren/itertools-ts?branch=master)
 ![Build and test](https://github.com/Smoren/itertools-ts/actions/workflows/test_master.yml/badge.svg)
 [![Minified Size](https://badgen.net/bundlephobia/minzip/itertools-ts)](https://bundlephobia.com/result?p=itertools-ts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
