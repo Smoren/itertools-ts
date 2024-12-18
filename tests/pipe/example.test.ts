@@ -16,10 +16,19 @@ it("Pipe Usage Example Test", () => {
     reduce.toSum,
   );
 
-  const input = [1, 1, 2, 2, 3, 4, 5];
-  const result = pipe(input);
+  {
+    const input = [1, 1, 2, 2, 3, 4, 5];
+    const result = pipe(input);
 
-  expect(result).toBe(14);
+    expect(result).toBe(14);
+  }
+
+  {
+    const input = [1, 1, 1, 2, 2, 2];
+    const result = pipe(input);
+
+    expect(result).toBe(5);
+  }
 });
 
 it("Async Pipe Usage Example Test", async () => {
@@ -36,8 +45,17 @@ it("Async Pipe Usage Example Test", async () => {
     reduce.toSumAsync,
   );
 
-  const input = createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]);
-  const result = await asyncPipe(input);
+  {
+    const input = createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]);
+    const result = await asyncPipe(input);
 
-  expect(result).toBe(14);
+    expect(result).toBe(14);
+  }
+
+  {
+    const input = createAsyncIterableFixture([1, 1, 1, 2, 2, 2]);
+    const result = await asyncPipe(input);
+
+    expect(result).toBe(5);
+  }
 });

@@ -74,8 +74,8 @@ const pipe = createPipe<[
   (input) => single.filter(input, (x) => x < 10),
   reduce.toSum,
 );
-const result1 = pipe([1, 1, 2, 2, 3, 4, 5]);
-// 14
+const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
+const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
 
 const asyncPipe = createAsyncPipe<[
   AsyncIterable<number>,  // input => set.distinctAsync
@@ -89,8 +89,8 @@ const asyncPipe = createAsyncPipe<[
   (input) => single.filterAsync(input, (x) => x < 10),
   reduce.toSumAsync,
 );
-const result2 = await asyncPipe([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)));
-// 14
+const result3 = await asyncPipe([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x))); // 14
+const result4 = await asyncPipe([1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x)));    // 5
 ```
 
 [More about Streams](#Stream-and-Async-Stream)
