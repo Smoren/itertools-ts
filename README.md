@@ -18,6 +18,7 @@ IterTools makes you an iteration superstar by providing two types of tools:
 
 * Loop iteration tools
 * Stream iteration tools
+* Pipe operation tools
 
 **Loop Iteration Tools Example**
 
@@ -54,6 +55,40 @@ const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.re
   .map((x) => x**2)       // [1, 4, 9, 16, 25]
   .filter((x) => x < 10)  // [1, 4, 9]
   .toSum();               // 14
+```
+
+**Pipe Iteration Tools Example**
+
+```typescript
+import { pipe } from 'itertools-ts';
+
+const pipeExample = pipe.create<[
+  Iterable<number>,  // input data type
+  Iterable<number>,
+  Iterable<number>,
+  Iterable<number>,
+  number             // output data type
+]>(
+  set.distinct,
+  (input) => single.map(input, (x) => x**2),
+  (input) => single.filter(input, (x) => x < 10),
+  reduce.toSum,
+);
+const result1 = pipeExample([1, 1, 2, 2, 3, 4, 5]); // 14
+
+const asyncPipeExample = pipe.createAsync<[
+  Iterable<number>,  // input data type
+  Iterable<number>,
+  Iterable<number>,
+  Iterable<number>,
+  number             // output data type
+]>(
+  set.distinctAsync,
+  (input) => single.mapAsync(input, (x) => x**2),
+  (input) => single.filterAsync(input, (x) => x < 10),
+  reduce.toSumAsync,
+);
+const result2 =await pipeExample([1, 1, 2, 2, 3, 4, 5]); // 14
 ```
 
 [More about Streams](#Stream-and-Async-Stream)
