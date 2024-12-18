@@ -88,7 +88,7 @@ const asyncPipeExample = pipe.createAsync<[
   (input) => single.filterAsync(input, (x) => x < 10),
   reduce.toSumAsync,
 );
-const result2 =await pipeExample([1, 1, 2, 2, 3, 4, 5]); // 14
+const result2 = await asyncPipeExample([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x))); // 14
 ```
 
 [More about Streams](#Stream-and-Async-Stream)
