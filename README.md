@@ -18,7 +18,7 @@ IterTools makes you an iteration superstar by providing two types of tools:
 
 * Loop iteration tools
 * Stream iteration tools
-* Pipe operation tools
+* Pipe iteration tools
 
 **Loop Iteration Tools Example**
 
