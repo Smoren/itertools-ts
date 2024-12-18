@@ -57,6 +57,8 @@ const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.re
   .toSum();               // 14
 ```
 
+[More about Streams](#Stream-and-Async-Stream)
+
 **Pipe Iteration Tools Example**
 
 ```typescript
@@ -92,8 +94,6 @@ const asyncPipe = createAsyncPipe<[
 const result3 = await asyncPipe([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x))); // 14
 const result4 = await asyncPipe([1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x)));    // 5
 ```
-
-[More about Streams](#Stream-and-Async-Stream)
 
 All functions work on iterable collections and iterators:
 * `Array`
