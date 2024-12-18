@@ -65,11 +65,11 @@ const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.re
 import { createPipe, createAsyncPipe } from 'itertools-ts';
 
 const pipe = createPipe<[
-  Iterable<number>,  // input => set.distinct
+  Iterable<number>,  // INPUT => set.distinct
   Iterable<number>,  // set.distinct => single.map
   Iterable<number>,  // single.map => single.filter
   Iterable<number>,  // single.filter => reduce.toSum
-  number             // reduce.toSum => output
+  number             // reduce.toSum => OUTPUT
 ]>(
   set.distinct,
   (input) => single.map(input, (x) => x**2),
@@ -80,11 +80,11 @@ const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
 const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
 
 const asyncPipe = createAsyncPipe<[
-  AsyncIterable<number>,  // input => set.distinctAsync
+  AsyncIterable<number>,  // INPUT => set.distinctAsync
   AsyncIterable<number>,  // set.distinctAsync => single.mapAsync
   AsyncIterable<number>,  // single.mapAsync => single.filterAsync
   AsyncIterable<number>,  // single.filterAsync => reduce.toSumAsync
-  number                  // reduce.toSumAsync => output
+  number                  // reduce.toSumAsync => OUTPUT
 ]>(
   set.distinctAsync,
   (input) => single.mapAsync(input, (x) => x**2),
