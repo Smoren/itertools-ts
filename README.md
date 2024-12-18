@@ -133,14 +133,6 @@ Setup
 npm i itertools-ts
 ```
 
-### Similar Libraries in Other Languages
-
-IterTools functionality is not limited to TypeScript and Python. Other languages have similar libraries.
-Familiar functionality is available when working in other languages.
-
-* [IterTools PHP](https://github.com/markrogoyski/itertools-php)
-* [IterTools Python](https://docs.python.org/3/library/itertools.html): The original!
-
 Quick Reference
 ---------------
 
@@ -3549,6 +3541,17 @@ const result = Stream.of(['some', 'items'])
 console.log(result);
 // ['some', 'items']
 ```
+
+Similar Libraries in Other Languages
+------------------------------------
+
+IterTools functionality is not limited to TypeScript and Python. Other languages have similar libraries.
+Familiar functionality is available when working in other languages.
+
+* [IterTools PHP](https://github.com/markrogoyski/itertools-php)
+* [IterTools Python](https://docs.python.org/3/library/itertools.html): The original!
+
+
 
 Unit testing
 ------------
