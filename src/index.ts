@@ -339,10 +339,7 @@ export const transform = {
 
 export { Stream, AsyncStream };
 
-export const pipe = {
-  create: createPipe,
-  createAsync: createAsyncPipe,
-}
+export { createPipe, createAsyncPipe };
 
 export type {
   AsyncFlatMapper,
