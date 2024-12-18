@@ -1491,12 +1491,12 @@ function dataProviderForExactlyNWithPredicateTrue(): Array<unknown> {
     [
       [1, 2.2, '3', 'four', 5, ['what']],
       4,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       [1, 2.2, '3', 'four', 5, ['what'], 2.9, -5],
       6,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       [0],
@@ -1591,12 +1591,12 @@ function dataProviderForGeneratorsExactlyNWithPredicateTrue(): Array<unknown> {
     [
       createGeneratorFixture([1, 2.2, '3', 'four', 5, ['what']]),
       4,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createGeneratorFixture([1, 2.2, '3', 'four', 5, ['what'], 2.9, -5]),
       6,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createGeneratorFixture([0]),
@@ -1686,17 +1686,17 @@ function dataProviderForIterablesExactlyNWithPredicateTrue(): Array<unknown> {
     [
       createIterableFixture([1, 2.2, '3', 'four']),
       4,
-      (x: number | string) => x < 3 || typeof x === 'string',
+      (x: number | string) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIterableFixture([1, 2.2, '3', 'four', 5, ['what']]),
       4,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIterableFixture([1, 2.2, '3', 'four', 5, ['what'], 2.9, -5]),
       6,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIterableFixture([0]),
@@ -1786,17 +1786,17 @@ function dataProviderForIteratorsExactlyNWithPredicateTrue(): Array<unknown> {
     [
       createIteratorFixture([1, 2.2, '3', 'four']),
       4,
-      (x: number | string) => x < 3 || typeof x === 'string',
+      (x: number | string) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIteratorFixture([1, 2.2, '3', 'four', 5, ['what']]),
       4,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIteratorFixture([1, 2.2, '3', 'four', 5, ['what'], 2.9, -5]),
       6,
-      (x: number | string | Array<unknown>) => x < 3 ||typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIteratorFixture([0]),
@@ -1916,17 +1916,17 @@ function dataProviderForSetsExactlyNWithPredicateTrue(): Array<unknown> {
     [
       new Set([1, 2.2, '3', 'four']),
       4,
-      (x: number | string) => x < 3 || typeof x === 'string',
+      (x: number | string) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       new Set([1, 2.2, '3', 'four', 5, ['what']]),
       4,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       new Set([1, 2.2, '3', 'four', 5, ['what'], 2.9, -5]),
       6,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       new Set([0]),
@@ -1986,17 +1986,17 @@ function dataProviderForMapsExactlyNWithPredicateTrue(): Array<unknown> {
     [
       createMapFixture([1, 2.2, '3', 'four']),
       4,
-      (x: [unknown, number | string]) => x[1] < 3 || typeof x[1] === 'string',
+      (x: [unknown, number | string]) => (x[1] as number) < 3 || typeof x[1] === 'string',
     ],
     [
       createMapFixture([1, 2.2, '3', 'four', 5, ['what']]),
       4,
-      (x: [unknown, number | string | Array<unknown>]) => x[1] < 3 || typeof x[1] === 'string',
+      (x: [unknown, number | string | Array<unknown>]) => (x[1] as number) < 3 || typeof x[1] === 'string',
     ],
     [
       createMapFixture([1, 2.2, '3', 'four', 5, ['what'], 2.9, -5]),
       6,
-      (x: [unknown, number | string | Array<unknown>]) => x[1] < 3 ||typeof x[1] === 'string',
+      (x: [unknown, number | string | Array<unknown>]) => (x[1] as number) < 3 || typeof x[1] === 'string',
     ],
     [
       createMapFixture([0]),
@@ -2091,12 +2091,12 @@ function dataProviderForExactlyNWithPredicateFalse(): Array<unknown> {
     [
       [1, 2.2, '3', 'four', 5, ['what'], [2]],
       6,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       [1, 2.2, '3', 'four', 5, ['what'], [2], 2.9, -5],
       4,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       [0],
@@ -2191,12 +2191,12 @@ function dataProviderForGeneratorsExactlyNWithPredicateFalse(): Array<unknown> {
     [
       createGeneratorFixture([1, 2.2, '3', 'four', 5, ['what'], [2]]),
       6,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createGeneratorFixture([1, 2.2, '3', 'four', 5, ['what'], [2], 2.9, -5]),
       4,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createGeneratorFixture([0]),
@@ -2286,17 +2286,17 @@ function dataProviderForIterablesExactlyNWithPredicateFalse(): Array<unknown> {
     [
       createIterableFixture([1, 2.2, '3', 'four']),
       5,
-      (x: number | string) => x < 3 || typeof x === 'string',
+      (x: number | string) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIterableFixture([1, 2.2, '3', 'four', 5, ['what'], [2]]),
       6,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIterableFixture([1, 2.2, '3', 'four', 5, ['what'], [2], 2.9, -5]),
       4,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIterableFixture([0]),
@@ -2386,17 +2386,17 @@ function dataProviderForIteratorsExactlyNWithPredicateFalse(): Array<unknown> {
     [
       createIteratorFixture([1, 2.2, '3', 'four']),
       5,
-      (x: number | string) => x < 3 || typeof x === 'string',
+      (x: number | string) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIteratorFixture([1, 2.2, '3', 'four', 5, ['what'], [2]]),
       6,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIteratorFixture([1, 2.2, '3', 'four', 5, ['what'], [2], 2.9, -5]),
       4,
-      (x: number | string | Array<unknown>) => x < 3 ||typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       createIteratorFixture([0]),
@@ -2516,17 +2516,17 @@ function dataProviderForSetsExactlyNWithPredicateFalse(): Array<unknown> {
     [
       new Set([1, 2.2, '3', 'four']),
       5,
-      (x: number | string) => x < 3 || typeof x === 'string',
+      (x: number | string) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       new Set([1, 2.2, '3', 'four', 5, ['what'], [2]]),
       6,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       new Set([1, 2.2, '3', 'four', 5, ['what'], [2], 2.9, -5]),
       4,
-      (x: number | string | Array<unknown>) => x < 3 || typeof x === 'string',
+      (x: number | string | Array<unknown>) => (x as number) < 3 || typeof x === 'string',
     ],
     [
       new Set([0]),
@@ -2586,17 +2586,17 @@ function dataProviderForMapsExactlyNWithPredicateFalse(): Array<unknown> {
     [
       createMapFixture([1, 2.2, '3', 'four']),
       5,
-      (x: [unknown, number | string]) => x[1] < 3 || typeof x[1] === 'string',
+      (x: [unknown, number | string]) => (x[1] as number) < 3 || typeof x[1] === 'string',
     ],
     [
       createMapFixture([1, 2.2, '3', 'four', 5, ['what'], [2]]),
       6,
-      (x: [unknown, number | string | Array<unknown>]) => x[1] < 3 || typeof x[1] === 'string',
+      (x: [unknown, number | string | Array<unknown>]) => (x[1] as number) < 3 || typeof x[1] === 'string',
     ],
     [
       createMapFixture([1, 2.2, '3', 'four', 5, ['what'], [2], 2.9, -5]),
       4,
-      (x: [unknown, number | string | Array<unknown>]) => x[1] < 3 ||typeof x[1] === 'string',
+      (x: [unknown, number | string | Array<unknown>]) => (x[1] as number) < 3 || typeof x[1] === 'string',
     ],
     [
       createMapFixture([0]),

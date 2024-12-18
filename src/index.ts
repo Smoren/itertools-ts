@@ -157,9 +157,11 @@ import {
   toSetAsync,
 } from "./transform";
 
+import { createPipe, createAsyncPipe } from "./pipe";
+
 import { InvalidArgumentError, LengthError } from "./exceptions";
 
-import {
+import type {
   AsyncFlatMapper,
   FlatMapper,
   Pair,
@@ -167,6 +169,12 @@ import {
   Comparator,
   RecordKey,
   ZipTuple,
+  PipeOperation,
+  AsyncPipeOperation,
+  PipeOperationSequence,
+  AsyncPipeOperationSequence,
+  Pipe,
+  AsyncPipe,
 } from "./types";
 
 export const single = {
@@ -331,6 +339,11 @@ export const transform = {
 
 export { Stream, AsyncStream };
 
+export const pipe = {
+  create: createPipe,
+  createAsync: createAsyncPipe,
+}
+
 export type {
   AsyncFlatMapper,
   FlatMapper,
@@ -339,6 +352,12 @@ export type {
   Comparator,
   RecordKey,
   ZipTuple,
+  PipeOperation,
+  AsyncPipeOperation,
+  PipeOperationSequence,
+  AsyncPipeOperationSequence,
+  Pipe,
+  AsyncPipe,
 };
 
 export { InvalidArgumentError, LengthError };
