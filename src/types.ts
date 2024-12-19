@@ -96,7 +96,7 @@ export type PipeOperationSequence<TFlow extends any[]> =
     : [];
 
 /**
- * Type of arrays of asynchronous pipe operations.
+ * Type of arrays of asynchronous pqipe operations.
  *
  * @example
  * const pipe = createAsyncPipe<string, number, boolean>(identityMapper, identityMapper);
