@@ -3551,8 +3551,6 @@ Familiar functionality is available when working in other languages.
 * [IterTools PHP](https://github.com/markrogoyski/itertools-php)
 * [IterTools Python](https://docs.python.org/3/library/itertools.html): The original!
 
-
-
 Unit testing
 ------------
 
