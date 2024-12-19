@@ -27,6 +27,14 @@ export type Pair<T> = [T, T];
  * @example
  * type Last<[1, 2, 3]> = 3;
  */
+export type First<T extends any[]> = T extends [infer F, ...any[]] ? F : never;
+
+/**
+ * Type of the last element in a tuple.
+ *
+ * @example
+ * type Last<[1, 2, 3]> = 3;
+ */
 export type Last<T extends any[]> = T extends [...any[], infer L] ? L : never;
 
 /**
@@ -112,7 +120,7 @@ export type AsyncPipeOperationSequence<TFlow extends any[]> =
  * @example
  * const pipe = createPipe<string, number, boolean>(identityMapper, identityMapper);
  */
-export type Pipe<TFlow extends any[]> = (input: TFlow[0]) => Last<TFlow>;
+export type Pipe<TFlow extends any[]> = PipeOperation<First<TFlow>, Last<TFlow>>;
 
 /**
  * Type of functions that map values asynchronously.
@@ -120,4 +128,4 @@ export type Pipe<TFlow extends any[]> = (input: TFlow[0]) => Last<TFlow>;
  * @example
  * const pipe = createAsyncPipe<string, number, boolean>(identityMapper, identityMapper);
  */
-export type AsyncPipe<TFlow extends any[]> = (input: TFlow[0]) => Promise<Last<TFlow>>;
+export type AsyncPipe<TFlow extends any[]> = AsyncPipeOperation<First<TFlow>, Last<TFlow>>;
