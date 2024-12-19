@@ -1,5 +1,21 @@
-import { AsyncPipe, AsyncPipeOperationSequence, Last, Pipe, PipeOperationSequence } from "./types";
+import { AsyncPipe, AsyncPipeOperationSequence, Last, Pipe, PipeOperation, PipeOperationSequence } from "./types";
 import { reduce } from "./index";
+
+export function createPipe<A>(): (input: A) => A;
+export function createPipe<A, B>(fn1: (input: A) => B): (input: A) => B;
+export function createPipe<A, B, C>(fn1: (input: A) => B, fn2: (input: B) => C): (input: A) => C;
+export function createPipe<A, B, C, D>(
+  fn1: (input: A) => B,
+  fn2: (input: B) => C,
+  fn3: (input: C) => D,
+): (input: A) => D;
+export function createPipe<A, B, C, D, E>(
+  fn1: (input: A) => B,
+  fn2: (input: B) => C,
+  fn3: (input: C) => D,
+  fn4: (input: D) => E,
+): (input: A) => E;
+export function createPipe<TFlow extends any[]>(...operations: PipeOperationSequence<TFlow>): Pipe<TFlow>;
 
 /**
  * Creates a synchronous pipe that processes an input through a sequence of operations.
@@ -10,14 +26,15 @@ import { reduce } from "./index";
  *
  * @returns A function that takes an input and applies each operation in sequence, returning the final result.
  */
-export function createPipe<TFlow extends any[]>(...operations: PipeOperationSequence<TFlow>): Pipe<TFlow> {
-  return (input: TFlow[0]) => {
+export function createPipe(...operations: PipeOperation<any, any>[]): any {
+  return (input: PipeOperation<any, any>[][0]) => {
     return operations.reduce(
       (prevResult, operation) => operation(prevResult),
       input,
-    ) as Last<TFlow>;
+    ) as Last<PipeOperation<any, any>[]>;
   };
 }
+
 
 /**
  * Creates an asynchronous pipe that processes an input through a sequence of operations.
