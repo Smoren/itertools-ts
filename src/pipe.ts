@@ -1,4 +1,5 @@
 import { AsyncPipe, AsyncPipeOperationSequence, Last, Pipe, PipeOperationSequence } from "./types";
+import { reduce } from "./index";
 
 /**
  * Creates a synchronous pipe that processes an input through a sequence of operations.
@@ -11,11 +12,10 @@ import { AsyncPipe, AsyncPipeOperationSequence, Last, Pipe, PipeOperationSequenc
  */
 export function createPipe<TFlow extends any[]>(...operations: PipeOperationSequence<TFlow>): Pipe<TFlow> {
   return (input: TFlow[0]) => {
-    let result = input;
-    for (const operation of operations) {
-      result = operation(result);
-    }
-    return result;
+    return operations.reduce(
+      (prevResult, operation) => operation(prevResult),
+      input,
+    ) as Last<TFlow>;
   };
 }
 
@@ -32,10 +32,10 @@ export function createAsyncPipe<TFlow extends any[]>(
   ...operations: AsyncPipeOperationSequence<TFlow>
 ): AsyncPipe<TFlow> {
   return async (input: TFlow[0]) => {
-    let result = input;
-    for (const operation of operations) {
-      result = await operation(result);
-    }
-    return result as Last<TFlow>;
+    return await reduce.toValueAsync(
+      operations,
+      async (prevResult, operation) => await operation(prevResult),
+      input,
+    ) as Last<TFlow>;
   };
 }
