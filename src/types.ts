@@ -90,7 +90,7 @@ export type PipeOperation<TInput, TOutput> = (input: TInput) => TOutput;
  * @example
  * const identityMapper = <T>(input: T): Promise<T> => Promise.resolve(input);
  */
-export type AsyncPipeOperation<TInput, TOutput> = (input: TInput) => Promise<TOutput>;
+export type AsyncPipeOperation<TInput, TOutput> = (input: TInput) => (Promise<TOutput> | TOutput);
 
 /**
  * Type of arrays of pipe operations.
@@ -111,7 +111,7 @@ export type PipeOperationSequence<TFlow extends any[]> =
  */
 export type AsyncPipeOperationSequence<TFlow extends any[]> =
   TFlow extends [infer T1, infer T2, ...infer Rest]
-    ? [AsyncPipeOperation<T1, T2> | PipeOperation<T1, T2>, ...AsyncPipeOperationSequence<[T2, ...Rest]>]
+    ? [AsyncPipeOperation<T1, T2>, ...AsyncPipeOperationSequence<[T2, ...Rest]>]
     : [];
 
 /**

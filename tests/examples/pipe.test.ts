@@ -55,7 +55,6 @@ it("Pipe Usage Example Test", () => {
   }
 });
 
-
 it("Async Pipe Usage Example Test", async () => {
   const asyncPipe = createAsyncPipe<[
     AsyncIterable<number>,  // INPUT => set.distinctAsync
@@ -66,6 +65,29 @@ it("Async Pipe Usage Example Test", async () => {
   ]>(
     set.distinctAsync,
     (input) => single.mapAsync(input, (x) => x**2),
+    (input) => single.filterAsync(input, (x) => x < 10),
+    reduce.toSumAsync,
+  );
+
+  {
+    const input = createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]);
+    const result = await asyncPipe(input);
+
+    expect(result).toBe(14);
+  }
+
+  {
+    const input = createAsyncIterableFixture([1, 1, 1, 2, 2, 2]);
+    const result = await asyncPipe(input);
+
+    expect(result).toBe(5);
+  }
+});
+
+it("Async Pipe Usage Example Test", async () => {
+  const asyncPipe = createAsyncPipe(
+    set.distinctAsync<number>,
+    (input) => single.mapAsync(input, async (x) => x**2),
     (input) => single.filterAsync(input, (x) => x < 10),
     reduce.toSumAsync,
   );
