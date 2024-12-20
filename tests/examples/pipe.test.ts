@@ -37,7 +37,7 @@ it("Async Pipe Usage Example Test", async () => {
     AsyncIterable<number>,  // set.distinctAsync => single.mapAsync
     AsyncIterable<number>,  // single.mapAsync => single.filterAsync
     AsyncIterable<number>,  // single.filterAsync => reduce.toSumAsync
-    number                  // reduce.toSumAsync => OUTPUT
+    Promise<number>         // reduce.toSumAsync => OUTPUT
   ]>(
     set.distinctAsync,
     (input) => single.mapAsync(input, (x) => x**2),
