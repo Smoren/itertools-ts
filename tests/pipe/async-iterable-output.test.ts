@@ -23,7 +23,7 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
 ] as Array<[AsyncPipe<any>, AsyncIterable<number> | AsyncIterator<number>, AsyncPipeOperationSequence<unknown[]>, Array<unknown>]>)(
-  "Pipe Create With Iterable Output Test",
+  "Async Pipe Create With Iterable Output Test",
   (
     pipe: Pipe<any>,
     input: AsyncIterable<number> | AsyncIterator<number>,
