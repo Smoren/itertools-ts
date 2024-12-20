@@ -9,6 +9,15 @@ import {
 } from "./types";
 import { reduce } from "./index";
 
+/**
+ * Creates a synchronous pipe that processes an input through a sequence of operations.
+ *
+ * @template TFlow - An array representing the types of inputs and outputs for each operation.
+ *
+ * @param operations - A sequence of functions to process the input.
+ *
+ * @returns A function that takes an input and applies each operation in sequence, returning the final result.
+ */
 export function createPipe<TFlow extends any[]>(...operations: PipeOperationSequence<TFlow>): Pipe<TFlow>;
 export function createPipe<T1>(...operations: []): PipeOperation<T1, T1>;
 export function createPipe<T1, T2>(...operations: [PipeOperation<T1, T2>]): PipeOperation<T1, T2>;
@@ -26,15 +35,6 @@ export function createPipe<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T1
 export function createPipe<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(...operations: [PipeOperation<T1, T2>, PipeOperation<T2, T3>, PipeOperation<T3, T4>, PipeOperation<T4, T5>, PipeOperation<T5, T6>, PipeOperation<T6, T7>, PipeOperation<T7, T8>, PipeOperation<T8, T9>, PipeOperation<T9, T10>, PipeOperation<T10, T11>, PipeOperation<T11, T12>, PipeOperation<T12, T13>, PipeOperation<T13, T14>]): PipeOperation<T1, T14>;
 export function createPipe<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(...operations: [PipeOperation<T1, T2>, PipeOperation<T2, T3>, PipeOperation<T3, T4>, PipeOperation<T4, T5>, PipeOperation<T5, T6>, PipeOperation<T6, T7>, PipeOperation<T7, T8>, PipeOperation<T8, T9>, PipeOperation<T9, T10>, PipeOperation<T10, T11>, PipeOperation<T11, T12>, PipeOperation<T12, T13>, PipeOperation<T13, T14>, PipeOperation<T14, T15>]): PipeOperation<T1, T15>;
 export function createPipe<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(...operations: [PipeOperation<T1, T2>, PipeOperation<T2, T3>, PipeOperation<T3, T4>, PipeOperation<T4, T5>, PipeOperation<T5, T6>, PipeOperation<T6, T7>, PipeOperation<T7, T8>, PipeOperation<T8, T9>, PipeOperation<T9, T10>, PipeOperation<T10, T11>, PipeOperation<T11, T12>, PipeOperation<T12, T13>, PipeOperation<T13, T14>, PipeOperation<T14, T15>, PipeOperation<T15, T16>]): PipeOperation<T1, T16>;
-/**
- * Creates a synchronous pipe that processes an input through a sequence of operations.
- *
- * @template TFlow - An array representing the types of inputs and outputs for each operation.
- *
- * @param operations - A sequence of functions to process the input.
- *
- * @returns A function that takes an input and applies each operation in sequence, returning the final result.
- */
 export function createPipe(...operations: PipeOperation<any, any>[]): any {
   return (input: PipeOperation<any, any>[][0]) => {
     return operations.reduce(
@@ -44,6 +44,15 @@ export function createPipe(...operations: PipeOperation<any, any>[]): any {
   };
 }
 
+/**
+ * Creates an asynchronous pipe that processes an input through a sequence of operations.
+ *
+ * @template TFlow - An array representing the types of inputs and outputs for each operation.
+ *
+ * @param operations - A sequence of functions to process the input.
+ *
+ * @returns A function that takes an input and applies each operation in sequence, returning the final result.
+ */
 export function createAsyncPipe<TFlow extends any[]>(...operations: AsyncPipeOperationSequence<TFlow>): AsyncPipe<TFlow>;
 export function createAsyncPipe<T1>(...operations: []): AsyncPipeOperation<T1, T1>;
 export function createAsyncPipe<T1, T2>(...operations: [AsyncPipeOperation<T1, T2>]): AsyncPipeOperation<T1, T2>;
@@ -61,16 +70,6 @@ export function createAsyncPipe<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T1
 export function createAsyncPipe<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14>(...operations: [AsyncPipeOperation<T1, T2>, AsyncPipeOperation<T2, T3>, AsyncPipeOperation<T3, T4>, AsyncPipeOperation<T4, T5>, AsyncPipeOperation<T5, T6>, AsyncPipeOperation<T6, T7>, AsyncPipeOperation<T7, T8>, AsyncPipeOperation<T8, T9>, AsyncPipeOperation<T9, T10>, AsyncPipeOperation<T10, T11>, AsyncPipeOperation<T11, T12>, AsyncPipeOperation<T12, T13>, AsyncPipeOperation<T13, T14>]): AsyncPipeOperation<T1, T14>;
 export function createAsyncPipe<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15>(...operations: [AsyncPipeOperation<T1, T2>, AsyncPipeOperation<T2, T3>, AsyncPipeOperation<T3, T4>, AsyncPipeOperation<T4, T5>, AsyncPipeOperation<T5, T6>, AsyncPipeOperation<T6, T7>, AsyncPipeOperation<T7, T8>, AsyncPipeOperation<T8, T9>, AsyncPipeOperation<T9, T10>, AsyncPipeOperation<T10, T11>, AsyncPipeOperation<T11, T12>, AsyncPipeOperation<T12, T13>, AsyncPipeOperation<T13, T14>, AsyncPipeOperation<T14, T15>]): AsyncPipeOperation<T1, T15>;
 export function createAsyncPipe<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>(...operations: [AsyncPipeOperation<T1, T2>, AsyncPipeOperation<T2, T3>, AsyncPipeOperation<T3, T4>, AsyncPipeOperation<T4, T5>, AsyncPipeOperation<T5, T6>, AsyncPipeOperation<T6, T7>, AsyncPipeOperation<T7, T8>, AsyncPipeOperation<T8, T9>, AsyncPipeOperation<T9, T10>, AsyncPipeOperation<T10, T11>, AsyncPipeOperation<T11, T12>, AsyncPipeOperation<T12, T13>, AsyncPipeOperation<T13, T14>, AsyncPipeOperation<T14, T15>, AsyncPipeOperation<T15, T16>]): AsyncPipeOperation<T1, T16>;
-
-/**
- * Creates an asynchronous pipe that processes an input through a sequence of operations.
- *
- * @template TFlow - An array representing the types of inputs and outputs for each operation.
- *
- * @param operations - A sequence of functions to process the input.
- *
- * @returns A function that takes an input and applies each operation in sequence, returning the final result.
- */
 export function createAsyncPipe(...operations: AsyncPipeOperation<any, any>[]): any {
   return async (input: AsyncPipeOperation<any, any>[][0]) => {
     return await reduce.toValueAsync(
