@@ -1,5 +1,5 @@
 import { Pipe, AsyncPipe, AsyncPipeOperationSequence, transform } from "../../src";
-import { createAsyncPipe, infinite, set, single } from "../../src";
+import { createPipe, infinite, set, single } from "../../src";
 import {
   createAsyncGeneratorFixture,
   createAsyncIterableFixture,
@@ -40,12 +40,12 @@ function dataProviderForArrays() {
   return [
     [
       // TODO output type never
-      createAsyncPipe(),
+      createPipe(),
       [],
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -55,7 +55,7 @@ function dataProviderForArrays() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -66,12 +66,12 @@ function dataProviderForArrays() {
     ],
     [
       // TODO output type never
-      createAsyncPipe(),
+      createPipe(),
       [1, 1, 2, 2, 3, 4, 5],
       [1, 1, 2, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -83,7 +83,7 @@ function dataProviderForArrays() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -102,12 +102,12 @@ function dataProviderForArrays() {
 function dataProviderForGenerators() {
   return [
     [
-      createAsyncPipe(),
+      createPipe(),
       createGeneratorFixture([]),
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -117,7 +117,7 @@ function dataProviderForGenerators() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -127,12 +127,12 @@ function dataProviderForGenerators() {
       [],
     ],
     [
-      createAsyncPipe(),
+      createPipe(),
       createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
       [1, 1, 2, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -142,7 +142,7 @@ function dataProviderForGenerators() {
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -154,7 +154,7 @@ function dataProviderForGenerators() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -168,7 +168,7 @@ function dataProviderForGenerators() {
       [1, 4, 9],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -189,12 +189,12 @@ function dataProviderForGenerators() {
 function dataProviderForIterables() {
   return [
     [
-      createAsyncPipe(),
+      createPipe(),
       createIterableFixture([]),
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -204,7 +204,7 @@ function dataProviderForIterables() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -214,12 +214,12 @@ function dataProviderForIterables() {
       [],
     ],
     [
-      createAsyncPipe(),
+      createPipe(),
       createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
       [1, 1, 2, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -229,7 +229,7 @@ function dataProviderForIterables() {
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -241,7 +241,7 @@ function dataProviderForIterables() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -255,7 +255,7 @@ function dataProviderForIterables() {
       [1, 4, 9],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -276,7 +276,7 @@ function dataProviderForIterables() {
 function dataProviderForIterators() {
   return [
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -286,7 +286,7 @@ function dataProviderForIterators() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -296,7 +296,7 @@ function dataProviderForIterators() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -306,7 +306,7 @@ function dataProviderForIterators() {
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -318,7 +318,7 @@ function dataProviderForIterators() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -337,12 +337,12 @@ function dataProviderForIterators() {
 function dataProviderForAsyncGenerators() {
   return [
     [
-      createAsyncPipe(),
+      createPipe(),
       createAsyncGeneratorFixture([]),
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -352,7 +352,7 @@ function dataProviderForAsyncGenerators() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -362,12 +362,12 @@ function dataProviderForAsyncGenerators() {
       [],
     ],
     [
-      createAsyncPipe(),
+      createPipe(),
       createAsyncGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
       [1, 1, 2, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -377,7 +377,7 @@ function dataProviderForAsyncGenerators() {
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -389,7 +389,7 @@ function dataProviderForAsyncGenerators() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -403,7 +403,7 @@ function dataProviderForAsyncGenerators() {
       [1, 4, 9],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -424,12 +424,12 @@ function dataProviderForAsyncGenerators() {
 function dataProviderForAsyncIterables() {
   return [
     [
-      createAsyncPipe(),
+      createPipe(),
       createAsyncIterableFixture([]),
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -439,7 +439,7 @@ function dataProviderForAsyncIterables() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -449,12 +449,12 @@ function dataProviderForAsyncIterables() {
       [],
     ],
     [
-      createAsyncPipe(),
+      createPipe(),
       createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]),
       [1, 1, 2, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -464,7 +464,7 @@ function dataProviderForAsyncIterables() {
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -476,7 +476,7 @@ function dataProviderForAsyncIterables() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -490,7 +490,7 @@ function dataProviderForAsyncIterables() {
       [1, 4, 9],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -511,7 +511,7 @@ function dataProviderForAsyncIterables() {
 function dataProviderForAsyncIterators() {
   return [
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -521,7 +521,7 @@ function dataProviderForAsyncIterators() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -531,7 +531,7 @@ function dataProviderForAsyncIterators() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -541,7 +541,7 @@ function dataProviderForAsyncIterators() {
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -553,7 +553,7 @@ function dataProviderForAsyncIterators() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -572,12 +572,12 @@ function dataProviderForAsyncIterators() {
 function dataProviderForStrings() {
   return [
     [
-      createAsyncPipe(),
+      createPipe(),
       '',
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<string>,
         AsyncIterable<string>,
       ]>(
@@ -587,7 +587,7 @@ function dataProviderForStrings() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<string>,
         AsyncIterable<string>,
       ]>(
@@ -596,12 +596,12 @@ function dataProviderForStrings() {
       '',
       [],
     ],    [
-      createAsyncPipe(),
+      createPipe(),
       '1122345',
       ['1', '1', '2', '2', '3', '4', '5'],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<string>,
         AsyncIterable<string>,
       ]>(
@@ -611,7 +611,7 @@ function dataProviderForStrings() {
       ['1', '2', '3', '4', '5'],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<string>,
         AsyncIterable<string>,
         AsyncIterable<number>,
@@ -623,7 +623,7 @@ function dataProviderForStrings() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<string>,
         AsyncIterable<string>,
         AsyncIterable<number>,
@@ -642,12 +642,12 @@ function dataProviderForStrings() {
 function dataProviderForSets() {
   return [
     [
-      createAsyncPipe(),
+      createPipe(),
       new Set(),
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -657,7 +657,7 @@ function dataProviderForSets() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -667,12 +667,12 @@ function dataProviderForSets() {
       [],
     ],
     [
-      createAsyncPipe(),
+      createPipe(),
       new Set([1, 2, 3, 4, 5]),
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -682,7 +682,7 @@ function dataProviderForSets() {
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -694,7 +694,7 @@ function dataProviderForSets() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -713,12 +713,12 @@ function dataProviderForSets() {
 function dataProviderForMaps() {
   return [
     [
-      createAsyncPipe(),
+      createPipe(),
       new Map(),
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -728,7 +728,7 @@ function dataProviderForMaps() {
       [],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
       ]>(
@@ -739,12 +739,12 @@ function dataProviderForMaps() {
     ],
     [
 
-      createAsyncPipe(),
+      createPipe(),
       createMapFixture([1, 1, 2, 2, 3, 4, 5]),
       [[0, 1], [1, 1], [2, 2], [3, 2], [4, 3], [5, 4], [6, 5]],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         Map<string, number>,
         AsyncIterable<number>,
       ]>(
@@ -754,7 +754,7 @@ function dataProviderForMaps() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         Map<string, number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -766,7 +766,7 @@ function dataProviderForMaps() {
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         Map<string, number>,
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -780,7 +780,7 @@ function dataProviderForMaps() {
       [1, 4, 9, 16, 25],
     ],
     [
-      createAsyncPipe<[
+      createPipe<[
         Map<string, number>,
         AsyncIterable<number>,
         AsyncIterable<number>,

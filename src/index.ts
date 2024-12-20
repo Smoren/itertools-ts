@@ -157,7 +157,7 @@ import {
   toSetAsync,
 } from "./transform";
 
-import { createPipe, createAsyncPipe } from "./pipe";
+import { createPipe } from "./pipe";
 
 import { InvalidArgumentError, LengthError } from "./exceptions";
 
@@ -339,7 +339,7 @@ export const transform = {
 
 export { Stream, AsyncStream };
 
-export { createPipe, createAsyncPipe };
+export { createPipe };
 
 export type {
   AsyncFlatMapper,

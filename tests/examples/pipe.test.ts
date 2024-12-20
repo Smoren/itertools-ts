@@ -1,4 +1,4 @@
-import { createAsyncPipe, createPipe, reduce, set, single, transform } from "../../src";
+import { createPipe, reduce, set, single, transform } from "../../src";
 // @ts-ignore
 import { createAsyncIterableFixture } from "../fixture";
 
@@ -32,7 +32,7 @@ it("Pipe Usage Example Test", () => {
 });
 
 it("Async Pipe Usage Example Test", async () => {
-  const asyncPipe = createAsyncPipe<[
+  const asyncPipe = createPipe<[
     AsyncIterable<number>,  // INPUT => set.distinctAsync
     AsyncIterable<number>,  // set.distinctAsync => single.mapAsync
     AsyncIterable<number>,  // single.mapAsync => single.filterAsync
@@ -84,7 +84,7 @@ it("Pipe Usage Example Without Type Annotations Test", () => {
 });
 
 it("Async Pipe Usage Example Without Type Annotations Test", async () => {
-  const asyncPipe = createAsyncPipe(
+  const asyncPipe = createPipe(
     set.distinctAsync<number>,
     (input) => single.mapAsync(input, async (x) => x**2),
     (input) => single.filterAsync(input, (x) => x < 10),
