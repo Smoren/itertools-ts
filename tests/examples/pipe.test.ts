@@ -105,3 +105,77 @@ it("Async Pipe Usage Example Without Type Annotations Test", async () => {
     expect(result).toBe(5);
   }
 });
+
+it("Non-iterables Test", () => {
+  const pipe = createPipe(
+    (x: number) => x+1,
+    (x) => x**3,
+    (x) => Math.sqrt(x),
+    (x) => Math.round(x)
+  );
+
+  {
+    const result = pipe(2);
+    expect(result).toBe(5);
+  }
+
+  {
+    const result = pipe(10);
+    expect(result).toBe(36);
+  }
+});
+
+it("Non-iterables Async Test", async () => {
+  const pipe = createPipe(
+    async (x: Promise<number>) => (await x)+1,
+    async (x) => (await x)**3,
+    async (x) => Math.sqrt(await x),
+    async (x) => Math.round(await x)
+  );
+
+  {
+    const result = await pipe(Promise.resolve(2));
+    expect(result).toBe(5);
+  }
+
+  {
+    const result = await pipe(Promise.resolve(10));
+    expect(result).toBe(36);
+  }
+});
+
+it("Non-iterables to iterables Test", () => {
+  const pipe = createPipe(
+    ([x, repeats]: [number, number]) => single.repeat(x, repeats),
+    (items) => single.map(items, (x) => x*3),
+    (items) => transform.toArray(items)
+  );
+
+  {
+    const result = pipe([2, 5]);
+    expect(result).toEqual([6, 6, 6, 6, 6]);
+  }
+
+  {
+    const result = pipe([10, 3]);
+    expect(result).toEqual([30, 30, 30]);
+  }
+});
+
+it("Async non-iterables to iterables Test", async () => {
+  const pipe = createPipe(
+    async (data: Promise<[number, number]>) => single.repeatAsync(...(await data)),
+    async (items) => single.mapAsync(await items, (x) => x*3),
+    async (items) => transform.toArrayAsync(await items)
+  );
+
+  {
+    const result = await pipe(Promise.resolve([2, 5]));
+    expect(result).toEqual([6, 6, 6, 6, 6]);
+  }
+
+  {
+    const result = await pipe(Promise.resolve([10, 3]));
+    expect(result).toEqual([30, 30, 30]);
+  }
+});
