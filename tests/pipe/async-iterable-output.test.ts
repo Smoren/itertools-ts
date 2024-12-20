@@ -1,4 +1,4 @@
-import { Pipe, AsyncPipe, AsyncPipeOperationSequence, transform } from "../../src";
+import { Pipe, PipeOperationSequence, transform } from "../../src";
 import { createPipe, infinite, set, single } from "../../src";
 import {
   createAsyncGeneratorFixture,
@@ -22,7 +22,7 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[AsyncPipe<any>, AsyncIterable<number> | AsyncIterator<number>, AsyncPipeOperationSequence<unknown[]>, Array<unknown>]>)(
+] as Array<[Pipe<any>, AsyncIterable<number> | AsyncIterator<number>, PipeOperationSequence<unknown[]>, Array<unknown>]>)(
   "Async Pipe Create With Iterable Output Test",
   (
     pipe: Pipe<any>,

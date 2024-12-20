@@ -170,11 +170,8 @@ import type {
   RecordKey,
   ZipTuple,
   PipeOperation,
-  AsyncPipeOperation,
   PipeOperationSequence,
-  AsyncPipeOperationSequence,
   Pipe,
-  AsyncPipe,
 } from "./types";
 
 export const single = {
@@ -350,11 +347,8 @@ export type {
   RecordKey,
   ZipTuple,
   PipeOperation,
-  AsyncPipeOperation,
   PipeOperationSequence,
-  AsyncPipeOperationSequence,
   Pipe,
-  AsyncPipe,
 };
 
 export { InvalidArgumentError, LengthError };
