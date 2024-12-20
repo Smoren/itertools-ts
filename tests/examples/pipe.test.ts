@@ -1,4 +1,4 @@
-import { createAsyncPipe, createPipe, reduce, set, single } from "../../src";
+import { createAsyncPipe, createPipe, reduce, set, single, transform } from "../../src";
 // @ts-ignore
 import { createAsyncIterableFixture } from "../fixture";
 
