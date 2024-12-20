@@ -31,30 +31,6 @@ it("Pipe Usage Example Test", () => {
   }
 });
 
-
-it("Pipe Usage Example Test", () => {
-  const pipe = createPipe(
-    set.distinct<number>,
-    (input) => single.map(input, (x) => x**2),
-    (input) => single.filter(input, (x) => x < 10),
-    reduce.toSum,
-  );
-
-  {
-    const input = [1, 1, 2, 2, 3, 4, 5];
-    const result = pipe(input);
-
-    expect(result).toBe(14);
-  }
-
-  {
-    const input = [1, 1, 1, 2, 2, 2];
-    const result = pipe(input);
-
-    expect(result).toBe(5);
-  }
-});
-
 it("Async Pipe Usage Example Test", async () => {
   const asyncPipe = createAsyncPipe<[
     AsyncIterable<number>,  // INPUT => set.distinctAsync
@@ -84,7 +60,30 @@ it("Async Pipe Usage Example Test", async () => {
   }
 });
 
-it("Async Pipe Usage Example Test", async () => {
+it("Pipe Usage Example Without Type Annotations Test", () => {
+  const pipe = createPipe(
+    set.distinct<number>,
+    (input) => single.map(input, (x) => x**2),
+    (input) => single.filter(input, (x) => x < 10),
+    reduce.toSum,
+  );
+
+  {
+    const input = [1, 1, 2, 2, 3, 4, 5];
+    const result = pipe(input);
+
+    expect(result).toBe(14);
+  }
+
+  {
+    const input = [1, 1, 1, 2, 2, 2];
+    const result = pipe(input);
+
+    expect(result).toBe(5);
+  }
+});
+
+it("Async Pipe Usage Example Without Type Annotations Test", async () => {
   const asyncPipe = createAsyncPipe(
     set.distinctAsync<number>,
     (input) => single.mapAsync(input, async (x) => x**2),
