@@ -1,7 +1,4 @@
 import {
-  AsyncPipe,
-  AsyncPipeOperation,
-  AsyncPipeOperationSequence,
   Last,
   Pipe,
   PipeOperation,

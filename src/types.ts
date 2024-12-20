@@ -85,14 +85,6 @@ export type ZipTuple<TValue, TFiller> = {
 export type PipeOperation<TInput, TOutput> = (input: TInput) => TOutput;
 
 /**
- * Type of functions that map values asynchronously.
- *
- * @example
- * const identityMapper = <T>(input: T): Promise<T> => Promise.resolve(input);
- */
-export type AsyncPipeOperation<TInput, TOutput> = (input: TInput) => (Promise<TOutput> | TOutput);
-
-/**
  * Type of arrays of pipe operations.
  *
  * @example
@@ -104,28 +96,9 @@ export type PipeOperationSequence<TFlow extends any[]> =
     : [];
 
 /**
- * Type of arrays of asynchronous pqipe operations.
- *
- * @example
- * const pipe = createAsyncPipe<string, number, boolean>(identityMapper, identityMapper);
- */
-export type AsyncPipeOperationSequence<TFlow extends any[]> =
-  TFlow extends [infer T1, infer T2, ...infer Rest]
-    ? [AsyncPipeOperation<T1, T2>, ...AsyncPipeOperationSequence<[T2, ...Rest]>]
-    : [];
-
-/**
  * Type of functions that map values synchronously.
  *
  * @example
  * const pipe = createPipe<string, number, boolean>(identityMapper, identityMapper);
  */
 export type Pipe<TFlow extends any[]> = PipeOperation<First<TFlow>, Last<TFlow>>;
-
-/**
- * Type of functions that map values asynchronously.
- *
- * @example
- * const pipe = createAsyncPipe<string, number, boolean>(identityMapper, identityMapper);
- */
-export type AsyncPipe<TFlow extends any[]> = AsyncPipeOperation<First<TFlow>, Last<TFlow>>;
