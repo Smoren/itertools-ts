@@ -83,6 +83,8 @@ const result3 = await asyncPipe([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve
 const result4 = await asyncPipe([1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x)));    // 5
 ```
 
+[More about Pipes](#Pipes)
+
 All functions work on iterable collections and iterators:
 * `Array`
 * `Set`
@@ -3528,6 +3530,111 @@ const result = Stream.of(['some', 'items'])
 
 console.log(result);
 // ['some', 'items']
+```
+
+## Pipes
+Pipes are a way to chain multiple operations together.
+
+Types notation:
+```typescript
+type PipeOperation<TInput, TOutput> = (input: TInput) => TOutput;
+type PipeOperationSequence<TFlow extends any[]> =
+  TFlow extends [infer T1, infer T2, ...infer Rest]
+    ? [PipeOperation<T1, T2>, ...PipeOperationSequence<[T2, ...Rest]>]
+    : [];
+type Pipe<TFlow extends any[]> = PipeOperation<First<TFlow>, Last<TFlow>>
+```
+
+Pipe creation function:
+```
+function createPipe<T1, T2, ..., TN>(...operations: [PipeOperation<T1, T2>, ..., PipeOperation<TN-1, TN>]): PipeOperation<T1, TN>
+```
+
+Example with explicit type specification:
+```typescript
+import { createPipe } from "itertools-ts";
+
+const pipe = createPipe<[
+  Iterable<number>,  // INPUT => set.distinct
+  Iterable<number>,  // set.distinct => single.map
+  Iterable<number>,  // single.map => single.filter
+  Iterable<number>,  // single.filter => reduce.toSum
+  number             // reduce.toSum => OUTPUT
+]>(
+  set.distinct,
+  (input) => single.map(input, (x) => x ** 2),
+  (input) => single.filter(input, (x) => x < 10),
+  reduce.toSum,
+);
+
+const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
+
+// You can reuse the pipe
+const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
+```
+
+Example with implicit type specification (works up to 16 operations):
+```typescript
+import { createPipe } from "itertools-ts";
+
+const pipe = createPipe(
+  set.distinct,
+  (input) => single.map(input, (x) => x ** 2),
+  (input) => single.filter(input, (x) => x < 10),
+  reduce.toSum,
+);
+
+const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
+
+// You can reuse the pipe
+const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
+```
+
+Asynchronous pipe example:
+```typescript
+import { createPipe } from "itertools-ts";
+
+const asyncPipe = createPipe<[
+  AsyncIterable<number>,  // INPUT => set.distinctAsync
+  AsyncIterable<number>,  // set.distinctAsync => single.mapAsync
+  AsyncIterable<number>,  // single.mapAsync => single.filterAsync
+  AsyncIterable<number>,  // single.filterAsync => reduce.toSumAsync
+  Promise<number>         // reduce.toSumAsync => OUTPUT
+]>(
+  set.distinctAsync,
+  (input) => single.mapAsync(input, (x) => x**2),
+  (input) => single.filterAsync(input, (x) => x < 10),
+  reduce.toSumAsync,
+);
+
+const asyncInput1 = [1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x));
+const result1 = await asyncPipe(asyncInput1); // 14
+
+// You can reuse the pipe
+const asyncInput2 = [1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x));
+const result4 = await asyncPipe(asyncInput2);    // 5
+```
+
+You can also use pipe for non-iterables:
+```typescript
+import { createPipe } from "itertools-ts";
+
+const pipe = createPipe(
+  (x: number) => x+1,
+  (x) => x**3,
+  (x) => Math.sqrt(x),
+  (x) => Math.round(x)
+);
+
+const result1 = pipe(2);  // 5
+
+const asyncPipe = createPipe(
+  async (x: Promise<number>) => (await x)+1,
+  async (x) => (await x)**3,
+  async (x) => Math.sqrt(await x),
+  async (x) => Math.round(await x)
+);
+const result2 = await pipe(Promise.resolve(2));  // 5
 ```
 
 Similar Libraries in Other Languages
