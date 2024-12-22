@@ -3547,7 +3547,7 @@ type Pipe<TFlow extends any[]> = PipeOperation<First<TFlow>, Last<TFlow>>
 
 Pipe creation function:
 ```
-function createPipe<T1, T2, ..., TN>(...operations: [PipeOperation<T1, T2>, ..., PipeOperation<TN-1, TN>]): PipeOperation<T1, TN>
+function createPipe<T1, T2, ..., TN>(...operations: [PipeOperation<T1, T2>, PipeOperation<T2, T3>, ..., PipeOperation<TN-1, TN>]): PipeOperation<T1, TN>
 ```
 
 Example with explicit type specification:
