@@ -3573,7 +3573,7 @@ const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
 const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
 ```
 
-Example with implicit type specification (works up to 16 operations):
+Example with implicit type specification (works up to 16 operations if you use TypeScript):
 ```typescript
 import { createPipe } from "itertools-ts";
 
