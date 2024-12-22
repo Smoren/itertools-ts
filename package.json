@@ -62,7 +62,9 @@
     "async-zip",
     "loops",
     "async-loops",
-    "looping"
+    "looping",
+    "pipe",
+    "pipes"
   ],
   "devDependencies": {
     "@borderless/ts-scripts": "^0.13.6",
