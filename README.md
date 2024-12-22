@@ -3578,7 +3578,7 @@ Example with implicit type specification (works up to 16 operations):
 import { createPipe } from "itertools-ts";
 
 const pipe = createPipe(
-  set.distinct,
+  set.distinct<number>,
   (input) => single.map(input, (x) => x ** 2),
   (input) => single.filter(input, (x) => x < 10),
   reduce.toSum,
