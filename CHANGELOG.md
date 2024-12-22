@@ -1,10 +1,9 @@
 # IterTools Typescript Change Log
 
-## v1.28.0 - TBD
+## v1.28.0 - 2024-12-22
 
 ### New features
 * `createPipe()`
-* `createAsyncPipe()`
 
 ## v1.27.1 - 2024-03-03
 
