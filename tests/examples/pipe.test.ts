@@ -43,7 +43,7 @@ it("Pipe Usage Example Test", () => {
   }
 });
 
-it("Chain pipe Usage Example Test", () => {
+it("Chained Pipe Usage Example Test", () => {
   const pipe = createPipe(set.distinct<number>)
     .add((input) => single.map(input, (x) => x**2))
     .add((input) => single.filter(input, (x) => x < 10))
@@ -64,7 +64,7 @@ it("Chain pipe Usage Example Test", () => {
   }
 });
 
-it("Another chain pipe Usage Example Test", () => {
+it("Another Chain Pipe Usage Example Test", () => {
   const pipe = createPipe()
     .add(set.distinct<number>)
     .add((input) => single.map(input, (x) => x**2))
@@ -145,6 +145,28 @@ it("Async Pipe Usage Example Without Type Annotations Test", async () => {
     (input) => single.filterAsync(input, (x) => x < 10),
     reduce.toSumAsync,
   );
+
+  {
+    const input = createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]);
+    const result = await asyncPipe(input);
+
+    expect(result).toBe(14);
+  }
+
+  {
+    const input = createAsyncIterableFixture([1, 1, 1, 2, 2, 2]);
+    const result = await asyncPipe(input);
+
+    expect(result).toBe(5);
+  }
+});
+
+it("Chained Async Pipe Usage Example Test", async () => {
+  const asyncPipe = createPipe()
+      .add(set.distinctAsync<number>)
+      .add((input) => single.mapAsync(input, async (x) => x**2))
+      .add((input) => single.filterAsync(input, (x) => x < 10))
+      .add(reduce.toSumAsync);
 
   {
     const input = createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]);
