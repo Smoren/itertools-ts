@@ -43,8 +43,9 @@ it("Pipe Usage Example Test", () => {
   }
 });
 
-it("Chained Pipe Usage Example Test", () => {
-  const pipe = createPipe(set.distinct<number>)
+it("Chain Pipe Usage Example Test", () => {
+  const pipe = createPipe()
+    .add(set.distinct<number>)
     .add((input) => single.map(input, (x) => x**2))
     .add((input) => single.filter(input, (x) => x < 10))
     .add(reduce.toSum);
@@ -64,9 +65,8 @@ it("Chained Pipe Usage Example Test", () => {
   }
 });
 
-it("Another Chain Pipe Usage Example Test", () => {
-  const pipe = createPipe()
-    .add(set.distinct<number>)
+it("Another Chained Pipe Usage Example Test", () => {
+  const pipe = createPipe(set.distinct<number>)
     .add((input) => single.map(input, (x) => x**2))
     .add((input) => single.filter(input, (x) => x < 10))
     .add(reduce.toSum);

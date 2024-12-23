@@ -73,6 +73,7 @@ const pipe = createPipe(
 const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
 const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
 
+// Async example
 const asyncPipe = createPipe(
   set.distinctAsync<number>,
   (input) => single.mapAsync(input, (x) => x**2),
@@ -81,6 +82,16 @@ const asyncPipe = createPipe(
 );
 const result3 = await asyncPipe([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x))); // 14
 const result4 = await asyncPipe([1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x)));    // 5
+
+// Another way to create pipes
+const anotherPipe = createPipe()
+  .add(set.distinct<number>)
+  .add((input) => single.map(input, (x) => x**2))
+  .add((input) => single.filter(input, (x) => x < 10))
+  .add(reduce.toSum);
+
+const result5 = anotherPipe([1, 1, 2, 2, 3, 4, 5]); // 14
+const result6 = anotherPipe([1, 1, 1, 2, 2, 2]);    // 5
 ```
 
 [More about Pipes](#Pipes)
