@@ -1,5 +1,9 @@
 # IterTools Typescript Change Log
 
+## v1.28.1 - 2024-12-23
+
+Documentation fixed.
+
 ## v1.28.0 - 2024-12-22
 
 ### New features
