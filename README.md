@@ -62,7 +62,7 @@ const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.re
 **Pipe Iteration Tools Example**
 
 ```typescript
-import { createPipe, createAsyncPipe } from 'itertools-ts';
+import { createPipe } from 'itertools-ts';
 
 const pipe = createPipe(
   set.distinct<number>,
