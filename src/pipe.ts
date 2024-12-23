@@ -4,7 +4,6 @@ import {
   PipeOperation,
   PipeOperationSequence,
 } from "./types";
-import { reduce } from "./index";
 
 /**
  * Creates a synchronous pipe that processes an input through a sequence of operations.
