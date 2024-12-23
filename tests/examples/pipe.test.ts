@@ -163,10 +163,10 @@ it("Async Pipe Usage Example Without Type Annotations Test", async () => {
 
 it("Chained Async Pipe Usage Example Test", async () => {
   const asyncPipe = createPipe()
-      .add(set.distinctAsync<number>)
-      .add((input) => single.mapAsync(input, async (x) => x**2))
-      .add((input) => single.filterAsync(input, (x) => x < 10))
-      .add(reduce.toSumAsync);
+    .add(set.distinctAsync<number>)
+    .add((input) => single.mapAsync(input, async (x) => x**2))
+    .add((input) => single.filterAsync(input, (x) => x < 10))
+    .add(reduce.toSumAsync);
 
   {
     const input = createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]);
