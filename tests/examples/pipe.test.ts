@@ -29,6 +29,61 @@ it("Pipe Usage Example Test", () => {
 
     expect(result).toBe(5);
   }
+
+  const extendedPipe = pipe.add((x) => x**2);
+
+  {
+    const input = [1, 1, 2, 2, 3, 4, 5];
+    expect(extendedPipe(input)).toBe(196);
+  }
+
+  {
+    const input = [1, 1, 1, 2, 2, 2];
+    expect(extendedPipe(input)).toBe(25);
+  }
+});
+
+it("Chain pipe Usage Example Test", () => {
+  const pipe = createPipe(set.distinct<number>)
+    .add((input) => single.map(input, (x) => x**2))
+    .add((input) => single.filter(input, (x) => x < 10))
+    .add(reduce.toSum);
+
+  {
+    const input = [1, 1, 2, 2, 3, 4, 5];
+    const result = pipe(input);
+
+    expect(result).toBe(14);
+  }
+
+  {
+    const input = [1, 1, 1, 2, 2, 2];
+    const result = pipe(input);
+
+    expect(result).toBe(5);
+  }
+});
+
+it("Another chain pipe Usage Example Test", () => {
+  const pipe = createPipe()
+    .add(set.distinct<number>)
+    .add((input) => single.map(input, (x) => x**2))
+    .add((input) => single.filter(input, (x) => x < 10))
+    .add(reduce.toSum);
+
+  {
+    const input = [1, 1, 2, 2, 3, 4, 5];
+    const result = pipe(input);
+
+    expect(result).toBe(14);
+  }
+
+  {
+    const input = [1, 1, 1, 2, 2, 2];
+    const result = pipe(input);
+
+    expect(result).toBe(5);
+  }
 });
 
 it("Async Pipe Usage Example Test", async () => {
