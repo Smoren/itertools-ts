@@ -109,6 +109,43 @@ function dataProviderForArrays() {
       [1, 1, 2, 2, 3, 4, 5],
       3,
     ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toCountAsync,
+      ),
+      [1, 1, 2, 2, 3, 4, 5],
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      [1, 1, 2, 2, 3, 4, 5],
+      3,
+    ],
+    [
+      createPipe(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      [1, 1, 2, 2, 3, 4, 5],
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2)
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      [1, 1, 2, 2, 3, 4, 5],
+      3,
+    ],
   ];
 }
 
@@ -183,6 +220,43 @@ function dataProviderForGenerators() {
       3,
     ],
     [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toCountAsync,
+      ),
+      createGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2)
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
       createPipe<[
         AsyncIterable<number>,
         AsyncIterable<number>,
@@ -191,6 +265,29 @@ function dataProviderForGenerators() {
         AsyncIterable<number>,
         Promise<number>,
       ]>(
+        (input) => single.limitAsync(input, 3),
+        set.distinctAsync,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toSumAsync,
+      ),
+      infinite.count(1, 2),
+      10,
+    ],
+    [
+      createPipe(
+        (input: AsyncIterable<number>) => single.limitAsync(input, 3),
+        set.distinctAsync,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toSumAsync,
+      ),
+      infinite.count(1, 2),
+      10,
+    ],
+    [
+      createPipe(
+        (input: AsyncIterable<unknown>) => single.mapAsync(input, (x) => Number(x)),
         (input) => single.limitAsync(input, 3),
         set.distinctAsync,
         (input) => single.mapAsync(input, (x) => x**2),
@@ -274,22 +371,41 @@ function dataProviderForIterables() {
       3,
     ],
     [
-      createPipe<[
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        Promise<number>,
-      ]>(
-        (input) => single.limitAsync(input, 3),
-        set.distinctAsync,
+      createPipe(
+        set.distinctAsync<number>,
         (input) => single.mapAsync(input, (x) => x**2),
         (input) => single.filterAsync(input, (x) => x < 10),
-        reduce.toSumAsync,
+        reduce.toCountAsync,
       ),
-      infinite.count(1, 2),
-      10,
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2)
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
     ],
   ];
 }
@@ -361,6 +477,43 @@ function dataProviderForIterators() {
         (input) => single.filterAsync(input, (x) => x < 10),
         reduce.toCountAsync,
       ),
+      createIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toCountAsync,
+      ),
+      createIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2)
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
       createIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
       3,
     ],
@@ -438,22 +591,41 @@ function dataProviderForAsyncGenerators() {
       3,
     ],
     [
-      createPipe<[
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        Promise<number>,
-      ]>(
-        (input) => single.limitAsync(input, 3),
-        set.distinctAsync,
+      createPipe(
+        set.distinctAsync<number>,
         (input) => single.mapAsync(input, (x) => x**2),
         (input) => single.filterAsync(input, (x) => x < 10),
-        reduce.toSumAsync,
+        reduce.toCountAsync,
       ),
-      infinite.count(1, 2),
-      10,
+      createAsyncGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createAsyncGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createAsyncGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2)
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createAsyncGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
     ],
   ];
 }
@@ -529,22 +701,41 @@ function dataProviderForAsyncIterables() {
       3,
     ],
     [
-      createPipe<[
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        Promise<number>,
-      ]>(
-        (input) => single.limitAsync(input, 3),
-        set.distinctAsync,
+      createPipe(
+        set.distinctAsync<number>,
         (input) => single.mapAsync(input, (x) => x**2),
         (input) => single.filterAsync(input, (x) => x < 10),
-        reduce.toSumAsync,
+        reduce.toCountAsync,
       ),
-      infinite.count(1, 2),
-      10,
+      createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2)
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createAsyncIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
     ],
   ];
 }
@@ -619,6 +810,43 @@ function dataProviderForAsyncIterators() {
       createAsyncIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
       3,
     ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toCountAsync,
+      ),
+      createAsyncIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createAsyncIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createAsyncIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2)
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createAsyncIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
   ];
 }
 
@@ -676,6 +904,43 @@ function dataProviderForStrings() {
       '1122345',
       3,
     ],
+    [
+      createPipe(
+        set.distinctAsync<string>,
+        (input) => single.mapAsync(input, (x) => Number(x)**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toCountAsync,
+      ),
+      '1122345',
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinctAsync<string>)
+        .add((input) => single.mapAsync(input, (x) => Number(x)**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      '1122345',
+      3,
+    ],
+    [
+      createPipe(set.distinctAsync<string>)
+        .add((input) => single.mapAsync(input, (x) => Number(x)**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      '1122345',
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<string>,
+        (input) => single.mapAsync(input, (x) => Number(x)**2),
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      '1122345',
+      3,
+    ],
   ];
 }
 
@@ -728,6 +993,43 @@ function dataProviderForSets() {
         (input) => single.filterAsync(input, (x) => x < 10),
         reduce.toCountAsync,
       ),
+      new Set([1, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toCountAsync,
+      ),
+      new Set([1, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      new Set([1, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      new Set([1, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2)
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
       new Set([1, 2, 3, 4, 5]),
       3,
     ],
@@ -811,6 +1113,47 @@ function dataProviderForMaps() {
         (input) => single.filterAsync(input, (x) => x < 10),
         reduce.toCountAsync,
       ),
+      createMapFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        single.valuesAsync<number, number>,
+        set.distinctAsync,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toCountAsync,
+      ),
+      createMapFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe()
+        .add(single.valuesAsync<number, number>)
+        .add(set.distinctAsync)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createMapFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(single.valuesAsync<number, number>)
+        .add(set.distinctAsync)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createMapFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        single.valuesAsync<number, number>,
+        set.distinctAsync,
+        (input) => single.mapAsync(input, (x) => x**2)
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
       createMapFixture([1, 1, 2, 2, 3, 4, 5]),
       3,
     ],

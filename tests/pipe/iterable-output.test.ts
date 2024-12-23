@@ -85,6 +85,38 @@ function dataProviderForArrays() {
       [1, 1, 2, 2, 3, 4, 5],
       [1, 4, 9],
     ],
+    [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+      ),
+      [1, 1, 2, 2, 3, 4, 5],
+      [1, 4, 9],
+    ],
+    [
+      createPipe()
+        .add(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      [1, 1, 2, 2, 3, 4, 5],
+      [1, 4, 9],
+    ],
+    [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+      ).add((input) => single.filter(input, (x) => x < 10)),
+      [1, 1, 2, 2, 3, 4, 5],
+      [1, 4, 9],
+    ],
+    [
+      createPipe(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      [1, 1, 2, 2, 3, 4, 5],
+      [1, 4, 9],
+    ],
   ];
 }
 
@@ -157,6 +189,38 @@ function dataProviderForGenerators() {
       [1, 4, 9],
     ],
     [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+      ),
+      createGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe()
+        .add(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      createGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      createGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+      ).add((input) => single.filter(input, (x) => x < 10)),
+      createGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
       createPipe<[
         Iterable<number>,
         Iterable<number>,
@@ -164,6 +228,27 @@ function dataProviderForGenerators() {
         Iterable<number>,
         Iterable<number>,
       ]>(
+        (input) => single.limit(input, 3),
+        set.distinct,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+      ),
+      infinite.count(1, 2),
+      [1, 9],
+    ],
+    [
+      createPipe(
+        (input: Iterable<number>) => single.limit(input, 3),
+        set.distinct,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+      ),
+      infinite.count(1, 2),
+      [1, 9],
+    ],
+    [
+      createPipe(
+        (input: Iterable<unknown>) => single.map(input, (x) => Number(x)),
         (input) => single.limit(input, 3),
         set.distinct,
         (input) => single.map(input, (x) => x**2),
@@ -244,20 +329,36 @@ function dataProviderForIterables() {
       [1, 4, 9],
     ],
     [
-      createPipe<[
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-      ]>(
-        (input) => single.limit(input, 3),
-        set.distinct,
+      createPipe(
+        set.distinct<number>,
         (input) => single.map(input, (x) => x**2),
         (input) => single.filter(input, (x) => x < 10),
       ),
-      infinite.count(1, 2),
-      [1, 9],
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe()
+        .add(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+      ).add((input) => single.filter(input, (x) => x < 10)),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
     ],
   ];
 }
@@ -317,6 +418,38 @@ function dataProviderForIterators() {
         (input) => single.map(input, (x) => x**2),
         (input) => single.filter(input, (x) => x < 10),
       ),
+      createIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+      ),
+      createIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe()
+        .add(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      createIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      createIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+      ).add((input) => single.filter(input, (x) => x < 10)),
       createIteratorFixture([1, 1, 2, 2, 3, 4, 5]),
       [1, 4, 9],
     ],
@@ -390,6 +523,38 @@ function dataProviderForStrings() {
       '1122345',
       [1, 4, 9],
     ],
+    [
+      createPipe(
+        set.distinct<string>,
+        (input) => single.map(input, (x) => Number(x)**2),
+        (input) => single.filter(input, (x) => x < 10),
+      ),
+      '1122345',
+      [1, 4, 9],
+    ],
+    [
+      createPipe()
+        .add(set.distinct<string>)
+        .add((input) => single.map(input, (x) => Number(x)**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      '1122345',
+      [1, 4, 9],
+    ],
+    [
+      createPipe(set.distinct<string>)
+        .add((input) => single.map(input, (x) => Number(x)**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      '1122345',
+      [1, 4, 9],
+    ],
+    [
+      createPipe(
+        set.distinct<string>,
+        (input) => single.map(input, (x) => Number(x)**2),
+      ).add((input) => single.filter(input, (x) => x < 10)),
+      '1122345',
+      [1, 4, 9],
+    ],
   ];
 }
 
@@ -458,6 +623,38 @@ function dataProviderForSets() {
         (input) => single.map(input, (x) => x**2),
         (input) => single.filter(input, (x) => x < 10),
       ),
+      new Set([1, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+      ),
+      new Set([1, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe()
+        .add(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      new Set([1, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      new Set([1, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+      ).add((input) => single.filter(input, (x) => x < 10)),
       new Set([1, 2, 3, 4, 5]),
       [1, 4, 9],
     ],
@@ -546,6 +743,40 @@ function dataProviderForMaps() {
         (input) => single.map(input, (x) => x**2),
         (input) => single.filter(input, (x) => x < 10),
       ),
+      createMapFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(
+        single.values<number, number>,
+        set.distinct,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+      ),
+      createMapFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe()
+        .add(single.values<number, number>)
+        .add(set.distinct)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      createMapFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(single.values<number, number>)
+        .add(set.distinct)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
+      createMapFixture([1, 1, 2, 2, 3, 4, 5]),
+      [1, 4, 9],
+    ],
+    [
+      createPipe(single.values<number, number>, set.distinct)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10)),
       createMapFixture([1, 1, 2, 2, 3, 4, 5]),
       [1, 4, 9],
     ],
