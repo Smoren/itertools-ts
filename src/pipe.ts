@@ -40,9 +40,6 @@ export function createPipe(...operations: PipeOperation<any, any>[]): any {
     ) as Last<PipeOperation<any, any>[]>;
   };
 
-  result.add = (operation: PipeOperation<any, any>) => {
-    return createPipe(result, operation);
-  }
-
+  result.add = (operation: PipeOperation<any, any>) => createPipe(result, operation);
   return result;
 }
