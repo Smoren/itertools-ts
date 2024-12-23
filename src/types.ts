@@ -101,4 +101,8 @@ export type PipeOperationSequence<TFlow extends any[]> =
  * @example
  * const pipe = createPipe<string, number, boolean>(identityMapper, identityMapper);
  */
-export type Pipe<TFlow extends any[]> = PipeOperation<First<TFlow>, Last<TFlow>>;
+export type Pipe<TFlow extends any[]> = PipeOperation<First<TFlow>, Last<TFlow>> & {
+  add: TFlow extends []
+    ? <TInput, TOutput>(operation: PipeOperation<TInput, TOutput>) => Pipe<[TInput, TOutput]>
+    : <T>(operation: PipeOperation<Last<TFlow>, T>) => Pipe<[...TFlow, T]>;
+};
