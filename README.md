@@ -3553,7 +3553,11 @@ type PipeOperationSequence<TFlow extends any[]> =
   TFlow extends [infer T1, infer T2, ...infer Rest]
     ? [PipeOperation<T1, T2>, ...PipeOperationSequence<[T2, ...Rest]>]
     : [];
-type Pipe<TFlow extends any[]> = PipeOperation<First<TFlow>, Last<TFlow>>
+type Pipe<TFlow extends any[]> = PipeOperation<First<TFlow>, Last<TFlow>> & {
+  add: TFlow extends []
+    ? <TInput, TOutput>(operation: PipeOperation<TInput, TOutput>) => Pipe<[TInput, TOutput]>
+    : <T>(operation: PipeOperation<Last<TFlow>, T>) => Pipe<[...TFlow, T]>;
+};
 ```
 
 Pipe creation function:
@@ -3601,6 +3605,28 @@ const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
 const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
 ```
 
+Example with creating pipe using chain calls:
+```typescript
+import { createPipe } from "itertools-ts";
+
+const pipe = createPipe()
+  .add(set.distinct<number>)
+  .add((input) => single.map(input, (x) => x**2))
+  .add((input) => single.filter(input, (x) => x < 10))
+  .add(reduce.toSum);
+
+const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
+const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
+
+// You can create a new pipe adding some operations
+const extendedPipe = pipe
+  .add((x) => x * 2)
+  .add((x) => x + 1);
+
+const result3 = extendedPipe([1, 1, 2, 2, 3, 4, 5]); // 29
+const result4 = extendedPipe([1, 1, 1, 2, 2, 2]);    // 11
+```
+
 Asynchronous pipe example:
 ```typescript
 import { createPipe } from "itertools-ts";
@@ -3624,6 +3650,10 @@ const result1 = await asyncPipe(asyncInput1); // 14
 // You can reuse the pipe
 const asyncInput2 = [1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x));
 const result4 = await asyncPipe(asyncInput2);    // 5
+
+// You can create a new pipe adding some asynchronous operations
+const extendedAsyncPipe = asyncPipe.add(async (x) => (await x) * 2);
+const result5 = await extendedAsyncPipe(asyncInput2); // 10
 ```
 
 You can also use pipe for non-iterables:

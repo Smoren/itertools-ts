@@ -1,5 +1,11 @@
 # IterTools Typescript Change Log
 
+## v1.29.0 - 2024-12-24
+
+### New features
+* Pipe
+  * `add()`
+
 ## v1.28.1 - 2024-12-23
 
 Documentation fixed.
