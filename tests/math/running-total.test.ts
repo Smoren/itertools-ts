@@ -7,17 +7,13 @@ import {
   createIteratorFixture,
   // @ts-ignore
 } from "../fixture";
-import { math } from "../../src";
+import { math, Numeric, NumericString } from "../../src";
 
 describe.each([
   ...dataProviderForArraysWithInitialValue(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, number|undefined, Array<unknown>]>)(
+])(
   "Math Running Total Test With Initial Value",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    initialValue: number|undefined,
-    expected: Array<unknown>
-  ) => {
+  (input, initialValue, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -36,17 +32,9 @@ describe.each([
 describe.each([
   ...dataProviderForArraysWithInitialValue(),
   ...dataProviderForAsyncWithInitialValue(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  number|undefined,
-  Array<unknown>
-]>)(
+])(
   "Math Running Total Async Test With Initial Value",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    initialValue: number|undefined,
-    expected: Array<unknown>
-  ) => {
+  (input, initialValue, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -69,12 +57,9 @@ describe.each([
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, Array<unknown>]>)(
+])(
   "Math Running Total Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -100,15 +85,9 @@ describe.each([
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  Array<unknown>
-]>)(
+])(
   "Math Running Total Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -124,7 +103,7 @@ describe.each([
   }
 );
 
-function dataProviderForArraysWithInitialValue(): Array<unknown> {
+function dataProviderForArraysWithInitialValue(): Array<[Array<Numeric>, number|undefined, Array<number>]> {
   return [
     [
       [],
@@ -174,7 +153,7 @@ function dataProviderForArraysWithInitialValue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncWithInitialValue(): Array<unknown> {
+function dataProviderForAsyncWithInitialValue(): Array<[AsyncIterable<Numeric>, number|undefined, Array<number>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -224,7 +203,7 @@ function dataProviderForAsyncWithInitialValue(): Array<unknown> {
   ];
 }
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<Numeric>, Array<number>]> {
   return [
     [
       [],
@@ -267,13 +246,13 @@ function dataProviderForArrays(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      [0, 1, true, false, null, '3', ''],
+      [0, 1, true, false, null, '3', ''] as unknown as Array<Numeric>,
       [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<Numeric>, Array<number>]> {
   return [
     [
       createGeneratorFixture([]),
@@ -316,13 +295,13 @@ function dataProviderForGenerators(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      createGeneratorFixture([0, 1, true, false, null, '3', '']),
+      createGeneratorFixture([0, 1, true, false, null, '3', ''] as unknown as Array<Numeric>),
       [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<Numeric>, Array<number>]> {
   return [
     [
       createIterableFixture([]),
@@ -365,13 +344,13 @@ function dataProviderForIterables(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      createIterableFixture([0, 1, true, false, null, '3', '']),
+      createIterableFixture([0, 1, true, false, null, '3', ''] as unknown as Array<Numeric>),
       [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<Numeric>, Array<number>]> {
   return [
     [
       createIteratorFixture([]),
@@ -414,30 +393,30 @@ function dataProviderForIterators(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      createIteratorFixture([0, 1, true, false, null, '3', '']),
+      createIteratorFixture([0, 1, true, false, null, '3', ''] as unknown as Array<Numeric>),
       [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[Iterable<NumericString>, Array<number>]> {
   return [
     [
-      '',
+      '' as Iterable<NumericString>,
       [],
     ],
     [
-      '1',
+      '1' as Iterable<NumericString>,
       [1],
     ],
     [
-      '123',
+      '123' as Iterable<NumericString>,
       [1, 3, 6],
     ],
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<Numeric>, Array<number>]> {
   return [
     [
       new Set([]),
@@ -476,13 +455,13 @@ function dataProviderForSets(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      new Set([2, true, false, '3', '']),
+      new Set([2, true, false, '3', ''] as unknown as Array<Numeric>),
       [2, 3, 3, 6, 6],
     ],
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<Numeric>, Array<number>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -525,13 +504,13 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      createAsyncGeneratorFixture([0, 1, true, false, null, '3', '']),
+      createAsyncGeneratorFixture([0, 1, true, false, null, '3', ''] as unknown as Array<Numeric>),
       [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<Numeric>, Array<number>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -574,13 +553,13 @@ function dataProviderForAsyncIterables(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      createAsyncIterableFixture([0, 1, true, false, null, '3', '']),
+      createAsyncIterableFixture([0, 1, true, false, null, '3', ''] as unknown as Array<Numeric>),
       [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<Numeric>, Array<number>]> {
   return [
     [
       createAsyncIteratorFixture([]),
@@ -623,7 +602,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
       [1, 3, 0],
     ],
     [
-      createAsyncIteratorFixture([0, 1, true, false, null, '3', '']),
+      createAsyncIteratorFixture([0, 1, true, false, null, '3', ''] as unknown as Array<Numeric>),
       [0, 1, 2, 2, 2, 5, 5],
     ],
   ];
