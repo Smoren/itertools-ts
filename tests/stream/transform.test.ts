@@ -10,16 +10,12 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown> | Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
+])(
   "Stream Transform Test",
-  (
-    input: Iterable<unknown> | Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, streamFactory, expected) => {
     it("", () => {
       // Given
-      const result = streamFactory(input);
+      const result = streamFactory(input as any);
 
       // Then
       expect(result).toEqual(expected);
@@ -29,19 +25,9 @@ describe.each([
 
 describe.each([
   ...dataProviderForTee(),
-] as Array<[
-    Iterable<unknown> | Iterator<unknown>,
-  number,
-  Array<(stream: Stream<unknown>) => Stream<unknown>>,
-  Array<unknown>
-]>)(
+])(
   "Stream Transform Tee Test",
-  (
-    input: Iterable<unknown> | Iterator<unknown>,
-    count: number,
-    extraOperations: Array<(stream: Stream<unknown>) => Stream<unknown>>,
-    expected: Array<unknown>
-  ) => {
+  (input, count, extraOperations, expected) => {
     it("", () => {
       // Given
       const inputStream = Stream.of(input);
@@ -60,372 +46,251 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, (data: Array<any>) => any, any]> {
   return [
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown>): Array<unknown> => Stream.of(iterable)
         .toArray(),
       [],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number>): Array<number> => Stream.of(iterable)
         .toArray(),
       [1, 2, 3],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number>): Set<number> => Stream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number>): Set<number> => Stream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       [1, 1, 2, 2, 3, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number>): Set<number> => Stream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<[unknown, unknown]>): Map<unknown, unknown> => Stream.of(iterable)
         .toMap(),
       new Map([]),
     ],
     [
       [['a', 1], ['b', 2], ['c', 3]],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<[string, number]>): Map<string, number> => Stream.of(iterable)
         .toMap(),
       new Map([['a', 1], ['b', 2], ['c', 3]]),
     ],
     [
       [['a', 1], ['a', 2], ['a', 3]],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<[string, number]>): Map<string, number> => Stream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
     ],
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
-  return [
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toSet(),
-      new Set([]),
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createGeneratorFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toMap(),
-      new Map([]),
-    ],
-    [
-      createGeneratorFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toMap(),
-      new Map([['a', 1], ['b', 2], ['c', 3]]),
-    ],
-    [
-      createGeneratorFixture([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toMap(),
-      new Map([['a', 3]]),
-    ],
-  ];
+function dataProviderForGenerators(): Array<[Generator<any>, (data: Generator<any>) => any, any]> {
+  return dataProviderForArrays().map((item) => [
+    createGeneratorFixture(item[0]),
+    ...item.slice(1) as [(data: any) => any, any],
+  ]);
 }
 
-function dataProviderForIterables(): Array<unknown> {
-  return [
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toSet(),
-      new Set([]),
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createIterableFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toMap(),
-      new Map([]),
-    ],
-    [
-      createIterableFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toMap(),
-      new Map([['a', 1], ['b', 2], ['c', 3]]),
-    ],
-    [
-      createIterableFixture([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .toMap(),
-      new Map([['a', 3]]),
-    ],
-  ];
+function dataProviderForIterables(): Array<[Iterable<any>, (data: Iterable<any>) => any, any]> {
+  return dataProviderForArrays().map((item) => [
+    createIterableFixture(item[0]),
+    ...item.slice(1) as [(data: any) => any, any],
+  ]);
 }
 
-function dataProviderForIterators(): Array<unknown> {
-  return [
-    [
-      createIteratorFixture([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .toSet(),
-      new Set([]),
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createIteratorFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .toMap(),
-      new Map([]),
-    ],
-    [
-      createIteratorFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .toMap(),
-      new Map([['a', 1], ['b', 2], ['c', 3]]),
-    ],
-    [
-      createIteratorFixture([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .toMap(),
-      new Map([['a', 3]]),
-    ],
-  ];
+function dataProviderForIterators(): Array<[Iterator<any>, (data: Iterator<any>) => any, any]> {
+  return dataProviderForArrays().map((item) => [
+    createIteratorFixture(item[0]),
+    ...item.slice(1) as [(data: any) => any, any],
+  ]);
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, (data: string) => any, any]> {
   return [
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .toArray(),
       [],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .toArray(),
       ['1', '2', '3'],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Set<string> => Stream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Set<string> => Stream.of(iterable)
         .toSet(),
       new Set(['1', '2', '3']),
     ],
     [
       '112233',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Set<string> => Stream.of(iterable)
         .toSet(),
       new Set(['1', '2', '3']),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Map<number, string> => Stream.of(iterable)
+        .enumerate()
         .toMap(),
       new Map([]),
+    ],
+    [
+      'abc',
+      (iterable): Map<number, string> => Stream.of(iterable)
+        .enumerate()
+        .toMap(),
+      new Map([[0, 'a'], [1, 'b'], [2, 'c']]),
     ],
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, (data: Set<any>) => any, any]> {
   return [
     [
       new Set([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<unknown> => Stream.of(iterable)
         .toArray(),
       [],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .toArray(),
       [1, 2, 3],
     ],
     [
       new Set([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Set<number> => Stream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Set<number> => Stream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       new Set([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Set<number> => Stream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       new Set([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Map<number, number> => Stream.of(iterable)
+        .enumerate()
         .toMap(),
       new Map([]),
     ],
     [
+      new Set(['a', 'b', 'c']),
+      (iterable: Set<string>): Map<number, string> => Stream.of(iterable)
+        .enumerate()
+        .toMap(),
+      new Map([[0, 'a'], [1, 'b'], [2, 'c']]),
+    ],
+    [
       new Set([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<[string, number]>): Map<string, number> => Stream.of(iterable)
         .toMap(),
       new Map([['a', 1], ['b', 2], ['c', 3]]),
     ],
     [
       new Set([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<[string, number]>): Map<string, number> => Stream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
     ],
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => any, any]> {
   return [
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<unknown, unknown>): Array<[unknown, unknown]> => Stream.of(iterable)
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[number, number]> => Stream.of(iterable)
         .toArray(),
       [[0, 1], [1, 2], [2, 3]],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<unknown, number>): Set<[unknown, number]> => Stream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Set<[number, number]> => Stream.of(iterable)
         .toSet(),
       new Set([[0, 1], [1, 2], [2, 3]]),
     ],
     [
       createMapFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Set<[number, number]> => Stream.of(iterable)
         .toSet(),
       new Set([[0, 1], [1, 1], [2, 2], [3, 2], [4, 3], [5, 3]]),
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Map<number, unknown> => Stream.of(iterable)
         .toMap(),
       new Map([]),
     ],
     [
       new Map([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<string, number>): Map<string, number> => Stream.of(iterable)
         .toMap(),
       new Map([['a', 1], ['b', 2], ['c', 3]]),
     ],
     [
       new Map([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<string, number>): Map<string, number> => Stream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
     ],
   ];
 }
 
-function dataProviderForTee(): Array<unknown> {
+function dataProviderForTee(): Array<[Iterable<any>, number, Array<(stream: Stream<any>) => Stream<any>>, any]> {
+  // input, count, extraOperations, expected
   return [
     [
       [],
       1,
       [
-        (stream: Stream<unknown>) => stream,
+        (stream: Stream<unknown>): Stream<unknown> => stream,
       ],
       [
         [],
@@ -435,8 +300,8 @@ function dataProviderForTee(): Array<unknown> {
       [],
       2,
       [
-        (stream: Stream<unknown>) => stream,
-        (stream: Stream<unknown>) => stream,
+        (stream: Stream<unknown>): Stream<unknown> => stream,
+        (stream: Stream<unknown>): Stream<unknown> => stream,
       ],
       [
         [],
@@ -447,7 +312,7 @@ function dataProviderForTee(): Array<unknown> {
       [1, 2, 3],
       1,
       [
-        (stream: Stream<unknown>) => stream,
+        (stream: Stream<number>): Stream<number> => stream,
       ],
       [
         [1, 2, 3],
@@ -457,8 +322,7 @@ function dataProviderForTee(): Array<unknown> {
       [1, 2, 3],
       1,
       [
-        (stream: Stream<unknown>) => stream
-          .map((datum) => (datum as number) * 2),
+        (stream: Stream<number>): Stream<number> => stream.map((datum) => datum * 2),
       ],
       [
         [2, 4, 6],
@@ -468,8 +332,8 @@ function dataProviderForTee(): Array<unknown> {
       [1, 2, 3],
       2,
       [
-        (stream: Stream<unknown>) => stream,
-        (stream: Stream<unknown>) => stream,
+        (stream: Stream<number>): Stream<number> => stream,
+        (stream: Stream<number>): Stream<number> => stream,
       ],
       [
         [1, 2, 3],
@@ -480,9 +344,8 @@ function dataProviderForTee(): Array<unknown> {
       createGeneratorFixture([1, 2, 3]),
       2,
       [
-        (stream: Stream<unknown>) => stream,
-        (stream: Stream<unknown>) => stream
-          .map((datum) => (datum as number) * 2),
+        (stream: Stream<number>): Stream<number> => stream,
+        (stream: Stream<number>): Stream<number> => stream.map((datum) => datum * 2),
       ],
       [
         [1, 2, 3],
@@ -493,11 +356,9 @@ function dataProviderForTee(): Array<unknown> {
       createIterableFixture([1, 2, 3]),
       3,
       [
-        (stream: Stream<unknown>) => stream,
-        (stream: Stream<unknown>) => stream
-          .map((datum) => (datum as number) * 2),
-        (stream: Stream<unknown>) => stream
-          .map((datum) => (datum as number) ** 3),
+        (stream: Stream<number>): Stream<number> => stream,
+        (stream: Stream<number>): Stream<number> => stream.map((datum) => datum * 2),
+        (stream: Stream<number>): Stream<number> => stream.map((datum) => datum ** 3),
       ],
       [
         [1, 2, 3],
@@ -509,12 +370,12 @@ function dataProviderForTee(): Array<unknown> {
       new Set([1, 2, 3]),
       3,
       [
-        (stream: Stream<unknown>) => stream,
-        (stream: Stream<unknown>) => stream
-          .map((datum) => (datum as number) * 2),
-        (stream: Stream<unknown>) => stream
-          .map((datum) => (datum as number) ** 3)
-          .filter((datum) => (datum as number) < 10),
+        (stream: Stream<number>): Stream<number> => stream,
+        (stream: Stream<number>): Stream<number> => stream
+          .map((datum) => datum * 2),
+        (stream: Stream<number>): Stream<number> => stream
+          .map((datum) => datum ** 3)
+          .filter((datum) => datum < 10),
       ],
       [
         [1, 2, 3],

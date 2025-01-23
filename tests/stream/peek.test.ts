@@ -15,7 +15,7 @@ describe.each([
   (input, leftChainFunc, rightChainFunc, expectedPeeked, expectedResult) => {
     it("", () => {
       // Given
-      const stream = leftChainFunc(input as Iterable<any>);
+      const stream = leftChainFunc(input as any);
       const peeked: Array<unknown> = [];
 
       // When
@@ -46,7 +46,7 @@ describe.each([
   (input, leftChainFunc, rightChainFunc, expectedPeeked, expectedResult) => {
     it("", () => {
       // Given
-      const stream = leftChainFunc(input);
+      const stream = leftChainFunc(input as any);
       const peeked: Array<unknown> = [];
 
       // When
@@ -66,7 +66,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<[Array<unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
+function dataProviderForArrays(): Array<[Array<any>, (iterable: Array<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return [
     [
       [],
@@ -149,28 +149,28 @@ function dataProviderForArrays(): Array<[Array<unknown>, (iterable: any) => Stre
   ];
 }
 
-function dataProviderForGenerators(): Array<[Generator<unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
+function dataProviderForGenerators(): Array<[Generator<any>, (iterable: Generator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return dataProviderForArrays().map((item) => [
     createGeneratorFixture(item[0]),
     ...item.slice(1) as [(iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]],
   ]);
 }
 
-function dataProviderForIterables(): Array<[Iterable<unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
+function dataProviderForIterables(): Array<[Iterable<any>, (iterable: Iterable<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return dataProviderForArrays().map((item) => [
     createIterableFixture(item[0]),
     ...item.slice(1) as [(iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]],
   ]);
 }
 
-function dataProviderForIterators(): Array<[Iterator<unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
+function dataProviderForIterators(): Array<[Iterator<any>, (iterable: Iterator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return dataProviderForArrays().map((item) => [
     createIteratorFixture(item[0]),
     ...item.slice(1) as [(iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]],
   ]);
 }
 
-function dataProviderForStrings(): Array<[string, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
+function dataProviderForStrings(): Array<[string, (iterable: string) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return [
     [
       '',
@@ -257,7 +257,7 @@ function dataProviderForStrings(): Array<[string, (iterable: any) => Stream<any>
   ];
 }
 
-function dataProviderForSets(): Array<[Set<unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
+function dataProviderForSets(): Array<[Set<any>, (iterable: Set<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return [
     [
       new Set([]),
@@ -340,7 +340,7 @@ function dataProviderForSets(): Array<[Set<unknown>, (iterable: any) => Stream<a
   ];
 }
 
-function dataProviderForMaps(): Array<[Map<unknown, unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
+function dataProviderForMaps(): Array<[Map<any, any>, (iterable: Map<any, any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return [
     [
       createMapFixture([]),
