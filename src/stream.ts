@@ -135,9 +135,11 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see multi.zip
    */
-  zipWith<U extends Array<Iterable<unknown> | Iterator<unknown>>>(...iterables: U): Stream<ZipTuple<[T, ...U], never>> {
+  zipWith<U extends Array<Iterable<unknown> | Iterator<unknown>>>(
+    ...iterables: U
+  ): Stream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = zip(this.data, ...iterables) as Iterable<T>;
-    return this as Stream<ZipTuple<[T, ...U], never>>;
+    return this as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
   /**
@@ -157,9 +159,9 @@ export class Stream<T> implements Iterable<T> {
   zipFilledWith<U extends Array<Iterable<unknown> | Iterator<unknown>>, F>(
     filler: F,
     ...iterables: U
-  ): Stream<ZipTuple<[T, ...U], never>> {
+  ): Stream<ZipTuple<[Iterable<T>, ...U], F>> {
     this.data = zipFilled(filler, this.data, ...iterables) as Iterable<T>;
-    return this as Stream<ZipTuple<[T, ...U], never>>;
+    return this as Stream<ZipTuple<[Iterable<T>, ...U], F>>;
   }
 
   /**
@@ -175,11 +177,11 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see multi.zipLongest
    */
-  zipLongestWith(
+  zipLongestWith<U extends Array<Iterable<unknown> | Iterator<unknown>>>(
     ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream<unknown> {
+  ): Stream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = zipLongest(this.data, ...iterables) as Iterable<T>;
-    return this;
+    return this as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
   /**
@@ -192,11 +194,11 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see multi.zipEqual
    */
-  zipEqualWith(
+  zipEqualWith<U extends Array<Iterable<unknown> | Iterator<unknown>>>(
     ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream<unknown> {
+  ): Stream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = zipEqual(this.data, ...iterables) as Iterable<T>;
-    return this;
+    return this as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
   /**

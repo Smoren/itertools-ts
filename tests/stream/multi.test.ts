@@ -1,6 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { Stream } from '../../src';
+import { Stream, ZipTuple } from '../../src';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -11,13 +11,9 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
   ...dataProviderForMixed(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
+])(
   "Stream Multi Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, streamFactory, expected) => {
     it("", () => {
       // Given
       const result = streamFactory(input);
@@ -28,32 +24,32 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<unknown>, (data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>]> {
   return [
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith([], [])
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith([], [])
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith([], [])
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -63,7 +59,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -78,7 +74,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipFilledWith(
           'filler',
           [11, 22, 33],
@@ -94,7 +90,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -108,7 +104,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith(
           [11, 22, 33],
           [111, 222, 333],
@@ -122,7 +118,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -138,14 +134,14 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith([4, 5, 6])
         .toArray(),
       [1, 2, 3, 4, 5, 6],
     ],
     [
       [1, 2],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
         .toArray(),
@@ -154,32 +150,32 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<unknown>, (data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>]> {
   return [
     [
       createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith([], [])
         .toArray(),
       [],
     ],
     [
       createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith([], [])
         .toArray(),
       [],
     ],
     [
       createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith([], [])
         .toArray(),
       [],
     ],
     [
       createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -189,7 +185,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -204,7 +200,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipFilledWith(
           'filler',
           [11, 22, 33],
@@ -220,7 +216,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -234,7 +230,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith(
           [11, 22, 33],
           [111, 222, 333],
@@ -248,7 +244,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -264,14 +260,14 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith([4, 5, 6])
         .toArray(),
       [1, 2, 3, 4, 5, 6],
     ],
     [
       createGeneratorFixture([1, 2]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
         .toArray(),
@@ -280,32 +276,32 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<unknown>, (data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>]> {
   return [
     [
       createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith([], [])
         .toArray(),
       [],
     ],
     [
       createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith([], [])
         .toArray(),
       [],
     ],
     [
       createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith([], [])
         .toArray(),
       [],
     ],
     [
       createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -315,7 +311,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -330,7 +326,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipFilledWith(
           'filler',
           [11, 22, 33],
@@ -346,7 +342,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -360,7 +356,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith(
           [11, 22, 33],
           [111, 222, 333],
@@ -374,7 +370,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -390,14 +386,14 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith([4, 5, 6])
         .toArray(),
       [1, 2, 3, 4, 5, 6],
     ],
     [
       createIterableFixture([1, 2]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
         .toArray(),
@@ -406,32 +402,32 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<unknown>, (data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>]> {
   return [
     [
       createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith([], [])
         .toArray(),
       [],
     ],
     [
       createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith([], [])
         .toArray(),
       [],
     ],
     [
       createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith([], [])
         .toArray(),
       [],
     ],
     [
       createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -441,7 +437,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -456,7 +452,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipFilledWith(
           'filler',
           [11, 22, 33],
@@ -472,7 +468,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -486,7 +482,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith(
           [11, 22, 33],
           [111, 222, 333],
@@ -500,7 +496,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -516,14 +512,14 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith([4, 5, 6])
         .toArray(),
       [1, 2, 3, 4, 5, 6],
     ],
     [
       createIteratorFixture([1, 2]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
         .toArray(),
@@ -532,32 +528,32 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, (data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>]> {
   return [
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith([], [])
         .toArray(),
       [],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith([], [])
         .toArray(),
       [],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith([], [])
         .toArray(),
       [],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -567,7 +563,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -582,7 +578,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipFilledWith(
           'filler',
           [11, 22, 33],
@@ -598,7 +594,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '12345',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => parseInt(item as string))
         .zipWith(
           [11, 22, 33],
@@ -613,7 +609,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => parseInt(item as string))
         .zipEqualWith(
           [11, 22, 33],
@@ -628,7 +624,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '12345',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => parseInt(item as string))
         .zipLongestWith(
           [11, 22, 33],
@@ -645,7 +641,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => parseInt(item as string))
         .chainWith([4, 5, 6])
         .toArray(),
@@ -653,7 +649,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '12',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => parseInt(item as string))
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
@@ -663,32 +659,32 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<unknown>, (data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>]> {
   return [
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith([], [])
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith([], [])
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith([], [])
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -698,7 +694,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -713,7 +709,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipFilledWith(
           'filler',
           [11, 22, 33],
@@ -729,7 +725,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -743,7 +739,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith(
           [11, 22, 33],
           [111, 222, 333],
@@ -757,7 +753,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -773,14 +769,14 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith([4, 5, 6])
         .toArray(),
       [1, 2, 3, 4, 5, 6],
     ],
     [
       new Set([1, 2]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
         .toArray(),
@@ -789,11 +785,11 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<unknown, number>, (data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>]> {
   return [
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
         .zipWith([], [])
         .toArray(),
@@ -801,7 +797,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
         .zipEqualWith([], [])
         .toArray(),
@@ -809,7 +805,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
         .zipLongestWith([], [])
         .toArray(),
@@ -817,7 +813,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
         .zipWith(
           [11, 22, 33],
@@ -828,7 +824,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
         .zipLongestWith(
           [11, 22, 33],
@@ -844,7 +840,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipFilledWith(
           'filler',
           [11, 22, 33],
@@ -860,7 +856,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
         .zipWith(
           [11, 22, 33],
@@ -875,7 +871,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
         .zipEqualWith(
           [11, 22, 33],
@@ -890,7 +886,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
         .zipLongestWith(
           [11, 22, 33],
@@ -907,7 +903,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
         .chainWith([4, 5, 6])
         .toArray(),
@@ -915,7 +911,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .map((item) => (item as Array<unknown>)[1])
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
@@ -925,11 +921,11 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForMixed(): Array<unknown> {
+function dataProviderForMixed(): Array<[Iterable<unknown> | Iterator<unknown>, (data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>]> {
   return [
     [
       [1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipWith(
           createGeneratorFixture([11, 22, 33]),
           createIterableFixture([111, 222, 333, 444]),
@@ -946,7 +942,7 @@ function dataProviderForMixed(): Array<unknown> {
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipLongestWith(
           createGeneratorFixture([11, 22, 33]),
           createIterableFixture([111, 222, 333, 444]),
@@ -967,7 +963,7 @@ function dataProviderForMixed(): Array<unknown> {
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipFilledWith(
           'filler',
           createGeneratorFixture([11, 22, 33]),
@@ -989,7 +985,7 @@ function dataProviderForMixed(): Array<unknown> {
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .zipEqualWith(
           createGeneratorFixture([11, 22, 33]),
           createIterableFixture([111, 222, 333]),
@@ -1006,7 +1002,7 @@ function dataProviderForMixed(): Array<unknown> {
     ],
     [
       [1, 2],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith(createGeneratorFixture([3, 4]))
         .chainWith(createIterableFixture([5]))
         .chainWith(createIteratorFixture([6]))
@@ -1018,7 +1014,7 @@ function dataProviderForMixed(): Array<unknown> {
     ],
     [
       [1, 2],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chainWith(createGeneratorFixture([3, 4]))
         .chainWith(createIterableFixture([5]))
         .chainWith(createIteratorFixture([6]))
