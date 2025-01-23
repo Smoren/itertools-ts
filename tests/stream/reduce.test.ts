@@ -2940,75 +2940,75 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .map((item) => item[1])
         .toProduct(),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .map((item) => item[1])
         .toProduct(),
       -36,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .map((item) => item[1])
         .filter((value) => (value as number) > 0)
         .toProduct(),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .map((item) => item[1])
         .filter((value) => (value as number) > 0)
         .toProduct(),
       6,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .map((item) => item[1])
         .filter((value) => (value as number) <= 0)
         .toProduct(),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .map((item) => item[1])
         .filter((value) => (value as number) <= 0)
         .toProduct(),
       -6,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .map((item) => item[1])
         .toSum(),
       0,
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .map((item) => item[1])
         .toSum(),
       6,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .map((item) => item[1])
         .toSum(),
       0,
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .map((item) => item[1])
         .toSum(),
       6,
     ],
