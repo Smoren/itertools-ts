@@ -16,7 +16,7 @@ describe.each([
   (input, streamFactory, expected) => {
     it("", () => {
       // Given
-      const result = streamFactory(input);
+      const result = streamFactory(input as any);
 
       // Then
       expect(result).toEqual(expected);
@@ -24,7 +24,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<[Array<any>, (data: any) => Array<any>, Array<any>]> {
+function dataProviderForArrays(): Array<[Array<any>, (data: Array<any>) => Array<any>, Array<any>]> {
   return [
     [
       [],
@@ -150,28 +150,28 @@ function dataProviderForArrays(): Array<[Array<any>, (data: any) => Array<any>, 
   ];
 }
 
-function dataProviderForGenerators(): Array<[Generator<any>, (data: any) => Array<any>, Array<any>]> {
+function dataProviderForGenerators(): Array<[Generator<any>, (data: Generator<any>) => Array<any>, Array<any>]> {
   return dataProviderForArrays().map((item) => [
     createGeneratorFixture(item[0]),
     ...item.slice(1) as [(data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>],
   ]);
 }
 
-function dataProviderForIterables(): Array<[Iterable<any>, (data: any) => Array<any>, Array<any>]> {
+function dataProviderForIterables(): Array<[Iterable<any>, (data: Iterable<any>) => Array<any>, Array<any>]> {
   return dataProviderForArrays().map((item) => [
     createIterableFixture(item[0]),
     ...item.slice(1) as [(data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>],
   ]);
 }
 
-function dataProviderForIterators(): Array<[Iterator<any>, (data: any) => Array<any>, Array<any>]> {
+function dataProviderForIterators(): Array<[Iterator<any>, (data: Iterator<any>) => Array<any>, Array<any>]> {
   return dataProviderForArrays().map((item) => [
     createIteratorFixture(item[0]),
     ...item.slice(1) as [(data: Iterable<unknown> | Iterator<unknown>) => Array<unknown>, Array<unknown>],
   ]);
 }
 
-function dataProviderForStrings(): Array<[string, (data: any) => Array<any>, Array<any>]> {
+function dataProviderForStrings(): Array<[string, (data: string) => Array<any>, Array<any>]> {
   return [
     [
       '',
@@ -302,7 +302,7 @@ function dataProviderForStrings(): Array<[string, (data: any) => Array<any>, Arr
   ];
 }
 
-function dataProviderForSets(): Array<[Set<unknown>, (data: any) => Array<any>, Array<any>]> {
+function dataProviderForSets(): Array<[Set<any>, (data: Set<any>) => Array<any>, Array<any>]> {
   return [
     [
       new Set([]),
@@ -428,7 +428,7 @@ function dataProviderForSets(): Array<[Set<unknown>, (data: any) => Array<any>, 
   ];
 }
 
-function dataProviderForMaps(): Array<[Map<unknown, number>, (data: any) => Array<any>, Array<any>]> {
+function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => Array<any>, Array<any>]> {
   return [
     [
       createMapFixture([]),
@@ -564,7 +564,7 @@ function dataProviderForMaps(): Array<[Map<unknown, number>, (data: any) => Arra
   ];
 }
 
-function dataProviderForMixed(): Array<[Iterable<unknown> | Iterator<unknown>, (data: any) => Array<any>, Array<any>]> {
+function dataProviderForMixed(): Array<[Iterable<any> | Iterator<any>, (data: Iterable<any> | Iterator<any>) => Array<any>, Array<any>]> {
   return [
     [
       [1, 2, 3, 4, 5],

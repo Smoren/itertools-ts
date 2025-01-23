@@ -15,7 +15,7 @@ describe.each([
   (input, streamFactory, expected) => {
     it("", () => {
       // Given
-      const result = streamFactory(input);
+      const result = streamFactory(input as any);
 
       // Then
       expect(result).toEqual(expected);
@@ -23,7 +23,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<[Array<Numeric>, (iterable: any) => Array<number>, Array<number>]> {
+function dataProviderForArrays(): Array<[Array<any>, (iterable: Array<any>) => Array<number>, Array<number>]> {
   return [
     [
       [],
@@ -280,235 +280,235 @@ function dataProviderForArrays(): Array<[Array<Numeric>, (iterable: any) => Arra
   ];
 }
 
-function dataProviderForGenerators(): Array<[Generator<Numeric>, (iterable: any) => Array<number>, Array<number>]> {
+function dataProviderForGenerators(): Array<[Generator<any>, (iterable: Generator<any>) => Array<number>, Array<number>]> {
   return dataProviderForArrays().map((item) => [
     createGeneratorFixture(item[0]),
     ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Array<number>, Array<number>],
   ]);
 }
 
-function dataProviderForIterables(): Array<[Iterable<Numeric>, (iterable: any) => Array<number>, Array<number>]> {
+function dataProviderForIterables(): Array<[Iterable<any>, (iterable: Iterable<any>) => Array<number>, Array<number>]> {
   return dataProviderForArrays().map((item) => [
-    createGeneratorFixture(item[0]),
+    createIterableFixture(item[0]),
     ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Array<number>, Array<number>],
   ]);
 }
 
-function dataProviderForIterators(): Array<[Iterator<Numeric>, (iterable: any) => Array<number>, Array<number>]> {
+function dataProviderForIterators(): Array<[Iterator<any>, (iterable: Iterator<any>) => Array<number>, Array<number>]> {
   return dataProviderForArrays().map((item) => [
     createIteratorFixture(item[0]),
     ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Array<number>, Array<number>],
   ]);
 }
 
-function dataProviderForStrings(): Array<[string, (iterable: any) => Array<number>, Array<number>]> {
+function dataProviderForStrings(): Array<[string, (iterable: string) => Array<number>, Array<number>]> {
   return [
     [
       '',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningAverage()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningAverage()
         .toArray(),
       [1],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningAverage(0)
         .toArray(),
       [0, 0.5, 1, 1.5],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningAverage(1)
         .toArray(),
       [1, 1, 4/3, 7/4],
     ],
     [
       '',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningDifference(0)
         .toArray(),
       [0, -1, -3, -6],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningDifference(1)
         .toArray(),
       [1, 0, -2, -5],
     ],
     [
       '',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningMax()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningMax()
         .toArray(),
       [1],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningMax(0)
         .toArray(),
       [0, 1, 2, 3],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningMax(1)
         .toArray(),
       [1, 1, 2, 3],
     ],
     [
       '',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningMin()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningMin()
         .toArray(),
       [1],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningMin(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningMin(1)
         .toArray(),
       [1, 1, 1, 1],
     ],
     [
       '',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningProduct()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningProduct()
         .toArray(),
       [1],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningProduct(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
     ],
     [
       '',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningTotal()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningTotal()
         .toArray(),
       [1],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningTotal(0)
         .toArray(),
       [0, 1, 3, 6],
     ],
     [
       '123',
-      (iterable: Iterable<NumericString>): Array<number> => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .runningTotal(1)
         .toArray(),
       [1, 2, 4, 7],
@@ -516,7 +516,7 @@ function dataProviderForStrings(): Array<[string, (iterable: any) => Array<numbe
   ];
 }
 
-function dataProviderForSets(): Array<[Set<Numeric>, (iterable: any) => Array<number>, Array<number>]> {
+function dataProviderForSets(): Array<[Set<any>, (iterable: Set<any>) => Array<number>, Array<number>]> {
   return [
     [
       new Set([]),
@@ -773,7 +773,7 @@ function dataProviderForSets(): Array<[Set<Numeric>, (iterable: any) => Array<nu
   ];
 }
 
-function dataProviderForMaps(): Array<[Map<number, Numeric>, (iterable: any) => Array<number>, Array<number>]> {
+function dataProviderForMaps(): Array<[Map<any, any>, (iterable: Map<any, any>) => Array<number>, Array<number>]> {
   return [
     [
       createMapFixture([]),
