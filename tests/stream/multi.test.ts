@@ -1,6 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { Stream, ZipTuple } from '../../src';
+import { Stream } from '../../src';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -789,32 +789,32 @@ function dataProviderForMaps(): Array<[Map<unknown, number>, (data: Iterable<unk
   return [
     [
       createMapFixture([]),
-      (iterable) => Stream.of(iterable)
-        .map((item) => (item as Array<unknown>)[1])
+      (iterable) => Stream.of(iterable as Map<unknown, number>)
+        .map((item) => item[1])
         .zipWith([], [])
         .toArray(),
       [],
     ],
     [
       createMapFixture([]),
-      (iterable) => Stream.of(iterable)
-        .map((item) => (item as Array<unknown>)[1])
+      (iterable) => Stream.of(iterable as Map<unknown, number>)
+        .map((item) => item[1])
         .zipEqualWith([], [])
         .toArray(),
       [],
     ],
     [
       createMapFixture([]),
-      (iterable) => Stream.of(iterable)
-        .map((item) => (item as Array<unknown>)[1])
+      (iterable) => Stream.of(iterable as Map<unknown, number>)
+        .map((item) => item[1])
         .zipLongestWith([], [])
         .toArray(),
       [],
     ],
     [
       createMapFixture([]),
-      (iterable) => Stream.of(iterable)
-        .map((item) => (item as Array<unknown>)[1])
+      (iterable) => Stream.of(iterable as Map<unknown, number>)
+        .map((item) => item[1])
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -824,8 +824,8 @@ function dataProviderForMaps(): Array<[Map<unknown, number>, (data: Iterable<unk
     ],
     [
       createMapFixture([]),
-      (iterable) => Stream.of(iterable)
-        .map((item) => (item as Array<unknown>)[1])
+      (iterable) => Stream.of(iterable as Map<unknown, number>)
+        .map((item) => item[1])
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -856,8 +856,8 @@ function dataProviderForMaps(): Array<[Map<unknown, number>, (data: Iterable<unk
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable) => Stream.of(iterable)
-        .map((item) => (item as Array<unknown>)[1])
+      (iterable) => Stream.of(iterable as Map<unknown, number>)
+        .map((item) => item[1])
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -871,8 +871,8 @@ function dataProviderForMaps(): Array<[Map<unknown, number>, (data: Iterable<unk
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable) => Stream.of(iterable)
-        .map((item) => (item as Array<unknown>)[1])
+      (iterable) => Stream.of(iterable as Map<unknown, number>)
+        .map((item) => item[1])
         .zipEqualWith(
           [11, 22, 33],
           [111, 222, 333],
@@ -886,8 +886,8 @@ function dataProviderForMaps(): Array<[Map<unknown, number>, (data: Iterable<unk
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable) => Stream.of(iterable)
-        .map((item) => (item as Array<unknown>)[1])
+      (iterable) => Stream.of(iterable as Map<unknown, number>)
+        .map((item) => item[1])
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -903,16 +903,16 @@ function dataProviderForMaps(): Array<[Map<unknown, number>, (data: Iterable<unk
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable) => Stream.of(iterable)
-        .map((item) => (item as Array<unknown>)[1])
+      (iterable) => Stream.of(iterable as Map<unknown, number>)
+        .map((item) => item[1])
         .chainWith([4, 5, 6])
         .toArray(),
       [1, 2, 3, 4, 5, 6],
     ],
     [
       createMapFixture([1, 2]),
-      (iterable) => Stream.of(iterable)
-        .map((item) => (item as Array<unknown>)[1])
+      (iterable) => Stream.of(iterable as Map<unknown, number>)
+        .map((item) => item[1])
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
         .toArray(),
@@ -1007,7 +1007,7 @@ function dataProviderForMixed(): Array<[Iterable<unknown> | Iterator<unknown>, (
         .chainWith(createIterableFixture([5]))
         .chainWith(createIteratorFixture([6]))
         .chainWith(new Set([7]))
-        .chainWith(Stream.of(createMapFixture([8, 9])).map((item) => (item as Array<unknown>)[1]))
+        .chainWith(Stream.of(createMapFixture([8, 9])).map((item) => item[1]))
         .chainWith('abc')
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c'],
@@ -1019,7 +1019,7 @@ function dataProviderForMixed(): Array<[Iterable<unknown> | Iterator<unknown>, (
         .chainWith(createIterableFixture([5]))
         .chainWith(createIteratorFixture([6]))
         .chainWith(new Set([7]))
-        .chainWith(Stream.of(createMapFixture([8])).map((item) => (item as Array<unknown>)[1]))
+        .chainWith(Stream.of(createMapFixture([8])).map((item) => item[1]))
         .chainWith('abc')
         .zipWith([11, 22, 33, 44, 55, 66, 77, 88, 'x', 'y', 'z'])
         .toArray(),
