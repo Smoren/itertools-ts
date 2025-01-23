@@ -660,11 +660,15 @@ Group data by a common data element.
 Iterate pairs of group name and collection of grouped items.
 
 ```
-function* groupBy<T>(
+export function* groupBy<
+  T,
+  TItemKeyFunction extends ((item: T) => string) | undefined,
+  TResultItem extends TItemKeyFunction extends undefined ? [string, Array<T>] : [string, Record<string, T>]
+>(
   data: Iterable<T> | Iterator<T>,
   groupKeyFunction: (item: T) => string,
-  itemKeyFunction?: (item: T) => string,
-): Iterable<[string, Array<T>] | [string, Record<string, T>]>
+  itemKeyFunction?: TItemKeyFunction
+): Iterable<TResultItem>
 ```
 
 * The `groupKeyFunction` determines the key to group elements by.
