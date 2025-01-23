@@ -1,5 +1,12 @@
 # IterTools Typescript Change Log
 
+## v1.29.1 - 2025-01-23
+
+### Improvements
+* single
+  * `groupBy()` — union return type has been replaced by inferred type.
+  * `groupByAsync()` — union return type has been replaced by inferred type.
+
 ## v1.29.0 - 2024-12-24
 
 ### New features
