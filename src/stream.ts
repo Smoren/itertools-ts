@@ -179,9 +179,9 @@ export class Stream<T> implements Iterable<T> {
    */
   zipLongestWith<
     U extends Array<Iterable<unknown> | Iterator<unknown>>
-  >(...iterables: U): Stream<ZipTuple<[Iterable<T>, ...U], never>> {
+  >(...iterables: U): Stream<ZipTuple<[Iterable<T>, ...U], undefined>> {
     this.data = zipLongest(this.data, ...iterables) as Iterable<T>;
-    return this as unknown as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
+    return this as unknown as Stream<ZipTuple<[Iterable<T>, ...U], undefined>>;
   }
 
   /**
