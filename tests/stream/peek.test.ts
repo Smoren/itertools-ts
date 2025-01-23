@@ -46,7 +46,7 @@ describe.each([
   (input, leftChainFunc, rightChainFunc, expectedPeeked, expectedResult) => {
     it("", () => {
       // Given
-      const stream = leftChainFunc(input as Iterable<any>);
+      const stream = leftChainFunc(input);
       const peeked: Array<unknown> = [];
 
       // When
@@ -66,74 +66,70 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<[Array<unknown>, (iterable: Iterable<any> | Iterator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, unknown[], unknown[]]> {
+function dataProviderForArrays(): Array<[Array<unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return [
     [
       [],
-      (iterable) => Stream.of(iterable),
-      (stream) => stream,
+      (iterable: Array<number>): Stream<number> => Stream.of(iterable),
+      (stream: Stream<number>): Stream<number> => stream,
       [],
       [],
     ],
     [
       [5, 4, 3, 2, 1],
-      (iterable) => Stream.of(iterable),
-      (stream) => stream,
+      (iterable: Array<number>): Stream<number> => Stream.of(iterable),
+      (stream: Stream<number>): Stream<number> => stream,
       [5, 4, 3, 2, 1],
       [5, 4, 3, 2, 1],
     ],
     [
       [],
-      (iterable) => Stream.of(iterable),
-      (stream) => stream.sort(),
+      (iterable: Array<number>): Stream<number> => Stream.of(iterable),
+      (stream: Stream<number>): Stream<number> => stream.sort(),
       [],
       [],
     ],
     [
       [5, 4, 3, 2, 1],
-      (iterable) => Stream.of(iterable),
-      (stream) => stream.sort(),
+      (iterable: Array<number>): Stream<number> => Stream.of(iterable),
+      (stream: Stream<number>): Stream<number> => stream.sort(),
       [5, 4, 3, 2, 1],
       [1, 2, 3, 4, 5],
     ],
     [
       [],
-      (iterable) => Stream.of(iterable).sort(),
-      (stream) => stream,
+      (iterable: Array<number>): Stream<number> => Stream.of(iterable).sort(),
+      (stream: Stream<number>): Stream<number> => stream,
       [],
       [],
     ],
     [
       [5, 4, 3, 2, 1],
-      (iterable) => Stream.of(iterable).sort(),
-      (stream) => stream,
+      (iterable: Array<number>): Stream<number> => Stream.of(iterable).sort(),
+      (stream: Stream<number>): Stream<number> => stream,
       [1, 2, 3, 4, 5],
       [1, 2, 3, 4, 5],
     ],
     [
       [],
-      (iterable: Iterable<number> | Iterator<number>) => Stream.of(iterable)
-        .zipWith([11, 22, 33, 44, 55]),
-      (stream) => stream
-        .limit(3),
+      (iterable: Array<number>): Stream<[number, number]> => Stream.of(iterable).zipWith([11, 22, 33, 44, 55]),
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream.limit(3),
       [],
       [],
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable) => Stream.of(iterable)
-        .zipWith([11, 22, 33, 44, 55]),
-      (stream) => stream
-        .limit(3),
+      (iterable: Array<number>): Stream<[number, number]> => Stream.of(iterable).zipWith([11, 22, 33, 44, 55]),
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream.limit(3),
       [[1, 11], [2, 22], [3, 33], [4, 44], [5, 55]],
       [[1, 11], [2, 22], [3, 33]],
     ],
     [
       [],
-      (iterable) => Stream.of(iterable as number[])
+      (iterable: Array<number>): Stream<number> => Stream.of(iterable)
         .filter((x) => x % 2 !== 0)
         .sort(),
-      (stream: Stream<number>) => (stream as Stream<number>)
+      (stream: Stream<number>): Stream<[number, number]> => stream
         .map((x) => x + 1)
         .pairwise(),
       [],
@@ -141,10 +137,10 @@ function dataProviderForArrays(): Array<[Array<unknown>, (iterable: Iterable<any
     ],
     [
       [9, 8, 7, 6, 5, 4, 3, 2, 1],
-      (iterable) => Stream.of(iterable as number[])
+      (iterable: Array<number>): Stream<number> => Stream.of(iterable)
         .filter((x) => x % 2 !== 0)
         .sort(),
-      (stream) => (stream as Stream<number>)
+      (stream: Stream<number>): Stream<[number, number]> => stream
         .map((x) => x + 1)
         .pairwise(),
       [1, 3, 5, 7, 9],
@@ -153,95 +149,95 @@ function dataProviderForArrays(): Array<[Array<unknown>, (iterable: Iterable<any
   ];
 }
 
-function dataProviderForGenerators(): Array<[Generator<unknown>, (iterable: Iterable<any> | Iterator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, unknown[], unknown[]]> {
+function dataProviderForGenerators(): Array<[Generator<unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return dataProviderForArrays().map((item) => [
     createGeneratorFixture(item[0]),
-    ...item.slice(1) as [(iterable: Iterable<any> | Iterator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, unknown[], unknown[]],
+    ...item.slice(1) as [(iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]],
   ]);
 }
 
-function dataProviderForIterables(): Array<[Iterable<unknown>, (iterable: Iterable<any> | Iterator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, unknown[], unknown[]]> {
+function dataProviderForIterables(): Array<[Iterable<unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return dataProviderForArrays().map((item) => [
     createIterableFixture(item[0]),
-    ...item.slice(1) as [(iterable: Iterable<any> | Iterator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, unknown[], unknown[]],
+    ...item.slice(1) as [(iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]],
   ]);
 }
 
-function dataProviderForIterators(): Array<[Iterator<unknown>, (iterable: Iterable<any> | Iterator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, unknown[], unknown[]]> {
+function dataProviderForIterators(): Array<[Iterator<unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return dataProviderForArrays().map((item) => [
     createIteratorFixture(item[0]),
-    ...item.slice(1) as [(iterable: Iterable<any> | Iterator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, unknown[], unknown[]],
+    ...item.slice(1) as [(iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]],
   ]);
 }
 
-function dataProviderForStrings(): Array<[string, (iterable: Iterable<any> | Iterator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, unknown[], unknown[]]> {
+function dataProviderForStrings(): Array<[string, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return [
     [
       '',
-      (iterable) => Stream.of(iterable),
-      (stream) => stream,
+      (iterable: string): Stream<string> => Stream.of(iterable),
+      (stream: Stream<string>): Stream<string> => stream,
       [],
       [],
     ],
     [
       '54321',
-      (iterable) => Stream.of(iterable),
-      (stream) => stream,
+      (iterable: string): Stream<string> => Stream.of(iterable),
+      (stream: Stream<string>): Stream<string> => stream,
       ['5', '4', '3', '2', '1'],
       ['5', '4', '3', '2', '1'],
     ],
     [
       '',
-      (iterable) => Stream.of(iterable),
-      (stream) => stream.sort(),
+      (iterable: string): Stream<string> => Stream.of(iterable),
+      (stream: Stream<string>): Stream<string> => stream.sort(),
       [],
       [],
     ],
     [
       '54321',
-      (iterable) => Stream.of(iterable),
-      (stream) => stream.sort(),
+      (iterable: string): Stream<string> => Stream.of(iterable),
+      (stream: Stream<string>): Stream<string> => stream.sort(),
       ['5', '4', '3', '2', '1'],
       ['1', '2', '3', '4', '5'],
     ],
     [
       '',
-      (iterable) => Stream.of(iterable).sort(),
-      (stream) => stream,
+      (iterable: string): Stream<string> => Stream.of(iterable).sort(),
+      (stream: Stream<string>): Stream<string> => stream,
       [],
       [],
     ],
     [
       '54321',
-      (iterable) => Stream.of(iterable).sort(),
-      (stream) => stream,
+      (iterable: string): Stream<string> => Stream.of(iterable).sort(),
+      (stream: Stream<string>): Stream<string> => stream,
       ['1', '2', '3', '4', '5'],
       ['1', '2', '3', '4', '5'],
     ],
     [
       '',
-      (iterable) => Stream.of(iterable)
+      (iterable: string): Stream<[string, number]> => Stream.of(iterable)
         .zipWith([11, 22, 33, 44, 55]),
-      (stream) => stream
+      (stream: Stream<[string, number]>): Stream<[string, number]> => stream
         .limit(3),
       [],
       [],
     ],
     [
       '12345',
-      (iterable) => Stream.of(iterable)
+      (iterable: string): Stream<[string, string]> => Stream.of(iterable)
         .zipWith('abcde'),
-      (stream) => stream
+      (stream: Stream<[string, string]>): Stream<[string, string]> => stream
         .limit(3),
       [['1', 'a'], ['2', 'b'], ['3', 'c'], ['4', 'd'], ['5', 'e']],
       [['1', 'a'], ['2', 'b'], ['3', 'c']],
     ],
     [
       '',
-      (iterable) => Stream.of(iterable as Iterable<number>)
-        .filter((x) => x % 2 !== 0)
+      (iterable: string): Stream<string> => Stream.of(iterable)
+        .filter((x) => Number(x) % 2 !== 0)
         .sort(),
-      (stream: Stream<number>) => stream
+      (stream: Stream<number>): Stream<[number, number]> => stream
         .map((x) => x + 1)
         .pairwise(),
       [],
@@ -249,10 +245,10 @@ function dataProviderForStrings(): Array<[string, (iterable: Iterable<any> | Ite
     ],
     [
       '987654321',
-      (iterable) => Stream.of(iterable as Iterable<number>)
-        .filter((x) => x % 2 !== 0)
+      (iterable: string): Stream<string> => Stream.of(iterable)
+        .filter((x) => Number(x) % 2 !== 0)
         .sort(),
-      (stream) => stream
+      (stream: Stream<string>): Stream<[number, number]> => stream
         .map((x) => Number(x) + 1)
         .pairwise(),
       ['1', '3', '5', '7', '9'],
@@ -261,74 +257,70 @@ function dataProviderForStrings(): Array<[string, (iterable: Iterable<any> | Ite
   ];
 }
 
-function dataProviderForSets(): Array<[Set<unknown>, (iterable: Iterable<any> | Iterator<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, unknown[], unknown[]]> {
+function dataProviderForSets(): Array<[Set<unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return [
     [
       new Set([]),
-      (iterable) => Stream.of(iterable),
-      (stream) => stream,
+      (iterable: Set<number>): Stream<number> => Stream.of(iterable),
+      (stream: Stream<number>): Stream<number> => stream,
       [],
       [],
     ],
     [
       new Set([5, 4, 3, 2, 1]),
-      (iterable) => Stream.of(iterable),
-      (stream) => stream,
+      (iterable: Set<number>): Stream<number> => Stream.of(iterable),
+      (stream: Stream<number>): Stream<number> => stream,
       [5, 4, 3, 2, 1],
       [5, 4, 3, 2, 1],
     ],
     [
       new Set([]),
-      (iterable) => Stream.of(iterable),
-      (stream) => stream.sort(),
+      (iterable: Set<number>): Stream<number> => Stream.of(iterable),
+      (stream: Stream<number>): Stream<number> => stream.sort(),
       [],
       [],
     ],
     [
       new Set([5, 4, 3, 2, 1]),
-      (iterable) => Stream.of(iterable),
-      (stream) => stream.sort(),
+      (iterable: Set<number>): Stream<number> => Stream.of(iterable),
+      (stream: Stream<number>): Stream<number> => stream.sort(),
       [5, 4, 3, 2, 1],
       [1, 2, 3, 4, 5],
     ],
     [
       new Set([]),
-      (iterable) => Stream.of(iterable).sort(),
-      (stream) => stream,
+      (iterable: Set<number>): Stream<number> => Stream.of(iterable).sort(),
+      (stream: Stream<number>): Stream<number> => stream,
       [],
       [],
     ],
     [
       new Set([5, 4, 3, 2, 1]),
-      (iterable) => Stream.of(iterable).sort(),
-      (stream) => stream,
+      (iterable: Set<number>): Stream<number> => Stream.of(iterable).sort(),
+      (stream: Stream<number>): Stream<number> => stream,
       [1, 2, 3, 4, 5],
       [1, 2, 3, 4, 5],
     ],
     [
       new Set([]),
-      (iterable) => Stream.of(iterable)
-        .zipWith([11, 22, 33, 44, 55]),
-      (stream) => stream
-        .limit(3),
+      (iterable: Set<number>): Stream<[number, number]> => Stream.of(iterable).zipWith([11, 22, 33, 44, 55]),
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream.limit(3),
       [],
       [],
     ],
     [
       new Set([1, 2, 3, 4, 5]),
-      (iterable) => Stream.of(iterable)
-        .zipWith([11, 22, 33, 44, 55]),
-      (stream) => stream
-        .limit(3),
+      (iterable: Set<number>): Stream<[number, number]> => Stream.of(iterable).zipWith([11, 22, 33, 44, 55]),
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream.limit(3),
       [[1, 11], [2, 22], [3, 33], [4, 44], [5, 55]],
       [[1, 11], [2, 22], [3, 33]],
     ],
     [
       new Set([]),
-      (iterable) => Stream.of(iterable as Set<number>)
+      (iterable: Set<number>): Stream<number> => Stream.of(iterable)
         .filter((x) => x % 2 !== 0)
         .sort(),
-      (stream: Stream<number>) => stream
+      (stream: Stream<number>): Stream<[number, number]> => stream
         .map((x) => x + 1)
         .pairwise(),
       [],
@@ -336,10 +328,10 @@ function dataProviderForSets(): Array<[Set<unknown>, (iterable: Iterable<any> | 
     ],
     [
       new Set([9, 8, 7, 6, 5, 4, 3, 2, 1]),
-      (iterable) => Stream.of(iterable as Set<number>)
+      (iterable: Set<number>): Stream<number> => Stream.of(iterable)
         .filter((x) => x % 2 !== 0)
         .sort(),
-      (stream: Stream<number>) => stream
+      (stream: Stream<number>): Stream<[number, number]> => stream
         .map((x) => x + 1)
         .pairwise(),
       [1, 3, 5, 7, 9],
@@ -348,78 +340,78 @@ function dataProviderForSets(): Array<[Set<unknown>, (iterable: Iterable<any> | 
   ];
 }
 
-function dataProviderForMaps(): Array<[Map<unknown, unknown>, (iterable: Iterable<any>) => Stream<any>, (stream: Stream<any>) => Stream<any>, unknown[], unknown[]]> {
+function dataProviderForMaps(): Array<[Map<unknown, unknown>, (iterable: any) => Stream<any>, (stream: Stream<any>) => Stream<any>, any[], any[]]> {
   return [
     [
       createMapFixture([]),
-      (iterable) => Stream.of(iterable),
-      (stream) => stream,
+      (iterable: Map<number, number>): Stream<[number, number]> => Stream.of(iterable),
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream,
       [],
       [],
     ],
     [
       createMapFixture([5, 4, 3, 2, 1]),
-      (iterable) => Stream.of(iterable),
-      (stream) => stream,
+      (iterable: Map<number, number>): Stream<[number, number]> => Stream.of(iterable),
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream,
       [[0, 5], [1, 4], [2, 3], [3, 2], [4, 1]],
       [[0, 5], [1, 4], [2, 3], [3, 2], [4, 1]],
     ],
     [
       createMapFixture([]),
-      (iterable) => Stream.of(iterable),
-      (stream: Stream<[unknown, number]>) => stream.sort((lhs, rhs) => lhs[1] - rhs[1]),
+      (iterable: Map<number, number>): Stream<[number, number]> => Stream.of(iterable),
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream.sort((lhs, rhs) => lhs[1] - rhs[1]),
       [],
       [],
     ],
     [
       createMapFixture([5, 4, 3, 2, 1]),
-      (iterable) => Stream.of(iterable),
-      (stream) => (stream as Stream<[unknown, number]>).sort((lhs, rhs) => lhs[1] - rhs[1]),
+      (iterable: Map<number, number>): Stream<[number, number]> => Stream.of(iterable),
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream.sort((lhs, rhs) => lhs[1] - rhs[1]),
       [[0, 5], [1, 4], [2, 3], [3, 2], [4, 1]],
       [[4, 1], [3, 2], [2, 3], [1, 4], [0, 5]],
     ],
     [
       createMapFixture([]),
-      (iterable) => Stream.of(iterable as Map<unknown, number>)
+      (iterable: Map<number, number>): Stream<[number, number]> => Stream.of(iterable)
         .sort((lhs, rhs) => lhs[1] - rhs[1]),
-      (stream) => stream,
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream,
       [],
       [],
     ],
     [
       createMapFixture([5, 4, 3, 2, 1]),
-      (iterable: Iterable<[unknown, number]>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Stream<[number, number]> => Stream.of(iterable)
         .sort((lhs, rhs) => lhs[1] - rhs[1]),
-      (stream) => stream,
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream,
       [[4, 1], [3, 2], [2, 3], [1, 4], [0, 5]],
       [[4, 1], [3, 2], [2, 3], [1, 4], [0, 5]],
     ],
     [
       createMapFixture([]),
-      (iterable) => Stream.of(iterable)
+      (iterable: Map<number, number>): Stream<[[number, number], number]> => Stream.of(iterable)
         .zipWith([11, 22, 33, 44, 55]),
-      (stream) => stream
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream
         .limit(3),
       [],
       [],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable) => Stream.of(iterable)
+      (iterable: Map<number, number>): Stream<[number, number]> => Stream.of(iterable)
         .values()
         .zipWith([11, 22, 33, 44, 55]),
-      (stream) => stream
+      (stream: Stream<[number, number]>): Stream<[number, number]> => stream
         .limit(3),
       [[1, 11], [2, 22], [3, 33], [4, 44], [5, 55]],
       [[1, 11], [2, 22], [3, 33]],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<[unknown, number]>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Stream<number> => Stream.of(iterable)
         .values()
         .filter((x) => x % 2 !== 0)
         .sort(),
-      (stream) => (stream as Stream<number>)
+      (stream: Stream<number>): Stream<[number, number]> => stream
         .map((x) => x + 1)
         .pairwise(),
       [],
@@ -427,11 +419,11 @@ function dataProviderForMaps(): Array<[Map<unknown, unknown>, (iterable: Iterabl
     ],
     [
       createMapFixture([9, 8, 7, 6, 5, 4, 3, 2, 1]),
-      (iterable: Iterable<[unknown, number]>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Stream<number> => Stream.of(iterable)
         .values()
         .filter((x) => x % 2 !== 0)
         .sort(),
-      (stream) => (stream as Stream<number>)
+      (stream: Stream<number>): Stream<[number, number]> => stream
         .map((x) => x + 1)
         .pairwise(),
       [1, 3, 5, 7, 9],
