@@ -30,10 +30,7 @@ describe.each([
   (input, minIntersectionCount, streamFactory, expected) => {
     it("", () => {
       // Given
-      const result = streamFactory(
-        minIntersectionCount as number,
-        input as Array<Iterable<unknown>>
-      );
+      const result = streamFactory(minIntersectionCount, input as Array<Iterable<unknown>>);
 
       // Then
       expect(result).toEqual(expected);

@@ -212,9 +212,9 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  >(...iterables: U): AsyncStream<ZipTuple<[Iterable<T>, ...U], never>> {
+  >(...iterables: U): AsyncStream<ZipTuple<[Iterable<T>, ...U], undefined>> {
     this.data = zipLongestAsync(this.data, ...iterables) as AsyncIterable<T>;
-    return this as unknown as AsyncStream<ZipTuple<[Iterable<T>, ...U], never>>;
+    return this as unknown as AsyncStream<ZipTuple<[Iterable<T>, ...U], undefined>>;
   }
 
   /**
