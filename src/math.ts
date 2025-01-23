@@ -1,4 +1,5 @@
 import { toAsyncIterable, toIterable } from "./transform";
+import { Numeric } from "./types";
 
 /**
  * Accumulate the running average (mean) over a list of numbers
@@ -6,14 +7,14 @@ import { toAsyncIterable, toIterable } from "./transform";
  * @param numbers
  * @param initialValue (Optional) If provided, the running average leads off with the initial value.
  */
-export function* runningAverage<T>(
-  numbers: Iterable<T> | Iterator<T>,
+export function* runningAverage(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number> {
   let n = 0;
   for (const total of runningTotal(toIterable(numbers), initialValue)) {
     n++;
-    yield (total / n) as number;
+    yield (total / n);
   }
 }
 
@@ -23,8 +24,8 @@ export function* runningAverage<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running average leads off with the initial value.
  */
-export async function* runningAverageAsync<T>(
-  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+export async function* runningAverageAsync(
+  numbers: AsyncIterable<Numeric> | AsyncIterator<Numeric> | Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): AsyncIterable<number> {
   let n = 0;
@@ -33,7 +34,7 @@ export async function* runningAverageAsync<T>(
     initialValue
   )) {
     n++;
-    yield (total / n) as number;
+    yield (total / n);
   }
 }
 
@@ -43,8 +44,8 @@ export async function* runningAverageAsync<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running difference leads off with the initial value.
  */
-export function* runningDifference<T>(
-  numbers: Iterable<T> | Iterator<T>,
+export function* runningDifference(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number> {
   if (initialValue !== undefined) {
@@ -53,8 +54,8 @@ export function* runningDifference<T>(
 
   let difference = initialValue ?? 0;
   for (const num of toIterable(numbers)) {
-    difference -= Number(num as number);
-    yield difference as number;
+    difference -= Number(num);
+    yield difference;
   }
 }
 
@@ -64,8 +65,8 @@ export function* runningDifference<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running difference leads off with the initial value.
  */
-export async function* runningDifferenceAsync<T>(
-  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+export async function* runningDifferenceAsync(
+  numbers: AsyncIterable<Numeric> | AsyncIterator<Numeric> | Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): AsyncIterable<number> {
   if (initialValue !== undefined) {
@@ -74,8 +75,8 @@ export async function* runningDifferenceAsync<T>(
 
   let difference = initialValue ?? 0;
   for await (const num of toAsyncIterable(numbers)) {
-    difference -= Number(num as number);
-    yield difference as number;
+    difference -= Number(num);
+    yield difference;
   }
 }
 
@@ -85,8 +86,8 @@ export async function* runningDifferenceAsync<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running max leads off with the initial value.
  */
-export function* runningMax<T>(
-  numbers: Iterable<T> | Iterator<T>,
+export function* runningMax(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number> {
   if (initialValue !== undefined) {
@@ -96,7 +97,7 @@ export function* runningMax<T>(
   let max = initialValue ?? -Infinity;
   for (const num of toIterable(numbers)) {
     max = Math.max(max, num as number);
-    yield max as number;
+    yield max;
   }
 }
 
@@ -106,8 +107,8 @@ export function* runningMax<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running max leads off with the initial value.
  */
-export async function* runningMaxAsync<T>(
-  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+export async function* runningMaxAsync(
+  numbers: AsyncIterable<Numeric> | AsyncIterator<Numeric> | Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): AsyncIterable<number> {
   if (initialValue !== undefined) {
@@ -127,8 +128,8 @@ export async function* runningMaxAsync<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running min leads off with the initial value.
  */
-export function* runningMin<T>(
-  numbers: Iterable<T> | Iterator<T>,
+export function* runningMin(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number> {
   if (initialValue !== undefined) {
@@ -148,8 +149,8 @@ export function* runningMin<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running min leads off with the initial value.
  */
-export async function* runningMinAsync<T>(
-  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+export async function* runningMinAsync(
+  numbers: AsyncIterable<Numeric> | AsyncIterator<Numeric> | Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): AsyncIterable<number> {
   if (initialValue !== undefined) {
@@ -169,8 +170,8 @@ export async function* runningMinAsync<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running product leads off with the initial value.
  */
-export function* runningProduct<T>(
-  numbers: Iterable<T> | Iterator<T>,
+export function* runningProduct(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number> {
   if (initialValue !== undefined) {
@@ -190,8 +191,8 @@ export function* runningProduct<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running product leads off with the initial value.
  */
-export async function* runningProductAsync<T>(
-  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+export async function* runningProductAsync(
+  numbers: AsyncIterable<Numeric> | AsyncIterator<Numeric> | Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): AsyncIterable<number> {
   if (initialValue !== undefined) {
@@ -211,8 +212,8 @@ export async function* runningProductAsync<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running total leads off with the initial value.
  */
-export function* runningTotal<T>(
-  numbers: Iterable<T> | Iterator<T>,
+export function* runningTotal(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number> {
   if (initialValue !== undefined) {
@@ -232,8 +233,8 @@ export function* runningTotal<T>(
  * @param numbers
  * @param initialValue (Optional) If provided, the running total leads off with the initial value.
  */
-export async function* runningTotalAsync<T>(
-  numbers: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+export async function* runningTotalAsync(
+  numbers: AsyncIterable<Numeric> | AsyncIterator<Numeric> | Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): AsyncIterable<number> {
   if (initialValue !== undefined) {

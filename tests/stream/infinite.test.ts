@@ -4,7 +4,7 @@ import { Stream } from '../../src';
 
 describe.each([
   ...dataProviderForOfCount(),
-] as Array<[Array<number>, number, Array<number>]>)(
+])(
   "Stream Infinite Of Count Test",
   (
     inputParams: Array<number>,
@@ -14,7 +14,7 @@ describe.each([
     it("", () => {
       // When
       const stream = Stream.ofCount(...inputParams);
-      const result = stream.limit(limit).toArray() as Array<number>;
+      const result = stream.limit(limit).toArray();
 
       // Then
       expectToBeCloseToArray(result, expected);
@@ -24,17 +24,17 @@ describe.each([
 
 describe.each([
   ...dataProviderForOfCycle(),
-] as Array<[Array<number>, number, Array<number>]>)(
+])(
   "Stream Infinite Of Cycle Test",
-  (
-    iterable: Iterable<unknown>,
+  <T>(
+    iterable: Iterable<T>,
     limit: number,
-    expected: Array<number>
+    expected: Array<T>
   ) => {
     it("", () => {
       // When
       const stream = Stream.ofCycle(iterable);
-      const result = stream.limit(limit).toArray() as Array<number>;
+      const result = stream.limit(limit).toArray();
 
       // Then
       expect(result).toEqual(expected);
@@ -44,17 +44,17 @@ describe.each([
 
 describe.each([
   ...dataProviderForOfRepeat(),
-] as Array<[Array<number>, number, Array<number>]>)(
+])(
   "Stream Infinite Of Repeat Test",
-  (
-    itemToRepeat: unknown,
+  <T>(
+    itemToRepeat: T,
     limit: number,
-    expected: Array<number>
+    expected: Array<T>
   ) => {
     it("", () => {
       // When
       const stream = Stream.ofRepeat(itemToRepeat);
-      const result = stream.limit(limit).toArray() as Array<number>;
+      const result = stream.limit(limit).toArray();
 
       // Then
       expect(result).toEqual(expected);
@@ -62,7 +62,7 @@ describe.each([
   }
 );
 
-function dataProviderForOfCount(): Array<unknown> {
+function dataProviderForOfCount(): Array<[Array<number>, number, Array<number>]> {
   return [
     [
       [],
@@ -112,7 +112,7 @@ function dataProviderForOfCount(): Array<unknown> {
   ];
 }
 
-function dataProviderForOfCycle(): Array<unknown> {
+function dataProviderForOfCycle(): Array<[Array<unknown>, number, Array<unknown>]> {
   return [
     [
       [],
@@ -157,7 +157,7 @@ function dataProviderForOfCycle(): Array<unknown> {
   ];
 }
 
-function dataProviderForOfRepeat(): Array<unknown> {
+function dataProviderForOfRepeat(): Array<[unknown, number, Array<unknown>]> {
   return [
     [
       0,

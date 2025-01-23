@@ -4,13 +4,13 @@ export const asyncTimeout = (ms: number) => {
   });
 };
 
-export function *createGeneratorFixture<T>(data: Array<T>): Iterable<T> {
+export function *createGeneratorFixture<T>(data: Array<T>): Generator<T> {
   for (const datum of data) {
     yield datum;
   }
 }
 
-export async function *createAsyncGeneratorFixture<T>(data: Array<T>): AsyncIterable<T> {
+export async function *createAsyncGeneratorFixture<T>(data: Array<T>): AsyncGenerator<T> {
   for (const datum of data) {
     await asyncTimeout(1);
     yield datum;

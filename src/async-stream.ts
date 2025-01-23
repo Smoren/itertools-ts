@@ -73,7 +73,7 @@ import {
   sameAsync,
   sameCountAsync,
 } from "./summary";
-import { AsyncFlatMapper, Comparable, Comparator } from "./types";
+import type { AsyncFlatMapper, Comparable, Comparator, Numeric } from "./types";
 import { infinite } from "./index";
 
 /**
@@ -464,7 +464,7 @@ export class AsyncStream {
    * @see math.runningAverageAsync
    */
   runningAverage(initialValue?: number): AsyncStream {
-    this.data = runningAverageAsync(this.data, initialValue);
+    this.data = runningAverageAsync(this.data as AsyncIterable<Numeric>, initialValue);
     return this;
   }
 
@@ -476,7 +476,7 @@ export class AsyncStream {
    * @see math.runningDifferenceAsync
    */
   runningDifference(initialValue?: number): AsyncStream {
-    this.data = runningDifferenceAsync(this.data, initialValue);
+    this.data = runningDifferenceAsync(this.data as AsyncIterable<Numeric>, initialValue);
     return this;
   }
 
@@ -488,7 +488,7 @@ export class AsyncStream {
    * @see math.runningMaxAsync
    */
   runningMax(initialValue?: number): AsyncStream {
-    this.data = runningMaxAsync(this.data, initialValue);
+    this.data = runningMaxAsync(this.data as AsyncIterable<Numeric>, initialValue);
     return this;
   }
 
@@ -500,7 +500,7 @@ export class AsyncStream {
    * @see math.runningMinAsync
    */
   runningMin(initialValue?: number): AsyncStream {
-    this.data = runningMinAsync(this.data, initialValue);
+    this.data = runningMinAsync(this.data as AsyncIterable<Numeric>, initialValue);
     return this;
   }
 
@@ -512,7 +512,7 @@ export class AsyncStream {
    * @see math.runningProductAsync
    */
   runningProduct(initialValue?: number): AsyncStream {
-    this.data = runningProductAsync(this.data, initialValue);
+    this.data = runningProductAsync(this.data as AsyncIterable<Numeric>, initialValue);
     return this;
   }
 
@@ -524,7 +524,7 @@ export class AsyncStream {
    * @see math.runningTotalAsync
    */
   runningTotal(initialValue?: number): AsyncStream {
-    this.data = runningTotalAsync(this.data, initialValue);
+    this.data = runningTotalAsync(this.data as AsyncIterable<Numeric>, initialValue);
     return this;
   }
 

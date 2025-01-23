@@ -9,6 +9,16 @@ export type RecordKey = string | number | symbol;
 export type Comparable = string | number | boolean | Array<unknown>;
 
 /**
+ * Type of numeric values.
+ */
+export type NumericString = `${number}`;
+
+/**
+ * Type of numeric values.
+ */
+export type Numeric = number | NumericString;
+
+/**
  * Type of functions that compare two values.
  *
  * @example

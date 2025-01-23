@@ -162,6 +162,8 @@ import { createPipe } from "./pipe";
 import { InvalidArgumentError, LengthError } from "./exceptions";
 
 import type {
+  Numeric,
+  NumericString,
   AsyncFlatMapper,
   FlatMapper,
   Pair,
@@ -339,6 +341,8 @@ export { Stream, AsyncStream };
 export { createPipe };
 
 export type {
+  Numeric,
+  NumericString,
   AsyncFlatMapper,
   FlatMapper,
   Pair,

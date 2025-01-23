@@ -61,7 +61,7 @@ import {
   same,
   sameCount,
 } from "./summary";
-import {Comparable, Comparator, FlatMapper, ZipTuple} from "./types";
+import type { Comparable, Comparator, FlatMapper, Numeric, ZipTuple } from "./types";
 import { infinite } from "./index";
 
 /**
@@ -327,7 +327,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.limit
    */
-  limit(count: number): Stream<unknown> {
+  limit(count: number): Stream<T> {
     this.data = limit(this.data, count);
     return this;
   }
@@ -339,9 +339,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.map
    */
-  map(mapper: (datum: unknown) => unknown): Stream<unknown> {
+  map<U>(mapper: (datum: T) => U): Stream<U> {
     this.data = map(this.data, mapper) as Iterable<T>;
-    return this;
+    return this as unknown as Stream<U>;
   }
 
   /**
@@ -400,9 +400,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.pairwise
    */
-  pairwise(): Stream<unknown> {
+  pairwise(): Stream<[T, T]> {
     this.data = pairwise(this.data) as Iterable<T>;
-    return this;
+    return this as Stream<[T, T]>;
   }
 
   /**
@@ -412,9 +412,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see math.runningAverage
    */
-  runningAverage(initialValue?: number): Stream<unknown> {
-    this.data = runningAverage(this.data, initialValue) as Iterable<T>;
-    return this;
+  runningAverage(initialValue?: number): Stream<number> {
+    this.data = runningAverage(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
+    return this as Stream<number>;
   }
 
   /**
@@ -424,9 +424,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see math.runningDifference
    */
-  runningDifference(initialValue?: number): Stream<unknown> {
-    this.data = runningDifference(this.data, initialValue) as Iterable<T>;
-    return this;
+  runningDifference(initialValue?: number): Stream<number> {
+    this.data = runningDifference(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
+    return this as Stream<number>;
   }
 
   /**
@@ -436,9 +436,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see math.runningMax
    */
-  runningMax(initialValue?: number): Stream<unknown> {
-    this.data = runningMax(this.data, initialValue) as Iterable<T>;
-    return this;
+  runningMax(initialValue?: number): Stream<number> {
+    this.data = runningMax(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
+    return this as Stream<number>;
   }
 
   /**
@@ -448,9 +448,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see math.runningMin
    */
-  runningMin(initialValue?: number): Stream<unknown> {
-    this.data = runningMin(this.data, initialValue) as Iterable<T>;
-    return this;
+  runningMin(initialValue?: number): Stream<number> {
+    this.data = runningMin(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
+    return this as Stream<number>;
   }
 
   /**
@@ -460,9 +460,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see math.runningProduct
    */
-  runningProduct(initialValue?: number): Stream<unknown> {
-    this.data = runningProduct(this.data, initialValue) as Iterable<T>;
-    return this;
+  runningProduct(initialValue?: number): Stream<number> {
+    this.data = runningProduct(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
+    return this as Stream<number>;
   }
 
   /**
@@ -472,9 +472,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see math.runningTotal
    */
-  runningTotal(initialValue?: number): Stream<unknown> {
-    this.data = runningTotal(this.data, initialValue) as Iterable<T>;
-    return this;
+  runningTotal(initialValue?: number): Stream<number> {
+    this.data = runningTotal(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
+    return this as Stream<number>;
   }
 
   /**
@@ -485,7 +485,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.skip
    */
-  skip(count: number, offset = 0): Stream<unknown> {
+  skip(count: number, offset = 0): Stream<T> {
     this.data = skip(this.data, count, offset);
     return this;
   }
@@ -499,7 +499,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.slice
    */
-  slice(start = 0, count?: number, step = 1): Stream<unknown> {
+  slice(start = 0, count?: number, step = 1): Stream<T> {
     this.data = slice(this.data, start, count, step);
     return this;
   }
@@ -513,7 +513,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.takeWhile()
    */
-  takeWhile(predicate: (item: unknown) => boolean): Stream<unknown> {
+  takeWhile(predicate: (item: T) => boolean): Stream<T> {
     this.data = takeWhile(this.data, predicate);
     return this;
   }
