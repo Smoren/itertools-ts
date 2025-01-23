@@ -11,11 +11,11 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
   ...dataProviderForMixed(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Multi Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {

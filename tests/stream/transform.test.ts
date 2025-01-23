@@ -10,11 +10,11 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown> | Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown> | Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Transform Test",
   (
     input: Iterable<unknown> | Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {
@@ -32,14 +32,14 @@ describe.each([
 ] as Array<[
     Iterable<unknown> | Iterator<unknown>,
   number,
-  Array<(stream: Stream) => Stream>,
+  Array<(stream: Stream<unknown>) => Stream<unknown>>,
   Array<unknown>
 ]>)(
   "Stream Transform Tee Test",
   (
     input: Iterable<unknown> | Iterator<unknown>,
     count: number,
-    extraOperations: Array<(stream: Stream) => Stream>,
+    extraOperations: Array<(stream: Stream<unknown>) => Stream<unknown>>,
     expected: Array<unknown>
   ) => {
     it("", () => {
@@ -425,7 +425,7 @@ function dataProviderForTee(): Array<unknown> {
       [],
       1,
       [
-        (stream: Stream) => stream,
+        (stream: Stream<unknown>) => stream,
       ],
       [
         [],
@@ -435,8 +435,8 @@ function dataProviderForTee(): Array<unknown> {
       [],
       2,
       [
-        (stream: Stream) => stream,
-        (stream: Stream) => stream,
+        (stream: Stream<unknown>) => stream,
+        (stream: Stream<unknown>) => stream,
       ],
       [
         [],
@@ -447,7 +447,7 @@ function dataProviderForTee(): Array<unknown> {
       [1, 2, 3],
       1,
       [
-        (stream: Stream) => stream,
+        (stream: Stream<unknown>) => stream,
       ],
       [
         [1, 2, 3],
@@ -457,7 +457,7 @@ function dataProviderForTee(): Array<unknown> {
       [1, 2, 3],
       1,
       [
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
       ],
       [
@@ -468,8 +468,8 @@ function dataProviderForTee(): Array<unknown> {
       [1, 2, 3],
       2,
       [
-        (stream: Stream) => stream,
-        (stream: Stream) => stream,
+        (stream: Stream<unknown>) => stream,
+        (stream: Stream<unknown>) => stream,
       ],
       [
         [1, 2, 3],
@@ -480,8 +480,8 @@ function dataProviderForTee(): Array<unknown> {
       createGeneratorFixture([1, 2, 3]),
       2,
       [
-        (stream: Stream) => stream,
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream,
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
       ],
       [
@@ -493,10 +493,10 @@ function dataProviderForTee(): Array<unknown> {
       createIterableFixture([1, 2, 3]),
       3,
       [
-        (stream: Stream) => stream,
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream,
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) ** 3),
       ],
       [
@@ -509,10 +509,10 @@ function dataProviderForTee(): Array<unknown> {
       new Set([1, 2, 3]),
       3,
       [
-        (stream: Stream) => stream,
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream,
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) ** 3)
           .filter((datum) => (datum as number) < 10),
       ],

@@ -10,11 +10,11 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Set Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {
@@ -32,14 +32,14 @@ describe.each([
 ] as Array<[
   Iterable<unknown>|Iterator<unknown>,
   number,
-  (minIntersectionCount: number, data: unknown) => Stream,
+  (minIntersectionCount: number, data: unknown) => Stream<unknown>,
   Array<unknown>
 ]>)(
   "Stream Set Partial Intersection Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
     minIntersectionCount: number,
-    streamFactory: (minIntersectionCount: number, data: unknown) => Stream,
+    streamFactory: (minIntersectionCount: number, data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {

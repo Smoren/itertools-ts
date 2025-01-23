@@ -1108,10 +1108,10 @@ function dataProviderForTee(): Array<unknown> {
       createIterableFixture([1, 2, 3]),
       3,
       [
-        (stream: Stream) => stream,
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream,
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) ** 3),
       ],
       [
@@ -1124,10 +1124,10 @@ function dataProviderForTee(): Array<unknown> {
       new Set([1, 2, 3]),
       3,
       [
-        (stream: Stream) => stream,
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream,
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) ** 3)
           .filter((datum) => (datum as number) < 10),
       ],
