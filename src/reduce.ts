@@ -14,10 +14,10 @@ import { map, mapAsync } from "./single";
  */
 export function toValue<TInput, TOutput>(
   data: Iterable<TInput> | Iterator<TInput>,
-  reducer: (carry: TOutput | undefined, datum: TInput) => TOutput,
+  reducer: (carry: TOutput, datum: TInput) => TOutput,
   initialValue?: TOutput
-): TOutput | undefined {
-  let carry = initialValue;
+): TOutput {
+  let carry = initialValue as TOutput;
 
   for (const datum of toIterable(data)) {
     carry = reducer(carry, datum);
@@ -39,13 +39,10 @@ export async function toValueAsync<TInput, TOutput>(
     | AsyncIterator<TInput>
     | Iterable<TInput>
     | Iterator<TInput>,
-  reducer: (
-    carry: TOutput | undefined,
-    datum: TInput
-  ) => TOutput | Promise<TOutput>,
+  reducer: (carry: TOutput, datum: TInput) => TOutput | Promise<TOutput>,
   initialValue?: TOutput
-): Promise<TOutput | undefined> {
-  let carry = initialValue;
+): Promise<TOutput> {
+  let carry = initialValue as TOutput;
 
   for await (const datum of toAsyncIterable(data)) {
     carry = await reducer(carry, datum);

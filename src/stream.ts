@@ -680,10 +680,10 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see reduce.toValue
    */
-  toValue<T>(
-    reducer: (carry: T | undefined, datum: unknown) => T,
-    initialValue?: T
-  ): T | undefined {
+  toValue<U>(
+    reducer: (carry: U, datum: T) => U,
+    initialValue?: U
+  ): U {
     return toValue(this, reducer, initialValue);
   }
 

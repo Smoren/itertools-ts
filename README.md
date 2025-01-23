@@ -1458,10 +1458,10 @@ Reduce elements to a single value using reducer function.
 
 ```
 function toValue<TInput, TOutput>(
-  data: Iterable<TInput>|Iterator<TInput>,
-  reducer: (carry: TOutput|undefined, datum: TInput) => TOutput,
-  initialValue?: TOutput,
-): TOutput|undefined
+  data: Iterable<TInput> | Iterator<TInput>,
+  reducer: (carry: TOutput, datum: TInput) => TOutput,
+  initialValue?: TOutput
+): TOutput
 ```
 
 ```typescript
