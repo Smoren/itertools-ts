@@ -996,8 +996,8 @@ for (const item of infinite.repeat('bla')) {
 Accumulate the running average over a list of numbers.
 
 ```
-function* runningAverage<T>(
-  numbers: Iterable<T> | Iterator<T>,
+function* runningAverage(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number>
 ```
@@ -1017,8 +1017,8 @@ for (const runningAverage of math.runningAverage(grades)) {
 Accumulate the running difference over a list of numbers.
 
 ```
-function* runningDifference<T>(
-  numbers: Iterable<T> | Iterator<T>,
+function* runningDifference(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number>
 ```
@@ -1052,8 +1052,8 @@ for (const runningScore of math.runningDifference(dartsScores, startingScore)) {
 Accumulate the running maximum over a list of numbers.
 
 ```
-function* runningMax<T>(
-  numbers: Iterable<T> | Iterator<T>,
+function* runningMax(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number>
 ```
@@ -1073,8 +1073,8 @@ for (const runningMax of math.runningMax(numbers)) {
 Accumulate the running minimum over a list of numbers.
 
 ```
-function* runningMin<T>(
-  numbers: Iterable<T> | Iterator<T>,
+function* runningMin(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number>
 ```
@@ -1094,8 +1094,8 @@ for (const runningMin of math.runningMin(numbers)) {
 Accumulate the running product over a list of numbers.
 
 ```
-function* runningProduct<T>(
-  numbers: Iterable<T> | Iterator<T>,
+function* runningProduct(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number>
 ```
@@ -1129,8 +1129,8 @@ for (const runningProduct of math.runningProduct(numbers, initialValue)) {
 Accumulate the running total over a list of numbers.
 
 ```
-function* runningTotal<T>(
-  numbers: Iterable<T> | Iterator<T>,
+function* runningTotal(
+  numbers: Iterable<Numeric> | Iterator<Numeric>,
   initialValue?: number
 ): Iterable<number>
 ```
