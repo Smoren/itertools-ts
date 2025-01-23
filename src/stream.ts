@@ -295,7 +295,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.filter
    */
-  filter(predicate: (item: unknown) => boolean): Stream<unknown> {
+  filter(predicate: (item: T) => boolean): Stream<T> {
     this.data = filter(this.data, predicate);
     return this;
   }
@@ -305,9 +305,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.enumerate
    */
-  enumerate(): Stream<unknown> {
+  enumerate(): Stream<[number, T]> {
     this.data = enumerate(this.data) as Iterable<T>;
-    return this;
+    return this as Stream<[number, T]>;
   }
 
   /**
@@ -525,11 +525,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.values
    */
-  values(): Stream<unknown> {
-    this.data = values(
-      this.data as Iterable<[unknown, unknown]> | Iterator<[unknown, unknown]>
-    ) as Iterable<T>;
-    return this;
+  values(): Stream<T extends [infer _, infer TValue] ? TValue : never> {
+    this.data = values(this.data as Iterable<[unknown, unknown]>) as Iterable<T>;
+    return this as Stream<T extends [infer _, infer TValue] ? TValue : never>;
   }
 
   /**
@@ -539,7 +537,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.sort
    */
-  sort(comparator?: Comparator<unknown>): Stream<unknown> {
+  sort(comparator?: Comparator<T>): Stream<T> {
     this.data = sort(this.data, comparator);
     return this;
   }
