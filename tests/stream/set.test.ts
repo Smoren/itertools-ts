@@ -10,13 +10,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
+])(
   "Stream Set Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, streamFactory, expected) => {
     it("", () => {
       // Given
       const result = streamFactory(input);
@@ -29,19 +25,9 @@ describe.each([
 
 describe.each([
   ...dataProviderForPartialIntersection(),
-] as Array<[
-  Iterable<unknown>|Iterator<unknown>,
-  number,
-  (minIntersectionCount: number, data: unknown) => Stream<unknown>,
-  Array<unknown>
-]>)(
+])(
   "Stream Set Partial Intersection Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    minIntersectionCount: number,
-    streamFactory: (minIntersectionCount: number, data: unknown) => Stream<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, minIntersectionCount, streamFactory, expected) => {
     it("", () => {
       // Given
       const result = streamFactory(
@@ -57,7 +43,7 @@ describe.each([
 
 function dataProviderForArrays<T>(
   wrapper: (x: Array<any>) => any = (x) => x,
-): Array<[Iterable<any>, (data: any) => Array<unknown>, Array<unknown>]> {
+): Array<[unknown, (data: any) => Array<unknown>, Array<unknown>]> {
   return [
     [
       wrapper([1, 2, 3, '1', '2', '3']),
@@ -244,19 +230,19 @@ function dataProviderForArrays<T>(
   ];
 }
 
-function dataProviderForGenerators(): Array<[Generator<any>, (data: any) => Array<unknown>, Array<unknown>]> {
+function dataProviderForGenerators(): Array<[unknown, (data: any) => Array<unknown>, Array<unknown>]> {
   return dataProviderForArrays((x) => createGeneratorFixture(x)) as any;
 }
 
-function dataProviderForIterables(): Array<[Iterable<unknown>, (data: any) => Array<unknown>, Array<unknown>]> {
+function dataProviderForIterables(): Array<[unknown, (data: any) => Array<unknown>, Array<unknown>]> {
   return dataProviderForArrays((x) => createIterableFixture(x)) as any;
 }
 
-function dataProviderForIterators(): Array<[Iterator<unknown>, (data: any) => Array<unknown>, Array<unknown>]> {
+function dataProviderForIterators(): Array<[unknown, (data: any) => Array<unknown>, Array<unknown>]> {
   return dataProviderForArrays((x) => createIteratorFixture(x)) as any;
 }
 
-function dataProviderForStrings(): Array<[Iterable<unknown>, (data: any) => Array<unknown>, Array<unknown>]> {
+function dataProviderForStrings(): Array<[unknown, (data: any) => Array<unknown>, Array<unknown>]> {
   return [
     [
       'a1b2c3abcd1234',
@@ -332,7 +318,7 @@ function dataProviderForStrings(): Array<[Iterable<unknown>, (data: any) => Arra
   ];
 }
 
-function dataProviderForSets(): Array<[Iterable<unknown>, (data: any) => Array<unknown>, Array<unknown>]> {
+function dataProviderForSets(): Array<[unknown, (data: any) => Array<unknown>, Array<unknown>]> {
   return [
     [
       new Set([1, 2, 3, '1', '2', '3']),
@@ -494,7 +480,7 @@ function dataProviderForSets(): Array<[Iterable<unknown>, (data: any) => Array<u
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[unknown, (data: any) => Array<unknown>, Array<unknown>]> {
   return [
     [
       createMapFixture([1, 2, 3, '1', '2', '3']),
@@ -649,7 +635,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForPartialIntersection(): Array<unknown> {
+function dataProviderForPartialIntersection(): Array<[Array<Iterable<unknown> | Iterator<unknown>>, number, (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Array<unknown>, Array<unknown>]> {
   return [
     [
       [
@@ -658,7 +644,7 @@ function dataProviderForPartialIntersection(): Array<unknown> {
         [2, 3, 4, 5, 6],
       ],
       1,
-      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (minIntersectionCount, iterables) => Stream.of(iterables.shift()!)
         .partialIntersectionWith(minIntersectionCount, ...iterables)
         .toArray(),
       [1, 2, 3, 4, 5, 6],
@@ -670,7 +656,7 @@ function dataProviderForPartialIntersection(): Array<unknown> {
         [2, 3, 4, 5, 6],
       ],
       2,
-      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (minIntersectionCount, iterables) => Stream.of(iterables.shift()!)
         .partialIntersectionWith(minIntersectionCount, ...iterables)
         .toArray(),
       [2, 3, 4],
@@ -682,7 +668,7 @@ function dataProviderForPartialIntersection(): Array<unknown> {
         [2, 3, 4, 5, 6],
       ],
       3,
-      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (minIntersectionCount, iterables) => Stream.of(iterables.shift()!)
         .partialIntersectionWith(minIntersectionCount, ...iterables)
         .toArray(),
       [2],
@@ -694,7 +680,7 @@ function dataProviderForPartialIntersection(): Array<unknown> {
         '23456',
       ],
       3,
-      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift()!)
         .partialIntersectionWith(minIntersectionCount, ...iterables)
         .toArray(),
       ['2'],
@@ -706,7 +692,7 @@ function dataProviderForPartialIntersection(): Array<unknown> {
         [2, 3, 4, 5, 6],
       ],
       1,
-      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift()!)
         .partialIntersectionWith(minIntersectionCount, ...iterables)
         .toArray(),
       [1, 2, '3', 3, 4, 5, 6],
@@ -718,7 +704,7 @@ function dataProviderForPartialIntersection(): Array<unknown> {
         createIteratorFixture([2, 3, 4, 5, 6]),
       ],
       2,
-      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift()!)
         .partialIntersectionWith(minIntersectionCount, ...iterables)
         .toArray(),
       [2, 4],
@@ -730,7 +716,7 @@ function dataProviderForPartialIntersection(): Array<unknown> {
         [2, 3, 4, 5, 6],
       ],
       3,
-      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift()!)
         .partialIntersectionWith(minIntersectionCount, ...iterables)
         .toArray(),
       [2],
@@ -742,7 +728,7 @@ function dataProviderForPartialIntersection(): Array<unknown> {
         [1, 3, 5, 7, 9, 11],
       ],
       2,
-      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (minIntersectionCount: number, iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift()!)
         .partialIntersectionWith(minIntersectionCount, ...iterables)
         .toArray(),
       [1, 3, 4, 5, 6, 7, 9],
