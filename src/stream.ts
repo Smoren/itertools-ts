@@ -1,4 +1,4 @@
-import { toArray, toIterable, toMap, toSet, tee } from "./transform";
+import { toArray, toIterable, toMap, toSet, tee, toMapAsync } from "./transform";
 import {
   chunkwise,
   chunkwiseOverlap,
@@ -977,8 +977,8 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see transform.toMap
    */
-  toMap(): Map<unknown, unknown> {
-    return toMap(this as Iterable<[unknown, unknown]>);
+  toMap(): T extends [infer TKey, infer TValue] ? Map<TKey, TValue> : never {
+    return toMap(this as Iterable<[unknown, unknown]>) as T extends [infer TKey, infer TValue] ? Map<TKey, TValue> : never;
   }
 
   /**

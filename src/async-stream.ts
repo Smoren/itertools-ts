@@ -79,31 +79,31 @@ import { infinite } from "./index";
 /**
  * Provides fluent interface for working with async iterables.
  */
-export class AsyncStream {
+export class AsyncStream<T> implements AsyncIterable<T> {
   /**
    * Iterable source
    */
-  protected data: AsyncIterable<unknown>;
+  protected data: AsyncIterable<T>;
 
   /**
    * Creates iterable instance with fluent interface.
    *
    * @param data
    */
-  static of(
+  static of<T>(
     data:
-      | AsyncIterable<unknown>
-      | AsyncIterator<unknown>
-      | Iterable<unknown>
-      | Iterator<unknown>
-  ): AsyncStream {
+      | AsyncIterable<T>
+      | AsyncIterator<T>
+      | Iterable<T>
+      | Iterator<T>
+  ): AsyncStream<T> {
     return new AsyncStream(toAsyncIterable(data));
   }
 
   /**
    * Creates iterable instance with fluent interface from empty iterable source.
    */
-  static ofEmpty(): AsyncStream {
+  static ofEmpty(): AsyncStream<unknown> {
     return new AsyncStream(toAsyncIterable([]));
   }
 
@@ -113,7 +113,7 @@ export class AsyncStream {
    * @param start (optional, default 1)
    * @param step (optional, default 1)
    */
-  static ofCount(start = 1, step = 1): AsyncStream {
+  static ofCount(start = 1, step = 1): AsyncStream<number> {
     return new AsyncStream(toAsyncIterable(infinite.count(start, step)));
   }
 
@@ -122,7 +122,13 @@ export class AsyncStream {
    *
    * @param iterable
    */
-  static ofCycle(iterable: Iterable<unknown> | Iterator<unknown>): AsyncStream {
+  static ofCycle<T>(
+    iterable:
+      | AsyncIterable<T>
+      | AsyncIterator<T>
+      | Iterable<T>
+      | Iterator<T>
+  ): AsyncStream<T> {
     return new AsyncStream(infinite.cycleAsync(iterable));
   }
 
@@ -131,7 +137,7 @@ export class AsyncStream {
    *
    * @param item
    */
-  static ofRepeat(item: unknown): AsyncStream {
+  static ofRepeat<T>(item: T): AsyncStream<T> {
     return new AsyncStream(toAsyncIterable(infinite.repeat(item)));
   }
 
@@ -154,8 +160,8 @@ export class AsyncStream {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream {
-    this.data = zipAsync(this.data, ...iterables);
+  ): AsyncStream<T> {
+    this.data = zipAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this;
   }
 
@@ -181,8 +187,8 @@ export class AsyncStream {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream {
-    this.data = zipFilledAsync(filler, this.data, ...iterables);
+  ): AsyncStream<T> {
+    this.data = zipFilledAsync(filler, this.data, ...iterables) as AsyncIterable<T>;
     return this;
   }
 
@@ -206,8 +212,8 @@ export class AsyncStream {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream {
-    this.data = zipLongestAsync(this.data, ...iterables);
+  ): AsyncStream<T> {
+    this.data = zipLongestAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this;
   }
 
@@ -228,8 +234,8 @@ export class AsyncStream {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream {
-    this.data = zipEqualAsync(this.data, ...iterables);
+  ): AsyncStream<T> {
+    this.data = zipEqualAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this;
   }
 
@@ -249,8 +255,8 @@ export class AsyncStream {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream {
-    this.data = chainAsync(this.data, ...iterables);
+  ): AsyncStream<T> {
+    this.data = chainAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this;
   }
 
@@ -271,13 +277,13 @@ export class AsyncStream {
     chunkSize: number,
     overlapSize: number,
     includeIncompleteTail = true
-  ): AsyncStream {
+  ): AsyncStream<T> {
     this.data = chunkwiseOverlapAsync(
       this.data,
       chunkSize,
       overlapSize,
       includeIncompleteTail
-    );
+    ) as AsyncIterable<T>;
     return this;
   }
 
@@ -290,8 +296,8 @@ export class AsyncStream {
    *
    * @see single.chunkwiseAsync
    */
-  chunkwise(chunkSize: number): AsyncStream {
-    this.data = chunkwiseAsync(this.data, chunkSize);
+  chunkwise(chunkSize: number): AsyncStream<T> {
+    this.data = chunkwiseAsync(this.data, chunkSize) as AsyncIterable<T>;
     return this;
   }
 
@@ -310,7 +316,7 @@ export class AsyncStream {
       | AsyncIterator<number | boolean>
       | Iterable<number | boolean>
       | Iterator<number | boolean>
-  ): AsyncStream {
+  ): AsyncStream<T> {
     this.data = compressAsync(this.data, selectors);
     return this;
   }
@@ -326,7 +332,7 @@ export class AsyncStream {
    */
   dropWhile(
     predicate: (item: unknown) => Promise<boolean> | boolean
-  ): AsyncStream {
+  ): AsyncStream<T> {
     this.data = dropWhileAsync(this.data, predicate);
     return this;
   }
@@ -339,8 +345,8 @@ export class AsyncStream {
    * @see single.filterAsync
    */
   filter(
-    predicate: (item: unknown) => Promise<boolean> | boolean
-  ): AsyncStream {
+    predicate: (item: T) => Promise<boolean> | boolean
+  ): AsyncStream<T> {
     this.data = filterAsync(this.data, predicate);
     return this;
   }
@@ -350,8 +356,8 @@ export class AsyncStream {
    *
    * @see single.enumerateAsync
    */
-  enumerate(): AsyncStream {
-    this.data = enumerateAsync(this.data);
+  enumerate(): AsyncStream<T> {
+    this.data = enumerateAsync(this.data) as AsyncIterable<T>;
     return this;
   }
 
@@ -360,14 +366,14 @@ export class AsyncStream {
    *
    * @see single.keysAsync
    */
-  keys(): AsyncStream {
+  keys(): AsyncStream<T> {
     this.data = keysAsync(
       this.data as
         | AsyncIterable<[unknown, unknown]>
         | AsyncIterator<[unknown, unknown]>
         | Iterable<[unknown, unknown]>
         | Iterator<[unknown, unknown]>
-    );
+    ) as AsyncIterable<T>;
     return this;
   }
 
@@ -378,7 +384,7 @@ export class AsyncStream {
    *
    * @see single.limitAsync
    */
-  limit(count: number): AsyncStream {
+  limit(count: number): AsyncStream<T> {
     this.data = limitAsync(this.data, count);
     return this;
   }
@@ -390,9 +396,9 @@ export class AsyncStream {
    *
    * @see single.mapAsync
    */
-  map(mapper: (datum: unknown) => Promise<unknown> | unknown): AsyncStream {
-    this.data = mapAsync(this.data, mapper);
-    return this;
+  map<U>(mapper: (datum: T) => Promise<U> | U): AsyncStream<U> {
+    this.data = mapAsync(this.data, mapper) as AsyncIterable<T>;
+    return this as unknown as AsyncStream<U>;
   }
 
   /**
@@ -403,8 +409,8 @@ export class AsyncStream {
    *
    * @see single.flatMapAsync
    */
-  flatMap(mapper: AsyncFlatMapper<unknown, unknown>): AsyncStream {
-    this.data = flatMapAsync(this.data, mapper);
+  flatMap(mapper: AsyncFlatMapper<unknown, unknown>): AsyncStream<T> {
+    this.data = flatMapAsync(this.data, mapper) as AsyncIterable<T>;
     return this;
   }
 
@@ -415,8 +421,8 @@ export class AsyncStream {
    *
    * @see single.flattenAsync
    */
-  flatten(dimensions = Infinity): AsyncStream {
-    this.data = flattenAsync(this.data, dimensions);
+  flatten(dimensions = Infinity): AsyncStream<T> {
+    this.data = flattenAsync(this.data, dimensions) as AsyncIterable<T>;
     return this;
   }
 
@@ -439,8 +445,8 @@ export class AsyncStream {
   groupBy(
     groupKeyFunction: (item: unknown) => Promise<string> | string,
     itemKeyFunction?: (item: unknown) => Promise<string> | string
-  ): AsyncStream {
-    this.data = groupByAsync(this.data, groupKeyFunction, itemKeyFunction);
+  ): AsyncStream<T> {
+    this.data = groupByAsync(this.data, groupKeyFunction, itemKeyFunction) as AsyncIterable<T>;
     return this;
   }
 
@@ -451,8 +457,8 @@ export class AsyncStream {
    *
    * @see single.pairwiseAsync
    */
-  pairwise(): AsyncStream {
-    this.data = pairwiseAsync(this.data);
+  pairwise(): AsyncStream<T> {
+    this.data = pairwiseAsync(this.data) as AsyncIterable<T>;
     return this;
   }
 
@@ -463,8 +469,8 @@ export class AsyncStream {
    *
    * @see math.runningAverageAsync
    */
-  runningAverage(initialValue?: number): AsyncStream {
-    this.data = runningAverageAsync(this.data as AsyncIterable<Numeric>, initialValue);
+  runningAverage(initialValue?: number): AsyncStream<T> {
+    this.data = runningAverageAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this;
   }
 
@@ -475,8 +481,8 @@ export class AsyncStream {
    *
    * @see math.runningDifferenceAsync
    */
-  runningDifference(initialValue?: number): AsyncStream {
-    this.data = runningDifferenceAsync(this.data as AsyncIterable<Numeric>, initialValue);
+  runningDifference(initialValue?: number): AsyncStream<T> {
+    this.data = runningDifferenceAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this;
   }
 
@@ -487,8 +493,8 @@ export class AsyncStream {
    *
    * @see math.runningMaxAsync
    */
-  runningMax(initialValue?: number): AsyncStream {
-    this.data = runningMaxAsync(this.data as AsyncIterable<Numeric>, initialValue);
+  runningMax(initialValue?: number): AsyncStream<T> {
+    this.data = runningMaxAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this;
   }
 
@@ -499,8 +505,8 @@ export class AsyncStream {
    *
    * @see math.runningMinAsync
    */
-  runningMin(initialValue?: number): AsyncStream {
-    this.data = runningMinAsync(this.data as AsyncIterable<Numeric>, initialValue);
+  runningMin(initialValue?: number): AsyncStream<T> {
+    this.data = runningMinAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this;
   }
 
@@ -511,8 +517,8 @@ export class AsyncStream {
    *
    * @see math.runningProductAsync
    */
-  runningProduct(initialValue?: number): AsyncStream {
-    this.data = runningProductAsync(this.data as AsyncIterable<Numeric>, initialValue);
+  runningProduct(initialValue?: number): AsyncStream<T> {
+    this.data = runningProductAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this;
   }
 
@@ -523,8 +529,8 @@ export class AsyncStream {
    *
    * @see math.runningTotalAsync
    */
-  runningTotal(initialValue?: number): AsyncStream {
-    this.data = runningTotalAsync(this.data as AsyncIterable<Numeric>, initialValue);
+  runningTotal(initialValue?: number): AsyncStream<T> {
+    this.data = runningTotalAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this;
   }
 
@@ -536,7 +542,7 @@ export class AsyncStream {
    *
    * @see single.skipAsync
    */
-  skip(count: number, offset = 0): AsyncStream {
+  skip(count: number, offset = 0): AsyncStream<T> {
     this.data = skipAsync(this.data, count, offset);
     return this;
   }
@@ -550,7 +556,7 @@ export class AsyncStream {
    *
    * @see single.sliceAsync
    */
-  slice(start = 0, count?: number, step = 1): AsyncStream {
+  slice(start = 0, count?: number, step = 1): AsyncStream<T> {
     this.data = sliceAsync(this.data, start, count, step);
     return this;
   }
@@ -566,7 +572,7 @@ export class AsyncStream {
    */
   takeWhile(
     predicate: (item: unknown) => Promise<boolean> | boolean
-  ): AsyncStream {
+  ): AsyncStream<T> {
     this.data = takeWhileAsync(this.data, predicate);
     return this;
   }
@@ -576,14 +582,14 @@ export class AsyncStream {
    *
    * @see single.valuesAsync
    */
-  values(): AsyncStream {
+  values(): AsyncStream<T> {
     this.data = valuesAsync(
       this.data as
         | AsyncIterable<[unknown, unknown]>
         | AsyncIterator<[unknown, unknown]>
         | Iterable<[unknown, unknown]>
         | Iterator<[unknown, unknown]>
-    );
+    ) as AsyncIterable<T>;
     return this;
   }
 
@@ -594,7 +600,7 @@ export class AsyncStream {
    *
    * @see single.sort
    */
-  sort(comparator?: Comparator<unknown>): AsyncStream {
+  sort(comparator?: Comparator<unknown>): AsyncStream<T> {
     this.data = sortAsync(this.data, comparator);
     return this;
   }
@@ -606,7 +612,7 @@ export class AsyncStream {
    *
    * @see set.distinctAsync
    */
-  distinct(compareBy?: (datum: unknown) => Comparable): AsyncStream {
+  distinct(compareBy?: (datum: unknown) => Comparable): AsyncStream<T> {
     this.data = distinctAsync(this.data, compareBy);
     return this;
   }
@@ -627,8 +633,8 @@ export class AsyncStream {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream {
-    this.data = intersectionAsync(this.data, ...iterables);
+  ): AsyncStream<T> {
+    this.data = intersectionAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this;
   }
 
@@ -650,12 +656,12 @@ export class AsyncStream {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream {
+  ): AsyncStream<T> {
     this.data = partialIntersectionAsync(
       minIntersectionCount,
       this.data,
       ...iterables
-    );
+    ) as AsyncIterable<T>;
     return this;
   }
 
@@ -675,8 +681,8 @@ export class AsyncStream {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream {
-    this.data = symmetricDifferenceAsync(this.data, ...iterables);
+  ): AsyncStream<T> {
+    this.data = symmetricDifferenceAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this;
   }
 
@@ -696,8 +702,8 @@ export class AsyncStream {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream {
-    this.data = unionAsync(this.data, ...iterables);
+  ): AsyncStream<T> {
+    this.data = unionAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this;
   }
 
@@ -715,8 +721,8 @@ export class AsyncStream {
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream {
-    this.data = cartesianProductAsync(this.data, ...iterables);
+  ): AsyncStream<T> {
+    this.data = cartesianProductAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this;
   }
 
@@ -727,7 +733,7 @@ export class AsyncStream {
    *
    * @param callback
    */
-  public peek(callback: (datum: unknown) => void): AsyncStream {
+  public peek(callback: (datum: unknown) => void): AsyncStream<T> {
     const [data, peekable] = teeAsync(this.data, 2);
     this.data = data;
 
@@ -747,7 +753,7 @@ export class AsyncStream {
    *
    * @param callback
    */
-  public peekStream(callback: (datum: AsyncStream) => void): AsyncStream {
+  public peekStream(callback: (datum: AsyncStream<T>) => void): AsyncStream<T> {
     const [data, peekable] = teeAsync(this.data, 2);
     this.data = data;
 
@@ -843,8 +849,8 @@ export class AsyncStream {
    * @see reduce.toMinMaxAsync
    */
   async toMinMax(
-    compareBy?: (item: unknown) => Promise<Comparable> | Comparable
-  ): Promise<[unknown?, unknown?]> {
+    compareBy?: (item: T) => Promise<Comparable> | Comparable
+  ): Promise<[T?, T?]> {
     return await toMinMaxAsync(this, compareBy);
   }
 
@@ -855,7 +861,7 @@ export class AsyncStream {
    *
    * @see reduce.toFirstAsync
    */
-  async toFirst(): Promise<unknown> {
+  async toFirst(): Promise<T> {
     return await toFirstAsync(this);
   }
 
@@ -866,7 +872,7 @@ export class AsyncStream {
    *
    * @see reduce.toFirstAndLastAsync
    */
-  async toFirstAndLast(): Promise<unknown> {
+  async toFirstAndLast(): Promise<[T, T]> {
     return await toFirstAndLastAsync(this);
   }
 
@@ -877,7 +883,7 @@ export class AsyncStream {
    *
    * @see reduce.toLastAsync
    */
-  async toLast(): Promise<unknown> {
+  async toLast(): Promise<T> {
     return await toLastAsync(this);
   }
 
@@ -922,7 +928,7 @@ export class AsyncStream {
    * @see summary.allMatchAsync
    */
   async allMatch(
-    predicate: (item: unknown) => Promise<boolean> | boolean
+    predicate: (item: T) => Promise<boolean> | boolean
   ): Promise<boolean> {
     return await allMatchAsync(this, predicate);
   }
@@ -950,7 +956,7 @@ export class AsyncStream {
    * @see summary.anyMatchAsync
    */
   async anyMatch(
-    predicate: (item: unknown) => Promise<boolean> | boolean
+    predicate: (item: T) => Promise<boolean> | boolean
   ): Promise<boolean> {
     return await anyMatchAsync(this, predicate);
   }
@@ -967,7 +973,7 @@ export class AsyncStream {
    */
   async exactlyN(
     n: number,
-    predicate?: (item: unknown) => Promise<boolean> | boolean
+    predicate?: (item: T) => Promise<boolean> | boolean
   ): Promise<boolean> {
     return exactlyNAsync(this, n, predicate);
   }
@@ -1008,7 +1014,7 @@ export class AsyncStream {
    * @see summary.noneMatchAsync
    */
   async noneMatch(
-    predicate: (item: unknown) => Promise<boolean> | boolean
+    predicate: (item: T) => Promise<boolean> | boolean
   ): Promise<boolean> {
     return await noneMatchAsync(this, predicate);
   }
@@ -1067,7 +1073,7 @@ export class AsyncStream {
    *
    * @see transform.teeAsync
    */
-  public tee(count: number): Array<AsyncStream> {
+  public tee(count: number): Array<AsyncStream<T>> {
     return teeAsync(this.data, count).map(
       (iterable) => new AsyncStream(iterable)
     );
@@ -1078,7 +1084,7 @@ export class AsyncStream {
    *
    * @see transform.toArrayAsync
    */
-  async toArray(): Promise<Array<unknown>> {
+  async toArray(): Promise<Array<T>> {
     return await toArrayAsync(this);
   }
 
@@ -1089,8 +1095,8 @@ export class AsyncStream {
    *
    * @see transform.toMapAsync
    */
-  async toMap(): Promise<Map<unknown, unknown>> {
-    return await toMapAsync(this as AsyncIterable<[unknown, unknown]>);
+  async toMap(): Promise<T extends [infer TKey, infer TValue] ? Map<TKey, TValue> : never> {
+    return await toMapAsync(this as AsyncIterable<[unknown, unknown]>) as unknown as Promise<T extends [infer TKey, infer TValue] ? Map<TKey, TValue> : never>;
   }
 
   /**
@@ -1105,7 +1111,7 @@ export class AsyncStream {
   /**
    * Aggregated iterator.
    */
-  async *[Symbol.asyncIterator](): AsyncIterator<unknown> {
+  async *[Symbol.asyncIterator](): AsyncIterator<T> {
     for await (const datum of this.data) {
       yield datum;
     }
@@ -1116,7 +1122,7 @@ export class AsyncStream {
    *
    * @param iterable
    */
-  protected constructor(iterable: AsyncIterable<unknown>) {
+  protected constructor(iterable: AsyncIterable<T>) {
     this.data = iterable;
   }
 }

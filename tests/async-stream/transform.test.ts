@@ -23,13 +23,13 @@ describe.each([
   ...dataProviderForMaps(),
 ] as Array<[
   AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream,
+  (data: unknown) => AsyncStream<unknown>,
   Array<unknown>
 ]>)(
   "AsyncStream Transform Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream,
+    streamFactory: (data: unknown) => AsyncStream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
@@ -47,14 +47,14 @@ describe.each([
 ] as Array<[
   AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
   number,
-  Array<(stream: AsyncStream) => AsyncStream>,
+  Array<(stream: AsyncStream<unknown>) => AsyncStream<unknown>>,
   Array<unknown>
 ]>)(
   "AsyncStream Transform Tee Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
     count: number,
-    extraOperations: Array<(stream: AsyncStream) => AsyncStream>,
+    extraOperations: Array<(stream: AsyncStream<unknown>) => AsyncStream<unknown>>,
     expected: Array<unknown>
   ) => {
     it("", async () => {

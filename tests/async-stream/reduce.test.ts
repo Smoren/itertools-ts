@@ -23,18 +23,18 @@ describe.each([
   ...dataProviderForMaps(),
 ] as Array<[
   AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream,
+  (data: unknown) => AsyncStream<unknown>,
   Array<unknown>
 ]>)(
   "AsyncStream Reduce Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream,
+    streamFactory: (data: unknown) => AsyncStream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
       // Given
-      const result = await (streamFactory as (data: unknown) => AsyncStream)(input);
+      const result = await (streamFactory as (data: unknown) => AsyncStream<unknown>)(input);
 
       // Then
       expect(result).toEqual(expected);
@@ -2577,7 +2577,7 @@ function dataProviderForMaps(): Array<unknown> {
   return [
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toValue(function (carry, item) {
           return (carry as number) + (item as Array<number>)[1];
         }),
@@ -2585,7 +2585,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toValue(function (carry, item) {
           return (carry as number) + (item as Array<number>)[1];
         }, 1),
@@ -2593,7 +2593,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toValue(function (carry, item) {
           return (carry as number) + (item as Array<number>)[1];
         }, 0),
@@ -2601,7 +2601,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toValue(function (carry, item) {
           return (carry as number) + (item as Array<number>)[1];
         }, 1),
@@ -2609,7 +2609,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as Array<number>)[1] > 0)
         .toValue(function (carry, item) {
           return (carry as number) + (item as Array<number>)[1];
@@ -2618,56 +2618,56 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as Array<number>)[1] > 0)
         .toValue((carry, item) => (carry as number) + (item as Array<number>)[1], 1),
       1,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as Array<number>)[1] > 0)
         .toValue((carry, item) => (carry as number) + (item as Array<number>)[1], 0),
       6,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as Array<number>)[1] > 0)
         .toValue((carry, item) => (carry as number) + (item as Array<number>)[1], 1),
       7,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .filter((value) => !(value[1] > 0))
         .toValue((carry, item) => (carry as number) + (item as Array<number>)[1]),
       undefined,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .filter((value) => !(value[1] > 0))
         .toValue((carry, item) => (carry as number) + (item as Array<number>)[1], 1),
       1,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => !((value as Array<number>)[1] > 0))
         .toValue((carry, item) => (carry as number) + (item as Array<number>)[1], 0),
       -6,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => !((value as Array<number>)[1] > 0))
         .toValue((carry, item) => (carry as number) + (item as Array<number>)[1], 1),
       -5,
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .zipWith(
           createMapFixture([10, 20, 30]),
           createMapFixture([100, 200, 300]),
@@ -2684,7 +2684,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .zipEqualWith(
           createMapFixture([10, 20, 30]),
           createMapFixture([100, 200, 300]),
@@ -2701,14 +2701,14 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .zipWith(
           createMapFixture([10, 20, 30]),
           createMapFixture([100, 200, 300]),
         )
         .toValue(async (carry, item) => {
-          const buf: Array<number> = await AsyncStream.of(item as Array<Array<number>>)
-            .map((subItem) => (subItem as Array<number>)[1])
+          const buf = await AsyncStream.of(item as Iterable<Array<unknown>>)
+            .map((subItem) => (subItem)[1])
             .toArray() as Array<number>;
 
           return (carry as number) + buf
@@ -2718,7 +2718,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .zipLongestWith(
           createMapFixture([10, 20, 30]),
           createMapFixture([100, 200, 300]),
@@ -2735,7 +2735,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .chainWith(
           createMapFixture([4, 5, 6]),
           createMapFixture([7, 8, 9]),
@@ -2753,277 +2753,277 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .toAverage(),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .toAverage(),
       0,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .toRange(),
       0,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .toRange(),
       6,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toCount(),
       0,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toCount(),
       6,
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toFirst(),
       [0, 1],
     ],
     [
       createMapFixture([2, 1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toFirst(),
       [0, 2],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toFirstAndLast(),
       [[0, 1], [4, 5]],
     ],
     [
       createMapFixture([2, 1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toFirstAndLast(),
       [[0, 2], [3, 5]],
     ],
     [
       createMapFixture([2, 3, 1, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toLast(),
       [3, 5],
     ],
     [
       createMapFixture([1, 2, 3, 4, 0]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toLast(),
       [4, 0],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toMax((value) => (value as [number, number])[1]),
       undefined,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toMax((value) => -(value as [number, number])[1]),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toMax((value) => (value as [number, number])[1]),
       [4, 3],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toMax((value) => -(value as [number, number])[1]),
       [5, -3],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as [number, number])[1] > 0)
         .toMax((value) => (value as [number, number])[1]),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as [number, number])[1] > 0)
         .toMax((value) => (value as [number, number])[1]),
       [4, 3],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as [number, number])[1] <= 0)
         .toMax((value) => (value as [number, number])[1]),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as [number, number])[1] <= 0)
         .toMax((value) => (value as [number, number])[1]),
       [1, -1],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toMin((value) => (value as [number, number])[1]),
       undefined,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toMin((value) => -(value as [number, number])[1]),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toMin((value) => (value as [number, number])[1]),
       [5, -3],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .toMin((value) => -(value as [number, number])[1]),
       [4, 3],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as [number, number])[1] > 0)
         .toMin((value) => (value as [number, number])[1]),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as [number, number])[1] > 0)
         .toMin((value) => (value as [number, number])[1]),
       [0, 1],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as [number, number])[1] <= 0)
         .toMin((value) => (value as [number, number])[1]),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .filter((value) => (value as [number, number])[1] <= 0)
         .toMin((value) => (value as [number, number])[1]),
       [5, -3],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .filter((value) => (value as number) > 100)
         .toMinMax(),
       [undefined, undefined],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .filter((value) => (value as number) <= 0)
         .toMinMax(),
       [-3, -1],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toMinMax((item) => -(item as [unknown, number])[1]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .toMinMax((item) => -item[1]),
       [[4, 3], [5, -3]],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .toProduct(),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .toProduct(),
       -36,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .filter((value) => (value as number) > 0)
         .toProduct(),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .filter((value) => (value as number) > 0)
         .toProduct(),
       6,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .filter((value) => (value as number) <= 0)
         .toProduct(),
       undefined,
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .filter((value) => (value as number) <= 0)
         .toProduct(),
       -6,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .toSum(),
       0,
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .toSum(),
       6,
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .toSum(),
       0,
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .toSum(),
       6,
     ],
