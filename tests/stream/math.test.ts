@@ -10,11 +10,11 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Math Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {

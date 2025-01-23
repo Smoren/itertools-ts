@@ -10,16 +10,16 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Reduce Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {
       // Given
-      const result = (streamFactory as (data: unknown) => Stream)(input);
+      const result = (streamFactory as (data: unknown) => Stream<unknown>)(input);
 
       // Then
       expect(result).toEqual(expected);

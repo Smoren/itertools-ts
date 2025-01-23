@@ -115,11 +115,11 @@ function dataProviderForOfRepeat(): Array<unknown> {
 
 describe.each([
   ...dataProviderForMath(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Math Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {
@@ -181,11 +181,11 @@ function dataProviderForMath(): Array<unknown> {
 
 describe.each([
   ...dataProviderForMulti(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Multi Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {
@@ -309,16 +309,16 @@ describe.each([
   ...dataProviderForPeek(),
 ] as Array<[
     Iterable<unknown>|Iterator<unknown>,
-  (data: Iterable<unknown>|Iterator<unknown>) => Stream,
-  (stream: Stream) => Stream,
+  (data: Iterable<unknown>|Iterator<unknown>) => Stream<unknown>,
+  (stream: Stream<unknown>) => Stream<unknown>,
   Array<unknown>,
   Array<unknown>,
 ]>)(
   "Stream Peek Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    leftChainFunc: (data: Iterable<unknown>|Iterator<unknown>) => Stream,
-    rightChainFunc: (stream: Stream) => Stream,
+    leftChainFunc: (data: Iterable<unknown>|Iterator<unknown>) => Stream<unknown>,
+    rightChainFunc: (stream: Stream<unknown>) => Stream<unknown>,
     expectedPeeked: Array<unknown>,
     expectedResult: Array<unknown>,
   ) => {
@@ -346,16 +346,16 @@ describe.each([
   ...dataProviderForPeek(),
 ] as Array<[
     Iterable<unknown>|Iterator<unknown>,
-  (data: Iterable<unknown>|Iterator<unknown>) => Stream,
-  (stream: Stream) => Stream,
+  (data: Iterable<unknown>|Iterator<unknown>) => Stream<unknown>,
+  (stream: Stream<unknown>) => Stream<unknown>,
   Array<unknown>,
   Array<unknown>,
 ]>)(
   "Stream Peek Stream Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    leftChainFunc: (data: Iterable<unknown>|Iterator<unknown>) => Stream,
-    rightChainFunc: (stream: Stream) => Stream,
+    leftChainFunc: (data: Iterable<unknown>|Iterator<unknown>) => Stream<unknown>,
+    rightChainFunc: (stream: Stream<unknown>) => Stream<unknown>,
     expectedPeeked: Array<unknown>,
     expectedResult: Array<unknown>,
   ) => {
@@ -386,7 +386,7 @@ function dataProviderForPeek(): Array<unknown> {
     [
       [5, 4, 3, 2, 1],
       (iterable: Iterable<unknown>) => Stream.of(iterable),
-      (stream: Stream) => stream,
+      (stream: Stream<unknown>) => stream,
       [5, 4, 3, 2, 1],
       [5, 4, 3, 2, 1],
     ],
@@ -394,7 +394,7 @@ function dataProviderForPeek(): Array<unknown> {
       [1, 2, 3, 4, 5],
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .zipWith([11, 22, 33, 44, 55]),
-      (stream: Stream) => stream
+      (stream: Stream<unknown>) => stream
         .limit(3),
       [[1, 11], [2, 22], [3, 33], [4, 44], [5, 55]],
       [[1, 11], [2, 22], [3, 33]],
@@ -404,7 +404,7 @@ function dataProviderForPeek(): Array<unknown> {
       (iterable: Iterable<unknown>) => Stream.of(iterable)
         .filter((x) => (x as number) % 2 !== 0)
         .sort(),
-      (stream: Stream) => stream
+      (stream: Stream<unknown>) => stream
         .map((x) => (x as number) + 1)
         .pairwise(),
       [1, 3, 5, 7, 9],
@@ -415,16 +415,16 @@ function dataProviderForPeek(): Array<unknown> {
 
 describe.each([
   ...dataProviderForReduce(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Reduce Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {
       // Given
-      const result = (streamFactory as (data: unknown) => Stream)(input);
+      const result = (streamFactory as (data: unknown) => Stream<unknown>)(input);
 
       // Then
       expect(result).toEqual(expected);
@@ -518,11 +518,11 @@ function dataProviderForReduce(): Array<unknown> {
 
 describe.each([
   ...dataProviderForSet(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Set Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {
@@ -540,14 +540,14 @@ describe.each([
 ] as Array<[
     Iterable<unknown>|Iterator<unknown>,
   number,
-  (minIntersectionCount: number, data: unknown) => Stream,
+  (minIntersectionCount: number, data: unknown) => Stream<unknown>,
   Array<unknown>
 ]>)(
   "Stream Set Partial Intersection Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
     minIntersectionCount: number,
-    streamFactory: (minIntersectionCount: number, data: unknown) => Stream,
+    streamFactory: (minIntersectionCount: number, data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {
@@ -668,11 +668,11 @@ function dataProviderForPartialIntersection(): Array<unknown> {
 
 describe.each([
   ...dataProviderForSingle(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Single Test",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {
@@ -824,11 +824,11 @@ function dataProviderForSingle(): Array<unknown> {
 
 describe.each([
   ...dataProviderForSummaryTrue(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>]>)(
   "Stream Summary Test True",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream
+    streamFactory: (data: unknown) => Stream<unknown>
   ) => {
     it("", () => {
       // Given
@@ -843,11 +843,11 @@ describe.each([
 
 describe.each([
   ...dataProviderForSummaryFalse(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>]>)(
   "Stream Summary Test False",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream
+    streamFactory: (data: unknown) => Stream<unknown>
   ) => {
     it("", () => {
       // Given
@@ -969,11 +969,11 @@ function dataProviderForSummaryFalse(): Array<unknown> {
 
 describe.each([
   ...dataProviderForTransform(),
-] as Array<[Iterable<unknown> | Iterator<unknown>, (data: unknown) => Stream, Array<unknown>]>)(
+] as Array<[Iterable<unknown> | Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
   "Stream Transform Test",
   (
     input: Iterable<unknown> | Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream,
+    streamFactory: (data: unknown) => Stream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", () => {
@@ -991,14 +991,14 @@ describe.each([
 ] as Array<[
     Iterable<unknown> | Iterator<unknown>,
   number,
-  Array<(stream: Stream) => Stream>,
+  Array<(stream: Stream<unknown>) => Stream<unknown>>,
   Array<unknown>
 ]>)(
   "Stream Transform Tee Test",
   (
     input: Iterable<unknown> | Iterator<unknown>,
     count: number,
-    extraOperations: Array<(stream: Stream) => Stream>,
+    extraOperations: Array<(stream: Stream<unknown>) => Stream<unknown>>,
     expected: Array<unknown>
   ) => {
     it("", () => {
@@ -1048,10 +1048,10 @@ function dataProviderForTee(): Array<unknown> {
       createIterableFixture([1, 2, 3]),
       3,
       [
-        (stream: Stream) => stream,
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream,
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
-        (stream: Stream) => stream
+        (stream: Stream<unknown>) => stream
           .map((datum) => (datum as number) ** 3),
       ],
       [

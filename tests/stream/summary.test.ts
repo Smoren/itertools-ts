@@ -10,11 +10,11 @@ describe.each([
   ...dataProviderForStringsTrue(),
   ...dataProviderForSetsTrue(),
   ...dataProviderForMapsTrue(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>]>)(
   "Stream Summary Test True",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream
+    streamFactory: (data: unknown) => Stream<unknown>
   ) => {
     it("", () => {
       // Given
@@ -35,11 +35,11 @@ describe.each([
   ...dataProviderForStringsFalse(),
   ...dataProviderForSetsFalse(),
   ...dataProviderForMapsFalse(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream]>)(
+] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>]>)(
   "Stream Summary Test False",
   (
     input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream
+    streamFactory: (data: unknown) => Stream<unknown>
   ) => {
     it("", () => {
       // Given
