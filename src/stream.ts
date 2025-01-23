@@ -500,7 +500,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.slice
    */
-  slice(start = 0, count?: number, step = 1): Stream<T> {
+  slice(start: number = 0, count?: number, step: number = 1): Stream<T> {
     this.data = slice(this.data, start, count, step);
     return this;
   }
@@ -562,10 +562,8 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see set.intersection
    */
-  intersectionWith(
-    ...iterables: Array<Iterable<T> | Iterator<T>>
-  ): Stream<T> {
-    this.data = intersection(this.data, ...iterables) as Iterable<T>;
+  intersectionWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T> {
+    this.data = intersection(this.data, ...iterables);
     return this;
   }
 
@@ -579,15 +577,12 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see set.partialIntersection
    */
-  partialIntersectionWith(
-    minIntersectionCount: number,
-    ...iterables: Array<Iterable<T> | Iterator<T>>
-  ): Stream<T> {
+  partialIntersectionWith(minIntersectionCount: number, ...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T> {
     this.data = partialIntersection(
       minIntersectionCount,
       this.data,
       ...iterables
-    ) as Iterable<T>;
+    );
     return this;
   }
 
@@ -600,10 +595,8 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see set.symmetricDifference
    */
-  symmetricDifferenceWith(
-    ...iterables: Array<Iterable<T> | Iterator<T>>
-  ): Stream<T> {
-    this.data = symmetricDifference(this.data, ...iterables) as Iterable<T>;
+  symmetricDifferenceWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T> {
+    this.data = symmetricDifference(this.data, ...iterables);
     return this;
   }
 
@@ -616,10 +609,8 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see set.union
    */
-  unionWith(
-    ...iterables: Array<Iterable<T> | Iterator<T>>
-  ): Stream<T> {
-    this.data = union(this.data, ...iterables) as Iterable<T>;
+  unionWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T> {
+    this.data = union(this.data, ...iterables);
     return this;
   }
 
@@ -919,9 +910,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see summary.same
    */
-  sameWith(
-    ...collections: Array<Iterable<unknown> | Iterator<unknown>>
-  ): boolean {
+  sameWith(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
     return same(this.data, ...collections);
   }
 
@@ -934,9 +923,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see summary.sameCount
    */
-  sameCountWith(
-    ...collections: Array<Iterable<unknown> | Iterator<unknown>>
-  ): boolean {
+  sameCountWith(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
     return sameCount(this.data, ...collections);
   }
 

@@ -135,7 +135,7 @@ function dataProviderForArrays(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['11', '21'],
     ],
@@ -149,7 +149,7 @@ function dataProviderForArrays(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['1a', '2b'],
     ],
@@ -322,7 +322,7 @@ function dataProviderForGenerators(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['11', '21'],
     ],
@@ -336,7 +336,7 @@ function dataProviderForGenerators(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['1a', '2b'],
     ],
@@ -509,7 +509,7 @@ function dataProviderForIterables(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['11', '21'],
     ],
@@ -523,7 +523,7 @@ function dataProviderForIterables(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['1a', '2b'],
     ],
@@ -685,7 +685,7 @@ function dataProviderForIterators(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['11', '21'],
     ],
@@ -699,7 +699,7 @@ function dataProviderForIterators(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['1a', '2b'],
     ],
@@ -937,7 +937,7 @@ function dataProviderForSets(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['1a', '2b'],
     ],
@@ -1255,7 +1255,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['11', '21'],
     ],
@@ -1269,7 +1269,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['1a', '2b'],
     ],
@@ -1442,7 +1442,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['11', '21'],
     ],
@@ -1456,7 +1456,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['1a', '2b'],
     ],
@@ -1629,7 +1629,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['11', '21'],
     ],
@@ -1643,7 +1643,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
       (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Array<Iterable<any>>)
         .toArray(),
       ['1a', '2b'],
     ],
