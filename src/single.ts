@@ -868,19 +868,29 @@ export async function* valuesAsync<TKey, TValue>(
  *
  * Collection of grouped items may be an array or an object (depends on presence of `itemKeyFunction` param).
  *
- * The `groupKeyFunction` determines the key (or multiple keys) to group elements by.
- *
- * The `itemKeyFunction` (optional) determines the key of element in group.
- *
  * @param data
- * @param groupKeyFunction
- * @param itemKeyFunction
+ * @param groupKeyFunction - determines the key (or multiple keys) to group elements by.
+ * @param itemKeyFunction - (optional) determines the key of element in group.
  */
-export function* groupBy<T>(
+// export function groupBy<T>(
+//   data: Iterable<T> | Iterator<T>,
+//   groupKeyFunction: (item: T) => string,
+//   itemKeyFunction?: undefined
+// ): Iterable<[string, Array<T>]>;
+// export function groupBy<T>(
+//   data: Iterable<T> | Iterator<T>,
+//   groupKeyFunction: (item: T) => string,
+//   itemKeyFunction: (item: T) => string
+// ): Iterable<[string, Record<string, T>]>;
+export function* groupBy<
+  T,
+  TItemKeyFunction extends ((item: T) => string) | undefined,
+  TResultItem extends TItemKeyFunction extends undefined ? [string, Array<T>] : [string, Record<string, T>]
+>(
   data: Iterable<T> | Iterator<T>,
   groupKeyFunction: (item: T) => string,
-  itemKeyFunction?: (item: T) => string
-): Iterable<[string, Array<T>] | [string, Record<string, T>]> {
+  itemKeyFunction?: TItemKeyFunction
+): Iterable<TResultItem> {
   const groups = new Map();
   const addGroup = (name: string) => {
     if (!groups.has(name)) {
@@ -913,7 +923,7 @@ export function* groupBy<T>(
   }
 
   for (const group of groups) {
-    yield group;
+    yield group as TResultItem;
   }
 }
 
@@ -924,21 +934,30 @@ export function* groupBy<T>(
  *
  * Collection of grouped items may be an array or an object (depends on presence of `itemKeyFunction` param).
  *
- * The `groupKeyFunction` determines the key (or multiple keys) to group elements by.
- *
- * The `itemKeyFunction` (optional) determines the key of element in group.
- *
  * Functions `groupKeyFunction` and `itemKeyFunction` may be async.
  *
  * @param data
- * @param groupKeyFunction
- * @param itemKeyFunction
+ * @param groupKeyFunction - determines the key (or multiple keys) to group elements by.
+ * @param itemKeyFunction - (optional) determines the key of element in group.
  */
-export async function* groupByAsync<T>(
+// export function groupByAsync<T>(
+//   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+//   groupKeyFunction: (item: T) => string | Promise<string>,
+//   itemKeyFunction: (item: T) => string | Promise<string>
+// ): AsyncIterable<[string, Record<string, T>]>;
+// export function groupByAsync<T>(
+//   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+//   groupKeyFunction: (item: T) => string | Promise<string>
+// ): AsyncIterable<[string, Array<T>]>;
+export async function* groupByAsync<
+  T,
+  TItemKeyFunction extends ((item: T) => string) | undefined,
+  TResultItem extends TItemKeyFunction extends undefined ? [string, Array<T>] : [string, Record<string, T>]
+>(
   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
-  groupKeyFunction: (item: T) => string | Promise<string>,
-  itemKeyFunction?: (item: T) => string | Promise<string>
-): AsyncIterable<[string, Array<T>] | [string, Record<string, T>]> {
+  groupKeyFunction: (item: T) => (string | Promise<string>),
+  itemKeyFunction?: (item: T) => (string | Promise<string>)
+): AsyncIterable<TResultItem> {
   const groups = new Map();
   const addGroup = (name: string) => {
     if (!groups.has(name)) {
@@ -972,7 +991,7 @@ export async function* groupByAsync<T>(
   }
 
   for (const group of groups) {
-    yield group;
+    yield group as TResultItem;
   }
 }
 
