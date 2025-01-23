@@ -872,16 +872,6 @@ export async function* valuesAsync<TKey, TValue>(
  * @param groupKeyFunction - determines the key (or multiple keys) to group elements by.
  * @param itemKeyFunction - (optional) determines the key of element in group.
  */
-// export function groupBy<T>(
-//   data: Iterable<T> | Iterator<T>,
-//   groupKeyFunction: (item: T) => string,
-//   itemKeyFunction?: undefined
-// ): Iterable<[string, Array<T>]>;
-// export function groupBy<T>(
-//   data: Iterable<T> | Iterator<T>,
-//   groupKeyFunction: (item: T) => string,
-//   itemKeyFunction: (item: T) => string
-// ): Iterable<[string, Record<string, T>]>;
 export function* groupBy<
   T,
   TItemKeyFunction extends ((item: T) => string) | undefined,
@@ -940,15 +930,6 @@ export function* groupBy<
  * @param groupKeyFunction - determines the key (or multiple keys) to group elements by.
  * @param itemKeyFunction - (optional) determines the key of element in group.
  */
-// export function groupByAsync<T>(
-//   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
-//   groupKeyFunction: (item: T) => string | Promise<string>,
-//   itemKeyFunction: (item: T) => string | Promise<string>
-// ): AsyncIterable<[string, Record<string, T>]>;
-// export function groupByAsync<T>(
-//   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
-//   groupKeyFunction: (item: T) => string | Promise<string>
-// ): AsyncIterable<[string, Array<T>]>;
 export async function* groupByAsync<
   T,
   TItemKeyFunction extends ((item: T) => string) | undefined,
