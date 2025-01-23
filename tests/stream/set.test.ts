@@ -1,6 +1,6 @@
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { Stream, Comparable } from '../../src';
+import { Stream, Comparable, Numeric } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
@@ -55,219 +55,34 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays<T>(
+  wrapper: (x: Array<any>) => any = (x) => x,
+): Array<[Iterable<any>, (data: any) => Array<unknown>, Array<unknown>]> {
   return [
     [
-      [1, 2, 3, '1', '2', '3'],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      wrapper([1, 2, 3, '1', '2', '3']),
+      (iterable: Array<Numeric>) => Stream.of(iterable)
         .distinct()
         .toArray(),
       [1, 2, 3, '1', '2', '3'],
     ],
     [
-      [1, 2, 3, '1', '2', '3', 1, '1'],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      wrapper([1, 2, 3, '1', '2', '3', 1, '1']),
+      (iterable: Array<Numeric>) => Stream.of(iterable)
         .distinct()
         .toArray(),
       [1, 2, 3, '1', '2', '3'],
     ],
     [
-      [
-        { 'name': 'John', 'id': 1 },
-        { 'name': 'Mary', 'id': 2 },
-        { 'name': 'Mary', 'id': 3 },
-        { 'name': 'John', 'id': 4 },
-        { 'name': 'Jane', 'id': 5 },
-      ],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
-        .toArray(),
-      [
-        { 'name': 'John', 'id': 1 },
-        { 'name': 'Mary', 'id': 2 },
-        { 'name': 'Jane', 'id': 5 },
-      ],
-    ],
-    [
-      [
-        [1, 2, 3, 4, 5],
-        [2, 3, 4, 5, 6, 7],
-        ['3', 4, 5, 6, 7, 8, 9],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .intersectionWith(...iterables)
-        .toArray(),
-      [4, 5],
-    ],
-    [
-      [
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        ['1', '2', 3, 4, 5, 6, 7, '8', '9'],
-        [1, 3, 5, 7, 9, 11],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .intersectionWith(...iterables)
-        .toArray(),
-      [3, 5, 7],
-    ],
-    [
-      [
-        [1, 2, 3],
-        [1, 1, 1],
-        ['11', '21', '31', '12', '13'],
-        ['13', '11', '14', '21'],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
-        .toArray(),
-      ['11', '21'],
-    ],
-    [
-      [
-        [1, 2, 3],
-        ['a', 'b', 'c'],
-        ['1a', '2b', '3c', 'a2', 'a3'],
-        ['c3', '1a', 'd4', '2b'],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
-        .toArray(),
-      ['1a', '2b'],
-    ],
-    [
-      [
-        [1, 2, 3, 4, 5, 6],
-        [3, 4, 5, 6, 7, 8],
-        [5, 6, 7, 8, 9, 10],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .symmetricDifferenceWith(...iterables)
-        .toArray(),
-      [1, 2, 9, 10],
-    ],
-    [
-      [
-        [1, 2, '3', 4, 5, 6],
-        [3, 4, 5, 6, 7, 8],
-        [5, 6, 7, 8, 9, 10],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .symmetricDifferenceWith(...iterables)
-        .toArray(),
-      [1, 3, 2, '3', 9, 10],
-    ],
-    [
-      [
-        [],
-        [2, 3, 4, 5, 6],
-        [3, 4, 5, 6, 7],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .unionWith(...iterables)
-        .toArray(),
-      [2, 3, 4, 5, 6, 7],
-    ],
-    [
-      [
-        [1, 2, 3, 4, 5],
-        [2, 3, 4, 5, 6],
-        [3, 4, 5, 6, 7],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .unionWith(...iterables)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7],
-    ],
-    [
-      [
-        [],
-        [],
-        [],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .cartesianProductWith(...iterables)
-        .toArray(),
-      [],
-    ],
-    [
-      [
-        [],
-        [11, 22],
-        ['a', 'b'],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .cartesianProductWith(...iterables)
-        .toArray(),
-      [],
-    ],
-    [
-      [
-        [1, 2],
-        [],
-        ['a', 'b'],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .cartesianProductWith(...iterables)
-        .toArray(),
-      [],
-    ],
-    [
-      [
-        [1, 2, 3],
-        [11, 22],
-        ['a', 'b'],
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .cartesianProductWith(...iterables)
-        .toArray(),
-      [
-        [1, 11, 'a'],
-        [1, 11, 'b'],
-        [1, 22, 'a'],
-        [1, 22, 'b'],
-        [2, 11, 'a'],
-        [2, 11, 'b'],
-        [2, 22, 'a'],
-        [2, 22, 'b'],
-        [3, 11, 'a'],
-        [3, 11, 'b'],
-        [3, 22, 'a'],
-        [3, 22, 'b'],
-      ],
-    ],
-  ];
-}
-
-function dataProviderForGenerators(): Array<unknown> {
-  return [
-    [
-      createGeneratorFixture([1, 2, 3, '1', '2', '3']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct()
-        .toArray(),
-      [1, 2, 3, '1', '2', '3'],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, '1', '2', '3', 1, '1']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct()
-        .toArray(),
-      [1, 2, 3, '1', '2', '3'],
-    ],
-    [
-      createGeneratorFixture([
+      wrapper([
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
         { 'name': 'Mary', 'id': 3 },
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+      (iterable: Array<Record<string, string | number>>) => Stream.of(iterable)
+        .distinct((datum) => datum['name'])
         .toArray(),
       [
         { 'name': 'John', 'id': 1 },
@@ -277,138 +92,138 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       [
-        createGeneratorFixture([1, 2, 3, 4, 5]),
-        createGeneratorFixture([2, 3, 4, 5, 6, 7]),
-        createGeneratorFixture(['3', 4, 5, 6, 7, 8, 9]),
+        wrapper([1, 2, 3, 4, 5]),
+        wrapper([2, 3, 4, 5, 6, 7]),
+        wrapper(['3', 4, 5, 6, 7, 8, 9]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Array<Numeric>>) => Stream.of(iterables.shift()!)
         .intersectionWith(...iterables)
         .toArray(),
       [4, 5],
     ],
     [
       [
-        createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
-        createGeneratorFixture(['1', '2', 3, 4, 5, 6, 7, '8', '9']),
-        createGeneratorFixture([1, 3, 5, 7, 9, 11]),
+        wrapper([1, 2, 3, 4, 5, 6, 7, 8, 9]),
+        wrapper(['1', '2', 3, 4, 5, 6, 7, '8', '9']),
+        wrapper([1, 3, 5, 7, 9, 11]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Array<Numeric>>) => Stream.of(iterables.shift()!)
         .intersectionWith(...iterables)
         .toArray(),
       [3, 5, 7],
     ],
     [
       [
-        createGeneratorFixture([1, 2, 3]),
-        createGeneratorFixture([1, 1, 1]),
-        createGeneratorFixture(['11', '21', '31', '12', '13']),
-        createGeneratorFixture(['13', '11', '14', '21']),
+        wrapper([1, 2, 3]),
+        wrapper([1, 1, 1]),
+        wrapper(['11', '21', '31', '12', '13']),
+        wrapper(['13', '11', '14', '21']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+      (iterables: Array<Array<Numeric>>) => Stream.of(iterables.shift()!)
+        .zipWith(iterables.shift()!)
+        .map((values) => `${values[0]}${values[1]}`)
+        .intersectionWith(...iterables as Array<Iterable<string>>)
         .toArray(),
       ['11', '21'],
     ],
     [
       [
-        createGeneratorFixture([1, 2, 3]),
-        createGeneratorFixture(['a', 'b', 'c']),
-        createGeneratorFixture(['1a', '2b', '3c', 'a2', 'a3']),
-        createGeneratorFixture(['c3', '1a', 'd4', '2b']),
+        wrapper([1, 2, 3]),
+        wrapper(['a', 'b', 'c']),
+        wrapper(['1a', '2b', '3c', 'a2', 'a3']),
+        wrapper(['c3', '1a', 'd4', '2b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+      (iterables: Array<Array<number | string>>) => Stream.of(iterables.shift()!)
+        .zipWith(iterables.shift()!)
+        .map((values) => `${values[0]}${values[1]}`)
+        .intersectionWith(...iterables as Array<Iterable<string>>)
         .toArray(),
       ['1a', '2b'],
     ],
     [
       [
-        createGeneratorFixture([1, 2, 3, 4, 5, 6]),
-        createGeneratorFixture([3, 4, 5, 6, 7, 8]),
-        createGeneratorFixture([5, 6, 7, 8, 9, 10]),
+        wrapper([1, 2, 3, 4, 5, 6]),
+        wrapper([3, 4, 5, 6, 7, 8]),
+        wrapper([5, 6, 7, 8, 9, 10]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Array<number>>) => Stream.of(iterables.shift()!)
         .symmetricDifferenceWith(...iterables)
         .toArray(),
       [1, 2, 9, 10],
     ],
     [
       [
-        createGeneratorFixture([1, 2, '3', 4, 5, 6]),
-        createGeneratorFixture([3, 4, 5, 6, 7, 8]),
-        createGeneratorFixture([5, 6, 7, 8, 9, 10]),
+        wrapper([1, 2, '3', 4, 5, 6]),
+        wrapper([3, 4, 5, 6, 7, 8]),
+        wrapper([5, 6, 7, 8, 9, 10]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Array<Numeric>>) => Stream.of(iterables.shift()!)
         .symmetricDifferenceWith(...iterables)
         .toArray(),
       [1, 3, 2, '3', 9, 10],
     ],
     [
       [
-        createGeneratorFixture([]),
-        createGeneratorFixture([2, 3, 4, 5, 6]),
-        createGeneratorFixture([3, 4, 5, 6, 7]),
+        wrapper([]),
+        wrapper([2, 3, 4, 5, 6]),
+        wrapper([3, 4, 5, 6, 7]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Array<number>>) => Stream.of(iterables.shift()!)
         .unionWith(...iterables)
         .toArray(),
       [2, 3, 4, 5, 6, 7],
     ],
     [
       [
-        createGeneratorFixture([1, 2, 3, 4, 5]),
-        createGeneratorFixture([2, 3, 4, 5, 6]),
-        createGeneratorFixture([3, 4, 5, 6, 7]),
+        wrapper([1, 2, 3, 4, 5]),
+        wrapper([2, 3, 4, 5, 6]),
+        wrapper([3, 4, 5, 6, 7]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Array<number>>) => Stream.of(iterables.shift()!)
         .unionWith(...iterables)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
     ],
     [
       [
-        createGeneratorFixture([]),
-        createGeneratorFixture([]),
-        createGeneratorFixture([]),
+        wrapper([]),
+        wrapper([]),
+        wrapper([]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Array<number>>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [],
     ],
     [
       [
-        createGeneratorFixture([]),
-        createGeneratorFixture([11, 22]),
-        createGeneratorFixture(['a', 'b']),
+        wrapper([]),
+        wrapper([11, 22]),
+        wrapper(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Array<number | string>>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [],
     ],
     [
       [
-        createGeneratorFixture([1, 2]),
-        createGeneratorFixture([]),
-        createGeneratorFixture(['a', 'b']),
+        wrapper([1, 2]),
+        wrapper([]),
+        wrapper(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Array<number | string>>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [],
     ],
     [
       [
-        createGeneratorFixture([1, 2, 3]),
-        createGeneratorFixture([11, 22]),
-        createGeneratorFixture(['a', 'b']),
+        wrapper([1, 2, 3]),
+        wrapper([11, 22]),
+        wrapper(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Array<number | string>>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [
@@ -429,371 +244,31 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
-  return [
-    [
-      createIterableFixture([1, 2, 3, '1', '2', '3']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct()
-        .toArray(),
-      [1, 2, 3, '1', '2', '3'],
-    ],
-    [
-      createIterableFixture([1, 2, 3, '1', '2', '3', 1, '1']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct()
-        .toArray(),
-      [1, 2, 3, '1', '2', '3'],
-    ],
-    [
-      createIterableFixture([
-        { 'name': 'John', 'id': 1 },
-        { 'name': 'Mary', 'id': 2 },
-        { 'name': 'Mary', 'id': 3 },
-        { 'name': 'John', 'id': 4 },
-        { 'name': 'Jane', 'id': 5 },
-      ]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
-        .toArray(),
-      [
-        { 'name': 'John', 'id': 1 },
-        { 'name': 'Mary', 'id': 2 },
-        { 'name': 'Jane', 'id': 5 },
-      ],
-    ],
-    [
-      [
-        createIterableFixture([1, 2, 3, 4, 5]),
-        createIterableFixture([2, 3, 4, 5, 6, 7]),
-        createIterableFixture(['3', 4, 5, 6, 7, 8, 9]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .intersectionWith(...iterables)
-        .toArray(),
-      [4, 5],
-    ],
-    [
-      [
-        createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
-        createIterableFixture(['1', '2', 3, 4, 5, 6, 7, '8', '9']),
-        createIterableFixture([1, 3, 5, 7, 9, 11]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .intersectionWith(...iterables)
-        .toArray(),
-      [3, 5, 7],
-    ],
-    [
-      [
-        createIterableFixture([1, 2, 3]),
-        createIterableFixture([1, 1, 1]),
-        createIterableFixture(['11', '21', '31', '12', '13']),
-        createIterableFixture(['13', '11', '14', '21']),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
-        .toArray(),
-      ['11', '21'],
-    ],
-    [
-      [
-        createIterableFixture([1, 2, 3]),
-        createIterableFixture(['a', 'b', 'c']),
-        createIterableFixture(['1a', '2b', '3c', 'a2', 'a3']),
-        createIterableFixture(['c3', '1a', 'd4', '2b']),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
-        .toArray(),
-      ['1a', '2b'],
-    ],
-    [
-      [
-        createIterableFixture([1, 2, 3, 4, 5, 6]),
-        createIterableFixture([3, 4, 5, 6, 7, 8]),
-        createIterableFixture([5, 6, 7, 8, 9, 10]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .symmetricDifferenceWith(...iterables)
-        .toArray(),
-      [1, 2, 9, 10],
-    ],
-    [
-      [
-        createIterableFixture([1, 2, '3', 4, 5, 6]),
-        createIterableFixture([3, 4, 5, 6, 7, 8]),
-        createIterableFixture([5, 6, 7, 8, 9, 10]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .symmetricDifferenceWith(...iterables)
-        .toArray(),
-      [1, 3, 2, '3', 9, 10],
-    ],
-    [
-      [
-        createIterableFixture([]),
-        createIterableFixture([2, 3, 4, 5, 6]),
-        createIterableFixture([3, 4, 5, 6, 7]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .unionWith(...iterables)
-        .toArray(),
-      [2, 3, 4, 5, 6, 7],
-    ],
-    [
-      [
-        createIterableFixture([1, 2, 3, 4, 5]),
-        createIterableFixture([2, 3, 4, 5, 6]),
-        createIterableFixture([3, 4, 5, 6, 7]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .unionWith(...iterables)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7],
-    ],
-    [
-      [
-        createIterableFixture([]),
-        createIterableFixture([11, 22]),
-        createIterableFixture(['a', 'b']),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .cartesianProductWith(...iterables)
-        .toArray(),
-      [],
-    ],
-    [
-      [
-        createIterableFixture([1, 2]),
-        createIterableFixture([]),
-        createIterableFixture(['a', 'b']),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .cartesianProductWith(...iterables)
-        .toArray(),
-      [],
-    ],
-    [
-      [
-        createIterableFixture([1, 2, 3]),
-        createIterableFixture([11, 22]),
-        createIterableFixture(['a', 'b']),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .cartesianProductWith(...iterables)
-        .toArray(),
-      [
-        [1, 11, 'a'],
-        [1, 11, 'b'],
-        [1, 22, 'a'],
-        [1, 22, 'b'],
-        [2, 11, 'a'],
-        [2, 11, 'b'],
-        [2, 22, 'a'],
-        [2, 22, 'b'],
-        [3, 11, 'a'],
-        [3, 11, 'b'],
-        [3, 22, 'a'],
-        [3, 22, 'b'],
-      ],
-    ],
-  ];
+function dataProviderForGenerators(): Array<[Generator<any>, (data: any) => Array<unknown>, Array<unknown>]> {
+  return dataProviderForArrays((x) => createGeneratorFixture(x)) as any;
 }
 
-function dataProviderForIterators(): Array<unknown> {
-  return [
-    [
-      createIteratorFixture([1, 2, 3, '1', '2', '3']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct()
-        .toArray(),
-      [1, 2, 3, '1', '2', '3'],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, '1', '2', '3', 1, '1']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct()
-        .toArray(),
-      [1, 2, 3, '1', '2', '3'],
-    ],
-    [
-      createIteratorFixture([
-        { 'name': 'John', 'id': 1 },
-        { 'name': 'Mary', 'id': 2 },
-        { 'name': 'Mary', 'id': 3 },
-        { 'name': 'John', 'id': 4 },
-        { 'name': 'Jane', 'id': 5 },
-      ]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
-        .toArray(),
-      [
-        { 'name': 'John', 'id': 1 },
-        { 'name': 'Mary', 'id': 2 },
-        { 'name': 'Jane', 'id': 5 },
-      ],
-    ],
-    [
-      [
-        createIteratorFixture([1, 2, 3, 4, 5]),
-        createIteratorFixture([2, 3, 4, 5, 6, 7]),
-        createIteratorFixture(['3', 4, 5, 6, 7, 8, 9]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .intersectionWith(...iterables)
-        .toArray(),
-      [4, 5],
-    ],
-    [
-      [
-        createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9]),
-        createIteratorFixture(['1', '2', 3, 4, 5, 6, 7, '8', '9']),
-        createIteratorFixture([1, 3, 5, 7, 9, 11]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .intersectionWith(...iterables)
-        .toArray(),
-      [3, 5, 7],
-    ],
-    [
-      [
-        createIteratorFixture([1, 2, 3]),
-        createIteratorFixture([1, 1, 1]),
-        createIteratorFixture(['11', '21', '31', '12', '13']),
-        createIteratorFixture(['13', '11', '14', '21']),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
-        .toArray(),
-      ['11', '21'],
-    ],
-    [
-      [
-        createIteratorFixture([1, 2, 3]),
-        createIteratorFixture(['a', 'b', 'c']),
-        createIteratorFixture(['1a', '2b', '3c', 'a2', 'a3']),
-        createIteratorFixture(['c3', '1a', 'd4', '2b']),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
-        .toArray(),
-      ['1a', '2b'],
-    ],
-    [
-      [
-        createIteratorFixture([1, 2, 3, 4, 5, 6]),
-        createIteratorFixture([3, 4, 5, 6, 7, 8]),
-        createIteratorFixture([5, 6, 7, 8, 9, 10]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .symmetricDifferenceWith(...iterables)
-        .toArray(),
-      [1, 2, 9, 10],
-    ],
-    [
-      [
-        createIteratorFixture([1, 2, '3', 4, 5, 6]),
-        createIteratorFixture([3, 4, 5, 6, 7, 8]),
-        createIteratorFixture([5, 6, 7, 8, 9, 10]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .symmetricDifferenceWith(...iterables)
-        .toArray(),
-      [1, 3, 2, '3', 9, 10],
-    ],
-    [
-      [
-        createIteratorFixture([]),
-        createIteratorFixture([2, 3, 4, 5, 6]),
-        createIteratorFixture([3, 4, 5, 6, 7]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .unionWith(...iterables)
-        .toArray(),
-      [2, 3, 4, 5, 6, 7],
-    ],
-    [
-      [
-        createIteratorFixture([1, 2, 3, 4, 5]),
-        createIteratorFixture([2, 3, 4, 5, 6]),
-        createIteratorFixture([3, 4, 5, 6, 7]),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .unionWith(...iterables)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7],
-    ],
-    [
-      [
-        createIteratorFixture([]),
-        createIteratorFixture([11, 22]),
-        createIteratorFixture(['a', 'b']),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .cartesianProductWith(...iterables)
-        .toArray(),
-      [],
-    ],
-    [
-      [
-        createIteratorFixture([1, 2]),
-        createIteratorFixture([]),
-        createIteratorFixture(['a', 'b']),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .cartesianProductWith(...iterables)
-        .toArray(),
-      [],
-    ],
-    [
-      [
-        createIteratorFixture([1, 2, 3]),
-        createIteratorFixture([11, 22]),
-        createIteratorFixture(['a', 'b']),
-      ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .cartesianProductWith(...iterables)
-        .toArray(),
-      [
-        [1, 11, 'a'],
-        [1, 11, 'b'],
-        [1, 22, 'a'],
-        [1, 22, 'b'],
-        [2, 11, 'a'],
-        [2, 11, 'b'],
-        [2, 22, 'a'],
-        [2, 22, 'b'],
-        [3, 11, 'a'],
-        [3, 11, 'b'],
-        [3, 22, 'a'],
-        [3, 22, 'b'],
-      ],
-    ],
-  ];
+function dataProviderForIterables(): Array<[Iterable<unknown>, (data: any) => Array<unknown>, Array<unknown>]> {
+  return dataProviderForArrays((x) => createIterableFixture(x)) as any;
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<unknown>, (data: any) => Array<unknown>, Array<unknown>]> {
+  return dataProviderForArrays((x) => createIteratorFixture(x)) as any;
+}
+
+function dataProviderForStrings(): Array<[Iterable<unknown>, (data: any) => Array<unknown>, Array<unknown>]> {
   return [
     [
       'a1b2c3abcd1234',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: string) => Stream.of(iterable)
         .distinct()
         .toArray(),
       ['a', '1', 'b', '2', 'c', '3', 'd', '4'],
     ],
     [
       'a1b2c3abcd1234',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct((datum: unknown) => 1)
+      (iterable: string) => Stream.of(iterable)
+        .distinct(() => 1)
         .toArray(),
       ['a'],
     ],
@@ -803,7 +278,7 @@ function dataProviderForStrings(): Array<unknown> {
         '23456',
         '345678',
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<string>) => Stream.of(iterables.shift()!)
         .intersectionWith(...iterables)
         .toArray(),
       ['3', '4', '5'],
@@ -814,7 +289,7 @@ function dataProviderForStrings(): Array<unknown> {
         '23456',
         '345678',
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<string>) => Stream.of(iterables.shift()!)
         .symmetricDifferenceWith(...iterables)
         .toArray(),
       ['1', '7', '8'],
@@ -825,7 +300,7 @@ function dataProviderForStrings(): Array<unknown> {
         '23456',
         '345678',
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<string>) => Stream.of(iterables.shift()!)
         .unionWith(...iterables)
         .toArray(),
       ['1', '2', '3', '4', '5', '6', '7', '8'],
@@ -836,7 +311,7 @@ function dataProviderForStrings(): Array<unknown> {
         'ab',
         '!?',
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<string>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [
@@ -857,18 +332,18 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Iterable<unknown>, (data: any) => Array<unknown>, Array<unknown>]> {
   return [
     [
       new Set([1, 2, 3, '1', '2', '3']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<Numeric>) => Stream.of(iterable)
         .distinct()
         .toArray(),
       [1, 2, 3, '1', '2', '3'],
     ],
     [
       new Set([1, 2, 3, '1', '2', '3', 1, '1']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<Numeric>) => Stream.of(iterable)
         .distinct()
         .toArray(),
       [1, 2, 3, '1', '2', '3'],
@@ -881,8 +356,8 @@ function dataProviderForSets(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+      (iterable: Set<Record<string, unknown>>) => Stream.of(iterable)
+        .distinct((datum) => datum['name'] as Comparable)
         .toArray(),
       [
         { 'name': 'John', 'id': 1 },
@@ -896,7 +371,7 @@ function dataProviderForSets(): Array<unknown> {
         new Set([2, 3, 4, 5, 6, 7]),
         new Set(['3', 4, 5, 6, 7, 8, 9]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Set<Numeric>>) => Stream.of(iterables.shift()!)
         .intersectionWith(...iterables)
         .toArray(),
       [4, 5],
@@ -907,7 +382,7 @@ function dataProviderForSets(): Array<unknown> {
         new Set(['1', '2', 3, 4, 5, 6, 7, '8', '9']),
         new Set([1, 3, 5, 7, 9, 11]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Set<Numeric>>) => Stream.of(iterables.shift()!)
         .intersectionWith(...iterables)
         .toArray(),
       [3, 5, 7],
@@ -919,10 +394,10 @@ function dataProviderForSets(): Array<unknown> {
         new Set(['1a', '2b', '3c', 'a2', 'a3']),
         new Set(['c3', '1a', 'd4', '2b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Set<number | string>>) => Stream.of(iterables.shift()!)
         .zipWith(iterables.shift() as Iterable<unknown>)
         .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables)
+        .intersectionWith(...iterables as Set<string>[])
         .toArray(),
       ['1a', '2b'],
     ],
@@ -932,7 +407,7 @@ function dataProviderForSets(): Array<unknown> {
         new Set([3, 4, 5, 6, 7, 8]),
         new Set([5, 6, 7, 8, 9, 10]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Iterable<Set<number>>>) => Stream.of(iterables.shift()!)
         .symmetricDifferenceWith(...iterables)
         .toArray(),
       [1, 2, 9, 10],
@@ -943,7 +418,7 @@ function dataProviderForSets(): Array<unknown> {
         new Set([3, 4, 5, 6, 7, 8]),
         new Set([5, 6, 7, 8, 9, 10]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Set<Numeric>>) => Stream.of(iterables.shift()!)
         .symmetricDifferenceWith(...iterables)
         .toArray(),
       [1, 3, 2, '3', 9, 10],
@@ -954,7 +429,7 @@ function dataProviderForSets(): Array<unknown> {
         new Set([2, 3, 4, 5, 6]),
         new Set([3, 4, 5, 6, 7]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Set<number>>) => Stream.of(iterables.shift()!)
         .unionWith(...iterables)
         .toArray(),
       [2, 3, 4, 5, 6, 7],
@@ -965,7 +440,7 @@ function dataProviderForSets(): Array<unknown> {
         new Set([2, 3, 4, 5, 6]),
         new Set([3, 4, 5, 6, 7]),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Set<number>>) => Stream.of(iterables.shift()!)
         .unionWith(...iterables)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
@@ -976,7 +451,7 @@ function dataProviderForSets(): Array<unknown> {
         new Set([11, 22]),
         new Set(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Set<number | string>>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [],
@@ -987,7 +462,7 @@ function dataProviderForSets(): Array<unknown> {
         new Set([]),
         new Set(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Set<number | string>>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [],
@@ -998,7 +473,7 @@ function dataProviderForSets(): Array<unknown> {
         new Set([11, 22]),
         new Set(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Set<number | string>>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [
@@ -1023,14 +498,14 @@ function dataProviderForMaps(): Array<unknown> {
   return [
     [
       createMapFixture([1, 2, 3, '1', '2', '3']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<string, Numeric>) => Stream.of(iterable)
         .distinct()
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, '1'], [4, '2'], [5, '3']],
     ],
     [
       createMapFixture([1, 2, 3, '1', '2', '3', 1, '1']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<string, Numeric>) => Stream.of(iterable)
         .distinct()
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, '1'], [4, '2'], [5, '3']],
@@ -1043,8 +518,8 @@ function dataProviderForMaps(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .distinct((datum: unknown) => (datum as [unknown, Record<string, unknown>])[1]['name'] as Comparable)
+      (iterable: Map<string, Record<string, string | number>>) => Stream.of(iterable)
+        .distinct((datum) => datum[1]['name'])
         .values()
         .toArray(),
       [
@@ -1059,9 +534,9 @@ function dataProviderForMaps(): Array<unknown> {
         [2, 3, 4, 5, 6, 7],
         ['3', 4, 5, 6, 7, 8, 9],
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .map((item) => (item as Array<unknown>)[1])
-        .intersectionWith(...iterables)
+      (iterables: Array<unknown>) => Stream.of(iterables.shift() as Map<unknown, Numeric>)
+        .map((item) => item[1])
+        .intersectionWith(...iterables as Array<Iterable<Numeric>>)
         .toArray(),
       [4, 5],
     ],
@@ -1071,9 +546,9 @@ function dataProviderForMaps(): Array<unknown> {
         ['1', '2', 3, 4, 5, 6, 7, '8', '9'],
         [1, 3, 5, 7, 9, 11],
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .map((item) => (item as Array<unknown>)[1])
-        .intersectionWith(...iterables)
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Map<unknown, Numeric>)
+        .map((item) => item[1])
+        .intersectionWith(...iterables as Array<Iterable<Numeric>>)
         .toArray(),
       [3, 5, 7],
     ],
@@ -1083,9 +558,9 @@ function dataProviderForMaps(): Array<unknown> {
         [3, 4, 5, 6, 7, 8],
         [5, 6, 7, 8, 9, 10],
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .map((item) => (item as Array<unknown>)[1])
-        .symmetricDifferenceWith(...iterables)
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Map<unknown, Numeric>)
+        .map((item) => item[1])
+        .symmetricDifferenceWith(...iterables as Array<Iterable<Numeric>>)
         .toArray(),
       [1, 2, 9, 10],
     ],
@@ -1095,9 +570,9 @@ function dataProviderForMaps(): Array<unknown> {
         [3, 4, 5, 6, 7, 8],
         [5, 6, 7, 8, 9, 10],
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .map((item) => (item as Array<unknown>)[1])
-        .symmetricDifferenceWith(...iterables)
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Map<unknown, Numeric>)
+        .map((item) => item[1])
+        .symmetricDifferenceWith(...iterables as Array<Iterable<Numeric>>)
         .toArray(),
       [1, 3, 2, '3', 9, 10],
     ],
@@ -1107,9 +582,9 @@ function dataProviderForMaps(): Array<unknown> {
         [2, 3, 4, 5, 6],
         [3, 4, 5, 6, 7],
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .map((item) => (item as Array<unknown>)[1])
-        .unionWith(...iterables)
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Map<unknown, Numeric>)
+        .map((item) => item[1])
+        .unionWith(...iterables as Array<Iterable<Numeric>>)
         .toArray(),
       [2, 3, 4, 5, 6, 7],
     ],
@@ -1119,9 +594,9 @@ function dataProviderForMaps(): Array<unknown> {
         [2, 3, 4, 5, 6],
         [3, 4, 5, 6, 7],
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
-        .map((item) => (item as Array<unknown>)[1])
-        .unionWith(...iterables)
+      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Map<unknown, Numeric>)
+        .map((item) => item[1])
+        .unionWith(...iterables as Array<Iterable<Numeric>>)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
     ],
@@ -1131,7 +606,7 @@ function dataProviderForMaps(): Array<unknown> {
         createMapFixture([11, 22]),
         createMapFixture(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Map<string, string | number>>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [],
@@ -1142,7 +617,7 @@ function dataProviderForMaps(): Array<unknown> {
         createMapFixture([]),
         createMapFixture(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Map<string, string | number>>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [],
@@ -1153,7 +628,7 @@ function dataProviderForMaps(): Array<unknown> {
         createMapFixture([11, 22]),
         createMapFixture(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => Stream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Map<string, string | number>>) => Stream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [

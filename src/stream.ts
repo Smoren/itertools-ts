@@ -85,7 +85,7 @@ export class Stream<T> implements Iterable<T> {
   /**
    * Creates iterable instance with fluent interface from empty iterable source.
    */
-  static ofEmpty(): Stream<unknown> {
+  static ofEmpty(): Stream<never> {
     return new Stream([]);
   }
 
@@ -97,7 +97,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see infinite.count
    */
-  static ofCount(start = 1, step = 1): Stream<number> {
+  static ofCount(start: number = 1, step: number = 1): Stream<number> {
     return new Stream(infinite.count(start, step));
   }
 
@@ -139,7 +139,7 @@ export class Stream<T> implements Iterable<T> {
     ...iterables: U
   ): Stream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = zip(this.data, ...iterables) as Iterable<T>;
-    return this as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
+    return this as unknown as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
   /**
@@ -161,7 +161,7 @@ export class Stream<T> implements Iterable<T> {
     ...iterables: U
   ): Stream<ZipTuple<[Iterable<T>, ...U], F>> {
     this.data = zipFilled(filler, this.data, ...iterables) as Iterable<T>;
-    return this as Stream<ZipTuple<[Iterable<T>, ...U], F>>;
+    return this as unknown as Stream<ZipTuple<[Iterable<T>, ...U], F>>;
   }
 
   /**
@@ -181,7 +181,7 @@ export class Stream<T> implements Iterable<T> {
     ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
   ): Stream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = zipLongest(this.data, ...iterables) as Iterable<T>;
-    return this as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
+    return this as unknown as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
   /**
@@ -198,7 +198,7 @@ export class Stream<T> implements Iterable<T> {
     ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
   ): Stream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = zipEqual(this.data, ...iterables) as Iterable<T>;
-    return this as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
+    return this as unknown as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
   /**
@@ -210,9 +210,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see multi.chain
    */
-  chainWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream<unknown> {
+  chainWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T> {
     this.data = chain(this.data, ...iterables) as Iterable<T>;
     return this;
   }
@@ -234,14 +232,14 @@ export class Stream<T> implements Iterable<T> {
     chunkSize: number,
     overlapSize: number,
     includeIncompleteTail = true
-  ): Stream<unknown> {
+  ): Stream<Array<T>> {
     this.data = chunkwiseOverlap(
       this.data,
       chunkSize,
       overlapSize,
       includeIncompleteTail
     ) as Iterable<T>;
-    return this;
+    return this as unknown as Stream<Array<T>>;
   }
 
   /**
@@ -253,9 +251,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.chunkwise
    */
-  chunkwise(chunkSize: number): Stream<unknown> {
+  chunkwise(chunkSize: number): Stream<Array<T>> {
     this.data = chunkwise(this.data, chunkSize) as Iterable<T>;
-    return this;
+    return this as unknown as Stream<Array<T>>;
   }
 
   /**
@@ -269,7 +267,7 @@ export class Stream<T> implements Iterable<T> {
    */
   compress(
     selectors: Iterable<number | boolean> | Iterator<number | boolean>
-  ): Stream<unknown> {
+  ): Stream<T> {
     this.data = compress(this.data, selectors);
     return this;
   }
@@ -283,7 +281,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.dropWhile()
    */
-  dropWhile(predicate: (item: unknown) => boolean): Stream<unknown> {
+  dropWhile(predicate: (item: T) => boolean): Stream<T> {
     this.data = dropWhile(this.data, predicate);
     return this;
   }
@@ -307,7 +305,7 @@ export class Stream<T> implements Iterable<T> {
    */
   enumerate(): Stream<[number, T]> {
     this.data = enumerate(this.data) as Iterable<T>;
-    return this as Stream<[number, T]>;
+    return this as unknown as Stream<[number, T]>;
   }
 
   /**
@@ -315,11 +313,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.keys
    */
-  keys(): Stream<unknown> {
-    this.data = keys(
-      this.data as Iterable<[unknown, unknown]> | Iterator<[unknown, unknown]>
-    ) as Iterable<T>;
-    return this;
+  keys(): Stream<T extends [infer TKey, infer _] ? TKey : never> {
+    this.data = keys(this.data as Iterable<[unknown, unknown]>) as Iterable<T>;
+    return this as unknown as Stream<T extends [infer TKey, infer _] ? TKey : never>;
   }
 
   /**
@@ -354,9 +350,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.flatMap
    */
-  flatMap(mapper: FlatMapper<unknown, unknown>): Stream<unknown> {
+  flatMap<U>(mapper: FlatMapper<T, U>): Stream<U> {
     this.data = flatMap(this.data, mapper) as Iterable<T>;
-    return this;
+    return this as unknown as Stream<U>;
   }
 
   /**
@@ -366,9 +362,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.flatten
    */
-  flatten(dimensions = Infinity): Stream<unknown> {
+  flatten(dimensions: number = Infinity): Stream<unknown> {
     this.data = flatten(this.data, dimensions) as Iterable<T>;
-    return this;
+    return this as Stream<unknown>;
   }
 
   /**
@@ -387,12 +383,15 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.groupBy
    */
-  groupBy(
-    groupKeyFunction: (item: unknown) => string,
-    itemKeyFunction?: (item: unknown) => string
-  ): Stream<unknown> {
+  groupBy<
+    TItemKeyFunction extends ((item: T) => string) | undefined,
+    TResultItem extends TItemKeyFunction extends undefined ? [string, Array<T>] : [string, Record<string, T>]
+  >(
+    groupKeyFunction: (item: T) => string,
+    itemKeyFunction?: TItemKeyFunction
+  ): Stream<TResultItem> {
     this.data = groupBy(this.data, groupKeyFunction, itemKeyFunction) as Iterable<T>;
-    return this;
+    return this as unknown as Stream<TResultItem>;
   }
 
   /**
@@ -404,7 +403,7 @@ export class Stream<T> implements Iterable<T> {
    */
   pairwise(): Stream<[T, T]> {
     this.data = pairwise(this.data) as Iterable<T>;
-    return this as Stream<[T, T]>;
+    return this as unknown as Stream<[T, T]>;
   }
 
   /**
@@ -416,7 +415,7 @@ export class Stream<T> implements Iterable<T> {
    */
   runningAverage(initialValue?: number): Stream<number> {
     this.data = runningAverage(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
-    return this as Stream<number>;
+    return this as unknown as Stream<number>;
   }
 
   /**
@@ -428,7 +427,7 @@ export class Stream<T> implements Iterable<T> {
    */
   runningDifference(initialValue?: number): Stream<number> {
     this.data = runningDifference(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
-    return this as Stream<number>;
+    return this as unknown as Stream<number>;
   }
 
   /**
@@ -440,7 +439,7 @@ export class Stream<T> implements Iterable<T> {
    */
   runningMax(initialValue?: number): Stream<number> {
     this.data = runningMax(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
-    return this as Stream<number>;
+    return this as unknown as Stream<number>;
   }
 
   /**
@@ -452,7 +451,7 @@ export class Stream<T> implements Iterable<T> {
    */
   runningMin(initialValue?: number): Stream<number> {
     this.data = runningMin(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
-    return this as Stream<number>;
+    return this as unknown as Stream<number>;
   }
 
   /**
@@ -464,7 +463,7 @@ export class Stream<T> implements Iterable<T> {
    */
   runningProduct(initialValue?: number): Stream<number> {
     this.data = runningProduct(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
-    return this as Stream<number>;
+    return this as unknown as Stream<number>;
   }
 
   /**
@@ -476,7 +475,7 @@ export class Stream<T> implements Iterable<T> {
    */
   runningTotal(initialValue?: number): Stream<number> {
     this.data = runningTotal(this.data as Iterable<Numeric>, initialValue) as Iterable<T>;
-    return this as Stream<number>;
+    return this as unknown as Stream<number>;
   }
 
   /**
@@ -527,7 +526,7 @@ export class Stream<T> implements Iterable<T> {
    */
   values(): Stream<T extends [infer _, infer TValue] ? TValue : never> {
     this.data = values(this.data as Iterable<[unknown, unknown]>) as Iterable<T>;
-    return this as Stream<T extends [infer _, infer TValue] ? TValue : never>;
+    return this as unknown as Stream<T extends [infer _, infer TValue] ? TValue : never>;
   }
 
   /**
@@ -549,7 +548,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see set.distinct
    */
-  distinct(compareBy?: (datum: unknown) => Comparable): Stream<unknown> {
+  distinct(compareBy?: (datum: T) => Comparable): Stream<T> {
     this.data = distinct(this.data, compareBy);
     return this;
   }
@@ -564,8 +563,8 @@ export class Stream<T> implements Iterable<T> {
    * @see set.intersection
    */
   intersectionWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream<unknown> {
+    ...iterables: Array<Iterable<T> | Iterator<T>>
+  ): Stream<T> {
     this.data = intersection(this.data, ...iterables) as Iterable<T>;
     return this;
   }
@@ -582,8 +581,8 @@ export class Stream<T> implements Iterable<T> {
    */
   partialIntersectionWith(
     minIntersectionCount: number,
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream<unknown> {
+    ...iterables: Array<Iterable<T> | Iterator<T>>
+  ): Stream<T> {
     this.data = partialIntersection(
       minIntersectionCount,
       this.data,
@@ -602,8 +601,8 @@ export class Stream<T> implements Iterable<T> {
    * @see set.symmetricDifference
    */
   symmetricDifferenceWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream<unknown> {
+    ...iterables: Array<Iterable<T> | Iterator<T>>
+  ): Stream<T> {
     this.data = symmetricDifference(this.data, ...iterables) as Iterable<T>;
     return this;
   }
@@ -618,8 +617,8 @@ export class Stream<T> implements Iterable<T> {
    * @see set.union
    */
   unionWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream<unknown> {
+    ...iterables: Array<Iterable<T> | Iterator<T>>
+  ): Stream<T> {
     this.data = union(this.data, ...iterables) as Iterable<T>;
     return this;
   }
@@ -631,11 +630,11 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see set.cartesianProduct
    */
-  cartesianProductWith(
-    ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-  ): Stream<unknown> {
+  cartesianProductWith<U extends Array<Iterable<unknown> | Iterator<unknown>>>(
+    ...iterables: U
+  ): Stream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = cartesianProduct(this.data, ...iterables) as Iterable<T>;
-    return this;
+    return this as unknown as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
   /**
@@ -645,7 +644,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @param callback
    */
-  public peek(callback: (datum: unknown) => void): Stream<unknown> {
+  public peek(callback: (datum: unknown) => void): Stream<T> {
     const [data, peekable] = tee(this.data, 2);
     this.data = data;
 
@@ -663,7 +662,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @param callback
    */
-  public peekStream(callback: (datum: Stream<T>) => void): Stream<unknown> {
+  public peekStream(callback: (datum: Stream<T>) => void): Stream<T> {
     const [data, peekable] = tee(this.data, 2);
     this.data = data;
 
@@ -720,7 +719,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see reduce.toMax
    */
-  toMax(compareBy?: (datum: unknown) => Comparable): unknown | undefined {
+  toMax(compareBy?: (datum: T) => Comparable): T | undefined {
     return toMax(this, compareBy);
   }
 
@@ -737,7 +736,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see reduce.toMin
    */
-  toMin(compareBy?: (datum: unknown) => Comparable): unknown | undefined {
+  toMin(compareBy?: (datum: T) => Comparable): T | undefined {
     return toMin(this, compareBy);
   }
 
@@ -752,7 +751,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @param compareBy
    */
-  toMinMax(compareBy?: (item: unknown) => Comparable): [unknown?, unknown?] {
+  toMinMax(compareBy?: (item: T) => Comparable): [T?, T?] {
     return toMinMax(this, compareBy);
   }
 
@@ -763,7 +762,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see reduce.toFirst
    */
-  toFirst(): unknown {
+  toFirst(): T {
     return toFirst(this);
   }
 
@@ -774,7 +773,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see reduce.toFirstAndLast
    */
-  toFirstAndLast(): unknown {
+  toFirstAndLast(): [T, T] {
     return toFirstAndLast(this);
   }
 
@@ -785,7 +784,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see reduce.toLast
    */
-  toLast(): unknown {
+  toLast(): T {
     return toLast(this);
   }
 
@@ -829,7 +828,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see summary.allMatch
    */
-  allMatch(predicate: (item: unknown) => boolean): boolean {
+  allMatch(predicate: (item: T) => boolean): boolean {
     return allMatch(this, predicate);
   }
 
@@ -855,7 +854,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see summary.anyMatch
    */
-  anyMatch(predicate: (item: unknown) => boolean): boolean {
+  anyMatch(predicate: (item: T) => boolean): boolean {
     return anyMatch(this, predicate);
   }
 
@@ -869,7 +868,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see summary.exactlyN
    */
-  exactlyN(n: number, predicate?: (item: unknown) => boolean): boolean {
+  exactlyN(n: number, predicate?: (item: T) => boolean): boolean {
     return exactlyN(this, n, predicate);
   }
   /**
@@ -907,7 +906,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see summary.noneMatch
    */
-  noneMatch(predicate: (item: unknown) => boolean): boolean {
+  noneMatch(predicate: (item: T) => boolean): boolean {
     return noneMatch(this, predicate);
   }
 
