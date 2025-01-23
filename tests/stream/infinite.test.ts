@@ -6,11 +6,7 @@ describe.each([
   ...dataProviderForOfCount(),
 ])(
   "Stream Infinite Of Count Test",
-  (
-    inputParams: Array<number>,
-    limit: number,
-    expected: Array<number>
-  ) => {
+  (inputParams, limit: number, expected) => {
     it("", () => {
       // When
       const stream = Stream.ofCount(...inputParams);
@@ -26,11 +22,7 @@ describe.each([
   ...dataProviderForOfCycle(),
 ])(
   "Stream Infinite Of Cycle Test",
-  <T>(
-    iterable: Iterable<T>,
-    limit: number,
-    expected: Array<T>
-  ) => {
+  <T>(iterable: Iterable<T>, limit: number, expected: Array<T>) => {
     it("", () => {
       // When
       const stream = Stream.ofCycle(iterable);
@@ -46,11 +38,7 @@ describe.each([
   ...dataProviderForOfRepeat(),
 ])(
   "Stream Infinite Of Repeat Test",
-  <T>(
-    itemToRepeat: T,
-    limit: number,
-    expected: Array<T>
-  ) => {
+  <T>(itemToRepeat: T, limit: number, expected: Array<T>) => {
     it("", () => {
       // When
       const stream = Stream.ofRepeat(itemToRepeat);
