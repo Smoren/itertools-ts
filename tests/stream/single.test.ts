@@ -10,16 +10,12 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (data: unknown) => Stream<unknown>, Array<unknown>]>)(
+])(
   "Stream Single Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => Stream<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, streamFactory, expected) => {
     it("", () => {
       // Given
-      const result = streamFactory(input);
+      const result = streamFactory(input as any);
 
       // Then
       expect(result).toEqual(expected);
@@ -27,140 +23,140 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, (iterable: Array<any>) => Array<any>, Array<any>]> {
   return [
     [
       [],
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [2, 3],
     ],
     [
       [],
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [2, 3],
     ],
     [
       [],
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [2, 3],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value) < 3)
         .compress([0, 1])
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value) < 3)
         .compress([0, 1])
         .toArray(),
       [-3],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .toArray(),
       [1, -1, 2, -2],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .compress([0, 1, 0, 1])
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .compress([0, 1, 0, 1])
         .toArray(),
       [-1, -2],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<[number, unknown]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [],
     ],
     [
       [1],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<[number, unknown]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [[0, 1]],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<[number, unknown]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [[0, 1], [1, 2], [2, 3]],
     ],
     [
       [['a', 1], ['b', 2], ['c', 3]],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Array<[string, number]>): Array<string> => Stream.of(iterable)
         .keys()
         .toArray(),
       ['a', 'b', 'c'],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<unknown> => Stream.of(iterable)
         .keys()
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<number> => Stream.of(iterable)
         .enumerate()
         .keys()
         .toArray(),
@@ -168,7 +164,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       ['a', 'b', 'c'],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<number> => Stream.of(iterable)
         .enumerate()
         .keys()
         .toArray(),
@@ -176,21 +172,21 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [['a', 1], ['b', 2], ['c', 3]],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Array<[string, number]>): Array<number> => Stream.of(iterable)
         .values()
         .toArray(),
       [1, 2, 3],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Array<[unknown, unknown]>): Array<unknown> => Stream.of(iterable)
         .values()
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<unknown> => Stream.of(iterable)
         .enumerate()
         .values()
         .toArray(),
@@ -198,7 +194,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       ['a', 'b', 'c'],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<string> | Iterator<string>): Array<string> => Stream.of(iterable)
         .enumerate()
         .values()
         .toArray(),
@@ -206,381 +202,381 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .toArray(),
       [1, 2, 3],
     ],
     [
       [],
-      () => Stream.ofEmpty()
-        .map((item) => (item as number) + 1)
+      (): Array<number> => Stream.ofEmpty()
+        .map((item) => Number(item) + 1)
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .map((item) => item + 1)
         .toArray(),
       [],
     ],
     [
       [1],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .map((item) => item + 1)
         .toArray(),
       [2],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .map((item) => item + 1)
         .toArray(),
       [2, 3, 4],
     ],
     [
       ['a', 'b', 'c'],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<string> | Iterator<string>): Array<string> => Stream.of(iterable)
         .map((item) => `[${item}]`)
         .toArray(),
       ['[a]', '[b]', '[c]'],
     ],
     [
       [[1], [2], [3]],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<number>)[0])
+      (iterable: Array<number[]>): Array<number> => Stream.of(iterable)
+        .map((item) => item[0])
         .toArray(),
       [1, 2, 3],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => single.repeat(item, (item as number) + 1))
+      (iterable: Iterable<number> | Iterator<number>): Array<unknown> => Stream.of(iterable)
+        .flatMap((item) => single.repeat(item, Number(item) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<unknown> => Stream.of(iterable)
         .flatMap((item) => item)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<unknown> => Stream.of(iterable)
         .flatten()
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<unknown> => Stream.of(iterable)
         .flatten(1)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<unknown> => Stream.of(iterable)
         .flatten(2)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<unknown> => Stream.of(iterable)
         .flatten(0)
         .toArray(),
       [1, 2, [3, 4], [5, 6], 7, 8],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) < 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value < 0)
         .chunkwise(2)
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) < 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value < 0)
         .chunkwise(2)
         .toArray(),
       [[-1, -2], [-3]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwise(2)
         .toArray(),
       [[1, 2], [3, 4], [5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwise(2)
         .toArray(),
       [[0, 1], [2, 3], [4, 5]],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[-1, -2], [-3]],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[-1, -2]],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[1, 2], [3, 4], [5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[1, 2], [3, 4]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[0, 1], [2, 3], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[0, 1], [2, 3], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 1)
         .toArray(),
       [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 1, false)
         .toArray(),
       [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 2)
         .toArray(),
       [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 2, false)
         .toArray(),
       [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<[number, number]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .pairwise()
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<[number, number]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .pairwise()
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>): Array<[number, number]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .pairwise()
         .toArray(),
       [[1, 2], [2, 3]],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<[number, number]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .pairwise()
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Iterable<number> | Iterator<number>): Array<[number, number]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .pairwise()
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<unknown> => Stream.of(iterable)
         .limit(0)
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Array<unknown> => Stream.of(iterable)
         .limit(5)
         .toArray(),
       [],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .limit(5)
         .toArray(),
       [1, 2, 3, 4, 5],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .limit(10)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .filter((x) => x < 5)
         .limit(2)
         .toArray(),
       [1, 2],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
+        .filter((x) => x < 5)
         .limit(10)
         .toArray(),
       [1, 2, 3, 4],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .limit(0)
         .chainWith([1, 2, 3])
         .toArray(),
@@ -588,2221 +584,232 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .skip(0)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .skip(0, 1)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .skip(10, 10)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .skip(3)
         .toArray(),
       [4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .skip(3, 2)
         .toArray(),
       [1, 2, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .skip(10, 2)
         .toArray(),
       [1, 2],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .slice()
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .slice(2)
         .toArray(),
       [3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .slice(2, 4)
         .toArray(),
       [3, 4, 5, 6],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .slice(2, undefined, 2)
         .toArray(),
       [3, 5, 7, 9],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .slice(2, 3, 2)
         .toArray(),
       [3, 5, 7],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+      // TODO fix type (Array<[string, number[]]> did not works)
+      (iterable: Iterable<number> | Iterator<number>) => Stream.of(iterable)
+        .filter((value) => value % 2 !== 0)
+        .groupBy((item) => item > 0 ? 'pos' : 'neg')
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+      // TODO fix type (Array<[string, number[]]> did not works)
+      (iterable: Iterable<number> | Iterator<number>) => Stream.of(iterable)
+        .filter((value) => value % 2 !== 0)
+        .groupBy((item) => item > 0 ? 'pos' : 'neg')
         .toArray(),
       [['pos', [1, 3]], ['neg', [-1, -3]]],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number> | Iterator<number>): Array<[string, number[]]> => Stream.of(iterable)
+        .filter((value) => value % 2 !== 0)
+        .groupBy((item) => item > 0 ? 'pos' : 'neg', undefined)
+        .toArray(),
+      [['pos', [1, 3]], ['neg', [-1, -3]]],
+    ],
+    [
+      [1, -1, 2, -2, 3, -3],
+      (iterable: Iterable<number> | Iterator<number>): Array<[string, Record<string, number>]> => Stream.of(iterable)
+        .filter((value) => value % 2 !== 0)
+        .groupBy((item) => item > 0 ? 'pos' : 'neg', (x) => `${x}`)
+        .toArray(),
+      [['pos', {'1': 1, '3': 3}], ['neg', {'-1': -1, '-3': -3}]],
     ],
     [
       ['b', 'f', 'c', 'e', 'd', 'a'],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Iterable<string> | Iterator<string>): Array<string> => Stream.of(iterable)
         .sort()
         .toArray(),
       ['a', 'b', 'c', 'd', 'e', 'f'],
     ],
     [
       [2, 3, 1, 2, -3, -2, 5, 7, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
+      (iterable: Iterable<number> | Iterator<number>) => Stream.of(iterable)
+        .sort((lhs, rhs) => lhs - rhs)
         .toArray(),
       [-3, -2, 1, 2, 2, 3, 3, 5, 7],
     ],
     [
       [2, 3, 1, 2, -3, -2, 5, 7, 3],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
+      (iterable: Iterable<number> | Iterator<number>) => Stream.of(iterable)
+        .sort((lhs, rhs) => rhs - lhs)
         .toArray(),
       [7, 5, 3, 3, 2, 2, 1, -2, -3],
     ],
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
-  return [
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createGeneratorFixture([0, 1, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createGeneratorFixture([0, 1, 1]))
-        .toArray(),
-      [2, 3],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createGeneratorFixture([0, 1, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createGeneratorFixture([0, 1, 1]))
-        .toArray(),
-      [2, 3],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createGeneratorFixture([0, 1, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createGeneratorFixture([0, 1, 1]))
-        .toArray(),
-      [2, 3],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
-        .compress(createGeneratorFixture([0, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
-        .compress(createGeneratorFixture([0, 1]))
-        .toArray(),
-      [-3],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .toArray(),
-      [1, -1, 2, -2],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .compress(createGeneratorFixture([0, 1, 0, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .compress(createGeneratorFixture([0, 1, 0, 1]))
-        .toArray(),
-      [-1, -2],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .toArray(),
-      [[0, 1]],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .toArray(),
-      [[0, 1], [1, 2], [2, 3]],
-    ],
-    [
-      createGeneratorFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .keys()
-        .toArray(),
-      ['a', 'b', 'c'],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .keys()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .keys()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .keys()
-        .toArray(),
-      [0, 1, 2],
-    ],
-    [
-      createGeneratorFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .values()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .values()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .values()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .values()
-        .toArray(),
-      ['a', 'b', 'c'],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createGeneratorFixture([]),
-      () => Stream.ofEmpty()
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [2],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [2, 3, 4],
-    ],
-    [
-      createGeneratorFixture(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => `[${item}]`)
-        .toArray(),
-      ['[a]', '[b]', '[c]'],
-    ],
-    [
-      createGeneratorFixture([[1], [2], [3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<number>)[0])
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => single.repeat(item, (item as number) + 1))
-        .toArray(),
-      [1, 1, 2, 2, 2, 3, 3, 3, 3],
-    ],
-    [
-      createGeneratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => item)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createGeneratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten()
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createGeneratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten(1)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createGeneratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten(2)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createGeneratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten(0)
-        .toArray(),
-      [1, 2, [3, 4], [5, 6], 7, 8],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) < 0)
-        .chunkwise(2)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) < 0)
-        .chunkwise(2)
-        .toArray(),
-      [[-1, -2], [-3]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwise(2)
-        .toArray(),
-      [[1, 2], [3, 4], [5]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwise(2)
-        .toArray(),
-      [[0, 1], [2, 3], [4, 5]],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [[-1, -2], [-3]],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [[-1, -2]],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [[-1, -2], [-2, -3]],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [[-1, -2], [-2, -3]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [[1, 2], [3, 4], [5]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [[1, 2], [3, 4]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [[1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [[1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [[0, 1], [2, 3], [4, 5]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [[0, 1], [2, 3], [4, 5]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 1)
-        .toArray(),
-      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 1, false)
-        .toArray(),
-      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 2)
-        .toArray(),
-      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
-    ],
-    [
-      createGeneratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 2, false)
-        .toArray(),
-      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .pairwise()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .pairwise()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .pairwise()
-        .toArray(),
-      [[1, 2], [2, 3]],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .pairwise()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .pairwise()
-        .toArray(),
-      [[-1, -2], [-2, -3]],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .limit(0)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .limit(5)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .limit(5)
-        .toArray(),
-      [1, 2, 3, 4, 5],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .limit(10)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
-        .limit(2)
-        .toArray(),
-      [1, 2],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
-        .limit(10)
-        .toArray(),
-      [1, 2, 3, 4],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .limit(0)
-        .chainWith([1, 2, 3])
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(0)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(0, 1)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(10, 10)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(3)
-        .toArray(),
-      [4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(3, 2)
-        .toArray(),
-      [1, 2, 6, 7, 8, 9, 10],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(10, 2)
-        .toArray(),
-      [1, 2],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice()
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2)
-        .toArray(),
-      [3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2, 4)
-        .toArray(),
-      [3, 4, 5, 6],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2, undefined, 2)
-        .toArray(),
-      [3, 5, 7, 9],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2, 3, 2)
-        .toArray(),
-      [3, 5, 7],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
-        .toArray(),
-      [['pos', [1, 3]], ['neg', [-1, -3]]],
-    ],
-    [
-      createGeneratorFixture(['b', 'f', 'c', 'e', 'd', 'a']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort()
-        .toArray(),
-      ['a', 'b', 'c', 'd', 'e', 'f'],
-    ],
-    [
-      createGeneratorFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
-        .toArray(),
-      [-3, -2, 1, 2, 2, 3, 3, 5, 7],
-    ],
-    [
-      createGeneratorFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
-        .toArray(),
-      [7, 5, 3, 3, 2, 2, 1, -2, -3],
-    ],
-  ];
+function dataProviderForGenerators(): Array<[Generator<any>, (iterable: Generator<any>) => Array<any>, Array<any>]> {
+  return dataProviderForArrays().map((item) => [
+    createGeneratorFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<any> | Iterator<any>) => Array<any>, Array<any>],
+  ]);
 }
 
-function dataProviderForIterables(): Array<unknown> {
-  return [
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIterableFixture([0, 1, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIterableFixture([0, 1, 1]))
-        .toArray(),
-      [2, 3],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIterableFixture([0, 1, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIterableFixture([0, 1, 1]))
-        .toArray(),
-      [2, 3],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIterableFixture([0, 1, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIterableFixture([0, 1, 1]))
-        .toArray(),
-      [2, 3],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
-        .compress(createIterableFixture([0, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
-        .compress(createIterableFixture([0, 1]))
-        .toArray(),
-      [-3],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .toArray(),
-      [1, -1, 2, -2],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .compress(createIterableFixture([0, 1, 0, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .compress(createIterableFixture([0, 1, 0, 1]))
-        .toArray(),
-      [-1, -2],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .toArray(),
-      [[0, 1]],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .toArray(),
-      [[0, 1], [1, 2], [2, 3]],
-    ],
-    [
-      createIterableFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .keys()
-        .toArray(),
-      ['a', 'b', 'c'],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .keys()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .keys()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .keys()
-        .toArray(),
-      [0, 1, 2],
-    ],
-    [
-      createIterableFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .values()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .values()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .values()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .values()
-        .toArray(),
-      ['a', 'b', 'c'],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIterableFixture([]),
-      () => Stream.ofEmpty()
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [2],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [2, 3, 4],
-    ],
-    [
-      createIterableFixture(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => `[${item}]`)
-        .toArray(),
-      ['[a]', '[b]', '[c]'],
-    ],
-    [
-      createIterableFixture([[1], [2], [3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<number>)[0])
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => single.repeat(item, (item as number) + 1))
-        .toArray(),
-      [1, 1, 2, 2, 2, 3, 3, 3, 3],
-    ],
-    [
-      createIterableFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => item)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createIterableFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten()
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createIterableFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten(1)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createIterableFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten(2)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createIterableFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten(0)
-        .toArray(),
-      [1, 2, [3, 4], [5, 6], 7, 8],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) < 0)
-        .chunkwise(2)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) < 0)
-        .chunkwise(2)
-        .toArray(),
-      [[-1, -2], [-3]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwise(2)
-        .toArray(),
-      [[1, 2], [3, 4], [5]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwise(2)
-        .toArray(),
-      [[0, 1], [2, 3], [4, 5]],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [[-1, -2], [-3]],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [[-1, -2]],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [[-1, -2], [-2, -3]],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [[-1, -2], [-2, -3]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [[1, 2], [3, 4], [5]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [[1, 2], [3, 4]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [[1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [[1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [[0, 1], [2, 3], [4, 5]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [[0, 1], [2, 3], [4, 5]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 1)
-        .toArray(),
-      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 1, false)
-        .toArray(),
-      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 2)
-        .toArray(),
-      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
-    ],
-    [
-      createIterableFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 2, false)
-        .toArray(),
-      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .pairwise()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .pairwise()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .pairwise()
-        .toArray(),
-      [[1, 2], [2, 3]],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .pairwise()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .pairwise()
-        .toArray(),
-      [[-1, -2], [-2, -3]],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .limit(0)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .limit(5)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .limit(5)
-        .toArray(),
-      [1, 2, 3, 4, 5],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .limit(10)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
-        .limit(2)
-        .toArray(),
-      [1, 2],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
-        .limit(10)
-        .toArray(),
-      [1, 2, 3, 4],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .limit(0)
-        .chainWith([1, 2, 3])
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(0)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(0, 1)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(10, 10)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(3)
-        .toArray(),
-      [4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(3, 2)
-        .toArray(),
-      [1, 2, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(10, 2)
-        .toArray(),
-      [1, 2],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice()
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2)
-        .toArray(),
-      [3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2, 4)
-        .toArray(),
-      [3, 4, 5, 6],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2, undefined, 2)
-        .toArray(),
-      [3, 5, 7, 9],
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2, 3, 2)
-        .toArray(),
-      [3, 5, 7],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
-        .toArray(),
-      [['pos', [1, 3]], ['neg', [-1, -3]]],
-    ],
-    [
-      createIterableFixture(['b', 'f', 'c', 'e', 'd', 'a']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort()
-        .toArray(),
-      ['a', 'b', 'c', 'd', 'e', 'f'],
-    ],
-    [
-      createIterableFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
-        .toArray(),
-      [-3, -2, 1, 2, 2, 3, 3, 5, 7],
-    ],
-    [
-      createIterableFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
-        .toArray(),
-      [7, 5, 3, 3, 2, 2, 1, -2, -3],
-    ],
-  ];
+function dataProviderForIterables(): Array<[Iterable<any>, (iterable: Iterable<any>) => Array<any>, Array<any>]> {
+  return dataProviderForArrays().map((item) => [
+    createIterableFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<any> | Iterator<any>) => Array<any>, Array<any>],
+  ]);
 }
 
-function dataProviderForIterators(): Array<unknown> {
-  return [
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIteratorFixture([0, 1, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIteratorFixture([0, 1, 1]))
-        .toArray(),
-      [2, 3],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIteratorFixture([0, 1, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIteratorFixture([0, 1, 1]))
-        .toArray(),
-      [2, 3],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIteratorFixture([0, 1, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .compress(createIteratorFixture([0, 1, 1]))
-        .toArray(),
-      [2, 3],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
-        .compress(createIteratorFixture([0, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
-        .compress(createIteratorFixture([0, 1]))
-        .toArray(),
-      [-3],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .toArray(),
-      [1, -1, 2, -2],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .compress(createIteratorFixture([0, 1, 0, 1]))
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
-        .compress(createIteratorFixture([0, 1, 0, 1]))
-        .toArray(),
-      [-1, -2],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .toArray(),
-      [[0, 1]],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .toArray(),
-      [[0, 1], [1, 2], [2, 3]],
-    ],
-    [
-      createIteratorFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .keys()
-        .toArray(),
-      ['a', 'b', 'c'],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .keys()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .keys()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .keys()
-        .toArray(),
-      [0, 1, 2],
-    ],
-    [
-      createIteratorFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .values()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .values()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .values()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .enumerate()
-        .values()
-        .toArray(),
-      ['a', 'b', 'c'],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIteratorFixture([]),
-      () => Stream.ofEmpty()
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [2],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
-        .toArray(),
-      [2, 3, 4],
-    ],
-    [
-      createIteratorFixture(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => `[${item}]`)
-        .toArray(),
-      ['[a]', '[b]', '[c]'],
-    ],
-    [
-      createIteratorFixture([[1], [2], [3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<number>)[0])
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => single.repeat(item, (item as number) + 1))
-        .toArray(),
-      [1, 1, 2, 2, 2, 3, 3, 3, 3],
-    ],
-    [
-      createIteratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => item)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createIteratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten()
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createIteratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten(1)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createIteratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten(2)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
-      createIteratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten(0)
-        .toArray(),
-      [1, 2, [3, 4], [5, 6], 7, 8],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) < 0)
-        .chunkwise(2)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) < 0)
-        .chunkwise(2)
-        .toArray(),
-      [[-1, -2], [-3]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwise(2)
-        .toArray(),
-      [[1, 2], [3, 4], [5]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwise(2)
-        .toArray(),
-      [[0, 1], [2, 3], [4, 5]],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [[-1, -2], [-3]],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [[-1, -2]],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [[-1, -2], [-2, -3]],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [[-1, -2], [-2, -3]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [[1, 2], [3, 4], [5]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [[1, 2], [3, 4]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [[1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [[1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 0)
-        .toArray(),
-      [[0, 1], [2, 3], [4, 5]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 0, false)
-        .toArray(),
-      [[0, 1], [2, 3], [4, 5]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 1)
-        .toArray(),
-      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(2, 1, false)
-        .toArray(),
-      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 1)
-        .toArray(),
-      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 1, false)
-        .toArray(),
-      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 2)
-        .toArray(),
-      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
-    ],
-    [
-      createIteratorFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
-        .chunkwiseOverlap(3, 2, false)
-        .toArray(),
-      [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .pairwise()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .pairwise()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .pairwise()
-        .toArray(),
-      [[1, 2], [2, 3]],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .pairwise()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .pairwise()
-        .toArray(),
-      [[-1, -2], [-2, -3]],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .limit(0)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .limit(5)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .limit(5)
-        .toArray(),
-      [1, 2, 3, 4, 5],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .limit(10)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
-        .limit(2)
-        .toArray(),
-      [1, 2],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
-        .limit(10)
-        .toArray(),
-      [1, 2, 3, 4],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .limit(0)
-        .chainWith([1, 2, 3])
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(0)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(0, 1)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(10, 10)
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(3)
-        .toArray(),
-      [4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(3, 2)
-        .toArray(),
-      [1, 2, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .skip(10, 2)
-        .toArray(),
-      [1, 2],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice()
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2)
-        .toArray(),
-      [3, 4, 5, 6, 7, 8, 9, 10],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2, 4)
-        .toArray(),
-      [3, 4, 5, 6],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2, undefined, 2)
-        .toArray(),
-      [3, 5, 7, 9],
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .slice(2, 3, 2)
-        .toArray(),
-      [3, 5, 7],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
-        .toArray(),
-      [['pos', [1, 3]], ['neg', [-1, -3]]],
-    ],
-    [
-      createIteratorFixture(['b', 'f', 'c', 'e', 'd', 'a']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort()
-        .toArray(),
-      ['a', 'b', 'c', 'd', 'e', 'f'],
-    ],
-    [
-      createIteratorFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
-        .toArray(),
-      [-3, -2, 1, 2, 2, 3, 3, 5, 7],
-    ],
-    [
-      createIteratorFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
-        .toArray(),
-      [7, 5, 3, 3, 2, 2, 1, -2, -3],
-    ],
-  ];
+function dataProviderForIterators(): Array<[Iterator<any>, (iterable: Iterator<any>) => Array<any>, Array<any>]> {
+  return dataProviderForArrays().map((item) => [
+    createIteratorFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<any> | Iterator<any>) => Array<any>, Array<any>],
+  ]);
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, (iterable: string) => Array<any>, Array<any>]> {
   return [
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
+      (iterable): Array<string> => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(Number(value)) < 3)
         .compress([0, 1])
         .toArray(),
       [],
     ],
     [
       '12345',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Number(value as string) < 3)
+      (iterable): Array<string> => Stream.of(iterable)
+        .dropWhile((value) => Number(value) < 3)
         .compress([1, 0, 1])
         .toArray(),
       ['3', '5'],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Number(value as string) < 3)
+      (iterable): Array<string> => Stream.of(iterable)
+        .takeWhile((value) => Number(value) < 3)
         .toArray(),
       [],
     ],
     [
       '12345',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Number(value as string) < 4)
+      (iterable): Array<string> => Stream.of(iterable)
+        .takeWhile((value) => Number(value) < 4)
         .toArray(),
       ['1', '2', '3'],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Number(value as string) < 3)
+      (iterable): Array<string> => Stream.of(iterable)
+        .takeWhile((value) => Number(value) < 3)
         .compress([0, 1, 0, 1])
         .toArray(),
       [],
     ],
     [
       '12345',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Number(value as string) < 5)
+      (iterable): Array<string> => Stream.of(iterable)
+        .takeWhile((value) => Number(value) < 5)
         .compress([0, 1, 0, 1])
         .toArray(),
       ['2', '4'],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<[number, string]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<[number, string]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [[0, '1']],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<[number, string]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [[0, '1'], [1, '2'], [2, '3']],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .enumerate()
         .keys()
         .toArray(),
@@ -2810,15 +817,15 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       'abc',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<number> => Stream.of(iterable)
         .enumerate()
         .keys()
         .toArray(),
       [0, 1, 2],
     ],
     [
-      [],
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      '',
+      (iterable): Array<string> => Stream.of(iterable)
         .enumerate()
         .values()
         .toArray(),
@@ -2826,7 +833,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       'abc',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .enumerate()
         .values()
         .toArray(),
@@ -2834,232 +841,225 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => parseInt(value as string) > 0)
+      (iterable): Array<string> => Stream.of(iterable)
+        .filter((value) => parseInt(value) > 0)
         .toArray(),
       [],
     ],
     [
       '123456',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => parseInt(value as string) % 2 === 0)
+      (iterable): Array<string> => Stream.of(iterable)
+        .filter((value) => parseInt(value) % 2 === 0)
         .toArray(),
       ['2', '4', '6'],
     ],
     [
       '',
-      () => Stream.ofEmpty()
+      (): Array<string> => Stream.ofEmpty()
         .map((item) => `[${item}]`)
         .toArray(),
       [],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .map((item) => `[${item}]`)
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .map((item) => `[${item}]`)
         .toArray(),
       ['[1]'],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .map((item) => `[${item}]`)
         .toArray(),
       ['[1]', '[2]', '[3]'],
     ],
     [
       'abc',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .map((item) => `[${item}]`)
         .toArray(),
       ['[a]', '[b]', '[c]'],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<unknown> => Stream.of(iterable)
         .flatMap((item) => single.repeat(parseInt(item as string), parseInt(item as string) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
     [
-      createGeneratorFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatten()
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8],
-    ],
-    [
       'abc',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<unknown> => Stream.of(iterable)
         .flatten(1)
         .toArray(),
       ['a', 'b', 'c'],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwise(2)
         .toArray(),
       [],
     ],
     [
       'abc',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwise(2)
         .toArray(),
       [['a', 'b'], ['c']],
     ],
     [
       '012345',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => parseInt(value as string) > 0)
+      (iterable): Array<string[]> => Stream.of(iterable)
+        .filter((value) => parseInt(value) > 0)
         .chunkwise(2)
         .toArray(),
       [['1', '2'], ['3', '4'], ['5']],
     ],
     [
       '012345',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwise(2)
         .toArray(),
       [['0', '1'], ['2', '3'], ['4', '5']],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [],
     ],
     [
       'abc',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [['a', 'b'], ['c']],
     ],
     [
       'abc',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [['a', 'b']],
     ],
     [
       'abc',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [['a', 'b'], ['b', 'c']],
     ],
     [
       'abc',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [['a', 'b'], ['b', 'c']],
     ],
     [
       'abcde',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [['a', 'b'], ['c', 'd'], ['e']],
     ],
     [
       'abcde',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [['a', 'b'], ['c', 'd']],
     ],
     [
       'abcde',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'e']],
     ],
     [
       'abcde',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'e']],
     ],
     [
       'abcdef',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [['a', 'b'], ['c', 'd'], ['e', 'f']],
     ],
     [
       'abcdef',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [['a', 'b'], ['c', 'd'], ['e', 'f']],
     ],
     [
       'abcdef',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'e'], ['e', 'f']],
     ],
     [
       'abcdef',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'e'], ['e', 'f']],
     ],
     [
       'abcdefghij',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(3, 1)
         .toArray(),
       [['a', 'b', 'c'], ['c', 'd', 'e'], ['e', 'f', 'g'], ['g', 'h', 'i'], ['i', 'j']],
     ],
     [
       'abcdefghij',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(3, 1, false)
         .toArray(),
       [['a', 'b', 'c'], ['c', 'd', 'e'], ['e', 'f', 'g'], ['g', 'h', 'i']],
     ],
     [
       'abcdefghij',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(3, 2)
         .toArray(),
       [
@@ -3075,7 +1075,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       'abcdefghij',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string[]> => Stream.of(iterable)
         .chunkwiseOverlap(3, 2, false)
         .toArray(),
       [
@@ -3091,72 +1091,72 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<[string, string]> => Stream.of(iterable)
         .pairwise()
         .toArray(),
       [],
     ],
     [
       'abc',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<[string, string]> => Stream.of(iterable)
         .pairwise()
         .toArray(),
       [['a', 'b'], ['b', 'c']],
     ],
     [
       'abcdef',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<[string, string]> => Stream.of(iterable)
         .pairwise()
         .toArray(),
       [['a', 'b'], ['b', 'c'], ['c', 'd'], ['d', 'e'], ['e', 'f']],
     ],
     [
       '',
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .limit(0)
         .toArray(),
       [],
     ],
     [
       '',
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .limit(5)
         .toArray(),
       [],
     ],
     [
       '1234567',
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .limit(5)
         .toArray(),
       ['1', '2', '3', '4', '5'],
     ],
     [
       '1234567',
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .limit(10)
         .toArray(),
       ['1', '2', '3', '4', '5', '6', '7'],
     ],
     [
       '1234567890',
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
+      (iterable): Array<string> => Stream.of(iterable)
+        .filter((x) => Number(x) < 5)
         .limit(2)
         .toArray(),
       ['1', '2'],
     ],
     [
       '1234567890',
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
+      (iterable): Array<string> => Stream.of(iterable)
+        .filter((x) => Number(x) < 5)
         .limit(10)
         .toArray(),
       ['1', '2', '3', '4', '0'],
     ],
     [
       '',
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .limit(0)
         .chainWith('123')
         .toArray(),
@@ -3164,112 +1164,126 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '123456789',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .skip(0)
         .toArray(),
       ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     ],
     [
       '123456789',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .skip(0, 1)
         .toArray(),
       ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     ],
     [
       '123456789',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .skip(10, 10)
         .toArray(),
       ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
     ],
     [
       '123456789',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .skip(3)
         .toArray(),
       ['4', '5', '6', '7', '8', '9'],
     ],
     [
       '123456789',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .skip(3, 2)
         .toArray(),
       ['1', '2', '6', '7', '8', '9'],
     ],
     [
       '123456789',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .skip(10, 2)
         .toArray(),
       ['1', '2'],
     ],
     [
       '1234567890',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .slice()
         .toArray(),
       ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
     ],
     [
       '1234567890',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .slice(2)
         .toArray(),
       ['3', '4', '5', '6', '7', '8', '9', '0'],
     ],
     [
       '1234567890',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .slice(2, 4)
         .toArray(),
       ['3', '4', '5', '6'],
     ],
     [
       '1234567890',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .slice(2, undefined, 2)
         .toArray(),
       ['3', '5', '7', '9'],
     ],
     [
       '1234567890',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .slice(2, 3, 2)
         .toArray(),
       ['3', '5', '7'],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .groupBy((item) => Number(item as string) % 2 === 0 ? 'even' : 'odd')
         .toArray(),
       [],
     ],
     [
       '123456',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable) => Stream.of(iterable)
         .groupBy((item) => Number(item as string) % 2 === 0 ? 'even' : 'odd')
         .toArray(),
       [['odd', ['1', '3', '5']], ['even', ['2', '4', '6']]],
     ],
     [
+      '123456',
+      (iterable): Array<[string, string[]]> => Stream.of(iterable)
+        .groupBy((item) => Number(item as string) % 2 === 0 ? 'even' : 'odd', undefined)
+        .toArray(),
+      [['odd', ['1', '3', '5']], ['even', ['2', '4', '6']]],
+    ],
+    [
+      '123456',
+      (iterable): Array<[string, Record<string, string>]> => Stream.of(iterable)
+        .groupBy((item) => Number(item as string) % 2 === 0 ? 'even' : 'odd', (x) => `${x}`)
+        .toArray(),
+      [['odd', {'1': '1', '3': '3', '5': '5'}], ['even', {'2': '2', '4': '4', '6': '6'}]],
+    ],
+    [
       'bfceda',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .sort()
         .toArray(),
       ['a', 'b', 'c', 'd', 'e', 'f'],
     ],
     [
       '231232573',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
         .toArray(),
       ['1', '2', '2', '2', '3', '3', '3', '5', '7'],
     ],
     [
       '231232573',
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable): Array<string> => Stream.of(iterable)
         .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
         .toArray(),
       ['7', '5', '3', '3', '3', '2', '2', '2', '1'],
@@ -3277,92 +1291,92 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, (iterable: Set<any>) => Array<any>, Array<any>]> {
   return [
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value) < 3)
         .compress(new Set([0, 1]))
         .toArray(),
       [],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value) < 3)
         .compress(new Set([0, 1]))
         .toArray(),
       [-3],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .toArray(),
       [],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .toArray(),
       [1, -1, 2, -2],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .compress([0, 1, 0, 1])
         .toArray(),
       [],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .compress([0, 1, 0, 1])
         .toArray(),
       [-1, -2],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<[number, unknown]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [],
     ],
     [
       new Set([1]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<[number, number]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [[0, 1]],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<[number, number]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [[0, 1], [1, 2], [2, 3]],
     ],
     [
       new Set([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<[string, number]>): Array<string> => Stream.of(iterable)
         .keys()
         .toArray(),
       ['a', 'b', 'c'],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<[string, number]>): Array<string> => Stream.of(iterable)
         .keys()
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<number> => Stream.of(iterable)
         .enumerate()
         .keys()
         .toArray(),
@@ -3370,7 +1384,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<number> => Stream.of(iterable)
         .enumerate()
         .keys()
         .toArray(),
@@ -3378,21 +1392,21 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<[string, number]>): Array<number> => Stream.of(iterable)
         .values()
         .toArray(),
       [1, 2, 3],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<[unknown, unknown]>): Array<unknown> => Stream.of(iterable)
         .values()
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<unknown> => Stream.of(iterable)
         .enumerate()
         .values()
         .toArray(),
@@ -3400,7 +1414,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<string>): Array<string> => Stream.of(iterable)
         .enumerate()
         .values()
         .toArray(),
@@ -3408,381 +1422,381 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .toArray(),
       [],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .toArray(),
       [1, 2, 3],
     ],
     [
       new Set([]),
-      () => Stream.ofEmpty()
-        .map((item) => (item as number) + 1)
+      (): Array<number> => Stream.ofEmpty()
+        .map((item) => Number(item) + 1)
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .map((item) => item + 1)
         .toArray(),
       [],
     ],
     [
       new Set([1]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .map((item) => item + 1)
         .toArray(),
       [2],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as number) + 1)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .map((item) => item + 1)
         .toArray(),
       [2, 3, 4],
     ],
     [
       new Set(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<string>): Array<string> => Stream.of(iterable)
         .map((item) => `[${item}]`)
         .toArray(),
       ['[a]', '[b]', '[c]'],
     ],
     [
       new Set([[1], [2], [3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<number>)[0])
+      (iterable: Set<[number]>): Array<number> => Stream.of(iterable)
+        .map((item) => item[0])
         .toArray(),
       [1, 2, 3],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .flatMap((item) => single.repeat(item, (item as number) + 1))
+      (iterable: Set<number>): Array<unknown> => Stream.of(iterable)
+        .flatMap((item) => single.repeat(item, Number(item) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
     [
       new Set([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<unknown> => Stream.of(iterable)
         .flatMap((item) => item)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       new Set([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<unknown> => Stream.of(iterable)
         .flatten()
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       new Set([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<unknown> => Stream.of(iterable)
         .flatten(1)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       new Set([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<unknown> => Stream.of(iterable)
         .flatten(2)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       new Set([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<unknown> => Stream.of(iterable)
         .flatten(0)
         .toArray(),
       [1, 2, [3, 4], [5, 6], 7, 8],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) < 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value < 0)
         .chunkwise(2)
         .toArray(),
       [],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) < 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value < 0)
         .chunkwise(2)
         .toArray(),
       [[-1, -2], [-3]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwise(2)
         .toArray(),
       [[1, 2], [3, 4], [5]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwise(2)
         .toArray(),
       [[0, 1], [2, 3], [4, 5]],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[-1, -2], [-3]],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[-1, -2]],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[1, 2], [3, 4], [5]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[1, 2], [3, 4]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[0, 1], [2, 3], [4, 5]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[0, 1], [2, 3], [4, 5]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 1)
         .toArray(),
       [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 1, false)
         .toArray(),
       [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 2)
         .toArray(),
       [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
     ],
     [
       new Set([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: Set<number>): Array<number[]> => Stream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 2, false)
         .toArray(),
       [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<[number, number]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .pairwise()
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Set<number>): Array<[number, number]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .pairwise()
         .toArray(),
       [],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Set<number>): Array<[number, number]> => Stream.of(iterable)
+        .filter((value) => value > 0)
         .pairwise()
         .toArray(),
       [[1, 2], [2, 3]],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<[number, number]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .pairwise()
         .toArray(),
       [],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Set<number>): Array<[number, number]> => Stream.of(iterable)
+        .filter((value) => !(value > 0))
         .pairwise()
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
     [
       new Set([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<unknown> => Stream.of(iterable)
         .limit(0)
         .toArray(),
       [],
     ],
     [
       new Set([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<unknown>): Array<unknown> => Stream.of(iterable)
         .limit(5)
         .toArray(),
       [],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .limit(5)
         .toArray(),
       [1, 2, 3, 4, 5],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .limit(10)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .filter((x) => x < 5)
         .limit(2)
         .toArray(),
       [1, 2],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as number) < 5)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .filter((x) => x < 5)
         .limit(10)
         .toArray(),
       [1, 2, 3, 4],
     ],
     [
       new Set([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .limit(0)
         .chainWith([1, 2, 3])
         .toArray(),
@@ -3790,181 +1804,199 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .skip(0)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .skip(0, 1)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .skip(10, 10)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .skip(3)
         .toArray(),
       [4, 5, 6, 7, 8, 9, 10],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .skip(3, 2)
         .toArray(),
       [1, 2, 6, 7, 8, 9, 10],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .skip(10, 2)
         .toArray(),
       [1, 2],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .slice()
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .slice(2)
         .toArray(),
       [3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .slice(2, 4)
         .toArray(),
       [3, 4, 5, 6],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .slice(2, undefined, 2)
         .toArray(),
       [3, 5, 7, 9],
     ],
     [
       new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
         .slice(2, 3, 2)
         .toArray(),
       [3, 5, 7],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+      // TODO repair
+      (iterable: Set<number>) => Stream.of(iterable)
+        .filter((value) => value % 2 !== 0)
+        .groupBy((item) => item > 0 ? 'pos' : 'neg')
         .toArray(),
       [],
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+      // TODO repair
+      (iterable: Set<number>) => Stream.of(iterable)
+        .filter((value) => value % 2 !== 0)
+        .groupBy((item) => item > 0 ? 'pos' : 'neg')
         .toArray(),
       [['pos', [1, 3]], ['neg', [-1, -3]]],
     ],
     [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Set<number>): Array<[string, number[]]> => Stream.of(iterable)
+        .filter((value) => value % 2 !== 0)
+        .groupBy((item) => item > 0 ? 'pos' : 'neg', undefined)
+        .toArray(),
+      [['pos', [1, 3]], ['neg', [-1, -3]]],
+    ],
+    [
+      new Set([1, -1, 2, -2, 3, -3]),
+      (iterable: Set<number>): Array<[string, Record<string, number>]> => Stream.of(iterable)
+        .filter((value) => value % 2 !== 0)
+        .groupBy((item) => item > 0 ? 'pos' : 'neg', (x) => `${x}`)
+        .toArray(),
+      [['pos', {'1': 1, '3': 3}], ['neg', {'-1': -1, '-3': -3}]],
+    ],
+    [
       new Set(['b', 'f', 'c', 'e', 'd', 'a']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Set<string>): Array<string> => Stream.of(iterable)
         .sort()
         .toArray(),
       ['a', 'b', 'c', 'd', 'e', 'f'],
     ],
     [
       new Set([2, 3, 1, -3, -2, 5, 7]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .sort((lhs, rhs) => lhs - rhs)
         .toArray(),
       [-3, -2, 1, 2, 3, 5, 7],
     ],
     [
       new Set([2, 3, 1, -3, -2, 5, 7]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
+      (iterable: Set<number>): Array<number> => Stream.of(iterable)
+        .sort((lhs, rhs) => rhs - lhs)
         .toArray(),
       [7, 5, 3, 2, 1, -2, -3],
     ],
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, (iterable: Map<any, any>) => Array<any>, Array<any>]> {
   return [
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
         .values()
-        .filter((value) => (value as number) > 0)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
         .values()
-        .filter((value) => (value as number) > 0)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [2, 3],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
         .values()
-        .filter((value) => (value as number) > 0)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
         .values()
-        .filter((value) => (value as number) > 0)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [2, 3],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
         .values()
-        .filter((value) => (value as number) > 0)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
         .values()
-        .filter((value) => (value as number) > 0)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [2, 3],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value[1]) < 3)
         .compress([0, 1])
         .values()
         .toArray(),
@@ -3972,8 +2004,8 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .dropWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .dropWhile((value) => Math.abs(value[1]) < 3)
         .compress([0, 1])
         .values()
         .toArray(),
@@ -3981,24 +2013,24 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value[1]) < 3)
         .values()
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value[1]) < 3)
         .values()
         .toArray(),
       [1, -1, 2, -2],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value[1]) < 3)
         .compress([0, 1, 0, 1])
         .values()
         .toArray(),
@@ -4006,8 +2038,8 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .takeWhile((value) => Math.abs((value as [number, number])[1]) < 3)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .takeWhile((value) => Math.abs(value[1]) < 3)
         .compress([0, 1, 0, 1])
         .values()
         .toArray(),
@@ -4015,317 +2047,317 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<[number, [number, unknown]]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [],
     ],
     [
       createMapFixture([1]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<[number, [number, unknown]]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [[0, [0, 1]]],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<[number, [number, unknown]]> => Stream.of(iterable)
         .enumerate()
         .toArray(),
       [[0, [0, 1]], [1, [1, 2]], [2, [2, 3]]],
     ],
     [
       new Map([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<string, number>): Array<string> => Stream.of(iterable)
         .keys()
         .toArray(),
       ['a', 'b', 'c'],
     ],
     [
       new Map([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<number> => Stream.of(iterable)
         .keys()
         .toArray(),
       [],
     ],
     [
       new Map([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<string, number>): Array<number> => Stream.of(iterable)
         .values()
         .toArray(),
       [1, 2, 3],
     ],
     [
       new Map([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<unknown> => Stream.of(iterable)
         .values()
         .toArray(),
       [],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<number>)[1])
-        .filter((value) => (value as number) > 0)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .map((item) => item[1])
+        .filter((value) => value > 0)
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<number>)[1])
-        .filter((value) => (value as number) > 0)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .map((item) => item[1])
+        .filter((value) => value > 0)
         .toArray(),
       [1, 2, 3],
     ],
     [
       createMapFixture([]),
-      () => Stream.ofEmpty()
-        .map((item) => (item as Array<number>)[1] + 1)
+      (): Array<number> => Stream.ofEmpty()
+        .map((item) => item[1] + 1)
         .toArray(),
       [],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<number>)[1] + 1)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .map((item) => item[1] + 1)
         .toArray(),
       [],
     ],
     [
       createMapFixture([1]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<number>)[1] + 1)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .map((item) => item[1] + 1)
         .toArray(),
       [2],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<number>)[1] + 1)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
+        .map((item) => item[1] + 1)
         .toArray(),
       [2, 3, 4],
     ],
     [
       createMapFixture(['a', 'b', 'c']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => `[${(item as Array<string>)[1]}]`)
+      (iterable: Map<number, string>): Array<string> => Stream.of(iterable)
+        .map((item) => `[${item[1]}]`)
         .toArray(),
       ['[a]', '[b]', '[c]'],
     ],
     [
       createMapFixture([[1], [2], [3]]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .map((item) => (item as Array<Array<number>>)[1][0])
+      (iterable: Map<number, [number]>): Array<number> => Stream.of(iterable)
+        .map((item) => item[1][0])
         .toArray(),
       [1, 2, 3],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<unknown> => Stream.of(iterable)
         .flatMap((item) => single.repeat((item as Array<unknown>)[1], ((item as Array<unknown>)[1] as number) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
     [
       createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<unknown> => Stream.of(iterable)
         .flatMap((item) => (item as Array<unknown>)[1])
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<unknown> => Stream.of(iterable)
         .flatten()
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<unknown> => Stream.of(iterable)
         .flatten(1)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<unknown> => Stream.of(iterable)
         .flatten(2)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, unknown>): Array<unknown> => Stream.of(iterable)
         .flatten(0)
         .toArray(),
       [1, 2, [3, 4], [5, 6], 7, 8],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] < 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] < 0)
         .chunkwise(2)
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] < 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] < 0)
         .chunkwise(2)
         .toArray(),
       [[[1, -1], [3, -2]], [[5, -3]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] > 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] > 0)
         .chunkwise(2)
         .toArray(),
       [[[4, 1], [5, 2]], [[6, 3], [7, 4]], [[8, 5]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] >= 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] >= 0)
         .chunkwise(2)
         .toArray(),
       [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as Array<number>)[1] > 0))
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => !(value[1] > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as Array<number>)[1] > 0))
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => !(value[1] > 0))
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as Array<number>)[1] > 0))
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => !(value[1] > 0))
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as Array<number>)[1] > 0))
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => !(value[1] > 0))
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as Array<number>)[1] > 0))
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => !(value[1] > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[[1, -1], [3, -2]], [[5, -3]]],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as Array<number>)[1] > 0))
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => !(value[1] > 0))
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[[1, -1], [3, -2]]],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as Array<number>)[1] > 0))
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => !(value[1] > 0))
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as Array<number>)[1] > 0))
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => !(value[1] > 0))
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] > 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] > 0)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[[4, 1], [5, 2]], [[6, 3], [7, 4]], [[8, 5]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] > 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] > 0)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[[4, 1], [5, 2]], [[6, 3], [7, 4]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] > 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] > 0)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] > 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] > 0)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] >= 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] >= 0)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] >= 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] >= 0)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] >= 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] >= 0)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[[3, 0], [4, 1]], [[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] >= 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] >= 0)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[[3, 0], [4, 1]], [[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] >= 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] >= 0)
         .chunkwiseOverlap(3, 1)
         .toArray(),
       [
@@ -4335,12 +2367,11 @@ function dataProviderForMaps(): Array<unknown> {
         [[9, 6], [10, 7], [11, 8]],
         [[11, 8], [12, 9]],
       ],
-      [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] >= 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] >= 0)
         .chunkwiseOverlap(3, 1, false)
         .toArray(),
       [
@@ -4352,8 +2383,8 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] >= 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] >= 0)
         .chunkwiseOverlap(3, 2)
         .toArray(),
       [
@@ -4369,8 +2400,8 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] >= 0)
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => value[1] >= 0)
         .chunkwiseOverlap(3, 2, false)
         .toArray(),
       [
@@ -4386,91 +2417,91 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: Map<number, number>): Array<[number, number][]> => Stream.of(iterable)
+        .filter((value) => !(value[0] > 0))
         .pairwise()
         .toArray(),
       [],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: Map<number, number>): Array<[[number, number], [number, number]]> => Stream.of(iterable)
+        .filter((value) => value[0] > 0)
         .pairwise()
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] > 0)
+      (iterable: Map<number, number>): Array<[[number, number], [number, number]]> => Stream.of(iterable)
+        .filter((value) => value[1] > 0)
         .pairwise()
         .toArray(),
       [[[0, 1], [2, 2]], [[2, 2], [4, 3]]],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] > 0)
+      (iterable: Map<number, number>): Array<[[number, number], [number, number]]> => Stream.of(iterable)
+        .filter((value) => value[1] > 0)
         .pairwise()
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as Array<number>)[1] < 0)
+      (iterable: Map<number, number>): Array<[[number, number], [number, number]]> => Stream.of(iterable)
+        .filter((value) => value[1] < 0)
         .pairwise()
         .toArray(),
       [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Map<unknown, unknown>): Array<[unknown, unknown]> => Stream.of(iterable)
         .limit(0)
         .toArray(),
       [],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Map<unknown, number>): Array<[unknown, number]> => Stream.of(iterable)
         .limit(5)
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Map<unknown, number>): Array<[unknown, number]> => Stream.of(iterable)
         .limit(5)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Map<unknown, number>): Array<[unknown, number]> => Stream.of(iterable)
         .limit(10)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as Array<number>)[1] < 5)
+      (iterable: Map<unknown, number>): Array<[unknown, number]> => Stream.of(iterable)
+        .filter((x) => x[1] < 5)
         .limit(2)
         .toArray(),
       [[0, 1], [1, 2]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
-        .filter((x) => (x as Array<number>)[1] < 5)
+      (iterable: Map<unknown, number>): Array<[unknown, number]> => Stream.of(iterable)
+        .filter((x) => x[1] < 5)
         .limit(10)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4]],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterator<unknown>) => Stream.of(iterable)
+      (iterable: Map<unknown, unknown>): Array<[unknown, unknown]> => Stream.of(iterable)
         .limit(0)
         .chainWith(createMapFixture([1, 2, 3]))
         .toArray(),
@@ -4478,100 +2509,118 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .skip(0)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .skip(0, 1)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .skip(10, 10)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .skip(3)
         .toArray(),
       [[3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .skip(3, 2)
         .toArray(),
       [[0, 1], [1, 2], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .skip(10, 2)
         .toArray(),
       [[0, 1], [1, 2]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .slice()
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .slice(2)
         .toArray(),
       [[2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .slice(2, 4)
         .toArray(),
       [[2, 3], [3, 4], [4, 5], [5, 6]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .slice(2, undefined, 2)
         .toArray(),
       [[2, 3], [4, 5], [6, 7], [8, 9]],
     ],
     [
       createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<[unknown, number]> => Stream.of(iterable)
         .slice(2, 3, 2)
         .toArray(),
       [[2, 3], [4, 5], [6, 7]],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+      // TODO repair type
+      (iterable: Map<number, number>) => Stream.of(iterable)
+        .filter((value) => value[1] % 2 !== 0)
+        .groupBy((item) => item[1] > 0 ? 'pos' : 'neg')
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
-        .filter((value) => (value as [number, number])[1] % 2 !== 0)
-        .groupBy((item) => (item as [number, number])[1] > 0 ? 'pos' : 'neg')
+      // TODO repair type
+      (iterable: Map<number, number>) => Stream.of(iterable)
+        .filter((value) => value[1] % 2 !== 0)
+        .groupBy((item) => item[1] > 0 ? 'pos' : 'neg')
         .toArray(),
       [['pos', [[0, 1], [4, 3]]], ['neg', [[1, -1], [5, -3]]]],
     ],
     [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Array<[string, Array<[number, number]>]> => Stream.of(iterable)
+        .filter((value) => value[1] % 2 !== 0)
+        .groupBy((item) => item[1] > 0 ? 'pos' : 'neg', undefined)
+        .toArray(),
+      [['pos', [[0, 1], [4, 3]]], ['neg', [[1, -1], [5, -3]]]],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Array<[string, Record<string, [number, number]>]> => Stream.of(iterable)
+        .filter((value) => value[1] % 2 !== 0)
+        .groupBy((item) => item[1] > 0 ? 'pos' : 'neg', (x) => `${x[0]}`)
+        .toArray(),
+      [['pos', {'0': [0, 1], '4': [4, 3]}], ['neg', {'1': [1, -1], '5': [5, -3]}]],
+    ],
+    [
       createMapFixture(['b', 'f', 'c', 'e', 'd', 'a']),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, string>): Array<string> => Stream.of(iterable)
         .values()
         .sort()
         .toArray(),
@@ -4579,17 +2628,17 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
         .values()
-        .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
+        .sort((lhs, rhs) => lhs - rhs)
         .toArray(),
       [-3, -2, 1, 2, 2, 3, 3, 5, 7],
     ],
     [
       createMapFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
-      (iterable: Iterable<unknown>) => Stream.of(iterable)
+      (iterable: Map<number, number>): Array<number> => Stream.of(iterable)
         .values()
-        .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
+        .sort((lhs, rhs) => rhs - lhs)
         .toArray(),
       [7, 5, 3, 3, 2, 2, 1, -2, -3],
     ],
