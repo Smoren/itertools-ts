@@ -1902,7 +1902,7 @@ function dataProviderForStrings(): Array<unknown> {
           [10, 20, 30],
           [100, 200, 300]
         )
-        .toValue(function (carry, item) {
+        .toValue((carry, item) => {
           return (carry as number) + (item as Array<number>)
             .reduce((accumulator, current) => accumulator + current);
         }, 0),

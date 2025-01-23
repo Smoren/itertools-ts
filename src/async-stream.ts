@@ -73,7 +73,7 @@ import {
   sameAsync,
   sameCountAsync,
 } from "./summary";
-import type { AsyncFlatMapper, Comparable, Comparator, Numeric } from "./types";
+import type { AsyncFlatMapper, Comparable, Comparator, Numeric, ZipTuple } from "./types";
 import { infinite } from "./index";
 
 /**
@@ -153,16 +153,23 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @see multi.zipAsync
    */
-  zipWith(
+  zipWith<
+    U extends Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  >(
     ...iterables: Array<
       | AsyncIterable<unknown>
       | AsyncIterator<unknown>
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream<T> {
+  ): AsyncStream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = zipAsync(this.data, ...iterables) as AsyncIterable<T>;
-    return this;
+    return this as AsyncStream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
   /**
@@ -179,17 +186,25 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @see multi.zipLongestAsync
    */
-  zipFilledWith(
-    filler: unknown,
+  zipFilledWith<
+    U extends Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >,
+    F
+  >(
+    filler: F,
     ...iterables: Array<
       | AsyncIterable<unknown>
       | AsyncIterator<unknown>
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream<T> {
+  ): AsyncStream<ZipTuple<[Iterable<T>, ...U], F>> {
     this.data = zipFilledAsync(filler, this.data, ...iterables) as AsyncIterable<T>;
-    return this;
+    return this as AsyncStream<ZipTuple<[Iterable<T>, ...U], F>>;
   }
 
   /**
@@ -205,16 +220,23 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @see multi.zipLongestAsync
    */
-  zipLongestWith(
+  zipLongestWith<
+    U extends Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  >(
     ...iterables: Array<
       | AsyncIterable<unknown>
       | AsyncIterator<unknown>
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream<T> {
+  ): AsyncStream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = zipLongestAsync(this.data, ...iterables) as AsyncIterable<T>;
-    return this;
+    return this as AsyncStream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
   /**
@@ -227,16 +249,23 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @see multi.zipEqualAsync
    */
-  zipEqualWith(
+  zipEqualWith<
+    U extends Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  >(
     ...iterables: Array<
       | AsyncIterable<unknown>
       | AsyncIterator<unknown>
       | Iterable<unknown>
       | Iterator<unknown>
     >
-  ): AsyncStream<T> {
+  ): AsyncStream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = zipEqualAsync(this.data, ...iterables) as AsyncIterable<T>;
-    return this;
+    return this as AsyncStream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
   /**
@@ -770,10 +799,10 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @see reduce.toValueAsync
    */
-  async toValue<T>(
-    reducer: (carry: T | undefined, datum: unknown) => Promise<T> | T,
-    initialValue?: T
-  ): Promise<T | undefined> {
+  async toValue<U>(
+    reducer: (carry: U, datum: T) => Promise<U> | U,
+    initialValue?: U
+  ): Promise<U> {
     return await toValueAsync(this, reducer, initialValue);
   }
 
