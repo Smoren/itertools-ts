@@ -23,13 +23,13 @@ describe.each([
   ...dataProviderForMaps(),
 ] as Array<[
   AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream,
+  (data: unknown) => AsyncStream<unknown>,
   Array<unknown>
 ]>)(
   "AsyncStream Set Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream,
+    streamFactory: (data: unknown) => AsyncStream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
@@ -47,14 +47,14 @@ describe.each([
 ] as Array<[
   AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
   number,
-  (minIntersectionCount: number, data: unknown) => AsyncStream,
+  (minIntersectionCount: number, data: unknown) => AsyncStream<unknown>,
   Array<unknown>
 ]>)(
   "AsyncStream Set Partial Intersection Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
     minIntersectionCount: number,
-    streamFactory: (minIntersectionCount: number, data: unknown) => AsyncStream,
+    streamFactory: (minIntersectionCount: number, data: unknown) => AsyncStream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", async () => {

@@ -111,13 +111,13 @@ describe.each([
   ...dataProviderForMath(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream,
+  (data: unknown) => AsyncStream<unknown>,
   Array<unknown>
 ]>)(
   "AsyncStream Math Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream,
+    streamFactory: (data: unknown) => AsyncStream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
@@ -181,13 +181,13 @@ describe.each([
   ...dataProviderForMulti(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream,
+  (data: unknown) => AsyncStream<unknown>,
   Array<unknown>
 ]>)(
   "AsyncStream Multi Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream,
+    streamFactory: (data: unknown) => AsyncStream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
@@ -311,16 +311,16 @@ describe.each([
   ...dataProviderForPeek(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>) => AsyncStream,
-  (stream: AsyncStream) => AsyncStream,
+  (data: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>) => AsyncStream<unknown>,
+  (stream: AsyncStream<unknown>) => AsyncStream<unknown>,
   Array<unknown>,
   Array<unknown>,
 ]>)(
   "AsyncStream Peek Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    leftChainFunc: (data: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>) => AsyncStream,
-    rightChainFunc: (stream: AsyncStream) => AsyncStream,
+    leftChainFunc: (data: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>) => AsyncStream<unknown>,
+    rightChainFunc: (stream: AsyncStream<unknown>) => AsyncStream<unknown>,
     expectedPeeked: Array<unknown>,
     expectedResult: Array<unknown>,
   ) => {
@@ -348,16 +348,16 @@ describe.each([
   ...dataProviderForPeek(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>) => AsyncStream,
-  (stream: AsyncStream) => AsyncStream,
+  (data: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>) => AsyncStream<unknown>,
+  (stream: AsyncStream<unknown>) => AsyncStream<unknown>,
   Array<unknown>,
   Array<unknown>,
 ]>)(
   "AsyncStream Peek Stream Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    leftChainFunc: (data: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>) => AsyncStream,
-    rightChainFunc: (stream: AsyncStream) => AsyncStream,
+    leftChainFunc: (data: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>) => AsyncStream<unknown>,
+    rightChainFunc: (stream: AsyncStream<unknown>) => AsyncStream<unknown>,
     expectedPeeked: Array<unknown>,
     expectedResult: Array<unknown>,
   ) => {
@@ -388,7 +388,7 @@ function dataProviderForPeek(): Array<unknown> {
     [
       createAsyncIterableFixture([5, 4, 3, 2, 1]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable),
-      (stream: AsyncStream) => stream,
+      (stream: AsyncStream<unknown>) => stream,
       [5, 4, 3, 2, 1],
       [5, 4, 3, 2, 1],
     ],
@@ -396,7 +396,7 @@ function dataProviderForPeek(): Array<unknown> {
       createAsyncIterableFixture([1, 2, 3, 4, 5]),
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .zipWith([11, 22, 33, 44, 55]),
-      (stream: AsyncStream) => stream
+      (stream: AsyncStream<unknown>) => stream
         .limit(3),
       [[1, 11], [2, 22], [3, 33], [4, 44], [5, 55]],
       [[1, 11], [2, 22], [3, 33]],
@@ -406,7 +406,7 @@ function dataProviderForPeek(): Array<unknown> {
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .filter((x) => (x as number) % 2 !== 0)
         .sort(),
-      (stream: AsyncStream) => stream
+      (stream: AsyncStream<unknown>) => stream
         .map((x) => (x as number) + 1)
         .pairwise(),
       [1, 3, 5, 7, 9],
@@ -419,18 +419,18 @@ describe.each([
   ...dataProviderForReduce(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream,
+  (data: unknown) => AsyncStream<unknown>,
   Array<unknown>
 ]>)(
   "AsyncStream Reduce Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream,
+    streamFactory: (data: unknown) => AsyncStream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
       // Given
-      const result = await (streamFactory as (data: unknown) => AsyncStream)(input);
+      const result = await (streamFactory as (data: unknown) => AsyncStream<unknown>)(input);
 
       // Then
       expect(result).toEqual(expected);
@@ -521,13 +521,13 @@ describe.each([
   ...dataProviderForSet(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream,
+  (data: unknown) => AsyncStream<unknown>,
   Array<unknown>
 ]>)(
   "AsyncStream Set Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream,
+    streamFactory: (data: unknown) => AsyncStream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
@@ -545,14 +545,14 @@ describe.each([
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
   number,
-  (minIntersectionCount: number, data: unknown) => Promise<AsyncStream>,
+  (minIntersectionCount: number, data: unknown) => Promise<AsyncStream<unknown>>,
   Array<unknown>
 ]>)(
   "AsyncStream Set Partial Intersection Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
     minIntersectionCount: number,
-    streamFactory: (minIntersectionCount: number, data: unknown) => Promise<AsyncStream>,
+    streamFactory: (minIntersectionCount: number, data: unknown) => Promise<AsyncStream<unknown>>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
@@ -687,13 +687,13 @@ describe.each([
   ...dataProviderForSingle(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream,
+  (data: unknown) => AsyncStream<unknown>,
   Array<unknown>
 ]>)(
   "AsyncStream Single Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream,
+    streamFactory: (data: unknown) => AsyncStream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
@@ -864,12 +864,12 @@ describe.each([
   ...dataProviderForSummaryTrue(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream
+  (data: unknown) => AsyncStream<unknown>
 ]>)(
   "AsyncStream Summary Test True",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream
+    streamFactory: (data: unknown) => AsyncStream<unknown>
   ) => {
     it("", async () => {
       // Given
@@ -885,12 +885,12 @@ describe.each([
   ...dataProviderForSummaryFalse(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream
+  (data: unknown) => AsyncStream<unknown>
 ]>)(
   "AsyncStream Summary Test False",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream
+    streamFactory: (data: unknown) => AsyncStream<unknown>
   ) => {
     it("", async () => {
       // Given
@@ -1027,13 +1027,13 @@ describe.each([
   ...dataProviderForTransform(),
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream,
+  (data: unknown) => AsyncStream<unknown>,
   Array<unknown>
 ]>)(
   "AsyncStream Transform Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream,
+    streamFactory: (data: unknown) => AsyncStream<unknown>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
@@ -1051,14 +1051,14 @@ describe.each([
 ] as Array<[
     AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
   number,
-  Array<(stream: AsyncStream) => AsyncStream>,
+  Array<(stream: AsyncStream<unknown>) => AsyncStream<unknown>>,
   Array<unknown>
 ]>)(
   "AsyncStream Transform Tee Test",
   (
     input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
     count: number,
-    extraOperations: Array<(stream: AsyncStream) => AsyncStream>,
+    extraOperations: Array<(stream: AsyncStream<unknown>) => AsyncStream<unknown>>,
     expected: Array<unknown>
   ) => {
     it("", async () => {
