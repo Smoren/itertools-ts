@@ -575,32 +575,32 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (data: AsyncGenerator<any>) => Promise<Array<any>>, Array<any>]> {
+function dataProviderForAsync(): Array<[Array<any>, (data: AsyncIterable<any> | AsyncIterator<any>) => Promise<Array<any>>, Array<any>]> {
   return [
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipWith([], [])
         .toArray(),
       [],
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipEqualWith([], [])
         .toArray(),
       [],
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipLongestWith([], [])
         .toArray(),
       [],
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -609,8 +609,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (data: As
       [],
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -624,8 +624,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (data: As
       ],
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipFilledWith(
           'filler',
           [11, 22, 33],
@@ -640,8 +640,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (data: As
       ],
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3, 4, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -654,8 +654,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (data: As
       ],
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipEqualWith(
           [11, 22, 33],
           [111, 222, 333],
@@ -668,8 +668,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (data: As
       ],
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3, 4, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -684,273 +684,42 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (data: As
       ],
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .chainWith([4, 5, 6])
         .toArray(),
       [1, 2, 3, 4, 5, 6],
     ],
     [
-      createAsyncGeneratorFixture([1, 2]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9],
     ],
   ];
+}
+
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (data: AsyncGenerator<any>) => Promise<Array<any>>, Array<any>]> {
+  return dataProviderForAsync().map((item) => [
+    createAsyncGeneratorFixture(item[0]),
+    ...item.slice(1) as [(data: AsyncIterable<unknown> | AsyncIterator<unknown>) => Promise<Array<any>>, Array<unknown>],
+  ]);
 }
 
 function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, (data: AsyncIterable<any>) => Promise<Array<any>>, Array<any>]> {
-  return [
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipWith([], [])
-        .toArray(),
-      [],
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipEqualWith([], [])
-        .toArray(),
-      [],
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipLongestWith([], [])
-        .toArray(),
-      [],
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipWith(
-          [11, 22, 33],
-          [111, 222, 333, 444],
-        )
-        .toArray(),
-      [],
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipLongestWith(
-          [11, 22, 33],
-          [111, 222, 333, 444],
-        )
-        .toArray(),
-      [
-        [undefined, 11, 111],
-        [undefined, 22, 222],
-        [undefined, 33, 333],
-        [undefined, undefined, 444],
-      ],
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipFilledWith(
-          'filler',
-          [11, 22, 33],
-          [111, 222, 333, 444],
-        )
-        .toArray(),
-      [
-        ['filler', 11, 111],
-        ['filler', 22, 222],
-        ['filler', 33, 333],
-        ['filler', 'filler', 444],
-      ],
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipWith(
-          [11, 22, 33],
-          [111, 222, 333, 444],
-        )
-        .toArray(),
-      [
-        [1, 11, 111],
-        [2, 22, 222],
-        [3, 33, 333],
-      ],
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipEqualWith(
-          [11, 22, 33],
-          [111, 222, 333],
-        )
-        .toArray(),
-      [
-        [1, 11, 111],
-        [2, 22, 222],
-        [3, 33, 333],
-      ],
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipLongestWith(
-          [11, 22, 33],
-          [111, 222, 333, 444],
-        )
-        .toArray(),
-      [
-        [1, 11, 111],
-        [2, 22, 222],
-        [3, 33, 333],
-        [4, undefined, 444],
-        [5, undefined, undefined],
-      ],
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .chainWith([4, 5, 6])
-        .toArray(),
-      [1, 2, 3, 4, 5, 6],
-    ],
-    [
-      createAsyncIterableFixture([1, 2]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .chainWith([3, 4, 5])
-        .chainWith([6, 7, 8, 9])
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    ],
-  ];
+  return dataProviderForAsync().map((item) => [
+    createAsyncIterableFixture(item[0]),
+    ...item.slice(1) as [(data: AsyncIterable<unknown> | AsyncIterator<unknown>) => Promise<Array<any>>, Array<unknown>],
+  ]);
 }
 
 function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, (data: AsyncIterator<any>) => Promise<Array<any>>, Array<any>]> {
-  return [
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipWith([], [])
-        .toArray(),
-      [],
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipEqualWith([], [])
-        .toArray(),
-      [],
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipLongestWith([], [])
-        .toArray(),
-      [],
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipWith(
-          [11, 22, 33],
-          [111, 222, 333, 444],
-        )
-        .toArray(),
-      [],
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipLongestWith(
-          [11, 22, 33],
-          [111, 222, 333, 444],
-        )
-        .toArray(),
-      [
-        [undefined, 11, 111],
-        [undefined, 22, 222],
-        [undefined, 33, 333],
-        [undefined, undefined, 444],
-      ],
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipFilledWith(
-          'filler',
-          [11, 22, 33],
-          [111, 222, 333, 444],
-        )
-        .toArray(),
-      [
-        ['filler', 11, 111],
-        ['filler', 22, 222],
-        ['filler', 33, 333],
-        ['filler', 'filler', 444],
-      ],
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipWith(
-          [11, 22, 33],
-          [111, 222, 333, 444],
-        )
-        .toArray(),
-      [
-        [1, 11, 111],
-        [2, 22, 222],
-        [3, 33, 333],
-      ],
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipEqualWith(
-          [11, 22, 33],
-          [111, 222, 333],
-        )
-        .toArray(),
-      [
-        [1, 11, 111],
-        [2, 22, 222],
-        [3, 33, 333],
-      ],
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipLongestWith(
-          [11, 22, 33],
-          [111, 222, 333, 444],
-        )
-        .toArray(),
-      [
-        [1, 11, 111],
-        [2, 22, 222],
-        [3, 33, 333],
-        [4, undefined, 444],
-        [5, undefined, undefined],
-      ],
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .chainWith([4, 5, 6])
-        .toArray(),
-      [1, 2, 3, 4, 5, 6],
-    ],
-    [
-      createAsyncIteratorFixture([1, 2]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .chainWith([3, 4, 5])
-        .chainWith([6, 7, 8, 9])
-        .toArray(),
-      [1, 2, 3, 4, 5, 6, 7, 8, 9],
-    ],
-  ];
+  return dataProviderForAsync().map((item) => [
+    createAsyncIteratorFixture(item[0]),
+    ...item.slice(1) as [(data: AsyncIterable<unknown> | AsyncIterator<unknown>) => Promise<Array<any>>, Array<unknown>],
+  ]);
 }
 
 function dataProviderForMixed(): Array<[Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>, (data: Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>) => Promise<Array<any>>, Array<any>]> {
