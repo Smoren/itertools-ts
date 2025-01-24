@@ -2665,10 +2665,10 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
   return [
     [
       [],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .filter(async (value) => {
           await asyncTimeout(1);
-          return (value as number) > 0;
+          return value > 0;
         })
         .compress([0, 1, 1])
         .toArray(),
@@ -2676,50 +2676,50 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [2, 3],
     ],
     [
       [],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [2, 3],
     ],
     [
       [],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .compress([0, 1, 1])
         .toArray(),
       [2, 3],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .dropWhile(async (value) => {
           await asyncTimeout(1);
-          return Math.abs(value as number) < 3;
+          return Math.abs(value) < 3;
         })
         .compress([0, 1])
         .toArray(),
@@ -2727,83 +2727,83 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .dropWhile((value) => Math.abs(value as number) < 3)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .dropWhile((value) => Math.abs(value) < 3)
         .compress([0, 1])
         .toArray(),
       [-3],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .takeWhile(async (value) => {
           await asyncTimeout(1);
-          return Math.abs(value as number) < 3;
+          return Math.abs(value) < 3;
         })
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .toArray(),
       [1, -1, 2, -2],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .compress([0, 1, 0, 1])
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .takeWhile((value) => Math.abs(value as number) < 3)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .takeWhile((value) => Math.abs(value) < 3)
         .compress([0, 1, 0, 1])
         .toArray(),
       [-1, -2],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<[number, number][]> => AsyncStream.of(iterable)
         .enumerate()
         .toArray(),
       [],
     ],
     [
       [1],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<[number, number][]> => AsyncStream.of(iterable)
         .enumerate()
         .toArray(),
       [[0, 1]],
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<[number, number][]> => AsyncStream.of(iterable)
         .enumerate()
         .toArray(),
       [[0, 1], [1, 2], [2, 3]],
     ],
     [
       [['a', 1], ['b', 2], ['c', 3]],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<[string, number]> | AsyncIterator<[string, number]>): Promise<string[]> => AsyncStream.of(iterable)
         .keys()
         .toArray(),
       ['a', 'b', 'c'],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<[string, number]> | AsyncIterator<[string, number]>): Promise<string[]> => AsyncStream.of(iterable)
         .keys()
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<number[]> => AsyncStream.of(iterable)
         .enumerate()
         .keys()
         .toArray(),
@@ -2811,7 +2811,7 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
     ],
     [
       ['a', 'b', 'c'],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<number[]> => AsyncStream.of(iterable)
         .enumerate()
         .keys()
         .toArray(),
@@ -2819,21 +2819,21 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
     ],
     [
       [['a', 1], ['b', 2], ['c', 3]],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<[string, number]> | AsyncIterator<[string, number]>): Promise<number[]> => AsyncStream.of(iterable)
         .values()
         .toArray(),
       [1, 2, 3],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<[number, string]> | AsyncIterator<[number, string]>): Promise<string[]> => AsyncStream.of(iterable)
         .values()
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<string> | AsyncIterator<string>): Promise<string[]> => AsyncStream.of(iterable)
         .enumerate()
         .values()
         .toArray(),
@@ -2841,7 +2841,7 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
     ],
     [
       ['a', 'b', 'c'],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<string> | AsyncIterator<string>): Promise<string[]> => AsyncStream.of(iterable)
         .enumerate()
         .values()
         .toArray(),
@@ -2849,73 +2849,73 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .toArray(),
       [1, 2, 3],
     ],
     [
       [],
-      () => AsyncStream.ofEmpty()
+      (): Promise<number[]> => AsyncStream.ofEmpty()
         .map(async (item) => {
           await asyncTimeout(1);
-          return (item as number) + 1;
+          return item + 1;
         })
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as number) + 1)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .map((item) => item + 1)
         .toArray(),
       [],
     ],
     [
       [1],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as number) + 1)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .map((item) => item + 1)
         .toArray(),
       [2],
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as number) + 1)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
+        .map((item) => item + 1)
         .toArray(),
       [2, 3, 4],
     ],
     [
       ['a', 'b', 'c'],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<string> | AsyncIterator<string>): Promise<string[]> => AsyncStream.of(iterable)
         .map((item) => `[${item}]`)
         .toArray(),
       ['[a]', '[b]', '[c]'],
     ],
     [
       [[1], [2], [3]],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as Array<number>)[0])
+      (iterable: AsyncIterable<[number]> | AsyncIterator<[number]>): Promise<number[]> => AsyncStream.of(iterable)
+        .map((item) => item[0])
         .toArray(),
       [1, 2, 3],
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .flatMap((item) => single.repeatAsync(item, (item as number) + 1))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<unknown[]> => AsyncStream.of(iterable)
+        .flatMap((item) => single.repeatAsync(item, Number(item) + 1))
         .toArray(),
       [1, 1, 2, 2, 2, 3, 3, 3, 3],
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<unknown[]> => AsyncStream.of(iterable)
         .flatMap(async (item) => {
           await asyncTimeout(1);
           return item;
@@ -2925,302 +2925,302 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<unknown[]> => AsyncStream.of(iterable)
         .flatMap((item) => item)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<unknown[]> => AsyncStream.of(iterable)
         .flatten()
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<unknown[]> => AsyncStream.of(iterable)
         .flatten(1)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<unknown[]> => AsyncStream.of(iterable)
         .flatten(2)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
     ],
     [
       [1, 2, [3, 4], [5, 6], 7, 8],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<unknown[]> => AsyncStream.of(iterable)
         .flatten(0)
         .toArray(),
       [1, 2, [3, 4], [5, 6], 7, 8],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) < 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value < 0)
         .chunkwise(2)
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) < 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value < 0)
         .chunkwise(2)
         .toArray(),
       [[-1, -2], [-3]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwise(2)
         .toArray(),
       [[1, 2], [3, 4], [5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwise(2)
         .toArray(),
       [[0, 1], [2, 3], [4, 5]],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[-1, -2], [-3]],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[-1, -2]],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[1, 2], [3, 4], [5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[1, 2], [3, 4]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 0)
         .toArray(),
       [[0, 1], [2, 3], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 0, false)
         .toArray(),
       [[0, 1], [2, 3], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 1)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(2, 1, false)
         .toArray(),
       [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 1)
         .toArray(),
       [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8], [8, 9]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 1, false)
         .toArray(),
       [[0, 1, 2], [2, 3, 4], [4, 5, 6], [6, 7, 8]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 2)
         .toArray(),
       [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
     ],
     [
       [-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) >= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number[]>> => AsyncStream.of(iterable)
+        .filter((value) => value >= 0)
         .chunkwiseOverlap(3, 2, false)
         .toArray(),
       [[0, 1, 2], [1, 2, 3], [2, 3, 4], [3, 4, 5], [4, 5, 6], [5, 6, 7], [6, 7, 8], [7, 8, 9]],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number, number]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .pairwise()
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number, number]>> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .pairwise()
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number, number]>> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .pairwise()
         .toArray(),
       [[1, 2], [2, 3]],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number, number]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .pairwise()
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number, number]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
         .pairwise()
         .toArray(),
       [[-1, -2], [-2, -3]],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<unknown[]> => AsyncStream.of(iterable)
         .limit(0)
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<unknown[]> => AsyncStream.of(iterable)
         .limit(5)
         .toArray(),
       [],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .limit(5)
         .toArray(),
       [1, 2, 3, 4, 5],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .limit(10)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .filter((x) => (x as number) < 5)
         .limit(2)
         .toArray(),
@@ -3228,7 +3228,7 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .filter((x) => (x as number) < 5)
         .limit(10)
         .toArray(),
@@ -3236,7 +3236,7 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .limit(0)
         .chainWith([1, 2, 3])
         .toArray(),
@@ -3244,117 +3244,117 @@ function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .skip(0)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .skip(0, 1)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .skip(10, 10)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .skip(3)
         .toArray(),
       [4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .skip(3, 2)
         .toArray(),
       [1, 2, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .skip(10, 2)
         .toArray(),
       [1, 2],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .slice()
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .slice(2)
         .toArray(),
       [3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .slice(2, 4)
         .toArray(),
       [3, 4, 5, 6],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .slice(2, undefined, 2)
         .toArray(),
       [3, 5, 7, 9],
     ],
     [
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .slice(2, 3, 2)
         .toArray(),
       [3, 5, 7],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[string, number[]]>> => AsyncStream.of(iterable)
+        .filter((value) => value % 2 !== 0)
         .groupBy(async (item) => {
           await asyncTimeout(1);
-          return (item as number) > 0 ? 'pos' : 'neg';
-        })
+          return item > 0 ? 'pos' : 'neg';
+        }, undefined)
         .toArray(),
       [],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) % 2 !== 0)
-        .groupBy((item) => (item as number) > 0 ? 'pos' : 'neg')
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[string, number[]]>> => AsyncStream.of(iterable)
+        .filter((value) => value % 2 !== 0)
+        .groupBy((item) => item > 0 ? 'pos' : 'neg', undefined)
         .toArray(),
       [['pos', [1, 3]], ['neg', [-1, -3]]],
     ],
     [
       ['b', 'f', 'c', 'e', 'd', 'a'],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<string> | AsyncIterator<string>): Promise<string[]> => AsyncStream.of(iterable)
         .sort()
         .toArray(),
       ['a', 'b', 'c', 'd', 'e', 'f'],
     ],
     [
       [2, 3, 1, 2, -3, -2, 5, 7, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .sort((lhs: unknown, rhs: unknown) => (lhs as number) - (rhs as number))
         .toArray(),
       [-3, -2, 1, 2, 2, 3, 3, 5, 7],
     ],
     [
       [2, 3, 1, 2, -3, -2, 5, 7, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number[]> => AsyncStream.of(iterable)
         .sort((lhs: unknown, rhs: unknown) => (rhs as number) - (lhs as number))
         .toArray(),
       [7, 5, 3, 3, 2, 2, 1, -2, -3],
