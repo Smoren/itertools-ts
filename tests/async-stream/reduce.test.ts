@@ -1795,8 +1795,7 @@ function dataProviderForAsync(): Array<[Array<number>, (data: AsyncIterable<numb
         )
         .zipEqualWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
         .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
+          return carry + item.reduce((accumulator, current) => accumulator + current);
         }, 0),
       90,
     ],
@@ -2017,7 +2016,7 @@ function dataProviderForAsync(): Array<[Array<number>, (data: AsyncIterable<numb
     [
       [1, -1, 2, -2, 3, -3],
       (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<[number?, number?]> => AsyncStream.of(iterable)
-        .toMinMax((item) => -(item as number)),
+        .toMinMax((item) => -item),
       [3, -3],
     ],
     [
