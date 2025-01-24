@@ -10,7 +10,7 @@ describe.each([
     it("", async () => {
       // When
       const stream = AsyncStream.ofCount(...inputParams);
-      const result = await stream.limit(limit).toArray() as Array<number>;
+      const result = await stream.limit(limit).toArray();
 
       // Then
       expectToBeCloseToArray(result, expected);
@@ -26,7 +26,7 @@ describe.each([
     it("", async () => {
       // When
       const stream = AsyncStream.ofCycle(iterable);
-      const result = await stream.limit(limit).toArray() as Array<number>;
+      const result = await stream.limit(limit).toArray();
 
       // Then
       expect(result).toEqual(expected);
@@ -42,7 +42,7 @@ describe.each([
     it("", async () => {
       // When
       const stream = AsyncStream.ofRepeat(itemToRepeat);
-      const result = await stream.limit(limit).toArray() as Array<number>;
+      const result = await stream.limit(limit).toArray();
 
       // Then
       expect(result).toEqual(expected);

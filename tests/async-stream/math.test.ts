@@ -79,11 +79,11 @@ function dataProviderForArrays(): Array<[Array<any>, (iterable: Array<any>) => P
       [1, 1, 4/3, 7/4],
     ],
     [
-      [] as number[],
+      [],
       (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
-      [] as number[],
+      [],
     ],
     [
       [1, 2, 3],
