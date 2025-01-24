@@ -68,11 +68,11 @@ function dataProviderForArrays(): Array<[Array<any>, (iterable: Array<any>) => A
       [1, 1, 4/3, 7/4],
     ],
     [
-      [] as number[],
+      [],
       (iterable: Iterable<number> | Iterator<number>): Array<number> => Stream.of(iterable)
         .runningDifference()
         .toArray(),
-      [] as number[],
+      [],
     ],
     [
       [1, 2, 3],

@@ -249,7 +249,7 @@ function dataProviderForStrings(): Array<[string, (data: string) => Promise<Arra
     [
       '12345',
       (iterable) => AsyncStream.of(iterable)
-        .map((item) => parseInt(item as string))
+        .map((item) => parseInt(item))
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -264,7 +264,7 @@ function dataProviderForStrings(): Array<[string, (data: string) => Promise<Arra
     [
       '123',
       (iterable) => AsyncStream.of(iterable)
-        .map((item) => parseInt(item as string))
+        .map((item) => parseInt(item))
         .zipEqualWith(
           [11, 22, 33],
           [111, 222, 333],
@@ -279,7 +279,7 @@ function dataProviderForStrings(): Array<[string, (data: string) => Promise<Arra
     [
       '12345',
       (iterable) => AsyncStream.of(iterable)
-        .map((item) => parseInt(item as string))
+        .map((item) => parseInt(item))
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -296,7 +296,7 @@ function dataProviderForStrings(): Array<[string, (data: string) => Promise<Arra
     [
       '123',
       (iterable) => AsyncStream.of(iterable)
-        .map((item) => parseInt(item as string))
+        .map((item) => parseInt(item))
         .chainWith([4, 5, 6])
         .toArray(),
       [1, 2, 3, 4, 5, 6],
@@ -304,7 +304,7 @@ function dataProviderForStrings(): Array<[string, (data: string) => Promise<Arra
     [
       '12',
       (iterable) => AsyncStream.of(iterable)
-        .map((item) => parseInt(item as string))
+        .map((item) => parseInt(item))
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
         .toArray(),
@@ -443,7 +443,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
   return [
     [
       createMapFixture([]),
-      (iterable) => AsyncStream.of(iterable as Map<unknown, number>)
+      (iterable: Map<unknown, number>): Promise<Array<[number, unknown, unknown]>> => AsyncStream.of(iterable)
         .map((item) => item[1])
         .zipWith([], [])
         .toArray(),
@@ -451,7 +451,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
     ],
     [
       createMapFixture([]),
-      (iterable) => AsyncStream.of(iterable as Map<unknown, number>)
+      (iterable: Map<unknown, number>): Promise<Array<[number, unknown, unknown]>> => AsyncStream.of(iterable)
         .map((item) => item[1])
         .zipEqualWith([], [])
         .toArray(),
@@ -459,7 +459,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
     ],
     [
       createMapFixture([]),
-      (iterable) => AsyncStream.of(iterable as Map<unknown, number>)
+      (iterable: Map<unknown, number>): Promise<Array<[number?, unknown?, unknown?]>> => AsyncStream.of(iterable)
         .map((item) => item[1])
         .zipLongestWith([], [])
         .toArray(),
@@ -467,7 +467,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
     ],
     [
       createMapFixture([]),
-      (iterable) => AsyncStream.of(iterable as Map<unknown, number>)
+      (iterable: Map<unknown, number>): Promise<Array<[number, unknown, unknown]>> => AsyncStream.of(iterable)
         .map((item) => item[1])
         .zipWith(
           [11, 22, 33],
@@ -478,7 +478,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
     ],
     [
       createMapFixture([]),
-      (iterable) => AsyncStream.of(iterable as Map<unknown, number>)
+      (iterable: Map<unknown, number>): Promise<Array<[number?, number?, number?]>> => AsyncStream.of(iterable)
         .map((item) => item[1])
         .zipLongestWith(
           [11, 22, 33],
@@ -494,7 +494,8 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
     ],
     [
       createMapFixture([]),
-      (iterable) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>): Promise<Array<[number | string, number | string, number | string]>> => AsyncStream.of(iterable)
+        .values()
         .zipFilledWith(
           'filler',
           [11, 22, 33],
@@ -510,7 +511,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable) => AsyncStream.of(iterable as Map<unknown, number>)
+      (iterable: Map<unknown, number>): Promise<Array<[number, number, number]>> => AsyncStream.of(iterable)
         .map((item) => item[1])
         .zipWith(
           [11, 22, 33],
@@ -525,7 +526,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable) => AsyncStream.of(iterable as Map<unknown, number>)
+      (iterable: Map<unknown, number>): Promise<Array<[number, number, number]>> => AsyncStream.of(iterable)
         .map((item) => item[1])
         .zipEqualWith(
           [11, 22, 33],
@@ -540,7 +541,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
     ],
     [
       createMapFixture([1, 2, 3, 4, 5]),
-      (iterable) => AsyncStream.of(iterable as Map<unknown, number>)
+      (iterable: Map<unknown, number>): Promise<Array<[number?, number?, number?]>> => AsyncStream.of(iterable)
         .map((item) => item[1])
         .zipLongestWith(
           [11, 22, 33],
@@ -557,7 +558,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable) => AsyncStream.of(iterable as Map<unknown, number>)
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .map((item) => item[1])
         .chainWith([4, 5, 6])
         .toArray(),
@@ -565,7 +566,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => P
     ],
     [
       createMapFixture([1, 2]),
-      (iterable) => AsyncStream.of(iterable as Map<unknown, number>)
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .map((item) => item[1])
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
@@ -808,7 +809,7 @@ function dataProviderForMixed(): Array<[Iterable<any> | Iterator<any> | AsyncIte
         .chainWith(createAsyncIterableFixture([5]))
         .chainWith(createAsyncIteratorFixture([6]))
         .chainWith(new Set([7]))
-        .chainWith(AsyncStream.of(createMapFixture([8, 9])).map((item) => (item as Array<unknown>)[1]))
+        .chainWith(AsyncStream.of(createMapFixture([8, 9])).map((item) => item[1]))
         .chainWith('abc')
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 'a', 'b', 'c'],
@@ -820,7 +821,7 @@ function dataProviderForMixed(): Array<[Iterable<any> | Iterator<any> | AsyncIte
         .chainWith(createAsyncIterableFixture([5]))
         .chainWith(createAsyncIteratorFixture([6]))
         .chainWith(new Set([7]))
-        .chainWith(AsyncStream.of(createMapFixture([8])).map((item) => (item as Array<unknown>)[1]))
+        .chainWith(AsyncStream.of(createMapFixture([8])).map((item) => item[1]))
         .chainWith('abc')
         .zipWith([11, 22, 33, 44, 55, 66, 77, 88, 'x', 'y', 'z'])
         .toArray(),
