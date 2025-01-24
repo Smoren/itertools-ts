@@ -363,10 +363,7 @@ export async function* flattenAsync(
       datum = (datum as [unknown, unknown])[1];
     }
 
-    if (
-      (isAsyncIterable(datum) || isIterable(datum) || isIterator(datum)) &&
-      !isString(datum)
-    ) {
+    if ((isAsyncIterable(datum) || isIterable(datum) || isIterator(datum)) && !isString(datum)) {
       for await (const subDatum of flattenAsync(
         datum as Iterable<unknown> | Iterator<unknown>,
         dimensions - 1
