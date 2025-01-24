@@ -528,16 +528,16 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
   return [
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .allMatch(async (x) => {
           await asyncTimeout(1);
-          return (x as number) > 0;
+          return x > 0;
         }),
     ],
     [
       [1, 3, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .allMatch((x) => x > 0),
     ],
     [
       [],
@@ -546,7 +546,7 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
@@ -556,16 +556,16 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
     ],
     [
       [1, 3, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .anyMatch(async (x) => {
           await asyncTimeout(1);
-          return (x as number) === 3;
+          return x === 3;
         }),
     ],
     [
       [1, 3, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 0),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .anyMatch((x) => x > 0),
     ],
     [
       [],
@@ -585,14 +585,14 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
     [
       [1, -1, 2, -2, 3, -3],
       (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
+        .filter((item) => item > 0)
         .runningTotal()
         .isSorted(),
     ],
     [
       [5, -1, 4, -2, 3, -3, 2, -4, 1, -5],
       (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
+        .filter((item) => item > 0)
         .isReversed(),
     ],
     [
@@ -610,8 +610,8 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
     ],
     [
       [1, 3, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 9),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .noneMatch((x) => x === 9),
     ],
     [
       [],
@@ -625,12 +625,12 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       [1, 3, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
@@ -641,7 +641,7 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
     ],
     [
       [1, 3, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
