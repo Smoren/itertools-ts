@@ -579,28 +579,28 @@ function dataProviderForAsync(): Array<[Array<any>, (data: AsyncIterable<any> | 
   return [
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<Array<[unknown, unknown, unknown]>> => AsyncStream.of(iterable)
         .zipWith([], [])
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<Array<[unknown, unknown, unknown]>> => AsyncStream.of(iterable)
         .zipEqualWith([], [])
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<Array<[unknown, unknown, unknown]>> => AsyncStream.of(iterable)
         .zipLongestWith([], [])
         .toArray(),
       [],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number, number, number]>> => AsyncStream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -610,7 +610,7 @@ function dataProviderForAsync(): Array<[Array<any>, (data: AsyncIterable<any> | 
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number | undefined, number | undefined, number | undefined]>> => AsyncStream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -625,7 +625,7 @@ function dataProviderForAsync(): Array<[Array<any>, (data: AsyncIterable<any> | 
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number | string, number | string, number | string]>> => AsyncStream.of(iterable)
         .zipFilledWith(
           'filler',
           [11, 22, 33],
@@ -641,7 +641,7 @@ function dataProviderForAsync(): Array<[Array<any>, (data: AsyncIterable<any> | 
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number, number, number]>> => AsyncStream.of(iterable)
         .zipWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -655,7 +655,7 @@ function dataProviderForAsync(): Array<[Array<any>, (data: AsyncIterable<any> | 
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number, number, number]>> => AsyncStream.of(iterable)
         .zipEqualWith(
           [11, 22, 33],
           [111, 222, 333],
@@ -669,7 +669,7 @@ function dataProviderForAsync(): Array<[Array<any>, (data: AsyncIterable<any> | 
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<[number?, number?, number?]>> => AsyncStream.of(iterable)
         .zipLongestWith(
           [11, 22, 33],
           [111, 222, 333, 444],
@@ -685,14 +685,14 @@ function dataProviderForAsync(): Array<[Array<any>, (data: AsyncIterable<any> | 
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .chainWith([4, 5, 6])
         .toArray(),
       [1, 2, 3, 4, 5, 6],
     ],
     [
       [1, 2],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .chainWith([3, 4, 5])
         .chainWith([6, 7, 8, 9])
         .toArray(),
