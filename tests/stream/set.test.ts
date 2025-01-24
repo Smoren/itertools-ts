@@ -38,7 +38,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays<T>(
+function dataProviderForArrays(
   wrapper: (x: Array<any>) => any = (x) => x,
 ): Array<[unknown, (data: any) => Array<unknown>, Array<unknown>]> {
   return [
