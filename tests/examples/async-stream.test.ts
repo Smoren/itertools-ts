@@ -20,7 +20,7 @@ describe.each([
     it("", async () => {
       // When
       const stream = AsyncStream.ofCount(...inputParams);
-      const result = await stream.limit(limit).toArray() as Array<number>;
+      const result = await stream.limit(limit).toArray();
 
       // Then
       expectToBeCloseToArray(result, expected);
@@ -36,7 +36,7 @@ describe.each([
     it("", async () => {
       // When
       const stream = AsyncStream.ofCycle(iterable);
-      const result = await stream.limit(limit).toArray() as Array<number>;
+      const result = await stream.limit(limit).toArray();
 
       // Then
       expect(result).toEqual(expected);
@@ -52,7 +52,7 @@ describe.each([
     it("", async () => {
       // When
       const stream = AsyncStream.ofRepeat(itemToRepeat);
-      const result = await stream.limit(limit).toArray() as Array<number>;
+      const result = await stream.limit(limit).toArray();
 
       // Then
       expect(result).toEqual(expected);
@@ -455,7 +455,7 @@ function dataProviderForReduce(): Array<[
     [
       createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .toMinMax((item) => -(item as number)),
+        .toMinMax((item) => -item),
       [3, -3],
     ],
     [
@@ -466,7 +466,7 @@ function dataProviderForReduce(): Array<[
     [
       createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+        .filter((value) => value > 0)
         .toSum(),
       6,
     ],
@@ -495,10 +495,7 @@ describe.each([
   (input, minIntersectionCount, streamFactory, expected) => {
     it("", async () => {
       // Given
-      const result = await streamFactory(
-        minIntersectionCount as number,
-        input
-      );
+      const result = await streamFactory(minIntersectionCount, input);
 
       // Then
       expect(result).toEqual(expected);
@@ -528,7 +525,7 @@ function dataProviderForSet(): Array<[
         { 'name': 'Jane', 'id': 5 },
       ]),
       (iterable: AsyncIterable<Record<string, number | string>>): Promise<Array<Record<string, number | string>>> => AsyncStream.of(iterable)
-        .distinct((datum: unknown) => (datum as Record<string, unknown>)['name'] as Comparable)
+        .distinct((datum: Record<string, number | string>) => datum['name'])
         .toArray(),
       [
         { 'name': 'John', 'id': 1 },
@@ -841,7 +838,7 @@ function dataProviderForSummaryTrue(): Array<[
     [
       createAsyncIterableFixture([1, 3, 5]),
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
+        .allMatch((x) => x > 0),
     ],
     [
       createAsyncIterableFixture([1, 2, 3, 4, 5]),
@@ -853,13 +850,13 @@ function dataProviderForSummaryTrue(): Array<[
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
         .anyMatch(async (x) => {
           await asyncTimeout(1);
-          return (x as number) === 3;
+          return x === 3;
         }),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 0),
+        .anyMatch((x) => x > 0),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
@@ -869,20 +866,20 @@ function dataProviderForSummaryTrue(): Array<[
     [
       createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
+        .filter((item) => item > 0)
         .runningTotal()
         .isSorted(),
     ],
     [
       createAsyncIterableFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
+        .filter((item) => item > 0)
         .isReversed(),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 9),
+        .noneMatch((x) => x === 9),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
@@ -909,7 +906,7 @@ function dataProviderForSummaryFalse(): Array<[
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
         .allMatch(async (x) => {
           await asyncTimeout(1);
-          return (x as number) > 0;
+          return x > 0;
         }),
     ],
     [
@@ -920,7 +917,7 @@ function dataProviderForSummaryFalse(): Array<[
     [
       createAsyncIterableFixture([1, 3, 5]),
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 10),
+        .anyMatch((x) => x > 10),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
@@ -943,7 +940,7 @@ function dataProviderForSummaryFalse(): Array<[
       (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
         .noneMatch(async (x) => {
           await asyncTimeout(1);
-          return (x as number) === 3;
+          return x === 3;
         }),
     ],
     [
