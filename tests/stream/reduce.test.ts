@@ -15,7 +15,7 @@ describe.each([
   (input, streamFactory, expected) => {
     it("", () => {
       // Given
-      const result = (streamFactory as (data: Iterable<any> | Iterator<any>) => any)(input);
+      const result = streamFactory(input as any);
 
       // Then
       expect(result).toEqual(expected);

@@ -339,8 +339,8 @@ function dataProviderForSets(): Array<[unknown, (data: any) => Array<unknown>, A
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (iterable: Set<Record<string, unknown>>) => Stream.of(iterable)
-        .distinct((datum) => datum['name'] as Comparable)
+      (iterable: Set<Record<string, string | number>>) => Stream.of(iterable)
+        .distinct((datum) => datum['name'])
         .toArray(),
       [
         { 'name': 'John', 'id': 1 },
@@ -378,8 +378,8 @@ function dataProviderForSets(): Array<[unknown, (data: any) => Array<unknown>, A
         new Set(['c3', '1a', 'd4', '2b']),
       ],
       (iterables: Array<Set<number | string>>) => Stream.of(iterables.shift()!)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
+        .zipWith(iterables.shift()!)
+        .map((values) => `${values[0]}${values[1]}`)
         .intersectionWith(...iterables as Set<string>[])
         .toArray(),
       ['1a', '2b'],

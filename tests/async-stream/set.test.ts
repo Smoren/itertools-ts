@@ -350,8 +350,8 @@ function dataProviderForSets(): Array<[unknown, (data: any) => Promise<Array<unk
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (iterable: Set<Record<string, unknown>>) => AsyncStream.of(iterable)
-        .distinct((datum) => datum['name'] as Comparable)
+      (iterable: Set<Record<string, string | number>>) => AsyncStream.of(iterable)
+        .distinct((datum) => datum['name'])
         .toArray(),
       [
         { 'name': 'John', 'id': 1 },
@@ -389,8 +389,8 @@ function dataProviderForSets(): Array<[unknown, (data: any) => Promise<Array<unk
         new Set(['c3', '1a', 'd4', '2b']),
       ],
       (iterables: Array<Set<number | string>>) => AsyncStream.of(iterables.shift()!)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
+        .zipWith(iterables.shift()!)
+        .map((values) => `${values[0]}${values[1]}`)
         .intersectionWith(...iterables as Set<string>[])
         .toArray(),
       ['1a', '2b'],
@@ -529,9 +529,9 @@ function dataProviderForMaps(): Array<[unknown, (data: any) => Promise<Array<unk
         [2, 3, 4, 5, 6, 7],
         ['3', 4, 5, 6, 7, 8, 9],
       ],
-      (iterables: Array<unknown>) => AsyncStream.of(iterables.shift() as Map<unknown, Numeric>)
-        .map((item) => item[1])
-        .intersectionWith(...iterables as Array<Iterable<Numeric>>)
+      (iterables: Array<Iterable<Numeric>>) => AsyncStream.of(iterables.shift()! as Map<unknown, Numeric>)
+        .values()
+        .intersectionWith(...iterables)
         .toArray(),
       [4, 5],
     ],
@@ -541,7 +541,7 @@ function dataProviderForMaps(): Array<[unknown, (data: any) => Promise<Array<unk
         ['1', '2', 3, 4, 5, 6, 7, '8', '9'],
         [1, 3, 5, 7, 9, 11],
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Map<unknown, Numeric>)
+      (iterables: Array<Iterable<Numeric>>) => AsyncStream.of(iterables.shift()! as Map<unknown, Numeric>)
         .map((item) => item[1])
         .intersectionWith(...iterables as Array<Iterable<Numeric>>)
         .toArray(),
@@ -696,7 +696,7 @@ function dataProviderForAsync(
         wrapper(['1', '2', 3, 4, 5, 6, 7, '8', '9']),
         wrapper([1, 3, 5, 7, 9, 11]),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Iterable<Numeric>>): Promise<Numeric[]> => AsyncStream.of(iterables.shift()!)
         .intersectionWith(...iterables)
         .toArray(),
       [3, 5, 7],
@@ -708,10 +708,10 @@ function dataProviderForAsync(
         wrapper(['11', '21', '31', '12', '13']),
         wrapper(['13', '11', '14', '21']),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables as Array<Iterable<any>>)
+      (iterables: Array<Iterable<string>>): Promise<string[]> => AsyncStream.of(iterables.shift()!)
+        .zipWith(iterables.shift()!)
+        .map((values) => `${values[0]}${values[1]}`)
+        .intersectionWith(...iterables)
         .toArray(),
       ['11', '21'],
     ],
@@ -722,10 +722,10 @@ function dataProviderForAsync(
         wrapper(['1a', '2b', '3c', 'a2', 'a3']),
         wrapper(['c3', '1a', 'd4', '2b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
-        .zipWith(iterables.shift() as Iterable<unknown>)
-        .map((values) => `${(values as Array<unknown>)[0]}${(values as Array<unknown>)[1]}`)
-        .intersectionWith(...iterables as Array<Iterable<any>>)
+      (iterables: Array<Iterable<string>>): Promise<string[]> => AsyncStream.of(iterables.shift()!)
+        .zipWith(iterables.shift()!)
+        .map((values) => `${values[0]}${values[1]}`)
+        .intersectionWith(...iterables)
         .toArray(),
       ['1a', '2b'],
     ],
@@ -735,7 +735,7 @@ function dataProviderForAsync(
         wrapper([3, 4, 5, 6, 7, 8]),
         wrapper([5, 6, 7, 8, 9, 10]),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Iterable<Numeric>>): Promise<Numeric[]> => AsyncStream.of(iterables.shift()!)
         .symmetricDifferenceWith(...iterables)
         .toArray(),
       [1, 2, 9, 10],
@@ -746,7 +746,7 @@ function dataProviderForAsync(
         wrapper([3, 4, 5, 6, 7, 8]),
         wrapper([5, 6, 7, 8, 9, 10]),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Iterable<Numeric>>): Promise<Numeric[]> => AsyncStream.of(iterables.shift()!)
         .symmetricDifferenceWith(...iterables)
         .toArray(),
       [1, 3, 2, '3', 9, 10],
@@ -757,7 +757,7 @@ function dataProviderForAsync(
         wrapper([2, 3, 4, 5, 6]),
         wrapper([3, 4, 5, 6, 7]),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Iterable<number>>): Promise<number[]> => AsyncStream.of(iterables.shift()!)
         .unionWith(...iterables)
         .toArray(),
       [2, 3, 4, 5, 6, 7],
@@ -768,7 +768,7 @@ function dataProviderForAsync(
         wrapper([2, 3, 4, 5, 6]),
         wrapper([3, 4, 5, 6, 7]),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Iterable<number>>): Promise<number[]> => AsyncStream.of(iterables.shift()!)
         .unionWith(...iterables)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7],
@@ -779,7 +779,7 @@ function dataProviderForAsync(
         wrapper([]),
         wrapper([]),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Iterable<number>>): Promise<number[][]> => AsyncStream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [],
@@ -790,7 +790,7 @@ function dataProviderForAsync(
         wrapper([11, 22]),
         wrapper(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Iterable<unknown>>): Promise<unknown[][]> => AsyncStream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [],
@@ -801,7 +801,7 @@ function dataProviderForAsync(
         wrapper([]),
         wrapper(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Iterable<unknown>>): Promise<unknown[][]> => AsyncStream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [],
@@ -812,7 +812,7 @@ function dataProviderForAsync(
         wrapper([11, 22]),
         wrapper(['a', 'b']),
       ],
-      (iterables: Array<Iterable<unknown>>) => AsyncStream.of(iterables.shift() as Iterable<unknown>)
+      (iterables: Array<Iterable<unknown>>): Promise<unknown[][]> => AsyncStream.of(iterables.shift()!)
         .cartesianProductWith(...iterables)
         .toArray(),
       [
