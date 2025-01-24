@@ -1,3 +1,4 @@
+import { AsyncStream, multi } from '../../src';
 import {
   createAsyncGeneratorFixture,
   createAsyncIterableFixture,
@@ -5,10 +6,9 @@ import {
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
-  createMapFixture
+  createMapFixture,
   // @ts-ignore
 } from "../fixture";
-import { AsyncStream, multi, Stream } from '../../src';
 
 describe.each([
   ...dataProviderForAsyncGenerators(),
@@ -21,20 +21,12 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream<unknown>,
-  Array<unknown>
-]>)(
+])(
   "AsyncStream Transform Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, streamFactory, expected) => {
     it("", async () => {
       // Given
-      const result = await streamFactory(input);
+      const result = await streamFactory(input as any);
 
       // Then
       expect(result).toEqual(expected);
@@ -44,19 +36,9 @@ describe.each([
 
 describe.each([
   ...dataProviderForTee(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  number,
-  Array<(stream: AsyncStream<unknown>) => AsyncStream<unknown>>,
-  Array<unknown>
-]>)(
+])(
   "AsyncStream Transform Tee Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    count: number,
-    extraOperations: Array<(stream: AsyncStream<unknown>) => AsyncStream<unknown>>,
-    expected: Array<unknown>
-  ) => {
+  (input, count, extraOperations, expected) => {
     it("", async () => {
       // Given
       const inputStream = AsyncStream.of(input);
@@ -75,531 +57,409 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, (data: Array<any>) => any, any]> {
   return [
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
         .toArray(),
       [],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .toArray(),
       [1, 2, 3],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number>): Promise<Set<number>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number>): Promise<Set<number>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       [1, 1, 2, 2, 3, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number>): Promise<Set<number>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<[unknown, unknown]>): Promise<Map<unknown, unknown>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([]),
     ],
     [
       [['a', 1], ['b', 2], ['c', 3]],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<[string, number]>): Promise<Map<string, number>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 1], ['b', 2], ['c', 3]]),
     ],
     [
       [['a', 1], ['a', 2], ['a', 3]],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<[string, number]>): Promise<Map<string, number>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
     ],
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
-  return [
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toSet(),
-      new Set([]),
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createGeneratorFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toMap(),
-      new Map([]),
-    ],
-    [
-      createGeneratorFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toMap(),
-      new Map([['a', 1], ['b', 2], ['c', 3]]),
-    ],
-    [
-      createGeneratorFixture([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toMap(),
-      new Map([['a', 3]]),
-    ],
-  ];
+function dataProviderForGenerators(): Array<[Generator<any>, (data: Generator<any>) => any, any]> {
+  return dataProviderForArrays().map((item) => [
+    createGeneratorFixture(item[0]),
+    ...item.slice(1) as [(data: any) => any, any],
+  ]);
 }
 
-function dataProviderForIterables(): Array<unknown> {
-  return [
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toSet(),
-      new Set([]),
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createIterableFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toMap(),
-      new Map([]),
-    ],
-    [
-      createIterableFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toMap(),
-      new Map([['a', 1], ['b', 2], ['c', 3]]),
-    ],
-    [
-      createIterableFixture([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .toMap(),
-      new Map([['a', 3]]),
-    ],
-  ];
+function dataProviderForIterables(): Array<[Iterable<any>, (data: Iterable<any>) => any, any]> {
+  return dataProviderForArrays().map((item) => [
+    createIterableFixture(item[0]),
+    ...item.slice(1) as [(data: any) => any, any],
+  ]);
 }
 
-function dataProviderForIterators(): Array<unknown> {
-  return [
-    [
-      createIteratorFixture([]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
-        .toSet(),
-      new Set([]),
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createIteratorFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
-        .toSet(),
-      new Set([1, 2, 3]),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
-        .toMap(),
-      new Map([]),
-    ],
-    [
-      createIteratorFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
-        .toMap(),
-      new Map([['a', 1], ['b', 2], ['c', 3]]),
-    ],
-    [
-      createIteratorFixture([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
-        .toMap(),
-      new Map([['a', 3]]),
-    ],
-  ];
+function dataProviderForIterators(): Array<[Iterator<any>, (data: Iterator<any>) => any, any]> {
+  return dataProviderForArrays().map((item) => [
+    createIteratorFixture(item[0]),
+    ...item.slice(1) as [(data: any) => any, any],
+  ]);
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, (data: string) => any, any]> {
   return [
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<string>> => AsyncStream.of(iterable)
         .toArray(),
       [],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<string>> => AsyncStream.of(iterable)
         .toArray(),
       ['1', '2', '3'],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Set<string>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Set<string>> => AsyncStream.of(iterable)
         .toSet(),
       new Set(['1', '2', '3']),
     ],
     [
       '112233',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Set<string>> => AsyncStream.of(iterable)
         .toSet(),
       new Set(['1', '2', '3']),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Map<number, string>> => AsyncStream.of(iterable)
+        .enumerate()
         .toMap(),
       new Map([]),
+    ],
+    [
+      'abc',
+      (iterable): Promise<Map<number, string>> => AsyncStream.of(iterable)
+        .enumerate()
+        .toMap(),
+      new Map([[0, 'a'], [1, 'b'], [2, 'c']]),
     ],
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, (data: Set<any>) => any, any]> {
   return [
     [
       new Set([]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
         .toArray(),
       [],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .toArray(),
       [1, 2, 3],
     ],
     [
       new Set([]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>): Promise<Set<number>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>): Promise<Set<number>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       new Set([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>): Promise<Set<number>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       new Set([]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>): Promise<Map<number, number>> => AsyncStream.of(iterable)
+        .enumerate()
         .toMap(),
       new Map([]),
     ],
     [
+      new Set(['a', 'b', 'c']),
+      (iterable: Set<string>): Promise<Map<number, string>> => AsyncStream.of(iterable)
+        .enumerate()
+        .toMap(),
+      new Map([[0, 'a'], [1, 'b'], [2, 'c']]),
+    ],
+    [
       new Set([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<[string, number]>): Promise<Map<string, number>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 1], ['b', 2], ['c', 3]]),
     ],
     [
       new Set([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<[string, number]>): Promise<Map<string, number>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
     ],
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, (data: Map<any, any>) => any, any]> {
   return [
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, unknown>): Promise<Array<[unknown, unknown]>> => AsyncStream.of(iterable)
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<number, number>): Promise<Array<[number, number]>> => AsyncStream.of(iterable)
         .toArray(),
       [[0, 1], [1, 2], [2, 3]],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<unknown, number>): Promise<Set<[unknown, number]>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<number, number>): Promise<Set<[number, number]>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([[0, 1], [1, 2], [2, 3]]),
     ],
     [
       createMapFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<number, number>): Promise<Set<[number, number]>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([[0, 1], [1, 1], [2, 2], [3, 2], [4, 3], [5, 3]]),
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<number, unknown>): Promise<Map<number, unknown>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([]),
     ],
     [
       new Map([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<string, number>): Promise<Map<string, number>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 1], ['b', 2], ['c', 3]]),
     ],
     [
       new Map([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Map<string, number>): Promise<Map<string, number>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
     ],
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (data: AsyncGenerator<any>) => any, any]> {
   return [
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .toArray(),
       [],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       createAsyncGeneratorFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .toMap(),
       new Map([]),
     ],
     [
       createAsyncGeneratorFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 1], ['b', 2], ['c', 3]]),
     ],
     [
       createAsyncGeneratorFixture([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
     ],
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, (data: AsyncIterable<any>) => any, any]> {
   return [
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .toArray(),
       [],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       createAsyncIterableFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .toMap(),
       new Map([]),
     ],
     [
       createAsyncIterableFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 1], ['b', 2], ['c', 3]]),
     ],
     [
       createAsyncIterableFixture([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
     ],
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, (data: AsyncIterator<any>) => any, any]> {
   return [
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toArray(),
       [],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       createAsyncIteratorFixture([1, 1, 2, 2, 3, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMap(),
       new Map([]),
     ],
     [
       createAsyncIteratorFixture([['a', 1], ['b', 2], ['c', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 1], ['b', 2], ['c', 3]]),
     ],
     [
       createAsyncIteratorFixture([['a', 1], ['a', 2], ['a', 3]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
     ],
   ];
 }
 
-function dataProviderForTee(): Array<unknown> {
+function dataProviderForTee(): Array<[AsyncIterable<any> | AsyncIterator<any> | Iterable<any> | Iterator<any>, number, Array<(stream: AsyncStream<any>) => AsyncStream<any>>, any]> {
   return [
     [
       createAsyncGeneratorFixture([]),
       1,
       [
-        (stream: Stream<unknown>) => stream,
+        (stream: AsyncStream<unknown>) => stream,
       ],
       [
         [],
@@ -609,8 +469,8 @@ function dataProviderForTee(): Array<unknown> {
       createAsyncIterableFixture([]),
       2,
       [
-        (stream: Stream<unknown>) => stream,
-        (stream: Stream<unknown>) => stream,
+        (stream: AsyncStream<unknown>) => stream,
+        (stream: AsyncStream<unknown>) => stream,
       ],
       [
         [],
@@ -621,7 +481,7 @@ function dataProviderForTee(): Array<unknown> {
       createAsyncIteratorFixture([1, 2, 3]),
       1,
       [
-        (stream: Stream<unknown>) => stream,
+        (stream: AsyncStream<unknown>) => stream,
       ],
       [
         [1, 2, 3],
@@ -631,7 +491,7 @@ function dataProviderForTee(): Array<unknown> {
       createAsyncGeneratorFixture([1, 2, 3]),
       1,
       [
-        (stream: Stream<unknown>) => stream
+        (stream: AsyncStream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
       ],
       [
@@ -642,8 +502,8 @@ function dataProviderForTee(): Array<unknown> {
       [1, 2, 3],
       2,
       [
-        (stream: Stream<unknown>) => stream,
-        (stream: Stream<unknown>) => stream,
+        (stream: AsyncStream<unknown>) => stream,
+        (stream: AsyncStream<unknown>) => stream,
       ],
       [
         [1, 2, 3],
@@ -654,8 +514,8 @@ function dataProviderForTee(): Array<unknown> {
       createGeneratorFixture([1, 2, 3]),
       2,
       [
-        (stream: Stream<unknown>) => stream,
-        (stream: Stream<unknown>) => stream
+        (stream: AsyncStream<unknown>) => stream,
+        (stream: AsyncStream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
       ],
       [
@@ -667,10 +527,10 @@ function dataProviderForTee(): Array<unknown> {
       createIterableFixture([1, 2, 3]),
       3,
       [
-        (stream: Stream<unknown>) => stream,
-        (stream: Stream<unknown>) => stream
+        (stream: AsyncStream<unknown>) => stream,
+        (stream: AsyncStream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
-        (stream: Stream<unknown>) => stream
+        (stream: AsyncStream<unknown>) => stream
           .map((datum) => (datum as number) ** 3),
       ],
       [
@@ -683,10 +543,10 @@ function dataProviderForTee(): Array<unknown> {
       new Set([1, 2, 3]),
       3,
       [
-        (stream: Stream<unknown>) => stream,
-        (stream: Stream<unknown>) => stream
+        (stream: AsyncStream<unknown>) => stream,
+        (stream: AsyncStream<unknown>) => stream
           .map((datum) => (datum as number) * 2),
-        (stream: Stream<unknown>) => stream
+        (stream: AsyncStream<unknown>) => stream
           .map((datum) => (datum as number) ** 3)
           .filter((datum) => (datum as number) < 10),
       ],
