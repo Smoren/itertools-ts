@@ -1,3 +1,4 @@
+import { AsyncStream, Numeric } from "../../src";
 import {
   createAsyncGeneratorFixture,
   createAsyncIterableFixture,
@@ -8,7 +9,6 @@ import {
   createMapFixture
   // @ts-ignore
 } from "../fixture";
-import { AsyncStream } from '../../src';
 
 describe.each([
   ...dataProviderForAsyncGenerators(),
@@ -21,20 +21,12 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream<unknown>,
-  Array<unknown>
-]>)(
+])(
   "AsyncStream Math Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, streamFactory, expected) => {
     it("", async () => {
       // Given
-      const result = await streamFactory(input);
+      const result = await streamFactory(input as any);
 
       // Then
       expect(result).toEqual(expected);
@@ -42,256 +34,256 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, (iterable: Array<any>) => Promise<Array<number>>, Array<number>]> {
   return [
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown> | Iterator<unknown>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       ['1', '2', '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<Numeric> | Iterator<Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       ['1', 2, '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<Numeric> | Iterator<Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage(0)
         .toArray(),
       [0, 0.5, 1, 1.5],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage(1)
         .toArray(),
       [1, 1, 4/3, 7/4],
     ],
     [
-      [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      [] as number[],
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
-      [],
+      [] as number[],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       ['1', '2', '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       ['1', 2, '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference(0)
         .toArray(),
       [0, -1, -3, -6],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference(1)
         .toArray(),
       [1, 0, -2, -5],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       ['1', '2', '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<Numeric> | Iterator<Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       ['1', 2, '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<Numeric> | Iterator<Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax(0)
         .toArray(),
       [0, 1, 2, 3],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax(1)
         .toArray(),
       [1, 1, 2, 3],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       ['1', '2', '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<Numeric> | Iterator<Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       ['1', 2, '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<Numeric> | Iterator<Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin(1)
         .toArray(),
       [1, 1, 1, 1],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       ['1', '2', '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<Numeric> | Iterator<Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       ['1', 2, '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<Numeric> | Iterator<Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       ['1', '2', '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<Numeric> | Iterator<Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       ['1', 2, '3'],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<Numeric> | Iterator<Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal(0)
         .toArray(),
       [0, 1, 3, 6],
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal(1)
         .toArray(),
       [1, 2, 4, 7],
@@ -299,985 +291,237 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
-  return [
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [1, 1.5, 2],
-    ],
-    [
-      createGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [1, 1.5, 2],
-    ],
-    [
-      createGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [1, 1.5, 2],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage(0)
-        .toArray(),
-      [0, 0.5, 1, 1.5],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage(1)
-        .toArray(),
-      [1, 1, 4/3, 7/4],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [-1, -3, -6],
-    ],
-    [
-      createGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [-1, -3, -6],
-    ],
-    [
-      createGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [-1, -3, -6],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference(0)
-        .toArray(),
-      [0, -1, -3, -6],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference(1)
-        .toArray(),
-      [1, 0, -2, -5],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax(0)
-        .toArray(),
-      [0, 1, 2, 3],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax(1)
-        .toArray(),
-      [1, 1, 2, 3],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [1, 1, 1],
-    ],
-    [
-      createGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [1, 1, 1],
-    ],
-    [
-      createGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [1, 1, 1],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin(0)
-        .toArray(),
-      [0, 0, 0, 0],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin(1)
-        .toArray(),
-      [1, 1, 1, 1],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [1, 2, 6],
-    ],
-    [
-      createGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [1, 2, 6],
-    ],
-    [
-      createGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [1, 2, 6],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct(0)
-        .toArray(),
-      [0, 0, 0, 0],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct(1)
-        .toArray(),
-      [1, 1, 2, 6],
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [1, 3, 6],
-    ],
-    [
-      createGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [1, 3, 6],
-    ],
-    [
-      createGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [1, 3, 6],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal(0)
-        .toArray(),
-      [0, 1, 3, 6],
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal(1)
-        .toArray(),
-      [1, 2, 4, 7],
-    ],
-  ];
+function dataProviderForGenerators(): Array<[Generator<any>, (iterable: Generator<any>) => Promise<Array<number>>, Array<number>]> {
+  return dataProviderForArrays().map((item) => [
+    createGeneratorFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Promise<Array<number>>, Array<number>],
+  ]);
 }
 
-function dataProviderForIterables(): Array<unknown> {
-  return [
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [1, 1.5, 2],
-    ],
-    [
-      createIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [1, 1.5, 2],
-    ],
-    [
-      createIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [1, 1.5, 2],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage(0)
-        .toArray(),
-      [0, 0.5, 1, 1.5],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage(1)
-        .toArray(),
-      [1, 1, 4/3, 7/4],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [-1, -3, -6],
-    ],
-    [
-      createIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [-1, -3, -6],
-    ],
-    [
-      createIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [-1, -3, -6],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference(0)
-        .toArray(),
-      [0, -1, -3, -6],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference(1)
-        .toArray(),
-      [1, 0, -2, -5],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax(0)
-        .toArray(),
-      [0, 1, 2, 3],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax(1)
-        .toArray(),
-      [1, 1, 2, 3],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [1, 1, 1],
-    ],
-    [
-      createIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [1, 1, 1],
-    ],
-    [
-      createIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [1, 1, 1],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin(0)
-        .toArray(),
-      [0, 0, 0, 0],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin(1)
-        .toArray(),
-      [1, 1, 1, 1],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [1, 2, 6],
-    ],
-    [
-      createIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [1, 2, 6],
-    ],
-    [
-      createIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [1, 2, 6],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct(0)
-        .toArray(),
-      [0, 0, 0, 0],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct(1)
-        .toArray(),
-      [1, 1, 2, 6],
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [1, 3, 6],
-    ],
-    [
-      createIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [1, 3, 6],
-    ],
-    [
-      createIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [1, 3, 6],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal(0)
-        .toArray(),
-      [0, 1, 3, 6],
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal(1)
-        .toArray(),
-      [1, 2, 4, 7],
-    ],
-  ];
+function dataProviderForIterables(): Array<[Iterable<any>, (iterable: Iterable<any>) => Promise<Array<number>>, Array<number>]> {
+  return dataProviderForArrays().map((item) => {
+    return [
+      createIterableFixture(item[0]),
+      ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Promise<Array<number>>, Array<number>],
+    ];
+  });
 }
 
-function dataProviderForIterators(): Array<unknown> {
-  return [
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [1, 1.5, 2],
-    ],
-    [
-      createIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [1, 1.5, 2],
-    ],
-    [
-      createIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage()
-        .toArray(),
-      [1, 1.5, 2],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage(0)
-        .toArray(),
-      [0, 0.5, 1, 1.5],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningAverage(1)
-        .toArray(),
-      [1, 1, 4/3, 7/4],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [-1, -3, -6],
-    ],
-    [
-      createIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [-1, -3, -6],
-    ],
-    [
-      createIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference()
-        .toArray(),
-      [-1, -3, -6],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference(0)
-        .toArray(),
-      [0, -1, -3, -6],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningDifference(1)
-        .toArray(),
-      [1, 0, -2, -5],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax()
-        .toArray(),
-      [1, 2, 3],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax(0)
-        .toArray(),
-      [0, 1, 2, 3],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMax(1)
-        .toArray(),
-      [1, 1, 2, 3],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [1, 1, 1],
-    ],
-    [
-      createIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [1, 1, 1],
-    ],
-    [
-      createIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin()
-        .toArray(),
-      [1, 1, 1],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin(0)
-        .toArray(),
-      [0, 0, 0, 0],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningMin(1)
-        .toArray(),
-      [1, 1, 1, 1],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [1, 2, 6],
-    ],
-    [
-      createIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [1, 2, 6],
-    ],
-    [
-      createIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct()
-        .toArray(),
-      [1, 2, 6],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct(0)
-        .toArray(),
-      [0, 0, 0, 0],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningProduct(1)
-        .toArray(),
-      [1, 1, 2, 6],
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [1, 3, 6],
-    ],
-    [
-      createIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [1, 3, 6],
-    ],
-    [
-      createIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .toArray(),
-      [1, 3, 6],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal(0)
-        .toArray(),
-      [0, 1, 3, 6],
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal(1)
-        .toArray(),
-      [1, 2, 4, 7],
-    ],
-  ];
+function dataProviderForIterators(): Array<[Iterator<any>, (iterable: Iterator<any>) => Promise<Array<number>>, Array<number>]> {
+  return dataProviderForArrays().map((item) => [
+    createIteratorFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Promise<Array<number>>, Array<number>],
+  ]);
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, (iterable: string) => Promise<Array<number>>, Array<number>]> {
   return [
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage(0)
         .toArray(),
       [0, 0.5, 1, 1.5],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningAverage(1)
         .toArray(),
       [1, 1, 4/3, 7/4],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference(0)
         .toArray(),
       [0, -1, -3, -6],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningDifference(1)
         .toArray(),
       [1, 0, -2, -5],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax(0)
         .toArray(),
       [0, 1, 2, 3],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMax(1)
         .toArray(),
       [1, 1, 2, 3],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningMin(1)
         .toArray(),
       [1, 1, 1, 1],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [],
     ],
     [
       '1',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal(0)
         .toArray(),
       [0, 1, 3, 6],
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable): Promise<Array<number>> => AsyncStream.of(iterable)
         .runningTotal(1)
         .toArray(),
       [1, 2, 4, 7],
@@ -1285,256 +529,256 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, (iterable: Set<any>) => Promise<Array<number>>, Array<number>]> {
   return [
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       new Set(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       new Set(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningAverage(0)
         .toArray(),
       [0, 0.5, 1, 1.5],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningAverage(1)
         .toArray(),
       [1, 1, 4/3, 7/4],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       new Set(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       new Set(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningDifference(0)
         .toArray(),
       [0, -1, -3, -6],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningDifference(1)
         .toArray(),
       [1, 0, -2, -5],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       new Set(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       new Set(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMax(0)
         .toArray(),
       [0, 1, 2, 3],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMax(1)
         .toArray(),
       [1, 1, 2, 3],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       new Set(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       new Set(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMin(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningMin(1)
         .toArray(),
       [1, 1, 1, 1],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       new Set(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       new Set(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningProduct(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       new Set(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       new Set(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal(0)
         .toArray(),
       [0, 1, 3, 6],
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal(1)
         .toArray(),
       [1, 2, 4, 7],
@@ -1542,292 +786,292 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, (iterable: Map<any, any>) => Promise<Array<number>>, Array<number>]> {
   return [
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningAverage()
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createMapFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createMapFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningAverage(0)
         .toArray(),
       [0, 0.5, 1, 1.5],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningAverage(1)
         .toArray(),
       [1, 1, 4/3, 7/4],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningDifference()
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createMapFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createMapFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningDifference(0)
         .toArray(),
       [0, -1, -3, -6],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningDifference(1)
         .toArray(),
       [1, 0, -2, -5],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMax()
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createMapFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createMapFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMax(0)
         .toArray(),
       [0, 1, 2, 3],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMax(1)
         .toArray(),
       [1, 1, 2, 3],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMin()
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createMapFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createMapFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMin(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningMin(1)
         .toArray(),
       [1, 1, 1, 1],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningProduct()
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createMapFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createMapFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningProduct(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
     ],
     [
       createMapFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningTotal()
         .toArray(),
       [],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createMapFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createMapFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningTotal(0)
         .toArray(),
       [0, 1, 3, 6],
     ],
     [
       createMapFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .map((item) => (item as [unknown, number])[1])
+      (iterable: Map<unknown, Numeric>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
         .runningTotal(1)
         .toArray(),
       [1, 2, 4, 7],
@@ -1835,256 +1079,256 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (iterable: AsyncGenerator<any>) => Promise<Array<number>>, Array<number>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createAsyncGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createAsyncGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningAverage(0)
         .toArray(),
       [0, 0.5, 1, 1.5],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningAverage(1)
         .toArray(),
       [1, 1, 4/3, 7/4],
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createAsyncGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createAsyncGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningDifference(0)
         .toArray(),
       [0, -1, -3, -6],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningDifference(1)
         .toArray(),
       [1, 0, -2, -5],
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMax(0)
         .toArray(),
       [0, 1, 2, 3],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMax(1)
         .toArray(),
       [1, 1, 2, 3],
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createAsyncGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createAsyncGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMin(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningMin(1)
         .toArray(),
       [1, 1, 1, 1],
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createAsyncGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createAsyncGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningProduct(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createAsyncGeneratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createAsyncGeneratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningTotal(0)
         .toArray(),
       [0, 1, 3, 6],
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningTotal(1)
         .toArray(),
       [1, 2, 4, 7],
@@ -2092,256 +1336,256 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, (iterable: AsyncIterable<any>) => Promise<Array<number>>, Array<number>]> {
   return [
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createAsyncIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createAsyncIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningAverage(0)
         .toArray(),
       [0, 0.5, 1, 1.5],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningAverage(1)
         .toArray(),
       [1, 1, 4/3, 7/4],
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createAsyncIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createAsyncIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference(0)
         .toArray(),
       [0, -1, -3, -6],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningDifference(1)
         .toArray(),
       [1, 0, -2, -5],
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMax(0)
         .toArray(),
       [0, 1, 2, 3],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMax(1)
         .toArray(),
       [1, 1, 2, 3],
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createAsyncIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createAsyncIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMin(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningMin(1)
         .toArray(),
       [1, 1, 1, 1],
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createAsyncIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createAsyncIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningProduct(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createAsyncIterableFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createAsyncIterableFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal(0)
         .toArray(),
       [0, 1, 3, 6],
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal(1)
         .toArray(),
       [1, 2, 4, 7],
@@ -2349,256 +1593,256 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, (iterable: AsyncIterator<any>) => Promise<Array<number>>, Array<number>]> {
   return [
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createAsyncIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createAsyncIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningAverage()
         .toArray(),
       [1, 1.5, 2],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningAverage(0)
         .toArray(),
       [0, 0.5, 1, 1.5],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningAverage(1)
         .toArray(),
       [1, 1, 4/3, 7/4],
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createAsyncIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createAsyncIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningDifference()
         .toArray(),
       [-1, -3, -6],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningDifference(0)
         .toArray(),
       [0, -1, -3, -6],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningDifference(1)
         .toArray(),
       [1, 0, -2, -5],
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMax()
         .toArray(),
       [1, 2, 3],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMax(0)
         .toArray(),
       [0, 1, 2, 3],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMax(1)
         .toArray(),
       [1, 1, 2, 3],
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createAsyncIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createAsyncIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMin()
         .toArray(),
       [1, 1, 1],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMin(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningMin(1)
         .toArray(),
       [1, 1, 1, 1],
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createAsyncIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createAsyncIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningProduct()
         .toArray(),
       [1, 2, 6],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningProduct(0)
         .toArray(),
       [0, 0, 0, 0],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningProduct(1)
         .toArray(),
       [1, 1, 2, 6],
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createAsyncIteratorFixture(['1', '2', '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createAsyncIteratorFixture(['1', 2, '3']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .toArray(),
       [1, 3, 6],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal(0)
         .toArray(),
       [0, 1, 3, 6],
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal(1)
         .toArray(),
       [1, 2, 4, 7],
