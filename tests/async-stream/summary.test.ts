@@ -1,3 +1,4 @@
+import { AsyncStream, Numeric } from '../../src';
 import {
   asyncTimeout,
   createAsyncGeneratorFixture,
@@ -9,7 +10,6 @@ import {
   createMapFixture,
   // @ts-ignore
 } from "../fixture";
-import { AsyncStream } from '../../src';
 
 describe.each([
   ...dataProviderForAsyncGeneratorsTrue(),
@@ -22,18 +22,12 @@ describe.each([
   ...dataProviderForStringsTrue(),
   ...dataProviderForSetsTrue(),
   ...dataProviderForMapsTrue(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream<unknown>
-]>)(
+])(
   "AsyncStream Summary Test True",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream<unknown>
-  ) => {
+  (input, streamFactory) => {
     it("", async () => {
       // Given
-      const result = await streamFactory(input);
+      const result = await streamFactory(input as any);
 
       // Then
       expect(result).toBeTruthy();
@@ -52,18 +46,12 @@ describe.each([
   ...dataProviderForStringsFalse(),
   ...dataProviderForSetsFalse(),
   ...dataProviderForMapsFalse(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (data: unknown) => AsyncStream<unknown>
-]>)(
+])(
   "AsyncStream Summary Test False",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    streamFactory: (data: unknown) => AsyncStream<unknown>
-  ) => {
+  (input, streamFactory) => {
     it("", async () => {
       // Given
-      const result = await streamFactory(input);
+      const result = await streamFactory(input as any);
 
       // Then
       expect(result).toBeFalsy();
@@ -71,690 +59,366 @@ describe.each([
   }
 );
 
-function dataProviderForArraysTrue(): Array<unknown> {
+function dataProviderForArraysTrue(): Array<[Array<any>, (iterable: Array<any>) => Promise<boolean>]> {
   return [
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .allMatch((x) => x > 0),
     ],
     [
       [1, 3, 5],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .allMatch((x) => x > 0),
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       [1, '1', true, [1], [1]],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       [1, 3, 5],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) === 3),
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .anyMatch((x) => x === 3),
     ],
     [
       [1, 3, 5],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 0),
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .anyMatch((x) => x > 0),
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       [''],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       [1, 3, 5],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .exactlyN(3),
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .filter((item) => item > 0)
         .runningTotal()
         .isSorted(),
     ],
     [
       [5, -1, 4, -2, 3, -3, 2, -4, 1, -5],
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .filter((item) => item > 0)
         .isReversed(),
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .noneMatch(() => true),
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .noneMatch(() => false),
     ],
     [
       [1, 3, 5],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 9),
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .noneMatch((x) => x === 9),
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       [1, 2, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       [1, 3, 5],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
     [
       [],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
         .sameCountWith([]),
     ],
     [
       [1, 3, 5],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
   ];
 }
 
-function dataProviderForGeneratorsTrue(): Array<unknown> {
-  return [
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createGeneratorFixture([1, '1', true, [1], [1]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) === 3),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 0),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(0),
-    ],
-    [
-      createGeneratorFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(0),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(3),
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
-        .runningTotal()
-        .isSorted(),
-    ],
-    [
-      createGeneratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
-        .isReversed(),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch(() => true),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch(() => false),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 9),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith([]),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith(),
-    ],
-    [
-      createGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith(),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameWith([1, 4, 9]),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameCountWith([]),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameCountWith([11, 22, 33]),
-    ],
-  ];
+function dataProviderForGeneratorsTrue(): Array<[Generator<any>, (iterable: Generator<any>) => Promise<boolean>]> {
+  return dataProviderForArraysTrue().map((item) => [
+    createGeneratorFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Promise<boolean>],
+  ]);
 }
 
-function dataProviderForIterablesTrue(): Array<unknown> {
-  return [
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createIterableFixture([1, '1', true, [1], [1]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) === 3),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 0),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(0),
-    ],
-    [
-      createIterableFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(0),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(3),
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
-        .runningTotal()
-        .isSorted(),
-    ],
-    [
-      createIterableFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
-        .isReversed(),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch(() => true),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch(() => false),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 9),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith([]),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith(),
-    ],
-    [
-      createIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith(),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameWith([1, 4, 9]),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameCountWith([]),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameCountWith([11, 22, 33]),
-    ],
-  ];
+function dataProviderForIterablesTrue(): Array<[Iterable<any>, (iterable: Iterable<any>) => Promise<boolean>]> {
+  return dataProviderForArraysTrue().map((item) => [
+    createIterableFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Promise<boolean>],
+  ]);
 }
 
-function dataProviderForIteratorsTrue(): Array<unknown> {
-  return [
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createIteratorFixture([1, '1', true, [1], [1]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) === 3),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 0),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(0),
-    ],
-    [
-      createIteratorFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(0),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(3),
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
-        .runningTotal()
-        .isSorted(),
-    ],
-    [
-      createIteratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
-        .isReversed(),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch(() => true),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch(() => false),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 9),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith([]),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith(),
-    ],
-    [
-      createIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith(),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameWith([1, 4, 9]),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameCountWith([]),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameCountWith([11, 22, 33]),
-    ],
-  ];
+function dataProviderForIteratorsTrue(): Array<[Iterator<any>, (iterable: Iterator<any>) => Promise<boolean>]> {
+  return dataProviderForArraysTrue().map((item) => [
+    createIteratorFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Promise<boolean>],
+  ]);
 }
 
-function dataProviderForStringsTrue(): Array<unknown> {
+function dataProviderForStringsTrue(): Array<[string, (iterable: string) => Promise<boolean>]> {
   return [
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => Number(x as string) > 0),
+      (iterable) => AsyncStream.of(iterable)
+        .allMatch((x) => Number(x) > 0),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => Number(x as string) > 0),
+      (iterable) => AsyncStream.of(iterable)
+        .allMatch((x) => Number(x) > 0),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       '12345',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => Number(x as string) === 3),
+      (iterable) => AsyncStream.of(iterable)
+        .anyMatch((x) => Number(x) === 3),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => Number(x as string) > 0),
+      (iterable) => AsyncStream.of(iterable)
+        .anyMatch((x) => Number(x) > 0),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       '123',
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal()
         .isSorted(),
     ],
     [
       '54321',
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .isReversed(),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .noneMatch(() => true),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .noneMatch(() => false),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => Number(x as string) === 9),
+      (iterable) => AsyncStream.of(iterable)
+        .noneMatch((x) => Number(x) === 9),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .sameWith(['1', '3', '5']),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .sameCountWith([]),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
   ];
 }
 
-function dataProviderForSetsTrue(): Array<unknown> {
+function dataProviderForSetsTrue(): Array<[Set<any>, (iterable: Set<any>) => Promise<boolean>]> {
   return [
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .allMatch((x) => x > 0),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .allMatch((x) => x > 0),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       new Set([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       new Set([1, '1', true, [1], [1]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       new Set([1, 1, 1, 1, 1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) === 3),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .anyMatch((x) => x === 3),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 0),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .anyMatch((x) => x > 0),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       new Set(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .exactlyN(3),
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .filter((item) => item > 0)
         .runningTotal()
         .isSorted(),
     ],
     [
       new Set([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .filter((item) => (item as number) > 0)
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .filter((item) => item > 0)
         .isReversed(),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .noneMatch(() => true),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .noneMatch(() => false),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 9),
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
+        .noneMatch((x) => x === 9),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       new Set([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .sameCountWith([]),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
   ];
 }
 
-function dataProviderForMapsTrue(): Array<unknown> {
+function dataProviderForMapsTrue(): Array<[Map<any, any>, (iterable: Map<any, any>) => Promise<boolean>]> {
   return [
     [
       createMapFixture([]),
@@ -860,11 +524,11 @@ function dataProviderForMapsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
+function dataProviderForAsyncGeneratorsTrue(): Array<[AsyncGenerator<any>, (iterable: AsyncGenerator<any>) => Promise<boolean>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .allMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) > 0;
@@ -872,27 +536,27 @@ function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .allMatch((x) => (x as number) > 0),
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncGeneratorFixture([1, '1', true, [1], [1]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .anyMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) === 3;
@@ -900,40 +564,40 @@ function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       createAsyncGeneratorFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(3),
     ],
     [
       createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
         .runningTotal()
         .isSorted(),
     ],
     [
       createAsyncGeneratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
         .isReversed(),
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .noneMatch(async () => {
           await asyncTimeout(1);
           return true;
@@ -941,54 +605,54 @@ function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .noneMatch(() => false),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .noneMatch((x) => (x as number) === 9),
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .sameCountWith([]),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
   ];
 }
 
-function dataProviderForAsyncIterablesTrue(): Array<unknown> {
+function dataProviderForAsyncIterablesTrue(): Array<[AsyncIterable<any>, (iterable: AsyncIterable<any>) => Promise<boolean>]> {
   return [
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .allMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) > 0;
@@ -996,27 +660,27 @@ function dataProviderForAsyncIterablesTrue(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .allMatch((x) => (x as number) > 0),
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncIterableFixture([1, '1', true, [1], [1]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) === 3;
@@ -1024,40 +688,40 @@ function dataProviderForAsyncIterablesTrue(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       createAsyncIterableFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .exactlyN(3),
     ],
     [
       createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
         .runningTotal()
         .isSorted(),
     ],
     [
       createAsyncIterableFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
         .isReversed(),
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .noneMatch(async () => {
           await asyncTimeout(1);
           return true;
@@ -1065,54 +729,54 @@ function dataProviderForAsyncIterablesTrue(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .noneMatch(() => false),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .noneMatch((x) => (x as number) === 9),
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       createAsyncIterableFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .sameCountWith([]),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
   ];
 }
 
-function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
+function dataProviderForAsyncIteratorsTrue(): Array<[AsyncIterator<any>, (iterable: AsyncIterator<any>) => Promise<boolean>]> {
   return [
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .allMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) > 0;
@@ -1120,27 +784,27 @@ function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .allMatch((x) => (x as number) > 0),
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncIteratorFixture([1, '1', true, [1], [1]]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .anyMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) === 3;
@@ -1148,40 +812,40 @@ function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 0),
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       createAsyncIteratorFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(0),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(3),
     ],
     [
       createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
         .runningTotal()
         .isSorted(),
     ],
     [
       createAsyncIteratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((item) => (item as number) > 0)
         .isReversed(),
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .noneMatch(async () => {
           await asyncTimeout(1);
           return true;
@@ -1189,59 +853,59 @@ function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .noneMatch(() => false),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .noneMatch((x) => (x as number) === 9),
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .sameWith(),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 9]),
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .sameCountWith([]),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
   ];
 }
 
-function dataProviderForArraysFalse(): Array<unknown> {
+function dataProviderForArraysFalse(): Array<[Array<any>, (iterable: Array<any>) => Promise<boolean>]> {
   return [
     [
       [1, 3, -5],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
+      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+        .allMatch((x) => x > 0),
     ],
     [
       [1, 2, 1, 3],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
@@ -1251,8 +915,8 @@ function dataProviderForArraysFalse(): Array<unknown> {
     ],
     [
       [1, 3, 5],
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 10),
+      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+        .anyMatch((x) => x > 10),
     ],
     [
       [],
@@ -1283,7 +947,7 @@ function dataProviderForArraysFalse(): Array<unknown> {
     [
       [1, 3, 5],
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 3),
+        .noneMatch((x) => x === 3),
     ],
     [
       [],
@@ -1320,436 +984,193 @@ function dataProviderForArraysFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsFalse(): Array<unknown> {
-  return [
-    [
-      createGeneratorFixture([1, 3, -5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
-    ],
-    [
-      createGeneratorFixture([1, 2, 1, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch(() => true),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 10),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(1),
-    ],
-    [
-      createGeneratorFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(1),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(4),
-    ],
-    [
-      createGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .isSorted(),
-    ],
-    [
-      createGeneratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .isReversed(),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 3),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith([1]),
-    ],
-    [
-      createGeneratorFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith([]),
-    ],
-    [
-      createGeneratorFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith(['1']),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameWith([1, 4, 10]),
-    ],
-    [
-      createGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameCountWith([1, 2, 3]),
-    ],
-    [
-      createGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameCountWith([11, 22]),
-    ],
-  ];
+function dataProviderForGeneratorsFalse(): Array<[Generator<any>, (iterable: Generator<any>) => Promise<boolean>]> {
+  return dataProviderForArraysFalse().map((item) => [
+    createGeneratorFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Promise<boolean>],
+  ]);
 }
 
-function dataProviderForIterablesFalse(): Array<unknown> {
-  return [
-    [
-      createIterableFixture([1, 3, -5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
-    ],
-    [
-      createIterableFixture([1, 2, 1, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch(() => true),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 10),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(1),
-    ],
-    [
-      createIterableFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(1),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(4),
-    ],
-    [
-      createIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .isSorted(),
-    ],
-    [
-      createIterableFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .isReversed(),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 3),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith([1]),
-    ],
-    [
-      createIterableFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith([]),
-    ],
-    [
-      createIterableFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith(['1']),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameWith([1, 4, 10]),
-    ],
-    [
-      createIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameCountWith([1, 2, 3]),
-    ],
-    [
-      createIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameCountWith([11, 22]),
-    ],
-  ];
+function dataProviderForIterablesFalse(): Array<[Iterable<any>, (iterable: Iterable<any>) => Promise<boolean>]> {
+  return dataProviderForArraysFalse().map((item) => [
+    createIterableFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Promise<boolean>],
+  ]);
 }
 
-function dataProviderForIteratorsFalse(): Array<unknown> {
-  return [
-    [
-      createIteratorFixture([1, 3, -5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
-    ],
-    [
-      createIteratorFixture([1, 2, 1, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allUnique(),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch(() => true),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 10),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(1),
-    ],
-    [
-      createIteratorFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(1),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .exactlyN(4),
-    ],
-    [
-      createIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .isSorted(),
-    ],
-    [
-      createIteratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
-        .isReversed(),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 3),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith([1]),
-    ],
-    [
-      createIteratorFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith([]),
-    ],
-    [
-      createIteratorFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameWith(['1']),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameWith([1, 4, 10]),
-    ],
-    [
-      createIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .sameCountWith([1, 2, 3]),
-    ],
-    [
-      createIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .runningTotal()
-        .sameCountWith([11, 22]),
-    ],
-  ];
+function dataProviderForIteratorsFalse(): Array<[Iterator<any>, (iterable: Iterator<any>) => Promise<boolean>]> {
+  return dataProviderForArraysFalse().map((item) => [
+    createIteratorFixture(item[0]),
+    ...item.slice(1) as [(iterable: Iterable<Numeric> | Iterator<Numeric>) => Promise<boolean>],
+  ]);
 }
 
-function dataProviderForStringsFalse(): Array<unknown> {
+function dataProviderForStringsFalse(): Array<[string, (iterable: string) => Promise<boolean>]> {
   return [
     [
       '123',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => Number(x as string) > 1),
+      (iterable) => AsyncStream.of(iterable)
+        .allMatch((x) => Number(x) > 1),
     ],
     [
       '1231',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .anyMatch(() => true),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => Number(x as string) > 10),
+      (iterable) => AsyncStream.of(iterable)
+        .anyMatch((x) => Number(x) > 10),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .exactlyN(1),
     ],
     [
       '131',
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .isSorted(),
     ],
     [
       '123',
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .isReversed(),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => Number(x as string) === 3),
+      (iterable) => AsyncStream.of(iterable)
+        .noneMatch((x) => Number(x) === 3),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .sameWith([1]),
     ],
     [
       '1',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       '1',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .sameWith([1]),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .sameWith(['1', '3', '4']),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 10]),
     ],
     [
       '',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .sameCountWith([1, 2, 3]),
     ],
     [
       '135',
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
     ],
   ];
 }
 
-function dataProviderForSetsFalse(): Array<unknown> {
+function dataProviderForSetsFalse(): Array<[Set<any>, (iterable: Set<any>) => Promise<boolean>]> {
   return [
     [
       new Set([1, 3, -5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .allMatch((x) => (x as number) > 0),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .allMatch((x) => x > 0),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .anyMatch(() => true),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .anyMatch((x) => (x as number) > 10),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .anyMatch((x) => x > 10),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .exactlyN(1),
     ],
     [
       new Set(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .exactlyN(1),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>) => AsyncStream.of(iterable)
         .exactlyN(4),
     ],
     [
       new Set([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: Set<number>) => AsyncStream.of(iterable)
         .runningTotal()
         .isSorted(),
     ],
     [
       new Set([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: Set<number>) => AsyncStream.of(iterable)
         .isReversed(),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
-        .noneMatch((x) => (x as number) === 3),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .noneMatch((x) => x === 3),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .sameWith([1]),
     ],
     [
       new Set([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       new Set([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .sameWith(['1']),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<number>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 10]),
     ],
     [
       new Set([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .sameCountWith([1, 2, 3]),
     ],
     [
       new Set([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
     ],
   ];
 }
 
-function dataProviderForMapsFalse(): Array<unknown> {
+function dataProviderForMapsFalse(): Array<[Map<any, any>, (iterable: Map<any, any>) => Promise<boolean>]> {
   return [
     [
       createMapFixture([1, 3, -5]),
@@ -1829,11 +1250,11 @@ function dataProviderForMapsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
+function dataProviderForAsyncGeneratorsFalse(): Array<[AsyncGenerator<any>, (iterable: AsyncGenerator<any>) => Promise<boolean>]> {
   return [
     [
       createAsyncGeneratorFixture([1, 3, -5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .allMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) > 0;
@@ -1841,12 +1262,12 @@ function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([1, 2, 1, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .anyMatch(async () => {
           await asyncTimeout(1);
           return true;
@@ -1854,38 +1275,38 @@ function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(1),
     ],
     [
       createAsyncGeneratorFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(1),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(4),
     ],
     [
       createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
         .runningTotal()
         .isSorted(),
     ],
     [
       createAsyncGeneratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
         .isReversed(),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .noneMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) === 3;
@@ -1893,44 +1314,44 @@ function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .sameWith([1]),
     ],
     [
       createAsyncGeneratorFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       createAsyncGeneratorFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .sameWith(['1']),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 10]),
     ],
     [
       createAsyncGeneratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .sameCountWith([1, 2, 3]),
     ],
     [
       createAsyncGeneratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
     ],
   ];
 }
 
-function dataProviderForAsyncIterablesFalse(): Array<unknown> {
+function dataProviderForAsyncIterablesFalse(): Array<[AsyncIterable<any>, (iterable: AsyncIterable<any>) => Promise<boolean>]> {
   return [
     [
       createAsyncIterableFixture([1, 3, -5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .allMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) > 0;
@@ -1938,12 +1359,12 @@ function dataProviderForAsyncIterablesFalse(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([1, 2, 1, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch(async () => {
           await asyncTimeout(1);
           return true;
@@ -1951,38 +1372,38 @@ function dataProviderForAsyncIterablesFalse(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .exactlyN(1),
     ],
     [
       createAsyncIterableFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .exactlyN(1),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .exactlyN(4),
     ],
     [
       createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
         .runningTotal()
         .isSorted(),
     ],
     [
       createAsyncIterableFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
         .isReversed(),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .noneMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) === 3;
@@ -1990,44 +1411,44 @@ function dataProviderForAsyncIterablesFalse(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .sameWith([1]),
     ],
     [
       createAsyncIterableFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       createAsyncIterableFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .sameWith(['1']),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 10]),
     ],
     [
       createAsyncIterableFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .sameCountWith([1, 2, 3]),
     ],
     [
       createAsyncIterableFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
     ],
   ];
 }
 
-function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
+function dataProviderForAsyncIteratorsFalse(): Array<[AsyncIterator<any>, (iterable: AsyncIterator<any>) => Promise<boolean>]> {
   return [
     [
       createAsyncIteratorFixture([1, 3, -5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .allMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) > 0;
@@ -2035,12 +1456,12 @@ function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([1, 2, 1, 3]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .allUnique(),
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .anyMatch(async () => {
           await asyncTimeout(1);
           return true;
@@ -2048,38 +1469,38 @@ function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .anyMatch((x) => (x as number) > 10),
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(1),
     ],
     [
       createAsyncIteratorFixture(['']),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(1),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(4),
     ],
     [
       createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
         .runningTotal()
         .isSorted(),
     ],
     [
       createAsyncIteratorFixture([5, -1, 4, -2, 3, -3, 2, -4, 1, -5]),
-      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
         .isReversed(),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .noneMatch(async (x) => {
           await asyncTimeout(1);
           return (x as number) === 3;
@@ -2087,33 +1508,33 @@ function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .sameWith([1]),
     ],
     [
       createAsyncIteratorFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .sameWith([]),
     ],
     [
       createAsyncIteratorFixture([1]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .sameWith(['1']),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameWith([1, 4, 10]),
     ],
     [
       createAsyncIteratorFixture([]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .sameCountWith([1, 2, 3]),
     ],
     [
       createAsyncIteratorFixture([1, 3, 5]),
-      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
     ],
