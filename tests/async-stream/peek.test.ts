@@ -446,53 +446,53 @@ function dataProviderForMaps(): Array<[Map<any, any>, (iterable: Map<any, any>) 
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (iterable: AsyncGenerator<any>) => AsyncStream<any>, (stream: AsyncStream<any>) => AsyncStream<any>, any[], any[]]> {
+function dataProviderForAsync(): Array<[Array<any>, (iterable: AsyncIterable<any> | AsyncIterator<any>) => AsyncStream<any>, (stream: AsyncStream<any>) => AsyncStream<any>, any[], any[]]> {
   return [
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable),
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable),
       (stream: AsyncStream<unknown>) => stream,
       [],
       [],
     ],
     [
-      createAsyncGeneratorFixture([5, 4, 3, 2, 1]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable),
+      [5, 4, 3, 2, 1],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable),
       (stream: AsyncStream<unknown>) => stream,
       [5, 4, 3, 2, 1],
       [5, 4, 3, 2, 1],
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable),
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable),
       (stream: AsyncStream<unknown>) => stream.sort(),
       [],
       [],
     ],
     [
-      createAsyncGeneratorFixture([5, 4, 3, 2, 1]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable),
+      [5, 4, 3, 2, 1],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable),
       (stream: AsyncStream<unknown>) => stream.sort(),
       [5, 4, 3, 2, 1],
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable).sort(),
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable).sort(),
       (stream: AsyncStream<unknown>) => stream,
       [],
       [],
     ],
     [
-      createAsyncGeneratorFixture([5, 4, 3, 2, 1]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable).sort(),
+      [5, 4, 3, 2, 1],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable).sort(),
       (stream: AsyncStream<unknown>) => stream,
       [1, 2, 3, 4, 5],
       [1, 2, 3, 4, 5],
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipWith([11, 22, 33, 44, 55]),
       (stream: AsyncStream<unknown>) => stream
         .limit(3),
@@ -500,8 +500,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (iterable
       [],
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3, 4, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipWith([11, 22, 33, 44, 55]),
       (stream: AsyncStream<unknown>) => stream
         .limit(3),
@@ -509,8 +509,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (iterable
       [[1, 11], [2, 22], [3, 33]],
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((x) => (x as number) % 2 !== 0)
         .sort(),
       (stream: AsyncStream<unknown>) => stream
@@ -520,8 +520,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (iterable
       [],
     ],
     [
-      createAsyncGeneratorFixture([9, 8, 7, 6, 5, 4, 3, 2, 1]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [9, 8, 7, 6, 5, 4, 3, 2, 1],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((x) => (x as number) % 2 !== 0)
         .sort(),
       (stream: AsyncStream<unknown>) => stream
@@ -531,178 +531,25 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (iterable
       [[2, 4], [4, 6], [6, 8], [8, 10]],
     ],
   ];
+}
+
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (iterable: AsyncGenerator<any>) => AsyncStream<any>, (stream: AsyncStream<any>) => AsyncStream<any>, any[], any[]]> {
+  return dataProviderForAsync().map((item) => [
+    createAsyncGeneratorFixture(item[0]),
+    ...item.slice(1) as [(iterable: any) => AsyncStream<any>, (stream: AsyncStream<any>) => AsyncStream<any>, any[], any[]],
+  ]);
 }
 
 function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, (iterable: AsyncIterable<any>) => AsyncStream<any>, (stream: AsyncStream<any>) => AsyncStream<any>, any[], any[]]> {
-  return [
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable),
-      (stream: AsyncStream<unknown>) => stream,
-      [],
-      [],
-    ],
-    [
-      createAsyncIterableFixture([5, 4, 3, 2, 1]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable),
-      (stream: AsyncStream<unknown>) => stream,
-      [5, 4, 3, 2, 1],
-      [5, 4, 3, 2, 1],
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable),
-      (stream: AsyncStream<unknown>) => stream.sort(),
-      [],
-      [],
-    ],
-    [
-      createAsyncIterableFixture([5, 4, 3, 2, 1]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable),
-      (stream: AsyncStream<unknown>) => stream.sort(),
-      [5, 4, 3, 2, 1],
-      [1, 2, 3, 4, 5],
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable).sort(),
-      (stream: AsyncStream<unknown>) => stream,
-      [],
-      [],
-    ],
-    [
-      createAsyncIterableFixture([5, 4, 3, 2, 1]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable).sort(),
-      (stream: AsyncStream<unknown>) => stream,
-      [1, 2, 3, 4, 5],
-      [1, 2, 3, 4, 5],
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipWith([11, 22, 33, 44, 55]),
-      (stream: AsyncStream<unknown>) => stream
-        .limit(3),
-      [],
-      [],
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipWith([11, 22, 33, 44, 55]),
-      (stream: AsyncStream<unknown>) => stream
-        .limit(3),
-      [[1, 11], [2, 22], [3, 33], [4, 44], [5, 55]],
-      [[1, 11], [2, 22], [3, 33]],
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((x) => (x as number) % 2 !== 0)
-        .sort(),
-      (stream: AsyncStream<unknown>) => stream
-        .map((x) => (x as number) + 1)
-        .pairwise(),
-      [],
-      [],
-    ],
-    [
-      createAsyncIterableFixture([9, 8, 7, 6, 5, 4, 3, 2, 1]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((x) => (x as number) % 2 !== 0)
-        .sort(),
-      (stream: AsyncStream<unknown>) => stream
-        .map((x) => (x as number) + 1)
-        .pairwise(),
-      [1, 3, 5, 7, 9],
-      [[2, 4], [4, 6], [6, 8], [8, 10]],
-    ],
-  ];
+  return dataProviderForAsync().map((item) => [
+    createAsyncIterableFixture(item[0]),
+    ...item.slice(1) as [(iterable: any) => AsyncStream<any>, (stream: AsyncStream<any>) => AsyncStream<any>, any[], any[]],
+  ]);
 }
 
 function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, (iterable: AsyncIterator<any>) => AsyncStream<any>, (stream: AsyncStream<any>) => AsyncStream<any>, any[], any[]]> {
-  return [
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable),
-      (stream: AsyncStream<unknown>) => stream,
-      [],
-      [],
-    ],
-    [
-      createAsyncIteratorFixture([5, 4, 3, 2, 1]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable),
-      (stream: AsyncStream<unknown>) => stream,
-      [5, 4, 3, 2, 1],
-      [5, 4, 3, 2, 1],
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable),
-      (stream: AsyncStream<unknown>) => stream.sort(),
-      [],
-      [],
-    ],
-    [
-      createAsyncIteratorFixture([5, 4, 3, 2, 1]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable),
-      (stream: AsyncStream<unknown>) => stream.sort(),
-      [5, 4, 3, 2, 1],
-      [1, 2, 3, 4, 5],
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable).sort(),
-      (stream: AsyncStream<unknown>) => stream,
-      [],
-      [],
-    ],
-    [
-      createAsyncIteratorFixture([5, 4, 3, 2, 1]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable).sort(),
-      (stream: AsyncStream<unknown>) => stream,
-      [1, 2, 3, 4, 5],
-      [1, 2, 3, 4, 5],
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipWith([11, 22, 33, 44, 55]),
-      (stream: AsyncStream<unknown>) => stream
-        .limit(3),
-      [],
-      [],
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipWith([11, 22, 33, 44, 55]),
-      (stream: AsyncStream<unknown>) => stream
-        .limit(3),
-      [[1, 11], [2, 22], [3, 33], [4, 44], [5, 55]],
-      [[1, 11], [2, 22], [3, 33]],
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((x) => (x as number) % 2 !== 0)
-        .sort(),
-      (stream: AsyncStream<unknown>) => stream
-        .map((x) => (x as number) + 1)
-        .pairwise(),
-      [],
-      [],
-    ],
-    [
-      createAsyncIteratorFixture([9, 8, 7, 6, 5, 4, 3, 2, 1]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((x) => (x as number) % 2 !== 0)
-        .sort(),
-      (stream: AsyncStream<unknown>) => stream
-        .map((x) => (x as number) + 1)
-        .pairwise(),
-      [1, 3, 5, 7, 9],
-      [[2, 4], [4, 6], [6, 8], [8, 10]],
-    ],
-  ];
+  return dataProviderForAsync().map((item) => [
+    createAsyncIteratorFixture(item[0]),
+    ...item.slice(1) as [(iterable: any) => AsyncStream<any>, (stream: AsyncStream<any>) => AsyncStream<any>, any[], any[]],
+  ]);
 }
