@@ -4,13 +4,9 @@ import { expectToBeCloseToArray } from '../fixture';
 
 describe.each([
   ...dataProvider(),
-] as Array<[Array<number>, number, Array<number>]>)(
+])(
   "Infinite Count Test",
-  (
-    inputParams: Array<number>,
-    limit: number,
-    expected: Array<number>
-  ) => {
+  (inputParams, limit, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -31,7 +27,7 @@ describe.each([
   }
 );
 
-function dataProvider(): Array<unknown> {
+function dataProvider(): Array<[Array<number>, number, Array<number>]> {
   return [
     [
       [],
