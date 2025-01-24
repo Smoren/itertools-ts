@@ -4,13 +4,9 @@ import { AsyncStream } from '../../src';
 
 describe.each([
   ...dataProviderForOfCount(),
-] as Array<[Array<number>, number, Array<number>]>)(
+])(
   "Stream Infinite Of Count Test",
-  (
-    inputParams: Array<number>,
-    limit: number,
-    expected: Array<number>
-  ) => {
+  (inputParams, limit: number, expected) => {
     it("", async () => {
       // When
       const stream = AsyncStream.ofCount(...inputParams);
@@ -24,13 +20,9 @@ describe.each([
 
 describe.each([
   ...dataProviderForOfCycle(),
-] as Array<[Array<number>, number, Array<number>]>)(
+])(
   "Stream Infinite Of Cycle Test",
-  (
-    iterable: Iterable<unknown>,
-    limit: number,
-    expected: Array<number>
-  ) => {
+  <T>(iterable: Iterable<T>, limit: number, expected: Array<T>) => {
     it("", async () => {
       // When
       const stream = AsyncStream.ofCycle(iterable);
@@ -44,13 +36,9 @@ describe.each([
 
 describe.each([
   ...dataProviderForOfRepeat(),
-] as Array<[Array<number>, number, Array<number>]>)(
+])(
   "Stream Infinite Of Repeat Test",
-  (
-    itemToRepeat: unknown,
-    limit: number,
-    expected: Array<number>
-  ) => {
+  <T>(itemToRepeat: T, limit: number, expected: Array<T>) => {
     it("", async () => {
       // When
       const stream = AsyncStream.ofRepeat(itemToRepeat);
@@ -62,7 +50,7 @@ describe.each([
   }
 );
 
-function dataProviderForOfCount(): Array<unknown> {
+function dataProviderForOfCount(): Array<[Array<number>, number, Array<number>]> {
   return [
     [
       [],
@@ -112,7 +100,7 @@ function dataProviderForOfCount(): Array<unknown> {
   ];
 }
 
-function dataProviderForOfCycle(): Array<unknown> {
+function dataProviderForOfCycle(): Array<[Array<unknown>, number, Array<unknown>]> {
   return [
     [
       [],
@@ -157,7 +145,7 @@ function dataProviderForOfCycle(): Array<unknown> {
   ];
 }
 
-function dataProviderForOfRepeat(): Array<unknown> {
+function dataProviderForOfRepeat(): Array<[unknown, number, Array<unknown>]> {
   return [
     [
       0,
