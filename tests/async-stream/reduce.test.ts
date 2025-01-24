@@ -1660,149 +1660,135 @@ function dataProviderForAsync(): Array<[Array<number>, (data: AsyncIterable<numb
   return [
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .toValue((carry, item) => carry + item),
       undefined,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }, 1),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .toValue((carry, item) => carry + item, 1),
       1,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }, 0),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .toValue((carry, item) => carry + item, 0),
       0,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }, 1),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .toValue((carry, item) => carry + item, 1),
       1,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value: unknown) => (value as number) > 0)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
+        .toValue((carry, item) => carry + item),
       undefined,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
+        .toValue((carry, item) => carry + item, 1),
       1,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toValue((carry, item) => (carry as number) + (item as number), 0),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
+        .toValue((carry, item) => carry + item, 0),
       6,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
+        .toValue((carry, item) => carry + item, 1),
       7,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number)),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
+        .toValue((carry, item) => carry + item),
       undefined,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
+        .toValue((carry, item) => carry + item, 1),
       1,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number), 0),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
+        .toValue((carry, item) => carry + item, 0),
       -6,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => !(value > 0))
+        .toValue((carry, item) => carry + item, 1),
       -5,
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .zipWith(
           [10, 20, 30],
           [100, 200, 300]
         )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
+        .toValue((carry, item) => {
+          return carry + item.reduce((accumulator, current) => accumulator + current)
         }, 0),
       666,
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .zipEqualWith(
           [10, 20, 30],
           [100, 200, 300]
         )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
+        .toValue((carry, item) => {
+          return carry + item.reduce((accumulator, current) => accumulator + current)
         }, 0),
       666,
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .zipWith(
           [10, 20, 30],
           [100, 200, 300]
         )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
+        .toValue((carry, item) => {
+          return carry + item.reduce((accumulator, current) => accumulator + current)
         }, 0),
       666,
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .zipLongestWith(
           [10, 20, 30],
           [100, 200, 300]
         )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + (current ?? 0));
+        .toValue((carry, item) => {
+          return carry + item.reduce((accumulator, current) => Number(accumulator) + (current ?? 0), 0)!
         }, 0),
       675,
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .chainWith(
           [4, 5, 6],
           [7, 8, 9]
@@ -1816,287 +1802,287 @@ function dataProviderForAsync(): Array<[Array<number>, (data: AsyncIterable<numb
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<number | undefined> => AsyncStream.of(iterable)
         .toAverage(),
       undefined,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
         .toAverage(),
       0,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .toRange(),
       0,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .toRange(),
       6,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .toCount(),
       0,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .toCount(),
       6,
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .toFirst(),
       1,
     ],
     [
       [2, 1, 3, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .toFirst(),
       2,
     ],
     [
       [1, 2, 3, 4, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<[number, number]> => AsyncStream.of(iterable)
         .toFirstAndLast(),
       [1, 5],
     ],
     [
       [2, 1, 3, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<[number, number]> => AsyncStream.of(iterable)
         .toFirstAndLast(),
       [2, 5],
     ],
     [
       [2, 3, 1, 5],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .toLast(),
       5,
     ],
     [
       [1, 2, 3, 4, 0],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
         .toLast(),
       0,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
         .toMax(),
       undefined,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => (value as number)),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .toMax((value) => value),
       undefined,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => -(value as number)),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .toMax((value) => -value),
       undefined,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
         .toMax(),
       3,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => (value as number)),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .toMax((value) => value),
       3,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => -(value as number)),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .toMax((value) => -value),
       -3,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .toMax(),
       undefined,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .toMax(),
       3,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value <= 0)
         .toMax(),
       undefined,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value <= 0)
         .toMax(),
       -1,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
         .toMin(),
       undefined,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => (value as number)),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .toMin((value) => value),
       undefined,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => -(value as number)),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .toMin((value) => -value),
       undefined,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
         .toMin(),
       -3,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => (value as number)),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .toMin((value) => value),
       -3,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => -(value as number)),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .toMin((value) => -value),
       3,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .toMin(),
       undefined,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .toMin(),
       1,
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value <= 0)
         .toMin(),
       undefined,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value <= 0)
         .toMin(),
       -3,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 100)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<[number?, number?]> => AsyncStream.of(iterable)
+        .filter((value) => value > 100)
         .toMinMax(),
       [undefined, undefined],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<[number?, number?]> => AsyncStream.of(iterable)
+        .filter((value) => value <= 0)
         .toMinMax(),
       [-3, -1],
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<[number?, number?]> => AsyncStream.of(iterable)
         .toMinMax((item) => -(item as number)),
       [3, -3],
     ],
     [
       [],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable).toProduct(),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable).toProduct(),
       undefined,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable).toProduct(),
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable).toProduct(),
       -36,
     ],
     [
       [],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .toProduct(),
       undefined,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .toProduct(),
       6,
     ],
     [
       [],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value <= 0)
         .toProduct(),
       undefined,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number | undefined> => AsyncStream.of(iterable)
+        .filter((value) => value <= 0)
         .toProduct(),
       -6,
     ],
     [
       [],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .toSum(),
       0,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => value > 0)
         .toSum(),
       6,
     ],
     [
       [],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => value <= 0)
         .toSum(),
       0,
     ],
     [
       [1, -1, 2, -2, 3, -3],
-      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<number> => AsyncStream.of(iterable)
+        .filter((value) => value <= 0)
         .toSum(),
       -6,
     ],
