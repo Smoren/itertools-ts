@@ -12,15 +12,15 @@ import {
 } from "../fixture";
 
 describe.each([
-  // ...dataProviderForAsyncGenerators(),
-  // ...dataProviderForAsyncIterables(),
-  // ...dataProviderForAsyncIterators(),
-  // ...dataProviderForArrays(),
-  // ...dataProviderForGenerators(),
-  // ...dataProviderForIterables(),
-  // ...dataProviderForIterators(),
-  // ...dataProviderForStrings(),
-  // ...dataProviderForSets(),
+  ...dataProviderForAsyncGenerators(),
+  ...dataProviderForAsyncIterables(),
+  ...dataProviderForAsyncIterators(),
+  ...dataProviderForArrays(),
+  ...dataProviderForGenerators(),
+  ...dataProviderForIterables(),
+  ...dataProviderForIterators(),
+  ...dataProviderForStrings(),
+  ...dataProviderForSets(),
   ...dataProviderForMaps(),
 ])(
   "AsyncStream Single Test",
@@ -1951,236 +1951,237 @@ function dataProviderForSets(): Array<[Set<any>, (iterable: Set<any>) => Promise
 
 function dataProviderForMaps(): Array<[Map<any, any>, (iterable: Map<any, any>) => Promise<Array<any>>, Array<any>]> {
   return [
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .filter((value) => value > 0)
-    //     .compress([0, 1, 1])
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .filter((value) => value > 0)
-    //     .compress([0, 1, 1])
-    //     .toArray(),
-    //   [2, 3],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .filter((value) => value > 0)
-    //     .compress([0, 1, 1])
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .filter((value) => value > 0)
-    //     .compress([0, 1, 1])
-    //     .toArray(),
-    //   [2, 3],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .filter((value) => value > 0)
-    //     .compress([0, 1, 1])
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .filter((value) => value > 0)
-    //     .compress([0, 1, 1])
-    //     .toArray(),
-    //   [2, 3],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .dropWhile((value) => Math.abs(value[1]) < 3)
-    //     .compress([0, 1])
-    //     .values()
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .dropWhile((value) => Math.abs(value[1]) < 3)
-    //     .compress([0, 1])
-    //     .values()
-    //     .toArray(),
-    //   [-3],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .takeWhile((value) => Math.abs(value[1]) < 3)
-    //     .values()
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .takeWhile((value) => Math.abs(value[1]) < 3)
-    //     .values()
-    //     .toArray(),
-    //   [1, -1, 2, -2],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .takeWhile((value) => Math.abs(value[1]) < 3)
-    //     .compress([0, 1, 0, 1])
-    //     .values()
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .takeWhile((value) => Math.abs(value[1]) < 3)
-    //     .compress([0, 1, 0, 1])
-    //     .values()
-    //     .toArray(),
-    //   [-1, -2],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, unknown>): Promise<Array<[number, [number, unknown]]>> => AsyncStream.of(iterable)
-    //     .enumerate()
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1]),
-    //   (iterable: Map<number, unknown>): Promise<Array<[number, [number, unknown]]>> => AsyncStream.of(iterable)
-    //     .enumerate()
-    //     .toArray(),
-    //   [[0, [0, 1]]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3]),
-    //   (iterable: Map<number, unknown>): Promise<Array<[number, [number, unknown]]>> => AsyncStream.of(iterable)
-    //     .enumerate()
-    //     .toArray(),
-    //   [[0, [0, 1]], [1, [1, 2]], [2, [2, 3]]],
-    // ],
-    // [
-    //   new Map([['a', 1], ['b', 2], ['c', 3]]),
-    //   (iterable: Map<string, number>): Promise<Array<string>> => AsyncStream.of(iterable)
-    //     .keys()
-    //     .toArray(),
-    //   ['a', 'b', 'c'],
-    // ],
-    // [
-    //   new Map([]),
-    //   (iterable: Map<number, unknown>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .keys()
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   new Map([['a', 1], ['b', 2], ['c', 3]]),
-    //   (iterable: Map<string, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .toArray(),
-    //   [1, 2, 3],
-    // ],
-    // [
-    //   new Map([]),
-    //   (iterable: Map<number, unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .map((item) => item[1])
-    //     .filter((value) => value > 0)
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .map((item) => item[1])
-    //     .filter((value) => value > 0)
-    //     .toArray(),
-    //   [1, 2, 3],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (): Promise<Array<number>> => AsyncStream.ofEmpty()
-    //     .map((item) => item[1] + 1)
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .map((item) => item[1] + 1)
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .map((item) => item[1] + 1)
-    //     .toArray(),
-    //   [2],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .map((item) => item[1] + 1)
-    //     .toArray(),
-    //   [2, 3, 4],
-    // ],
-    // [
-    //   createMapFixture(['a', 'b', 'c']),
-    //   (iterable: Map<number, string>): Promise<Array<string>> => AsyncStream.of(iterable)
-    //     .map((item) => `[${item[1]}]`)
-    //     .toArray(),
-    //   ['[a]', '[b]', '[c]'],
-    // ],
-    // [
-    //   createMapFixture([[1], [2], [3]]),
-    //   (iterable: Map<number, [number]>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .map((item) => item[1][0])
-    //     .toArray(),
-    //   [1, 2, 3],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3]),
-    //   (iterable: Map<number, unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
-    //     .flatMap((item) => single.repeat((item as Array<unknown>)[1], ((item as Array<unknown>)[1] as number) + 1))
-    //     .toArray(),
-    //   [1, 1, 2, 2, 2, 3, 3, 3, 3],
-    // ],
-    // [
-    //   createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
-    //   (iterable: Map<number, unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
-    //     .flatMap((item) => (item as Array<unknown>)[1])
-    //     .toArray(),
-    //   [1, 2, 3, 4, 5, 6, 7, 8],
-    // ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .values()
+        .filter((value) => value > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .values()
+        .filter((value) => value > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .values()
+        .filter((value) => value > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .values()
+        .filter((value) => value > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .values()
+        .filter((value) => value > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .values()
+        .filter((value) => value > 0)
+        .compress([0, 1, 1])
+        .toArray(),
+      [2, 3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .dropWhile((value) => Math.abs(value[1]) < 3)
+        .compress([0, 1])
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .dropWhile((value) => Math.abs(value[1]) < 3)
+        .compress([0, 1])
+        .values()
+        .toArray(),
+      [-3],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .takeWhile((value) => Math.abs(value[1]) < 3)
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .takeWhile((value) => Math.abs(value[1]) < 3)
+        .values()
+        .toArray(),
+      [1, -1, 2, -2],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .takeWhile((value) => Math.abs(value[1]) < 3)
+        .compress([0, 1, 0, 1])
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .takeWhile((value) => Math.abs(value[1]) < 3)
+        .compress([0, 1, 0, 1])
+        .values()
+        .toArray(),
+      [-1, -2],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, unknown>): Promise<Array<[number, [number, unknown]]>> => AsyncStream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1]),
+      (iterable: Map<number, unknown>): Promise<Array<[number, [number, unknown]]>> => AsyncStream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, [0, 1]]],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Map<number, unknown>): Promise<Array<[number, [number, unknown]]>> => AsyncStream.of(iterable)
+        .enumerate()
+        .toArray(),
+      [[0, [0, 1]], [1, [1, 2]], [2, [2, 3]]],
+    ],
+    [
+      new Map([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Map<string, number>): Promise<Array<string>> => AsyncStream.of(iterable)
+        .keys()
+        .toArray(),
+      ['a', 'b', 'c'],
+    ],
+    [
+      new Map([]),
+      (iterable: Map<number, unknown>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .keys()
+        .toArray(),
+      [],
+    ],
+    [
+      new Map([['a', 1], ['b', 2], ['c', 3]]),
+      (iterable: Map<string, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .values()
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      new Map([]),
+      (iterable: Map<number, unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
+        .values()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
+        .filter((value) => value > 0)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1])
+        .filter((value) => value > 0)
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createMapFixture([]),
+      (): Promise<Array<number>> => AsyncStream.ofEmpty()
+        .map((item) => item[1] + 1)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1] + 1)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1] + 1)
+        .toArray(),
+      [2],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1] + 1)
+        .toArray(),
+      [2, 3, 4],
+    ],
+    [
+      createMapFixture(['a', 'b', 'c']),
+      (iterable: Map<number, string>): Promise<Array<string>> => AsyncStream.of(iterable)
+        .map((item) => `[${item[1]}]`)
+        .toArray(),
+      ['[a]', '[b]', '[c]'],
+    ],
+    [
+      createMapFixture([[1], [2], [3]]),
+      (iterable: Map<number, [number]>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .map((item) => item[1][0])
+        .toArray(),
+      [1, 2, 3],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Map<number, unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
+        .flatMap((item) => single.repeat((item as Array<unknown>)[1], ((item as Array<unknown>)[1] as number) + 1))
+        .toArray(),
+      [1, 1, 2, 2, 2, 3, 3, 3, 3],
+    ],
     [
       createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
       (iterable: Map<number, unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
+        .flatMap((item) => (item as Array<unknown>)[1])
+        .toArray(),
+      [1, 2, 3, 4, 5, 6, 7, 8],
+    ],
+    [
+      createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
+      (iterable: Map<number, unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
+        .values()
         .flatten()
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
@@ -2188,6 +2189,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (iterable: Map<any, any>) 
     [
       createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
       (iterable: Map<number, unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
+        .values()
         .flatten(1)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
@@ -2195,6 +2197,7 @@ function dataProviderForMaps(): Array<[Map<any, any>, (iterable: Map<any, any>) 
     [
       createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
       (iterable: Map<number, unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
+        .values()
         .flatten(2)
         .toArray(),
       [1, 2, 3, 4, 5, 6, 7, 8],
@@ -2202,458 +2205,459 @@ function dataProviderForMaps(): Array<[Map<any, any>, (iterable: Map<any, any>) 
     [
       createMapFixture([1, 2, [3, 4], [5, 6], 7, 8]),
       (iterable: Map<number, unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
+        .values()
         .flatten(0)
         .toArray(),
       [1, 2, [3, 4], [5, 6], 7, 8],
     ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] < 0)
-    //     .chunkwise(2)
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] < 0)
-    //     .chunkwise(2)
-    //     .toArray(),
-    //   [[[1, -1], [3, -2]], [[5, -3]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] > 0)
-    //     .chunkwise(2)
-    //     .toArray(),
-    //   [[[4, 1], [5, 2]], [[6, 3], [7, 4]], [[8, 5]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] >= 0)
-    //     .chunkwise(2)
-    //     .toArray(),
-    //   [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => !(value[1] > 0))
-    //     .chunkwiseOverlap(2, 0)
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => !(value[1] > 0))
-    //     .chunkwiseOverlap(2, 0, false)
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => !(value[1] > 0))
-    //     .chunkwiseOverlap(2, 1)
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => !(value[1] > 0))
-    //     .chunkwiseOverlap(2, 1, false)
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => !(value[1] > 0))
-    //     .chunkwiseOverlap(2, 0)
-    //     .toArray(),
-    //   [[[1, -1], [3, -2]], [[5, -3]]],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => !(value[1] > 0))
-    //     .chunkwiseOverlap(2, 0, false)
-    //     .toArray(),
-    //   [[[1, -1], [3, -2]]],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => !(value[1] > 0))
-    //     .chunkwiseOverlap(2, 1)
-    //     .toArray(),
-    //   [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => !(value[1] > 0))
-    //     .chunkwiseOverlap(2, 1, false)
-    //     .toArray(),
-    //   [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] > 0)
-    //     .chunkwiseOverlap(2, 0)
-    //     .toArray(),
-    //   [[[4, 1], [5, 2]], [[6, 3], [7, 4]], [[8, 5]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] > 0)
-    //     .chunkwiseOverlap(2, 0, false)
-    //     .toArray(),
-    //   [[[4, 1], [5, 2]], [[6, 3], [7, 4]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] > 0)
-    //     .chunkwiseOverlap(2, 1)
-    //     .toArray(),
-    //   [[[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] > 0)
-    //     .chunkwiseOverlap(2, 1, false)
-    //     .toArray(),
-    //   [[[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] >= 0)
-    //     .chunkwiseOverlap(2, 0)
-    //     .toArray(),
-    //   [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] >= 0)
-    //     .chunkwiseOverlap(2, 0, false)
-    //     .toArray(),
-    //   [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] >= 0)
-    //     .chunkwiseOverlap(2, 1)
-    //     .toArray(),
-    //   [[[3, 0], [4, 1]], [[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] >= 0)
-    //     .chunkwiseOverlap(2, 1, false)
-    //     .toArray(),
-    //   [[[3, 0], [4, 1]], [[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] >= 0)
-    //     .chunkwiseOverlap(3, 1)
-    //     .toArray(),
-    //   [
-    //     [[3, 0], [4, 1], [5, 2]],
-    //     [[5, 2], [6, 3], [7, 4]],
-    //     [[7, 4], [8, 5], [9, 6]],
-    //     [[9, 6], [10, 7], [11, 8]],
-    //     [[11, 8], [12, 9]],
-    //   ],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] >= 0)
-    //     .chunkwiseOverlap(3, 1, false)
-    //     .toArray(),
-    //   [
-    //     [[3, 0], [4, 1], [5, 2]],
-    //     [[5, 2], [6, 3], [7, 4]],
-    //     [[7, 4], [8, 5], [9, 6]],
-    //     [[9, 6], [10, 7], [11, 8]],
-    //   ],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] >= 0)
-    //     .chunkwiseOverlap(3, 2)
-    //     .toArray(),
-    //   [
-    //     [[3, 0], [4, 1], [5, 2]],
-    //     [[4, 1], [5, 2], [6, 3]],
-    //     [[5, 2], [6, 3], [7, 4]],
-    //     [[6, 3], [7, 4], [8, 5]],
-    //     [[7, 4], [8, 5], [9, 6]],
-    //     [[8, 5], [9, 6], [10, 7]],
-    //     [[9, 6], [10, 7], [11, 8]],
-    //     [[10, 7], [11, 8], [12, 9]],
-    //   ],
-    // ],
-    // [
-    //   createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] >= 0)
-    //     .chunkwiseOverlap(3, 2, false)
-    //     .toArray(),
-    //   [
-    //     [[3, 0], [4, 1], [5, 2]],
-    //     [[4, 1], [5, 2], [6, 3]],
-    //     [[5, 2], [6, 3], [7, 4]],
-    //     [[6, 3], [7, 4], [8, 5]],
-    //     [[7, 4], [8, 5], [9, 6]],
-    //     [[8, 5], [9, 6], [10, 7]],
-    //     [[9, 6], [10, 7], [11, 8]],
-    //     [[10, 7], [11, 8], [12, 9]],
-    //   ],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
-    //     .filter((value) => !(value[0] > 0))
-    //     .pairwise()
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<[[number, number], [number, number]]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[0] > 0)
-    //     .pairwise()
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<[[number, number], [number, number]]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] > 0)
-    //     .pairwise()
-    //     .toArray(),
-    //   [[[0, 1], [2, 2]], [[2, 2], [4, 3]]],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<number, number>): Promise<Array<[[number, number], [number, number]]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] > 0)
-    //     .pairwise()
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<[[number, number], [number, number]]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] < 0)
-    //     .pairwise()
-    //     .toArray(),
-    //   [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<unknown, unknown>): Promise<Array<[unknown, unknown]>> => AsyncStream.of(iterable)
-    //     .limit(0)
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<unknown, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .limit(5)
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7]),
-    //   (iterable: Map<unknown, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .limit(5)
-    //     .toArray(),
-    //   [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7]),
-    //   (iterable: Map<unknown, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .limit(10)
-    //     .toArray(),
-    //   [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<unknown, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .filter((x) => x[1] < 5)
-    //     .limit(2)
-    //     .toArray(),
-    //   [[0, 1], [1, 2]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<unknown, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .filter((x) => x[1] < 5)
-    //     .limit(10)
-    //     .toArray(),
-    //   [[0, 1], [1, 2], [2, 3], [3, 4]],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   (iterable: Map<unknown, unknown>): Promise<Array<[unknown, unknown]>> => AsyncStream.of(iterable)
-    //     .limit(0)
-    //     .chainWith(createMapFixture([1, 2, 3]))
-    //     .toArray(),
-    //   [[0, 1], [1, 2], [2, 3]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .skip(0)
-    //     .toArray(),
-    //   [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .skip(0, 1)
-    //     .toArray(),
-    //   [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .skip(10, 10)
-    //     .toArray(),
-    //   [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .skip(3)
-    //     .toArray(),
-    //   [[3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .skip(3, 2)
-    //     .toArray(),
-    //   [[0, 1], [1, 2], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .skip(10, 2)
-    //     .toArray(),
-    //   [[0, 1], [1, 2]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .slice()
-    //     .toArray(),
-    //   [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .slice(2)
-    //     .toArray(),
-    //   [[2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .slice(2, 4)
-    //     .toArray(),
-    //   [[2, 3], [3, 4], [4, 5], [5, 6]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .slice(2, undefined, 2)
-    //     .toArray(),
-    //   [[2, 3], [4, 5], [6, 7], [8, 9]],
-    // ],
-    // [
-    //   createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
-    //   (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
-    //     .slice(2, 3, 2)
-    //     .toArray(),
-    //   [[2, 3], [4, 5], [6, 7]],
-    // ],
-    // [
-    //   createMapFixture([]),
-    //   // TODO repair type
-    //   (iterable: Map<number, number>) => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] % 2 !== 0)
-    //     .groupBy((item) => item[1] > 0 ? 'pos' : 'neg')
-    //     .toArray(),
-    //   [],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   // TODO repair type
-    //   (iterable: Map<number, number>) => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] % 2 !== 0)
-    //     .groupBy((item) => item[1] > 0 ? 'pos' : 'neg')
-    //     .toArray(),
-    //   [['pos', [[0, 1], [4, 3]]], ['neg', [[1, -1], [5, -3]]]],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<[string, Array<[number, number]>]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] % 2 !== 0)
-    //     .groupBy((item) => item[1] > 0 ? 'pos' : 'neg', undefined)
-    //     .toArray(),
-    //   [['pos', [[0, 1], [4, 3]]], ['neg', [[1, -1], [5, -3]]]],
-    // ],
-    // [
-    //   createMapFixture([1, -1, 2, -2, 3, -3]),
-    //   (iterable: Map<number, number>): Promise<Array<[string, Record<string, [number, number]>]>> => AsyncStream.of(iterable)
-    //     .filter((value) => value[1] % 2 !== 0)
-    //     .groupBy((item) => item[1] > 0 ? 'pos' : 'neg', (x) => `${x[0]}`)
-    //     .toArray(),
-    //   [['pos', {'0': [0, 1], '4': [4, 3]}], ['neg', {'1': [1, -1], '5': [5, -3]}]],
-    // ],
-    // [
-    //   createMapFixture(['b', 'f', 'c', 'e', 'd', 'a']),
-    //   (iterable: Map<number, string>): Promise<Array<string>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .sort()
-    //     .toArray(),
-    //   ['a', 'b', 'c', 'd', 'e', 'f'],
-    // ],
-    // [
-    //   createMapFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .sort((lhs, rhs) => lhs - rhs)
-    //     .toArray(),
-    //   [-3, -2, 1, 2, 2, 3, 3, 5, 7],
-    // ],
-    // [
-    //   createMapFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
-    //   (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
-    //     .values()
-    //     .sort((lhs, rhs) => rhs - lhs)
-    //     .toArray(),
-    //   [7, 5, 3, 3, 2, 2, 1, -2, -3],
-    // ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] < 0)
+        .chunkwise(2)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] < 0)
+        .chunkwise(2)
+        .toArray(),
+      [[[1, -1], [3, -2]], [[5, -3]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] > 0)
+        .chunkwise(2)
+        .toArray(),
+      [[[4, 1], [5, 2]], [[6, 3], [7, 4]], [[8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] >= 0)
+        .chunkwise(2)
+        .toArray(),
+      [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value[1] > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value[1] > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value[1] > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value[1] > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value[1] > 0))
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[[1, -1], [3, -2]], [[5, -3]]],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value[1] > 0))
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[[1, -1], [3, -2]]],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value[1] > 0))
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value[1] > 0))
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] > 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[[4, 1], [5, 2]], [[6, 3], [7, 4]], [[8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] > 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[[4, 1], [5, 2]], [[6, 3], [7, 4]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] > 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] > 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] >= 0)
+        .chunkwiseOverlap(2, 0)
+        .toArray(),
+      [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] >= 0)
+        .chunkwiseOverlap(2, 0, false)
+        .toArray(),
+      [[[3, 0], [4, 1]], [[5, 2], [6, 3]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] >= 0)
+        .chunkwiseOverlap(2, 1)
+        .toArray(),
+      [[[3, 0], [4, 1]], [[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] >= 0)
+        .chunkwiseOverlap(2, 1, false)
+        .toArray(),
+      [[[3, 0], [4, 1]], [[4, 1], [5, 2]], [[5, 2], [6, 3]], [[6, 3], [7, 4]], [[7, 4], [8, 5]]],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] >= 0)
+        .chunkwiseOverlap(3, 1)
+        .toArray(),
+      [
+        [[3, 0], [4, 1], [5, 2]],
+        [[5, 2], [6, 3], [7, 4]],
+        [[7, 4], [8, 5], [9, 6]],
+        [[9, 6], [10, 7], [11, 8]],
+        [[11, 8], [12, 9]],
+      ],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] >= 0)
+        .chunkwiseOverlap(3, 1, false)
+        .toArray(),
+      [
+        [[3, 0], [4, 1], [5, 2]],
+        [[5, 2], [6, 3], [7, 4]],
+        [[7, 4], [8, 5], [9, 6]],
+        [[9, 6], [10, 7], [11, 8]],
+      ],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] >= 0)
+        .chunkwiseOverlap(3, 2)
+        .toArray(),
+      [
+        [[3, 0], [4, 1], [5, 2]],
+        [[4, 1], [5, 2], [6, 3]],
+        [[5, 2], [6, 3], [7, 4]],
+        [[6, 3], [7, 4], [8, 5]],
+        [[7, 4], [8, 5], [9, 6]],
+        [[8, 5], [9, 6], [10, 7]],
+        [[9, 6], [10, 7], [11, 8]],
+        [[10, 7], [11, 8], [12, 9]],
+      ],
+    ],
+    [
+      createMapFixture([-3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] >= 0)
+        .chunkwiseOverlap(3, 2, false)
+        .toArray(),
+      [
+        [[3, 0], [4, 1], [5, 2]],
+        [[4, 1], [5, 2], [6, 3]],
+        [[5, 2], [6, 3], [7, 4]],
+        [[6, 3], [7, 4], [8, 5]],
+        [[7, 4], [8, 5], [9, 6]],
+        [[8, 5], [9, 6], [10, 7]],
+        [[9, 6], [10, 7], [11, 8]],
+        [[10, 7], [11, 8], [12, 9]],
+      ],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<[number, number][]>> => AsyncStream.of(iterable)
+        .filter((value) => !(value[0] > 0))
+        .pairwise()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<[[number, number], [number, number]]>> => AsyncStream.of(iterable)
+        .filter((value) => value[0] > 0)
+        .pairwise()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<[[number, number], [number, number]]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] > 0)
+        .pairwise()
+        .toArray(),
+      [[[0, 1], [2, 2]], [[2, 2], [4, 3]]],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<number, number>): Promise<Array<[[number, number], [number, number]]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] > 0)
+        .pairwise()
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<[[number, number], [number, number]]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] < 0)
+        .pairwise()
+        .toArray(),
+      [[[1, -1], [3, -2]], [[3, -2], [5, -3]]],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<unknown, unknown>): Promise<Array<[unknown, unknown]>> => AsyncStream.of(iterable)
+        .limit(0)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<unknown, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Map<unknown, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .limit(5)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7]),
+      (iterable: Map<unknown, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .limit(10)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<unknown, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .filter((x) => x[1] < 5)
+        .limit(2)
+        .toArray(),
+      [[0, 1], [1, 2]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<unknown, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .filter((x) => x[1] < 5)
+        .limit(10)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4]],
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<unknown, unknown>): Promise<Array<[unknown, unknown]>> => AsyncStream.of(iterable)
+        .limit(0)
+        .chainWith(createMapFixture([1, 2, 3]))
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .skip(0)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .skip(0, 1)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .skip(10, 10)
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .skip(3)
+        .toArray(),
+      [[3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .skip(3, 2)
+        .toArray(),
+      [[0, 1], [1, 2], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .skip(10, 2)
+        .toArray(),
+      [[0, 1], [1, 2]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .slice()
+        .toArray(),
+      [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .slice(2)
+        .toArray(),
+      [[2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8], [8, 9], [9, 10]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .slice(2, 4)
+        .toArray(),
+      [[2, 3], [3, 4], [4, 5], [5, 6]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .slice(2, undefined, 2)
+        .toArray(),
+      [[2, 3], [4, 5], [6, 7], [8, 9]],
+    ],
+    [
+      createMapFixture([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]),
+      (iterable: Map<number, number>): Promise<Array<[unknown, number]>> => AsyncStream.of(iterable)
+        .slice(2, 3, 2)
+        .toArray(),
+      [[2, 3], [4, 5], [6, 7]],
+    ],
+    [
+      createMapFixture([]),
+      // TODO repair type
+      (iterable: Map<number, number>) => AsyncStream.of(iterable)
+        .filter((value) => value[1] % 2 !== 0)
+        .groupBy((item) => item[1] > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      // TODO repair type
+      (iterable: Map<number, number>) => AsyncStream.of(iterable)
+        .filter((value) => value[1] % 2 !== 0)
+        .groupBy((item) => item[1] > 0 ? 'pos' : 'neg')
+        .toArray(),
+      [['pos', [[0, 1], [4, 3]]], ['neg', [[1, -1], [5, -3]]]],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<[string, Array<[number, number]>]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] % 2 !== 0)
+        .groupBy((item) => item[1] > 0 ? 'pos' : 'neg', undefined)
+        .toArray(),
+      [['pos', [[0, 1], [4, 3]]], ['neg', [[1, -1], [5, -3]]]],
+    ],
+    [
+      createMapFixture([1, -1, 2, -2, 3, -3]),
+      (iterable: Map<number, number>): Promise<Array<[string, Record<string, [number, number]>]>> => AsyncStream.of(iterable)
+        .filter((value) => value[1] % 2 !== 0)
+        .groupBy((item) => item[1] > 0 ? 'pos' : 'neg', (x) => `${x[0]}`)
+        .toArray(),
+      [['pos', {'0': [0, 1], '4': [4, 3]}], ['neg', {'1': [1, -1], '5': [5, -3]}]],
+    ],
+    [
+      createMapFixture(['b', 'f', 'c', 'e', 'd', 'a']),
+      (iterable: Map<number, string>): Promise<Array<string>> => AsyncStream.of(iterable)
+        .values()
+        .sort()
+        .toArray(),
+      ['a', 'b', 'c', 'd', 'e', 'f'],
+    ],
+    [
+      createMapFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .values()
+        .sort((lhs, rhs) => lhs - rhs)
+        .toArray(),
+      [-3, -2, 1, 2, 2, 3, 3, 5, 7],
+    ],
+    [
+      createMapFixture([2, 3, 1, 2, -3, -2, 5, 7, 3]),
+      (iterable: Map<number, number>): Promise<Array<number>> => AsyncStream.of(iterable)
+        .values()
+        .sort((lhs, rhs) => rhs - lhs)
+        .toArray(),
+      [7, 5, 3, 3, 2, 2, 1, -2, -3],
+    ],
   ];
 }
 
