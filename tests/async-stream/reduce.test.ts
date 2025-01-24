@@ -479,21 +479,21 @@ function dataProviderForArrays(): Array<[Array<number>, (data: Iterable<number> 
 function dataProviderForGenerators(): Array<[Generator<number>, (data: Generator<number>) => Promise<any>, any]> {
   return dataProviderForArrays().map((item) => [
     createGeneratorFixture(item[0]),
-    ...item.slice(1) as [(data: Generator<number>) => any, any],
+    ...item.slice(1) as [(data: Iterable<number> | Iterator<number>) => any, any],
   ]);
 }
 
 function dataProviderForIterables(): Array<[Iterable<number>, (data: Iterable<number>) => Promise<any>, any]> {
   return dataProviderForArrays().map((item) => [
     createIterableFixture(item[0]),
-    ...item.slice(1) as [(data: Iterable<number>) => any, any],
+    ...item.slice(1) as [(data: Iterable<number> | Iterator<number>) => any, any],
   ]);
 }
 
 function dataProviderForIterators(): Array<[Iterator<number>, (data: Iterator<number>) => Promise<any>, any]> {
   return dataProviderForArrays().map((item) => [
     createIteratorFixture(item[0]),
-    ...item.slice(1) as [(data: Iterator<number>) => any, any],
+    ...item.slice(1) as [(data: Iterable<number> | Iterator<number>) => any, any],
   ]);
 }
 
@@ -1656,43 +1656,43 @@ function dataProviderForMaps(): Array<[Map<number, number>, (data: Map<number, n
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<number>, (data: AsyncGenerator<number>) => Promise<any>, any]> {
+function dataProviderForAsync(): Array<[Array<number>, (data: AsyncIterable<number> | AsyncIterator<number>) => Promise<any>, any]> {
   return [
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toValue(function (carry, item) {
           return (carry as number) + (item as number);
         }),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toValue(function (carry, item) {
           return (carry as number) + (item as number);
         }, 1),
       1,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toValue(function (carry, item) {
           return (carry as number) + (item as number);
         }, 0),
       0,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toValue(function (carry, item) {
           return (carry as number) + (item as number);
         }, 1),
       1,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value: unknown) => (value as number) > 0)
         .toValue(function (carry, item) {
           return (carry as number) + (item as number);
@@ -1700,57 +1700,57 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<number>, (data:
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toValue((carry, item) => (carry as number) + (item as number), 1),
       1,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toValue((carry, item) => (carry as number) + (item as number), 0),
       6,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toValue((carry, item) => (carry as number) + (item as number), 1),
       7,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => !((value as number) > 0))
         .toValue((carry, item) => (carry as number) + (item as number)),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => !((value as number) > 0))
         .toValue((carry, item) => (carry as number) + (item as number), 1),
       1,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => !((value as number) > 0))
         .toValue((carry, item) => (carry as number) + (item as number), 0),
       -6,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => !((value as number) > 0))
         .toValue((carry, item) => (carry as number) + (item as number), 1),
       -5,
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipWith(
           [10, 20, 30],
           [100, 200, 300]
@@ -1762,8 +1762,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<number>, (data:
       666,
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipEqualWith(
           [10, 20, 30],
           [100, 200, 300]
@@ -1775,8 +1775,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<number>, (data:
       666,
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3, 4, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipWith(
           [10, 20, 30],
           [100, 200, 300]
@@ -1788,8 +1788,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<number>, (data:
       666,
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3, 4, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .zipLongestWith(
           [10, 20, 30],
           [100, 200, 300]
@@ -1801,8 +1801,8 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<number>, (data:
       675,
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .chainWith(
           [4, 5, 6],
           [7, 8, 9]
@@ -1815,1184 +1815,311 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<number>, (data:
       90,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toAverage(),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toAverage(),
       0,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toRange(),
       0,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toRange(),
       6,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toCount(),
       0,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toCount(),
       6,
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3, 4, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toFirst(),
       1,
     ],
     [
-      createAsyncGeneratorFixture([2, 1, 3, 5]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [2, 1, 3, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toFirst(),
       2,
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3, 4, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toFirstAndLast(),
       [1, 5],
     ],
     [
-      createAsyncGeneratorFixture([2, 1, 3, 5]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [2, 1, 3, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toFirstAndLast(),
       [2, 5],
     ],
     [
-      createAsyncGeneratorFixture([2, 3, 1, 5]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [2, 3, 1, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toLast(),
       5,
     ],
     [
-      createAsyncGeneratorFixture([1, 2, 3, 4, 0]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, 2, 3, 4, 0],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toLast(),
       0,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMax(),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMax((value) => (value as number)),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMax((value) => -(value as number)),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMax(),
       3,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMax((value) => (value as number)),
       3,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMax((value) => -(value as number)),
       -3,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toMax(),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toMax(),
       3,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) <= 0)
         .toMax(),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) <= 0)
         .toMax(),
       -1,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMin(),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMin((value) => (value as number)),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMin((value) => -(value as number)),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMin(),
       -3,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMin((value) => (value as number)),
       -3,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMin((value) => -(value as number)),
       3,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toMin(),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toMin(),
       1,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) <= 0)
         .toMin(),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) <= 0)
         .toMin(),
       -3,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 100)
         .toMinMax(),
       [undefined, undefined],
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) <= 0)
         .toMinMax(),
       [-3, -1],
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<unknown>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .toMinMax((item) => -(item as number)),
       [3, -3],
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable).toProduct(),
+      [],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable).toProduct(),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable).toProduct(),
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable).toProduct(),
       -36,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toProduct(),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toProduct(),
       6,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) <= 0)
         .toProduct(),
       undefined,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) <= 0)
         .toProduct(),
       -6,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toSum(),
       0,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) > 0)
         .toSum(),
       6,
     ],
     [
-      createAsyncGeneratorFixture([]),
-      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
+      [],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) <= 0)
         .toSum(),
       0,
     ],
     [
-      createAsyncGeneratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncGenerator<number>) => AsyncStream.of(iterable)
+      [1, -1, 2, -2, 3, -3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((value) => (value as number) <= 0)
         .toSum(),
       -6,
     ],
   ];
+}
+
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<number>, (data: AsyncGenerator<number>) => Promise<any>, any]> {
+  return dataProviderForAsync().map((item) => [
+    createAsyncGeneratorFixture(item[0]),
+    ...item.slice(1) as [(data: AsyncIterable<number> | AsyncIterator<number>) => any, any],
+  ]);
 }
 
 function dataProviderForAsyncIterables(): Array<[AsyncIterable<number>, (data: AsyncIterable<number>) => Promise<any>, any]> {
-  return [
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }, 1),
-      1,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }, 0),
-      0,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }, 1),
-      1,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value: unknown) => (value as number) > 0)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
-      1,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toValue((carry, item) => (carry as number) + (item as number), 0),
-      6,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
-      7,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number)),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
-      1,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number), 0),
-      -6,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
-      -5,
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipWith(
-          [10, 20, 30],
-          [100, 200, 300]
-        )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
-        }, 0),
-      666,
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipEqualWith(
-          [10, 20, 30],
-          [100, 200, 300]
-        )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
-        }, 0),
-      666,
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipWith(
-          [10, 20, 30],
-          [100, 200, 300]
-        )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
-        }, 0),
-      666,
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .zipLongestWith(
-          [10, 20, 30],
-          [100, 200, 300]
-        )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + (current ?? 0));
-        }, 0),
-      675,
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .chainWith(
-          [4, 5, 6],
-          [7, 8, 9]
-        )
-        .zipEqualWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
-        }, 0),
-      90,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toAverage(),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toAverage(),
-      0,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toRange(),
-      0,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toRange(),
-      6,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toCount(),
-      0,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toCount(),
-      6,
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toFirst(),
-      1,
-    ],
-    [
-      createAsyncIterableFixture([2, 1, 3, 5]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toFirst(),
-      2,
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toFirstAndLast(),
-      [1, 5],
-    ],
-    [
-      createAsyncIterableFixture([2, 1, 3, 5]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toFirstAndLast(),
-      [2, 5],
-    ],
-    [
-      createAsyncIterableFixture([2, 3, 1, 5]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toLast(),
-      5,
-    ],
-    [
-      createAsyncIterableFixture([1, 2, 3, 4, 0]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toLast(),
-      0,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMax(),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => (value as number)),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => -(value as number)),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMax(),
-      3,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => (value as number)),
-      3,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => -(value as number)),
-      -3,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toMax(),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toMax(),
-      3,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toMax(),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toMax(),
-      -1,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMin(),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => (value as number)),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => -(value as number)),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMin(),
-      -3,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => (value as number)),
-      -3,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => -(value as number)),
-      3,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toMin(),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toMin(),
-      1,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toMin(),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toMin(),
-      -3,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 100)
-        .toMinMax(),
-      [undefined, undefined],
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toMinMax(),
-      [-3, -1],
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<unknown>) => AsyncStream.of(iterable)
-        .toMinMax((item) => -(item as number)),
-      [3, -3],
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable).toProduct(),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable).toProduct(),
-      -36,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toProduct(),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toProduct(),
-      6,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toProduct(),
-      undefined,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toProduct(),
-      -6,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toSum(),
-      0,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toSum(),
-      6,
-    ],
-    [
-      createAsyncIterableFixture([]),
-      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toSum(),
-      0,
-    ],
-    [
-      createAsyncIterableFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterable<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toSum(),
-      -6,
-    ],
-  ];
+  return dataProviderForAsync().map((item) => [
+    createAsyncIterableFixture(item[0]),
+    ...item.slice(1) as [(data: AsyncIterable<number> | AsyncIterator<number>) => any, any],
+  ]);
 }
 
 function dataProviderForAsyncIterators(): Array<[AsyncIterator<number>, (data: AsyncIterator<number>) => Promise<any>, any]> {
-  return [
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }, 1),
-      1,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }, 0),
-      0,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }, 1),
-      1,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value: unknown) => (value as number) > 0)
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as number);
-        }),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
-      1,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toValue((carry, item) => (carry as number) + (item as number), 0),
-      6,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
-      7,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number)),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
-      1,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number), 0),
-      -6,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => !((value as number) > 0))
-        .toValue((carry, item) => (carry as number) + (item as number), 1),
-      -5,
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipWith(
-          [10, 20, 30],
-          [100, 200, 300]
-        )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
-        }, 0),
-      666,
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipEqualWith(
-          [10, 20, 30],
-          [100, 200, 300]
-        )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
-        }, 0),
-      666,
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipWith(
-          [10, 20, 30],
-          [100, 200, 300]
-        )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
-        }, 0),
-      666,
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .zipLongestWith(
-          [10, 20, 30],
-          [100, 200, 300]
-        )
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + (current ?? 0));
-        }, 0),
-      675,
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .chainWith(
-          [4, 5, 6],
-          [7, 8, 9]
-        )
-        .zipEqualWith([1, 2, 3, 4, 5, 6, 7, 8, 9])
-        .toValue(function (carry, item) {
-          return (carry as number) + (item as Array<number>)
-            .reduce((accumulator, current) => accumulator + current);
-        }, 0),
-      90,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toAverage(),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toAverage(),
-      0,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toRange(),
-      0,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toRange(),
-      6,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toCount(),
-      0,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toCount(),
-      6,
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toFirst(),
-      1,
-    ],
-    [
-      createAsyncIteratorFixture([2, 1, 3, 5]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toFirst(),
-      2,
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3, 4, 5]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toFirstAndLast(),
-      [1, 5],
-    ],
-    [
-      createAsyncIteratorFixture([2, 1, 3, 5]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toFirstAndLast(),
-      [2, 5],
-    ],
-    [
-      createAsyncIteratorFixture([2, 3, 1, 5]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toLast(),
-      5,
-    ],
-    [
-      createAsyncIteratorFixture([1, 2, 3, 4, 0]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toLast(),
-      0,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMax(),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => (value as number)),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => -(value as number)),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMax(),
-      3,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => (value as number)),
-      3,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMax((value) => -(value as number)),
-      -3,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toMax(),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toMax(),
-      3,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toMax(),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toMax(),
-      -1,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMin(),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => (value as number)),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => -(value as number)),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMin(),
-      -3,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => (value as number)),
-      -3,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMin((value) => -(value as number)),
-      3,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toMin(),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toMin(),
-      1,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toMin(),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toMin(),
-      -3,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 100)
-        .toMinMax(),
-      [undefined, undefined],
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toMinMax(),
-      [-3, -1],
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<unknown>) => AsyncStream.of(iterable)
-        .toMinMax((item) => -(item as number)),
-      [3, -3],
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable).toProduct(),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable).toProduct(),
-      -36,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toProduct(),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toProduct(),
-      6,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toProduct(),
-      undefined,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toProduct(),
-      -6,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toSum(),
-      0,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) > 0)
-        .toSum(),
-      6,
-    ],
-    [
-      createAsyncIteratorFixture([]),
-      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toSum(),
-      0,
-    ],
-    [
-      createAsyncIteratorFixture([1, -1, 2, -2, 3, -3]),
-      (iterable: AsyncIterator<number>) => AsyncStream.of(iterable)
-        .filter((value) => (value as number) <= 0)
-        .toSum(),
-      -6,
-    ],
-  ];
+  return dataProviderForAsync().map((item) => [
+    createAsyncIteratorFixture(item[0]),
+    ...item.slice(1) as [(data: AsyncIterable<number> | AsyncIterator<number>) => any, any],
+  ]);
 }
