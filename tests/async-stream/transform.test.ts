@@ -298,49 +298,49 @@ function dataProviderForAsync(): Array<[Array<any>, (data: AsyncGenerator<any>) 
   return [
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>): Promise<Array<unknown>> => AsyncStream.of(iterable)
         .toArray(),
       [],
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Array<number>> => AsyncStream.of(iterable)
         .toArray(),
       [1, 2, 3],
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Set<number>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([]),
     ],
     [
       [1, 2, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Set<number>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       [1, 1, 2, 2, 3, 3],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<number> | AsyncIterator<number>): Promise<Set<number>> => AsyncStream.of(iterable)
         .toSet(),
       new Set([1, 2, 3]),
     ],
     [
       [],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<[number, number]> | AsyncIterator<[number, number]>): Promise<Map<number, number>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([]),
     ],
     [
       [['a', 1], ['b', 2], ['c', 3]],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<[string, number]> | AsyncIterator<[string, number]>): Promise<Map<string, number>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 1], ['b', 2], ['c', 3]]),
     ],
     [
       [['a', 1], ['a', 2], ['a', 3]],
-      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+      (iterable: AsyncIterable<[string, number]> | AsyncIterator<[string, number]>): Promise<Map<string, number>> => AsyncStream.of(iterable)
         .toMap(),
       new Map([['a', 3]]),
     ],
