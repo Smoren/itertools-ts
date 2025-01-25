@@ -1423,7 +1423,7 @@ const number = reduce.toProduct(primeFactors);
 Reduces given collection to its range (difference between max and min).
 
 ```
-function toRange(numbers: Iterable<number|string> | Iterator<number|string>): number
+function toRange(numbers: Iterable<Numeric> | Iterator<Numeric>): number
 ```
 
 Returns `0` if iterable source is empty.
