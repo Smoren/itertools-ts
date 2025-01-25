@@ -9,7 +9,7 @@ export type RecordKey = string | number | symbol;
 export type Comparable = string | number | boolean | Array<unknown>;
 
 /**
- * Type of numeric values.
+ * Type of numeric strings.
  */
 export type NumericString = `${number}`;
 
