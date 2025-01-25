@@ -1,4 +1,4 @@
-import type { Pipe, PipeOperationSequence } from "../../src";
+import type { Pipe } from "../../src";
 import { createPipe, infinite, reduce, set, single } from "../../src";
 // @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
@@ -11,16 +11,12 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Pipe<any>, Iterable<number> | Iterator<number>, PipeOperationSequence<unknown[]>, unknown]>)(
+])(
   "Pipe Create With Scalar Output Test",
-  (
-    pipe: Pipe<any>,
-    input: Iterable<number> | Iterator<number>,
-    expected: Array<unknown>,
-  ) => {
+  (pipe, input, expected) => {
     it("", () => {
       // When
-      const result = pipe(input) as Iterable<unknown>;
+      const result = (pipe as Pipe<any>)(input);
 
       // Then
       expect(result).toEqual(expected);
@@ -28,7 +24,7 @@ describe.each([
   },
 );
 
-function dataProviderForArrays() {
+function dataProviderForArrays(): Array<[Pipe<any[]> | Pipe<[any, any]>, Array<any>, any]> {
   return [
     [
       createPipe<[
@@ -138,7 +134,7 @@ function dataProviderForArrays() {
   ];
 }
 
-function dataProviderForGenerators() {
+function dataProviderForGenerators(): Array<[Pipe<any[]> | Pipe<[any, any]>, Generator<any>, any]> {
   return [
     [
       createPipe<[
@@ -244,6 +240,134 @@ function dataProviderForGenerators() {
         .add(reduce.toCount),
       createGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
       3,
+    ],
+  ];
+}
+
+function dataProviderForIterables(): Array<[Pipe<any[]> | Pipe<[any, any]>, Iterable<any>, any]> {
+  return [
+    [
+      createPipe<[
+        Iterable<number>,
+        number,
+      ]>(
+        reduce.toSum,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      18,
+    ],
+    [
+      createPipe<[
+        Iterable<number>,
+        Iterable<number>,
+        number,
+      ]>(
+        set.distinct,
+        reduce.toSum,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      15,
+    ],
+    [
+      createPipe<[
+        Iterable<number>,
+        Iterable<number>,
+        Iterable<number>,
+        number,
+      ]>(
+        set.distinct,
+        (input) => single.map(input, (x) => x**2),
+        reduce.toSum,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      55,
+    ],
+    [
+      createPipe<[
+        Iterable<number>,
+        Iterable<number>,
+        Iterable<number>,
+        Iterable<number>,
+        number,
+      ]>(
+        set.distinct,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+        reduce.toSum,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      14,
+    ],
+    [
+      createPipe<[
+        Iterable<number>,
+        Iterable<number>,
+        Iterable<number>,
+        Iterable<number>,
+        number,
+      ]>(
+        set.distinct,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+        reduce.toCount,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+        reduce.toCount,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10))
+        .add(reduce.toCount),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(set.distinct<number>)
+        .add((input) => single.map(input, (x) => x**2))
+        .add((input) => single.filter(input, (x) => x < 10))
+        .add(reduce.toCount),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinct<number>,
+        (input) => single.map(input, (x) => x**2),
+      )
+        .add((input) => single.filter(input, (x) => x < 10))
+        .add(reduce.toCount),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe<[
+        Iterable<number>,
+        Iterable<number>,
+        Iterable<number>,
+        Iterable<number>,
+        Iterable<number>,
+        number,
+      ]>(
+        (input) => single.limit(input, 3),
+        set.distinct,
+        (input) => single.map(input, (x) => x**2),
+        (input) => single.filter(input, (x) => x < 10),
+        reduce.toSum,
+      ),
+      infinite.count(1, 2),
+      10,
     ],
     [
       createPipe<[
@@ -289,135 +413,7 @@ function dataProviderForGenerators() {
   ];
 }
 
-function dataProviderForIterables() {
-  return [
-    [
-      createPipe<[
-        Iterable<number>,
-        number,
-      ]>(
-        reduce.toSum,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      18,
-    ],
-    [
-      createPipe<[
-        Iterable<number>,
-        Iterable<number>,
-        number,
-      ]>(
-        set.distinct,
-        reduce.toSum,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      15,
-    ],
-    [
-      createPipe<[
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-        number,
-      ]>(
-        set.distinct,
-        (input) => single.map(input, (x) => x**2),
-        reduce.toSum,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      55,
-    ],
-    [
-      createPipe<[
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-        number,
-      ]>(
-        set.distinct,
-        (input) => single.map(input, (x) => x**2),
-        (input) => single.filter(input, (x) => x < 10),
-        reduce.toSum,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      14,
-    ],
-    [
-      createPipe<[
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-        number,
-      ]>(
-        set.distinct,
-        (input) => single.map(input, (x) => x**2),
-        (input) => single.filter(input, (x) => x < 10),
-        reduce.toCount,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      3,
-    ],
-    [
-      createPipe(
-        set.distinct<number>,
-        (input) => single.map(input, (x) => x**2),
-        (input) => single.filter(input, (x) => x < 10),
-        reduce.toCount,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      3,
-    ],
-    [
-      createPipe()
-        .add(set.distinct<number>)
-        .add((input) => single.map(input, (x) => x**2))
-        .add((input) => single.filter(input, (x) => x < 10))
-        .add(reduce.toCount),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      3,
-    ],
-    [
-      createPipe(set.distinct<number>)
-        .add((input) => single.map(input, (x) => x**2))
-        .add((input) => single.filter(input, (x) => x < 10))
-        .add(reduce.toCount),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      3,
-    ],
-    [
-      createPipe(
-        set.distinct<number>,
-        (input) => single.map(input, (x) => x**2),
-      )
-        .add((input) => single.filter(input, (x) => x < 10))
-        .add(reduce.toCount),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      3,
-    ],
-    [
-      createPipe<[
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-        Iterable<number>,
-        number,
-      ]>(
-        (input) => single.limit(input, 3),
-        set.distinct,
-        (input) => single.map(input, (x) => x**2),
-        (input) => single.filter(input, (x) => x < 10),
-        reduce.toSum,
-      ),
-      infinite.count(1, 2),
-      10,
-    ],
-  ];
-}
-
-function dataProviderForIterators() {
+function dataProviderForIterators(): Array<[Pipe<any[]> | Pipe<[any, any]>, Iterator<any>, any]> {
   return [
     [
       createPipe<[
@@ -527,7 +523,7 @@ function dataProviderForIterators() {
   ];
 }
 
-function dataProviderForStrings() {
+function dataProviderForStrings(): Array<[Pipe<any[]> | Pipe<[any, any]>, string, any]> {
   return [
     [
       createPipe<[
@@ -621,7 +617,7 @@ function dataProviderForStrings() {
   ];
 }
 
-function dataProviderForSets() {
+function dataProviderForSets(): Array<[Pipe<any[]> | Pipe<[any, any]>, Set<any>, any]> {
   return [
     [
       createPipe<[
@@ -713,7 +709,7 @@ function dataProviderForSets() {
   ];
 }
 
-function dataProviderForMaps() {
+function dataProviderForMaps(): Array<[Pipe<any[]> | Pipe<[any, any]>, Map<any, any>, any]> {
   return [
     [
       createPipe<[

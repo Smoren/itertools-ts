@@ -1,4 +1,4 @@
-import type { Pipe, PipeOperationSequence } from "../../src";
+import type { Pipe } from "../../src";
 import { createPipe, infinite, reduce, set, single } from "../../src";
 import {
   createGeneratorFixture,
@@ -22,16 +22,12 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Pipe<any>, AsyncIterable<number> | Iterator<number>, PipeOperationSequence<unknown[]>, unknown]>)(
+])(
   "Pipe Create With Scalar Output Test",
-  (
-    pipe: Pipe<any>,
-    input: AsyncIterable<number> | Iterator<number>,
-    expected: Array<unknown>,
-  ) => {
+  (pipe, input, expected) => {
     it("", async () => {
       // When
-      const result = await pipe(input) as AsyncIterable<unknown>;
+      const result = await (pipe as Pipe<any>)(input);
 
       // Then
       expect(result).toEqual(expected);
@@ -39,7 +35,7 @@ describe.each([
   },
 );
 
-function dataProviderForArrays() {
+function dataProviderForArrays(): Array<[Pipe<any[]> | Pipe<[any, any]>, Array<any>, any]> {
   return [
     [
       createPipe<[
@@ -149,7 +145,7 @@ function dataProviderForArrays() {
   ];
 }
 
-function dataProviderForGenerators() {
+function dataProviderForGenerators(): Array<[Pipe<any[]> | Pipe<[any, any]>, Generator<any>, any]> {
   return [
     [
       createPipe<[
@@ -254,6 +250,116 @@ function dataProviderForGenerators() {
         .add((input) => single.filterAsync(input, (x) => x < 10))
         .add(reduce.toCountAsync),
       createGeneratorFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+  ];
+}
+
+function dataProviderForIterables(): Array<[Pipe<any[]> | Pipe<[any, any]>, Iterable<any>, any]> {
+  return [
+    [
+      createPipe<[
+        AsyncIterable<number>,
+        Promise<number>,
+      ]>(
+        reduce.toSumAsync,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      18,
+    ],
+    [
+      createPipe<[
+        AsyncIterable<number>,
+        AsyncIterable<number>,
+        Promise<number>,
+      ]>(
+        set.distinctAsync,
+        reduce.toSumAsync,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      15,
+    ],
+    [
+      createPipe<[
+        AsyncIterable<number>,
+        AsyncIterable<number>,
+        AsyncIterable<number>,
+        Promise<number>,
+      ]>(
+        set.distinctAsync,
+        (input) => single.mapAsync(input, (x) => x**2),
+        reduce.toSumAsync,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      55,
+    ],
+    [
+      createPipe<[
+        AsyncIterable<number>,
+        AsyncIterable<number>,
+        AsyncIterable<number>,
+        AsyncIterable<number>,
+        Promise<number>,
+      ]>(
+        set.distinctAsync,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toSumAsync,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      14,
+    ],
+    [
+      createPipe<[
+        AsyncIterable<number>,
+        AsyncIterable<number>,
+        AsyncIterable<number>,
+        AsyncIterable<number>,
+        Promise<number>,
+      ]>(
+        set.distinctAsync,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toCountAsync,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2),
+        (input) => single.filterAsync(input, (x) => x < 10),
+        reduce.toCountAsync,
+      ),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe()
+        .add(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(set.distinctAsync<number>)
+        .add((input) => single.mapAsync(input, (x) => x**2))
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
+      3,
+    ],
+    [
+      createPipe(
+        set.distinctAsync<number>,
+        (input) => single.mapAsync(input, (x) => x**2)
+      )
+        .add((input) => single.filterAsync(input, (x) => x < 10))
+        .add(reduce.toCountAsync),
+      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
       3,
     ],
     [
@@ -300,117 +406,7 @@ function dataProviderForGenerators() {
   ];
 }
 
-function dataProviderForIterables() {
-  return [
-    [
-      createPipe<[
-        AsyncIterable<number>,
-        Promise<number>,
-      ]>(
-        reduce.toSumAsync,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      18,
-    ],
-    [
-      createPipe<[
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        Promise<number>,
-      ]>(
-        set.distinctAsync,
-        reduce.toSumAsync,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      15,
-    ],
-    [
-      createPipe<[
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        Promise<number>,
-      ]>(
-        set.distinctAsync,
-        (input) => single.mapAsync(input, (x) => x**2),
-        reduce.toSumAsync,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      55,
-    ],
-    [
-      createPipe<[
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        Promise<number>,
-      ]>(
-        set.distinctAsync,
-        (input) => single.mapAsync(input, (x) => x**2),
-        (input) => single.filterAsync(input, (x) => x < 10),
-        reduce.toSumAsync,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      14,
-    ],
-    [
-      createPipe<[
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        AsyncIterable<number>,
-        Promise<number>,
-      ]>(
-        set.distinctAsync,
-        (input) => single.mapAsync(input, (x) => x**2),
-        (input) => single.filterAsync(input, (x) => x < 10),
-        reduce.toCountAsync,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      3,
-    ],
-    [
-      createPipe(
-        set.distinctAsync<number>,
-        (input) => single.mapAsync(input, (x) => x**2),
-        (input) => single.filterAsync(input, (x) => x < 10),
-        reduce.toCountAsync,
-      ),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      3,
-    ],
-    [
-      createPipe()
-        .add(set.distinctAsync<number>)
-        .add((input) => single.mapAsync(input, (x) => x**2))
-        .add((input) => single.filterAsync(input, (x) => x < 10))
-        .add(reduce.toCountAsync),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      3,
-    ],
-    [
-      createPipe(set.distinctAsync<number>)
-        .add((input) => single.mapAsync(input, (x) => x**2))
-        .add((input) => single.filterAsync(input, (x) => x < 10))
-        .add(reduce.toCountAsync),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      3,
-    ],
-    [
-      createPipe(
-        set.distinctAsync<number>,
-        (input) => single.mapAsync(input, (x) => x**2)
-      )
-        .add((input) => single.filterAsync(input, (x) => x < 10))
-        .add(reduce.toCountAsync),
-      createIterableFixture([1, 1, 2, 2, 3, 4, 5]),
-      3,
-    ],
-  ];
-}
-
-function dataProviderForIterators() {
+function dataProviderForIterators(): Array<[Pipe<any[]> | Pipe<[any, any]>, Iterator<any>, any]> {
   return [
     [
       createPipe<[
@@ -520,7 +516,7 @@ function dataProviderForIterators() {
   ];
 }
 
-function dataProviderForAsyncGenerators() {
+function dataProviderForAsyncGenerators(): Array<[Pipe<any[]> | Pipe<[any, any]>, AsyncGenerator<any>, any]> {
   return [
     [
       createPipe<[
@@ -630,7 +626,7 @@ function dataProviderForAsyncGenerators() {
   ];
 }
 
-function dataProviderForAsyncIterables() {
+function dataProviderForAsyncIterables(): Array<[Pipe<any[]> | Pipe<[any, any]>, AsyncIterable<any>, any]> {
   return [
     [
       createPipe<[
@@ -740,7 +736,7 @@ function dataProviderForAsyncIterables() {
   ];
 }
 
-function dataProviderForAsyncIterators() {
+function dataProviderForAsyncIterators(): Array<[Pipe<any[]> | Pipe<[any, any]>, AsyncIterator<any>, any]> {
   return [
     [
       createPipe<[
@@ -850,7 +846,7 @@ function dataProviderForAsyncIterators() {
   ];
 }
 
-function dataProviderForStrings() {
+function dataProviderForStrings(): Array<[Pipe<any[]> | Pipe<[any, any]>, string, any]> {
   return [
     [
       createPipe<[
@@ -944,7 +940,7 @@ function dataProviderForStrings() {
   ];
 }
 
-function dataProviderForSets() {
+function dataProviderForSets(): Array<[Pipe<any[]> | Pipe<[any, any]>, Set<any>, any]> {
   return [
     [
       createPipe<[
@@ -1036,7 +1032,7 @@ function dataProviderForSets() {
   ];
 }
 
-function dataProviderForMaps() {
+function dataProviderForMaps(): Array<[Pipe<any[]> | Pipe<[any, any]>, Map<any, any>, any]> {
   return [
     [
       createPipe<[
