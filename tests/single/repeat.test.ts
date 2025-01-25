@@ -11,13 +11,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForArrays(),
   ...dataProviderForObjects(),
-] as Array<[unknown, number, Array<unknown>]>)(
+])(
   "Single Repeat Test",
-  (
-    input: unknown,
-    repetitions: number,
-    expected: Array<unknown>
-  ) => {
+  (input, repetitions, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -43,13 +39,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForArrays(),
   ...dataProviderForObjects(),
-] as Array<[unknown | Promise<unknown>, number, Array<unknown>]>)(
+])(
   "Single Repeat Async Test",
-  (
-    input: unknown | Promise<unknown>,
-    repetitions: number,
-    expected: Array<unknown>
-  ) => {
+  (input, repetitions, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -67,9 +59,9 @@ describe.each([
 
 describe.each([
   ...dataProviderForError(),
-] as Array<[unknown]>)(
+])(
   "Single Repeat Error Test",
-  (input: unknown) => {
+  (input) => {
     it("", () => {
       expect(() => {
         const repetitions = single.repeat(input, -1);
@@ -84,9 +76,9 @@ describe.each([
 
 describe.each([
   ...dataProviderForError(),
-] as Array<[unknown]>)(
+])(
   "Single Repeat Async Error Test",
-  (input: unknown) => {
+  (input) => {
     it("", async () => {
       try {
         const repetitions = single.repeatAsync(input, -1);
@@ -102,7 +94,7 @@ describe.each([
   }
 );
 
-function dataProviderForIntegers(): Array<unknown> {
+function dataProviderForIntegers(): Array<[number, number, Array<number>]> {
   return [
     [0, 0, []],
     [1, 0, []],
@@ -119,7 +111,7 @@ function dataProviderForIntegers(): Array<unknown> {
   ];
 }
 
-function dataProviderForFloats(): Array<unknown> {
+function dataProviderForFloats(): Array<[number, number, Array<number>]> {
   return [
     [0.0, 0, []],
     [1.1, 0, []],
@@ -136,7 +128,7 @@ function dataProviderForFloats(): Array<unknown> {
   ];
 }
 
-function dataProviderForNulls(): Array<unknown> {
+function dataProviderForNulls(): Array<[null, number, Array<null>]> {
   return [
     [null, 0, []],
     [null, 1, [null]],
@@ -144,7 +136,7 @@ function dataProviderForNulls(): Array<unknown> {
   ];
 }
 
-function dataProviderForUndefined(): Array<unknown> {
+function dataProviderForUndefined(): Array<[undefined, number, Array<undefined>]> {
   return [
     [undefined, 0, []],
     [undefined, 1, [undefined]],
@@ -152,7 +144,7 @@ function dataProviderForUndefined(): Array<unknown> {
   ];
 }
 
-function dataProviderForBooleans(): Array<unknown> {
+function dataProviderForBooleans(): Array<[boolean, number, Array<boolean>]> {
   return [
     [true, 0, []],
     [false, 0, []],
@@ -163,7 +155,7 @@ function dataProviderForBooleans(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, number, Array<string>]> {
   return [
     ['', 0, []],
     ['', 1, ['']],
@@ -180,7 +172,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, number, Array<Array<any>>]> {
   return [
     [[], 0, []],
     [[], 1, [[]]],
@@ -191,7 +183,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForObjects(): Array<unknown> {
+function dataProviderForObjects(): Array<[Record<any, any>, number, Array<Record<any, any>>]> {
   return [
     [{}, 0, []],
     [{}, 1, [{}]],
@@ -202,7 +194,7 @@ function dataProviderForObjects(): Array<unknown> {
   ];
 }
 
-function dataProviderForPromises(): Array<unknown> {
+function dataProviderForPromises(): Array<[Promise<any>, number, Array<any>]> {
   return [
     [Promise.resolve(0), 0, []],
     [Promise.resolve(1), 0, []],
@@ -215,7 +207,7 @@ function dataProviderForPromises(): Array<unknown> {
   ];
 }
 
-function dataProviderForError(): Array<unknown> {
+function dataProviderForError(): Array<Array<any>> {
   return [
     [1],
     [1.0],
@@ -228,6 +220,6 @@ function dataProviderForError(): Array<unknown> {
     [-Infinity],
     [[]],
     [{a: 1}],
-    Promise.resolve(1),
+    [Promise.resolve(1)],
   ];
 }
