@@ -30,8 +30,8 @@ for (const [letter, number] of multi.zip(['a', 'b'], [1, 2])) {
 }
 
 // Async example
-const letters = ['a', 'b'].map((x) => Promise.resolve(x)) as unknown as AsyncIterable<string>;
-const numbers = [1, 2].map((x) => Promise.resolve(x)) as unknown as AsyncIterable<number>;
+const letters = ['a', 'b'].map((x) => Promise.resolve(x));
+const numbers = [1, 2].map((x) => Promise.resolve(x));
 
 for await (const [letter, number] of multi.zipAsync(letters, numbers)) {
   console.log(`${letter}${number}`);  // a1, b2
@@ -50,7 +50,7 @@ const result1 = Stream.of([1, 1, 2, 2, 3, 4, 5])
   .toSum();               // 14
 
 // Async example
-const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)) as unknown as AsyncIterable<number>)
+const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)))
   .distinct()             // [1, 2, 3, 4, 5]
   .map((x) => x**2)       // [1, 4, 9, 16, 25]
   .filter((x) => x < 10)  // [1, 4, 9]
@@ -80,8 +80,8 @@ const asyncPipe = createPipe(
   (input) => single.filterAsync(input, (x) => x < 10),
   reduce.toSumAsync,
 );
-const result3 = await asyncPipe([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)) as unknown as AsyncIterable<number>); // 14
-const result4 = await asyncPipe([1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x)) as unknown as AsyncIterable<number>);    // 5
+const result3 = await asyncPipe([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x))); // 14
+const result4 = await asyncPipe([1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x)));    // 5
 
 // Another way to create pipes
 const anotherPipe = createPipe()
@@ -2113,7 +2113,7 @@ Streams are made up of:
        .toSum();               // 14
 
      // Async example
-     const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)) as unknown as AsyncIterable<number>)
+     const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)))
        .distinct()             // [1, 2, 3, 4, 5]
        .map((x) => x**2)       // [1, 4, 9, 16, 25]
        .filter((x) => x < 10)  // [1, 4, 9]
@@ -2131,7 +2131,7 @@ Streams are made up of:
      }
 
      // Async example
-     const result2 = AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)) as unknown as AsyncIterable<number>)
+     const result2 = AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)))
        .distinct()             // [1, 2, 3, 4, 5]
        .map((x) => x**2)       // [1, 4, 9, 16, 25]
        .filter((x) => x < 10); // [1, 4, 9]
