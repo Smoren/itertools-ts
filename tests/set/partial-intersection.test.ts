@@ -17,13 +17,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMixed(),
-] as Array<[Array<Iterable<unknown>|Iterator<unknown>>, number, Array<unknown>]>)(
+])(
   "Set Partial Intersection Test",
-  (
-    input: Array<Iterable<unknown>|Iterator<unknown>>,
-    minIntersectionCount: number,
-    expected: Array<unknown>
-  ) => {
+  (input, minIntersectionCount, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -33,8 +29,8 @@ describe.each([
         result.push(item);
       }
 
-      (result as Array<unknown>).sort();
-      (expected as Array<unknown>).sort();
+      result.sort();
+      expected.sort();
 
       // Then
       expect(result).toEqual(expected);
@@ -54,15 +50,9 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMixed(),
   ...dataProviderForMixedAsync(),
-] as Array<[Array<
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
->, number, Array<unknown>]>)(
+])(
   "Set Partial Intersection Async Test",
-  (
-    input: Array<AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>>,
-    minIntersectionCount: number,
-    expected: Array<unknown>
-  ) => {
+  (input, minIntersectionCount, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -72,8 +62,8 @@ describe.each([
         result.push(item);
       }
 
-      (result as Array<unknown>).sort();
-      (expected as Array<unknown>).sort();
+      result.sort();
+      expected.sort();
 
       // Then
       expect(result).toEqual(expected);
@@ -81,7 +71,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<Array<any>>, number, Array<any>]> {
   return [
     // sets:
     [
@@ -403,7 +393,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Array<Generator<any>>, number, Array<any>]> {
   return [
     // sets:
     [
@@ -725,7 +715,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Array<Iterable<any>>, number, Array<any>]> {
   return [
     // sets:
     [
@@ -1047,7 +1037,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Array<Iterator<any>>, number, Array<any>]> {
   return [
     // sets:
     [
@@ -1369,7 +1359,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[Array<string>, number, Array<any>]> {
   return [
     // sets:
     [
@@ -1624,7 +1614,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Array<Set<any>>, number, Array<any>]> {
   return [
     // sets:
     [
@@ -1787,7 +1777,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[Array<AsyncGenerator<any>>, number, Array<any>]> {
   return [
     // sets:
     [
@@ -2109,7 +2099,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[Array<AsyncIterable<any>>, number, Array<any>]> {
   return [
     // sets:
     [
@@ -2431,7 +2421,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[Array<AsyncIterator<any>>, number, Array<any>]> {
   return [
     // sets:
     [
@@ -2753,7 +2743,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForMixed(): Array<unknown> {
+function dataProviderForMixed(): Array<[Array<Iterable<any> | Iterator<any>>, number, Array<any>]> {
   return [
     [
       [
@@ -2848,7 +2838,7 @@ function dataProviderForMixed(): Array<unknown> {
   ];
 }
 
-function dataProviderForMixedAsync(): Array<unknown> {
+function dataProviderForMixedAsync(): Array<[Array<Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>>, number, Array<any>]> {
   return [
     [
       [

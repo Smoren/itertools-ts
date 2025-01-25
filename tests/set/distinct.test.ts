@@ -8,7 +8,7 @@ import {
   createMapFixture
   // @ts-ignore
 } from "../fixture";
-import { set, Comparable } from "../../src";
+import { set, Comparable, Numeric } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
@@ -18,17 +18,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  Iterable<unknown>|Iterator<unknown>,
-  (datum: unknown) => Comparable,
-  Array<unknown>
-]>)(
+])(
   "Set Distinct Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    compareBy: (datum: unknown) => Comparable,
-    expected: Array<unknown>
-  ) => {
+  (input, compareBy, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -55,17 +47,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (datum: unknown) => Comparable,
-  Array<unknown>
-]>)(
+])(
   "Set Distinct Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    compareBy: (datum: unknown) => Comparable,
-    expected: Array<unknown>
-  ) => {
+  (input, compareBy, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -81,7 +65,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, ((item: any) => Comparable) | undefined, Array<any>]> {
   return [
     [
       [],
@@ -90,7 +74,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [],
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [],
     ],
     [
@@ -100,7 +84,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [1],
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -110,7 +94,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [1, 1],
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -120,7 +104,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [1, '1'],
-      (item: unknown) => item,
+      (item: Numeric) => item,
       [1, '1'],
     ],
     [
@@ -130,7 +114,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       ['1', 1],
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 1],
     ],
     [
@@ -140,7 +124,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       ['aa', 'bb', 'aa'],
-      (item: unknown) => item,
+      (item: string) => item,
       ['aa', 'bb'],
     ],
     [
@@ -150,7 +134,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [1, 2, 1, 2, 3],
-      (item: unknown) => item,
+      (item: number) => item,
       [1, 2, 3],
     ],
     [
@@ -160,7 +144,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       ['1', 2, '1', '2', 3],
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 2, '2', 3],
     ],
     [
@@ -170,7 +154,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [false, null, undefined, 0, 0.0, ''],
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [false, null, undefined, 0, ''],
     ],
     [
@@ -180,7 +164,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [true, 1, '1', 1.0, '1.0'],
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', '1.0'],
     ],
     [
@@ -190,7 +174,7 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [true, 1, '1', 1.1, '1.1'],
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', 1.1, '1.1'],
     ],
     [
@@ -201,7 +185,7 @@ function dataProviderForArrays(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ],
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -218,7 +202,7 @@ function dataProviderForArrays(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ],
-      (item: unknown) => (item as Record<string, unknown>)['id'],
+      (item: Record<string, Comparable>) => item['id'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -235,7 +219,7 @@ function dataProviderForArrays(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ],
-      (item: unknown) => (item as Record<string, unknown>)['name'],
+      (item: Record<string, Comparable>) => item['name'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -245,7 +229,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, ((item: any) => Comparable) | undefined, Array<any>]> {
   return [
     [
       createGeneratorFixture([]),
@@ -254,7 +238,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [],
     ],
     [
@@ -264,7 +248,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -274,7 +258,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([1, 1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -284,7 +268,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([1, '1']),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       [1, '1'],
     ],
     [
@@ -294,7 +278,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture(['1', 1]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 1],
     ],
     [
@@ -304,7 +288,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture(['aa', 'bb', 'aa']),
-      (item: unknown) => item,
+      (item: string) => item,
       ['aa', 'bb'],
     ],
     [
@@ -314,7 +298,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([1, 2, 1, 2, 3]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1, 2, 3],
     ],
     [
@@ -324,7 +308,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture(['1', 2, '1', '2', 3]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 2, '2', 3],
     ],
     [
@@ -334,7 +318,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([false, null, undefined, 0, 0.0, '']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [false, null, undefined, 0, ''],
     ],
     [
@@ -344,7 +328,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([true, 1, '1', 1.0, '1.0']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', '1.0'],
     ],
     [
@@ -354,7 +338,7 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([true, 1, '1', 1.1, '1.1']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', 1.1, '1.1'],
     ],
     [
@@ -365,7 +349,7 @@ function dataProviderForGenerators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -382,7 +366,7 @@ function dataProviderForGenerators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['id'],
+      (item: Record<string, Comparable>) => item['id'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -399,7 +383,7 @@ function dataProviderForGenerators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['name'],
+      (item: Record<string, Comparable>) => item['name'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -409,7 +393,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, ((item: any) => Comparable) | undefined, Array<any>]> {
   return [
     [
       createIterableFixture([]),
@@ -418,7 +402,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [],
     ],
     [
@@ -428,7 +412,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -438,7 +422,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([1, 1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -448,7 +432,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([1, '1']),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       [1, '1'],
     ],
     [
@@ -458,7 +442,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture(['1', 1]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 1],
     ],
     [
@@ -468,7 +452,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture(['aa', 'bb', 'aa']),
-      (item: unknown) => item,
+      (item: string) => item,
       ['aa', 'bb'],
     ],
     [
@@ -478,7 +462,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([1, 2, 1, 2, 3]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1, 2, 3],
     ],
     [
@@ -488,7 +472,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture(['1', 2, '1', '2', 3]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 2, '2', 3],
     ],
     [
@@ -498,7 +482,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([false, null, undefined, 0, 0.0, '']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [false, null, undefined, 0, ''],
     ],
     [
@@ -508,7 +492,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([true, 1, '1', 1.0, '1.0']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', '1.0'],
     ],
     [
@@ -518,7 +502,7 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([true, 1, '1', 1.1, '1.1']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', 1.1, '1.1'],
     ],
     [
@@ -529,7 +513,7 @@ function dataProviderForIterables(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -546,7 +530,7 @@ function dataProviderForIterables(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['id'],
+      (item: Record<string, Comparable>) => item['id'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -563,7 +547,7 @@ function dataProviderForIterables(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['name'],
+      (item: Record<string, Comparable>) => item['name'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -573,7 +557,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, ((item: any) => Comparable) | undefined, Array<any>]> {
   return [
     [
       createIteratorFixture([]),
@@ -582,7 +566,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [],
     ],
     [
@@ -592,7 +576,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -602,7 +586,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([1, 1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -612,7 +596,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([1, '1']),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       [1, '1'],
     ],
     [
@@ -622,7 +606,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture(['1', 1]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 1],
     ],
     [
@@ -632,7 +616,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture(['aa', 'bb', 'aa']),
-      (item: unknown) => item,
+      (item: string) => item,
       ['aa', 'bb'],
     ],
     [
@@ -642,7 +626,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([1, 2, 1, 2, 3]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1, 2, 3],
     ],
     [
@@ -652,7 +636,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture(['1', 2, '1', '2', 3]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 2, '2', 3],
     ],
     [
@@ -662,7 +646,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([false, null, undefined, 0, 0.0, '']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [false, null, undefined, 0, ''],
     ],
     [
@@ -672,7 +656,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([true, 1, '1', 1.0, '1.0']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', '1.0'],
     ],
     [
@@ -682,7 +666,7 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([true, 1, '1', 1.1, '1.1']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', 1.1, '1.1'],
     ],
     [
@@ -693,7 +677,7 @@ function dataProviderForIterators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -710,7 +694,7 @@ function dataProviderForIterators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['id'],
+      (item: Record<string, Comparable>) => item['id'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -727,7 +711,7 @@ function dataProviderForIterators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['name'],
+      (item: Record<string, Comparable>) => item['name'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -737,7 +721,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, ((item: any) => Comparable) | undefined, Array<any>]> {
   return [
     [
       '',
@@ -746,7 +730,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '',
-      (item: unknown) => item,
+      (item: string) => item,
       [],
     ],
     [
@@ -756,7 +740,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '1',
-      (item: unknown) => item,
+      (item: string) => item,
       ['1'],
     ],
     [
@@ -766,7 +750,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '11',
-      (item: unknown) => item,
+      (item: string) => item,
       ['1'],
     ],
     [
@@ -776,7 +760,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       'aabacc',
-      (item: unknown) => item,
+      (item: string) => item,
       ['a', 'b', 'c'],
     ],
     [
@@ -786,7 +770,7 @@ function dataProviderForStrings(): Array<unknown> {
     ],
     [
       '12123',
-      (item: unknown) => item,
+      (item: string) => item,
       ['1', '2', '3'],
     ],
     [
@@ -797,7 +781,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, ((item: any) => Comparable) | undefined, Array<any>]> {
   return [
     [
       new Set([]),
@@ -806,7 +790,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [],
     ],
     [
@@ -816,7 +800,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -826,7 +810,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1, 1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -836,7 +820,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1, '1']),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       [1, '1'],
     ],
     [
@@ -846,7 +830,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set(['1', 1]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 1],
     ],
     [
@@ -856,7 +840,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set(['aa', 'bb', 'aa']),
-      (item: unknown) => item,
+      (item: string) => item,
       ['aa', 'bb'],
     ],
     [
@@ -866,7 +850,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1, 2, 1, 2, 3]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1, 2, 3],
     ],
     [
@@ -876,7 +860,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set(['1', 2, '1', '2', 3]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 2, '2', 3],
     ],
     [
@@ -886,7 +870,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([false, null, undefined, 0, 0.0, '']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [false, null, undefined, 0, ''],
     ],
     [
@@ -896,7 +880,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([true, 1, '1', 1.0, '1.0']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', '1.0'],
     ],
     [
@@ -906,7 +890,7 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([true, 1, '1', 1.1, '1.1']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', 1.1, '1.1'],
     ],
     [
@@ -917,7 +901,7 @@ function dataProviderForSets(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -934,7 +918,7 @@ function dataProviderForSets(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['id'],
+      (item: Record<string, Comparable>) => item['id'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -951,7 +935,7 @@ function dataProviderForSets(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['name'],
+      (item: Record<string, Comparable>) => item['name'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -961,7 +945,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, ((item: any) => Comparable) | undefined, Array<any>]> {
   return [
     [
       createMapFixture([]),
@@ -970,7 +954,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([]),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, Comparable]) => item[1],
       [],
     ],
     [
@@ -980,7 +964,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1]),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, number]) => item[1],
       [[0, 1]],
     ],
     [
@@ -990,7 +974,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 1]),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, number]) => item[1],
       [[0, 1]],
     ],
     [
@@ -1000,7 +984,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, '1']),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, Numeric]) => item[1],
       [[0, 1], [1, '1']],
     ],
     [
@@ -1010,7 +994,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture(['1', 1]),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, Numeric]) => item[1],
       [[0, '1'], [1, 1]],
     ],
     [
@@ -1020,7 +1004,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture(['aa', 'bb', 'aa']),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, string]) => item[1],
       [[0, 'aa'], [1, 'bb']],
     ],
     [
@@ -1030,7 +1014,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 1, 2, 3]),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, number]) => item[1],
       [[0, 1], [1, 2], [4, 3]],
     ],
     [
@@ -1040,7 +1024,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture(['1', 2, '1', '2', 3]),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, Numeric]) => item[1],
       [[0, '1'], [1, 2], [3, '2'], [4, 3]],
     ],
     [
@@ -1050,7 +1034,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([false, null, undefined, 0, 0.0, '']),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, Comparable]) => item[1],
       [[0, false], [1, null], [2, undefined], [3, 0], [5, '']],
     ],
     [
@@ -1060,7 +1044,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([true, 1, '1', 1.0, '1.0']),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, Comparable]) => item[1],
       [[0, true], [1, 1], [2, '1'], [4, '1.0']],
     ],
     [
@@ -1070,7 +1054,7 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([true, 1, '1', 1.1, '1.1']),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, Comparable]) => item[1],
       [[0, true], [1, 1], [2, '1'], [3, 1.1], [4, '1.1']],
     ],
     [
@@ -1081,7 +1065,7 @@ function dataProviderForMaps(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: [unknown, unknown]) => item[1],
+      (item: [unknown, Comparable]) => item[1],
       [
         [0, { 'name': 'John', 'id': 1 }],
         [1, { 'name': 'Mary', 'id': 2 }],
@@ -1098,7 +1082,7 @@ function dataProviderForMaps(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: [unknown, Record<string, unknown>]) => item[1]['id'],
+      (item: [unknown, Record<string, Comparable>]) => item[1]['id'],
       [
         [0, { 'name': 'John', 'id': 1 }],
         [1, { 'name': 'Mary', 'id': 2 }],
@@ -1115,7 +1099,7 @@ function dataProviderForMaps(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: [unknown, Record<string, unknown>]) => item[1]['name'],
+      (item: [unknown, Record<string, Comparable>]) => item[1]['name'],
       [
         [0, { 'name': 'John', 'id': 1 }],
         [1, { 'name': 'Mary', 'id': 2 }],
@@ -1125,7 +1109,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, ((item: any) => Comparable) | undefined, Array<any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -1134,7 +1118,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [],
     ],
     [
@@ -1144,7 +1128,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -1154,7 +1138,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([1, 1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -1164,7 +1148,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([1, '1']),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       [1, '1'],
     ],
     [
@@ -1174,7 +1158,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture(['1', 1]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 1],
     ],
     [
@@ -1184,7 +1168,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture(['aa', 'bb', 'aa']),
-      (item: unknown) => item,
+      (item: string) => item,
       ['aa', 'bb'],
     ],
     [
@@ -1194,7 +1178,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([1, 2, 1, 2, 3]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1, 2, 3],
     ],
     [
@@ -1204,7 +1188,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture(['1', 2, '1', '2', 3]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 2, '2', 3],
     ],
     [
@@ -1214,7 +1198,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([false, null, undefined, 0, 0.0, '']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [false, null, undefined, 0, ''],
     ],
     [
@@ -1224,7 +1208,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([true, 1, '1', 1.0, '1.0']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', '1.0'],
     ],
     [
@@ -1234,7 +1218,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([true, 1, '1', 1.1, '1.1']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', 1.1, '1.1'],
     ],
     [
@@ -1245,7 +1229,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -1262,7 +1246,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['id'],
+      (item: Record<string, Comparable>) => item['id'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -1279,7 +1263,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['name'],
+      (item: Record<string, Comparable>) => item['name'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -1289,7 +1273,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, ((item: any) => Comparable) | undefined, Array<any>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -1298,7 +1282,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [],
     ],
     [
@@ -1308,7 +1292,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -1318,7 +1302,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([1, 1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -1328,7 +1312,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([1, '1']),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       [1, '1'],
     ],
     [
@@ -1338,7 +1322,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture(['1', 1]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 1],
     ],
     [
@@ -1348,7 +1332,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture(['aa', 'bb', 'aa']),
-      (item: unknown) => item,
+      (item: string) => item,
       ['aa', 'bb'],
     ],
     [
@@ -1358,7 +1342,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([1, 2, 1, 2, 3]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1, 2, 3],
     ],
     [
@@ -1368,7 +1352,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture(['1', 2, '1', '2', 3]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 2, '2', 3],
     ],
     [
@@ -1378,7 +1362,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([false, null, undefined, 0, 0.0, '']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [false, null, undefined, 0, ''],
     ],
     [
@@ -1388,7 +1372,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([true, 1, '1', 1.0, '1.0']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', '1.0'],
     ],
     [
@@ -1398,7 +1382,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([true, 1, '1', 1.1, '1.1']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', 1.1, '1.1'],
     ],
     [
@@ -1409,7 +1393,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -1426,7 +1410,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['id'],
+      (item: Record<string, Comparable>) => item['id'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -1443,7 +1427,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['name'],
+      (item: Record<string, Comparable>) => item['name'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -1453,7 +1437,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, ((item: any) => Comparable) | undefined, Array<any>]> {
   return [
     [
       createAsyncIteratorFixture([]),
@@ -1462,7 +1446,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [],
     ],
     [
@@ -1472,7 +1456,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -1482,7 +1466,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([1, 1]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1],
     ],
     [
@@ -1492,7 +1476,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([1, '1']),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       [1, '1'],
     ],
     [
@@ -1502,7 +1486,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture(['1', 1]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 1],
     ],
     [
@@ -1512,7 +1496,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture(['aa', 'bb', 'aa']),
-      (item: unknown) => item,
+      (item: string) => item,
       ['aa', 'bb'],
     ],
     [
@@ -1522,7 +1506,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([1, 2, 1, 2, 3]),
-      (item: unknown) => item,
+      (item: number) => item,
       [1, 2, 3],
     ],
     [
@@ -1532,7 +1516,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture(['1', 2, '1', '2', 3]),
-      (item: unknown) => item,
+      (item: Numeric) => item,
       ['1', 2, '2', 3],
     ],
     [
@@ -1542,7 +1526,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([false, null, undefined, 0, 0.0, '']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [false, null, undefined, 0, ''],
     ],
     [
@@ -1552,7 +1536,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([true, 1, '1', 1.0, '1.0']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', '1.0'],
     ],
     [
@@ -1562,7 +1546,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([true, 1, '1', 1.1, '1.1']),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [true, 1, '1', 1.1, '1.1'],
     ],
     [
@@ -1573,7 +1557,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => item,
+      (item: Comparable) => item,
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -1590,7 +1574,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['id'],
+      (item: Record<string, Comparable>) => item['id'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
@@ -1607,7 +1591,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
         { 'name': 'John', 'id': 4 },
         { 'name': 'Jane', 'id': 5 },
       ]),
-      (item: unknown) => (item as Record<string, unknown>)['name'],
+      (item: Record<string, Comparable>) => item['name'],
       [
         { 'name': 'John', 'id': 1 },
         { 'name': 'Mary', 'id': 2 },
