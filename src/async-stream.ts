@@ -722,7 +722,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @param callback
    */
-  public peek(callback: (datum: unknown) => void): AsyncStream<T> {
+  peek(callback: (datum: unknown) => void): AsyncStream<T> {
     const [data, peekable] = teeAsync(this.data, 2);
     this.data = data;
 
@@ -742,7 +742,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @param callback
    */
-  public peekStream(callback: (datum: AsyncStream<T>) => void): AsyncStream<T> {
+  peekStream(callback: (datum: AsyncStream<T>) => void): AsyncStream<T> {
     const [data, peekable] = teeAsync(this.data, 2);
     this.data = data;
 
@@ -1049,7 +1049,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @see transform.teeAsync
    */
-  public tee(count: number): Array<AsyncStream<T>> {
+  tee(count: number): Array<AsyncStream<T>> {
     return teeAsync(this.data, count).map(
       (iterable) => new AsyncStream(iterable)
     );

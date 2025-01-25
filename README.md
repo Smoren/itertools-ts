@@ -2146,7 +2146,7 @@ Streams are made up of:
 Creates stream from an iterable.
 
 ```
-Stream.of(data: Iterable<unknown>|Iterator<unknown>): Stream
+Stream.of<T>(data: Iterable<T> | Iterator<T>): Stream<T>
 ```
 
 ```typescript
@@ -2165,7 +2165,7 @@ const result = Stream.of(iterable)
 Creates stream of nothing.
 
 ```
-Stream.ofEmpty(): Stream
+Stream.ofEmpty(): Stream<never>
 ```
 
 ```typescript
@@ -2181,7 +2181,7 @@ const result = Stream.ofEmpty()
 Create an infinite count stream.
 
 ```
-Stream.ofCount(start: number = 1, step: number = 1): Stream
+Stream.ofCount(start: number = 1, step: number = 1): Stream<number>
 ```
 
 ```typescript
@@ -2197,7 +2197,7 @@ const result = Stream.ofCount(0, 10)
 Create an infinite cycle stream.
 
 ```
-Stream.ofCycle(iterable: Iterable<unknown> | Iterator<unknown>): Stream
+Stream.ofCycle<T>(iterable: Iterable<T> | Iterator<T>): Stream<T>
 ```
 
 ```typescript
@@ -2213,7 +2213,7 @@ const result = Stream.ofCycle([1, 2, 3])
 Create an infinite stream repeating given item.
 
 ```
-Stream.ofRepeat(item: unknown): Stream
+Stream.ofRepeat<T>(item: T): Stream<T>
 ```
 
 ```typescript
@@ -2230,9 +2230,9 @@ const result = Stream.ofRepeat('bla')
 Iterate cartesian product of iterable source with another iterable collections.
 
 ```
-stream.cartesianProductWith(
-  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-): Stream
+stream.cartesianProductWith<U extends Array<Iterable<unknown> | Iterator<unknown>>>(
+  ...iterables: U
+): Stream<ZipTuple<[Iterable<T>, ...U], never>>
 ```
 
 ```typescript
@@ -2261,9 +2261,7 @@ const result = Stream.of(numbers)
 Return a stream chaining additional sources together into a single consecutive stream.
 
 ```
-stream.chainWith(
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Stream
+stream.chainWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T>
 ```
 
 ```typescript
@@ -2282,7 +2280,7 @@ const result = Stream.of(input)
 Return a stream consisting of chunks of elements from the stream.
 
 ```
-stream.chunkwise(chunkSize: number): Stream
+stream.chunkwise(chunkSize: number): Stream<Array<T>>
 ```
 
 Chunk size must be at least 1.
@@ -2305,8 +2303,8 @@ Return a stream consisting of overlapping chunks of elements from the stream.
 stream.chunkwiseOverlap(
   chunkSize: number,
   overlapSize: number,
-  includeIncompleteTail: boolean = true,
-): Stream
+  includeIncompleteTail = true
+): Stream<Array<T>>
 ```
 
 * Chunk size must be at least 1.
@@ -2327,7 +2325,9 @@ const result = Stream.of(numbers)
 Compress to a new stream by filtering out data that is not selected.
 
 ```
-stream.compress(selectors: Iterable<number|boolean> | Iterator<number|boolean>): Stream
+stream.compress(
+  selectors: Iterable<number | boolean> | Iterator<number | boolean>
+): Stream<T>
 ```
 
 Selectors indicate which data. True value selects item. False value filters out data.
@@ -2347,7 +2347,7 @@ const result = Stream.of(input)
 Return a stream filtering out elements from the stream only returning distinct elements.
 
 ```
-stream.distinct(compareBy?: (datum: unknown) => Comparable): Stream
+stream.distinct(compareBy?: (datum: T) => Comparable): Stream<T>
 ```
 
 ```typescript
@@ -2382,7 +2382,7 @@ const result = Stream.of(input)
 Drop elements from the stream while the predicate function is true.
 
 ```
-stream.dropWhile(predicate: (item: unknown) => boolean): Stream
+stream.dropWhile(predicate: (item: T) => boolean): Stream<T>
 ```
 
 Once the predicate function returns false once, all remaining elements are returned.
@@ -2402,7 +2402,7 @@ const result = Stream.of(input)
 Enumerates elements of the stream.
 
 ```
-stream.enumerate(): Stream
+stream.enumerate(): Stream<[number, T]>
 ```
 
 ```typescript
@@ -2419,7 +2419,7 @@ const stream = Stream.of(input)
 Filter out elements from the stream only keeping elements where there predicate function is true.
 
 ```
-stream.filter(predicate: (item: unknown) => boolean): Stream
+stream.filter(predicate: (item: T) => boolean): Stream<T>
 ```
 
 ```typescript
@@ -2437,7 +2437,7 @@ const result = Stream.of(input)
 Map a function onto the elements of the stream and flatten the results.
 
 ```
-stream.flatMap(mapper: (datum: unknown) => unknown): Stream
+stream.flatMap<U>(mapper: FlatMapper<T, U>): Stream<U>
 ```
 
 ```typescript
@@ -2456,7 +2456,7 @@ const result = Stream.of(data)
 Flatten a multidimensional stream.
 
 ```
-stream.flatten(dimensions: number = Infinity): Stream
+stream.flatten(dimensions: number = Infinity): Stream<unknown>
 ```
 
 ```typescript
@@ -2474,7 +2474,7 @@ const result = Stream.of(data)
 Return a stream intersecting the stream with the input iterables.
 
 ```
-stream.intersectionWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream
+stream.intersectionWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T>
 ```
 
 * Always treats different instances of objects and arrays as unequal.
@@ -2498,10 +2498,13 @@ Group stream data by a common data element.
 Iterate pairs of group name and collection of grouped items.
 
 ```
-stream.groupBy(
-  groupKeyFunction: (item: unknown) => string,
-  itemKeyFunction?: (item: unknown) => string,
-): Stream
+stream.groupBy<
+  TItemKeyFunction extends ((item: T) => string) | undefined,
+  TResultItem extends TItemKeyFunction extends undefined ? [string, Array<T>] : [string, Record<string, T>]
+>(
+  groupKeyFunction: (item: T) => string,
+  itemKeyFunction?: TItemKeyFunction
+): Stream<TResultItem>
 ```
 
 * The `groupKeyFunction` determines the key to group elements by.
@@ -2551,7 +2554,7 @@ const result = Stream.of(cartoonCharacters)
 Iterate keys of key-value pairs.
 
 ```
-stream.keys(): Stream
+stream.keys(): Stream<T extends [infer TKey, infer _] ? TKey : never>
 ```
 
 ```typescript
@@ -2571,7 +2574,7 @@ Return a stream up to a limit.
 Stops even if more data available if limit reached.
 
 ```
-stream.limit(count: number): Stream
+stream.limit(count: number): Stream<T>
 ```
 
 ```typescript
@@ -2590,7 +2593,7 @@ const goodMovies = Stream.of(matrixMovies)
 Return a stream containing the result of mapping a function onto each element of the stream.
 
 ```
-stream.map(mapper: (datum: unknown) => unknown): Stream
+stream.map<U>(mapper: (datum: T) => U): Stream<U>
 ```
 
 ```typescript
@@ -2608,7 +2611,7 @@ const result = Stream.of(grades)
 Return a stream consisting of pairs of elements from the stream.
 
 ```
-stream.pairwise(): Stream
+stream.pairwise(): Stream<[T, T]>
 ```
 
 Returns empty stream if given collection contains less than 2 elements.
@@ -2630,8 +2633,8 @@ Return a stream [partially intersecting](https://github.com/Smoren/partial-inter
 ```
 stream.partialIntersectionWith(
   minIntersectionCount: number,
-  ...iterables: Array<Iterable<unknown> | Iterator<unknown>>
-): Stream
+  ...iterables: Array<Iterable<T> | Iterator<T>>
+): Stream<T>
 ```
 
 * Always treats different instances of objects and arrays as unequal.
@@ -2654,7 +2657,7 @@ const result = Stream.of(staticallyTyped)
 Return a stream accumulating the running average (mean) over the stream.
 
 ```
-stream.runningAverage(initialValue?: number): Stream
+stream.runningAverage(initialValue?: number): Stream<number>
 ```
 
 ```typescript
@@ -2672,7 +2675,7 @@ const result = Stream.of(input)
 Return a stream accumulating the running difference over the stream.
 
 ```
-stream.runningDifference(initialValue?: number): Stream
+stream.runningDifference(initialValue?: number): Stream<number>
 ```
 
 ```typescript
@@ -2690,7 +2693,7 @@ const result = Stream.of(input)
 Return a stream accumulating the running max over the stream.
 
 ```
-stream.runningMax(initialValue?: number): Stream
+stream.runningMax(initialValue?: number): Stream<number>
 ```
 
 ```typescript
@@ -2708,7 +2711,7 @@ const result = Stream.of(input)
 Return a stream accumulating the running min over the stream.
 
 ```
-stream.runningMin(initialValue?: number): Stream
+stream.runningMin(initialValue?: number): Stream<number>
 ```
 
 ```typescript
@@ -2726,7 +2729,7 @@ const result = Stream.of(input)
 Return a stream accumulating the running product over the stream.
 
 ```
-stream.runningProduct(initialValue?: number): Stream
+stream.runningProduct(initialValue?: number): Stream<number>
 ```
 
 ```typescript
@@ -2744,7 +2747,7 @@ const result = Stream.of(input)
 Return a stream accumulating the running total over the stream.
 
 ```
-stream.runningTotal(initialValue?: number): Stream
+stream.runningTotal(initialValue?: number): Stream<number>
 ```
 
 ```typescript
@@ -2762,7 +2765,7 @@ const result = Stream.of(input)
 Skip some elements of the stream.
 
 ```
-skip(count: number, offset = 0): Stream
+stream.skip(count: number, offset = 0): Stream<T>
 ```
 
 ```typescript
@@ -2785,7 +2788,7 @@ const onlyTheBest = Stream.of(movies)
 Extract a slice of the stream.
 
 ```
-stream.slice(start: number = 0, count?: number, step: number = 1): Stream
+stream.slice(start: number = 0, count?: number, step: number = 1): Stream<T>
 ```
 
 ```typescript
@@ -2803,7 +2806,7 @@ const summerOlympics = Stream.of(olympics)
 Sorts the stream.
 
 ```
-stream.sort(comparator?: Comparator<unknown>): Stream
+stream.sort(comparator?: Comparator<T>): Stream<T>
 ```
 
 If comparator is not provided, the elements of the iterable source must be comparable.
@@ -2823,7 +2826,7 @@ const result = Stream.of(input)
 Return a stream of the symmetric difference of the stream and the given iterables.
 
 ```
-stream.symmetricDifferenceWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream
+stream.symmetricDifferenceWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T>
 ```
 
 * Always treats different instances of objects and arrays as unequal.
@@ -2846,7 +2849,7 @@ const result = Stream.of(a)
 Keep elements from the stream as long as the predicate is true.
 
 ```
-stream.takeWhile(predicate: (item: unknown) => boolean): Stream
+stream.takeWhile(predicate: (item: T) => boolean): Stream<T>
 ```
 
 ```typescript
@@ -2864,7 +2867,7 @@ const result = Stream.of(input)
 Return a stream of union of the stream with the input iterables.
 
 ```
-stream.unionWith(...iterables: Array<Iterable<unknown> | Iterator<unknown>>): Stream
+stream.unionWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T>
 ```
 
 * Always treats different instances of objects and arrays as unequal.
@@ -2887,7 +2890,7 @@ const result = Stream.of(a)
 Iterate keys of key-value pairs.
 
 ```
-stream.values(): Stream
+stream.values(): Stream<T extends [infer _, infer TValue] ? TValue : never>
 ```
 
 ```typescript
@@ -2905,9 +2908,9 @@ const result = Stream.of(dict)
 Return a stream consisting of multiple iterable collections streamed simultaneously.
 
 ```
-stream.zipWith(
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Stream
+stream.zipWith<
+  U extends Array<Iterable<unknown> | Iterator<unknown>>
+>(...iterables: U): Stream<ZipTuple<[Iterable<T>, ...U], never>>
 ```
 
 For uneven lengths, iterations stops when the shortest iterable is exhausted.
@@ -2927,9 +2930,9 @@ const stream = Stream.of(input)
 Return a stream consisting of multiple iterable collections of equal lengths streamed simultaneously.
 
 ```
-stream.zipEqualWith(
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Stream
+stream.zipEqualWith<
+  U extends Array<Iterable<unknown> | Iterator<unknown>>
+>(...iterables: U): Stream<ZipTuple<[Iterable<T>, ...U], never>>
 ```
 
 Works like `Stream.zipWith()` method but throws `LengthException` if lengths not equal,
@@ -2952,10 +2955,10 @@ for (const zipped of stream) {
 Return a stream consisting of multiple iterable collections streamed simultaneously.
 
 ```
-zipFilledWith(
-  filler: unknown,
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Stream
+zipFilledWith<
+  U extends Array<Iterable<unknown> | Iterator<unknown>>,
+  F
+>(filler: F, ...iterables: U): Stream<ZipTuple<[Iterable<T>, ...U], F>>
 ```
 
 * Iteration continues until the longest iterable is exhausted.
@@ -2978,9 +2981,9 @@ for (const zipped of stream) {
 Return a stream consisting of multiple iterable collections streamed simultaneously.
 
 ```
-stream.zipLongestWith(
-  ...iterables: Array<Iterable<unknown>|Iterator<unknown>>
-): Stream
+stream.zipLongestWith<
+  U extends Array<Iterable<unknown> | Iterator<unknown>>
+>(...iterables: U): Stream<ZipTuple<[Iterable<T>, ...U], undefined>>
 ```
 
 * Iteration continues until the longest iterable is exhausted.
@@ -3005,7 +3008,7 @@ for (const zipped of stream) {
 Return several independent (duplicated) streams.
 
 ```
-stream.tee(count: number): Array<Stream>
+stream.tee(count: number): Array<Stream<T>>
 ```
 
 ```php
@@ -3024,7 +3027,7 @@ const [week1Stream, week2Stream, week3Stream] = Stream.of(daysOfWeek)
 Returns an array of stream elements.
 
 ```
-stream.toArray(): Array<unknown>
+stream.toArray(): Array<T>
 ```
 
 ```typescript
@@ -3040,7 +3043,7 @@ const result = Stream.of([1, 2, 3, 4, 5])
 Converts stream to Map.
 
 ```
-stream.toMap(): Map<unknown, unknown>
+stream.toMap(): T extends [infer TKey, infer TValue] ? Map<TKey, TValue> : never
 ```
 
 Stream collection must contain only key-value pairs as elements.
@@ -3058,7 +3061,7 @@ const result = Stream.of([1, 2, 3])
 Converts stream to Set.
 
 ```
-stream.toSet(): Set<unknown>
+stream.toSet(): Set<T>
 ```
 
 ```typescript
@@ -3074,7 +3077,7 @@ const result = Stream.of([1, 1, 2, 2, 3, 3])
 Reduces iterable source to the mean average of its items.
 
 ```
-stream.toAverage(): number|undefined
+stream.toAverage(): number | undefined
 ```
 
 Returns `undefined` if iterable source is empty.
@@ -3110,7 +3113,7 @@ const result = Stream.of(iterable)
 Reduces stream to its first element.
 
 ```
-stream.toFirst(): unknown
+stream.toFirst(): T
 ```
 
 Throws `LengthException` if stream is empty.
@@ -3129,7 +3132,7 @@ const result = Stream.of(input)
 Reduces stream to its first last elements.
 
 ```
-stream.toFirstAndLast(): [unknown, unknown]
+stream.toFirstAndLast(): [T, T]
 ```
 
 Throws `LengthException` if stream is empty.
@@ -3148,7 +3151,7 @@ const result = Stream.of(input)
 Reduces stream to its last element.
 
 ```
-stream.toLast(): unknown
+stream.toLast(): T
 ```
 
 Throws `LengthException` if stream is empty.
@@ -3167,7 +3170,7 @@ const result = Stream.of(input)
 Reduces stream to its max value.
 
 ```
-stream.toMax<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined
+stream.toMax(compareBy?: (datum: T) => Comparable): T | undefined
 ```
 
 - Optional callable param `compareBy` must return comparable value.
@@ -3188,7 +3191,7 @@ const result = Stream.of(iterable)
 Reduces stream to its min value.
 
 ```
-stream.toMin<TComparable>(compareBy?: (datum: unknown) => TComparable): unknown|undefined
+stream.toMin(compareBy?: (datum: T) => Comparable): T | undefined
 ```
 
 - Optional callable param `compareBy` must return comparable value.
@@ -3209,7 +3212,7 @@ const result = Stream.of(iterable)
 Reduces stream to its min and max values.
 
 ```
-toMinMax(compareBy?: (item: unknown) => Comparable): [unknown?, unknown?]
+stream.toMinMax(compareBy?: (item: T) => Comparable): [T?, T?]
 ```
 
 - Optional callable param `compareBy` must return comparable value.
@@ -3230,7 +3233,7 @@ const result = Stream.of(iterable)
 Reduces iterable source to the product of its items.
 
 ```
-stream.toProduct(): number|undefined
+stream.toProduct(): number | undefined
 ```
 
 Returns `undefined` if stream is empty.
@@ -3285,10 +3288,10 @@ const result = Stream.of(iterable)
 Reduces iterable source like array_reduce() function.
 
 ```
-stream.toValue<T>(
-  reducer: (carry: T|undefined, datum: unknown) => T,
-  initialValue?: T,
-): T|undefined
+stream.toValue<U>(
+  reducer: (carry: U, datum: T) => U,
+  initialValue?: U
+): U
 ```
 
 ```typescript
@@ -3306,7 +3309,7 @@ const result = Stream.of(input)
 Returns true if all elements of stream match the predicate function.
 
 ```
-allMatch(predicate: (item: unknown) => boolean): boolean
+stream.allMatch(predicate: (item: T) => boolean): boolean
 ```
 
 For empty stream returns true.
@@ -3352,7 +3355,7 @@ Stream.of(notUniqueNumbers)
 Returns true if any element of stream matches the predicate function.
 
 ```
-anyMatch(predicate: (item: unknown) => boolean): boolean
+stream.anyMatch(predicate: (item: T) => boolean): boolean
 ```
 
 For empty stream returns false.
@@ -3375,7 +3378,7 @@ Returns true if exactly n items are true according to a predicate function.
 - Default predicate is boolean value of each item.
 
 ```
-stream.exactlyN(n: number, predicate?: (item: unknown) => boolean): boolean
+stream.exactlyN(n: number, predicate?: (item: T) => boolean): boolean
 ```
 
 ```typescript
@@ -3448,7 +3451,7 @@ Stream.of(input)
 Returns true if no element of stream matches the predicate function.
 
 ```
-noneMatch(predicate: (item: unknown) => boolean): boolean
+stream.noneMatch(predicate: (item: T) => boolean): boolean
 ```
 
 For empty stream returns true.
@@ -3468,7 +3471,7 @@ const trueResult = Stream.of(grades)
 Returns true if stream and all given collections are the same.
 
 ```
-sameWith(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean
+stream.sameWith(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean
 ```
 
 For empty collections list returns true.
@@ -3515,7 +3518,7 @@ const falseResult = Stream.of(input)
 Peek at each element between other Stream operations to do some action without modifying the stream.
 
 ```
-stream.peek(callback: (datum: unknown) => void): Stream
+stream.peek(callback: (datum: unknown) => void): Stream<T>
 ```
 
 ```typescript
@@ -3533,7 +3536,7 @@ console.log(result);
 Peek at the entire stream between other Stream operations to do some action without modifying the stream.
 
 ```
-stream.peekStream(callback: (datum: Stream) => void): Stream
+stream.peekStream(callback: (datum: Stream<T>) => void): Stream<T>
 ```
 
 ```typescript
