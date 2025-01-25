@@ -1,10 +1,8 @@
-// @ts-ignore
-import { createGeneratorFixture, createIterableFixture } from '../fixture';
 import { UsageMap } from '../../src/tools';
 
-describe.each(dataProvider() as Array<[Array<unknown>]>)(
+describe.each(dataProvider())(
   "Tools Usage Map Test",
-  (input: Array<unknown>) => {
+  (input) => {
     it("", () => {
       // Given
       const map = new UsageMap();
@@ -26,7 +24,7 @@ describe.each(dataProvider() as Array<[Array<unknown>]>)(
   }
 );
 
-function dataProvider(): Array<unknown> {
+function dataProvider(): Array<Array<any>> {
   return [
     [
       [1],
