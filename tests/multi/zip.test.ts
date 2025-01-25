@@ -19,12 +19,9 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
   ...dataProviderForMixed(),
-] as Array<[Array<Iterable<unknown>|Iterator<unknown>>, Array<unknown>]>)(
+])(
   "Multi Zip Test",
-  (
-    iterables: Array<Iterable<unknown>|Iterator<unknown>>,
-    expected: Array<unknown>
-  ) => {
+  (iterables, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -53,14 +50,9 @@ describe.each([
   ...dataProviderForMaps(),
   ...dataProviderForMixed(),
   ...dataProviderForMixedAsync(),
-] as Array<[Array<
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
->, Array<unknown>]>)(
+])(
   "Multi Zip Async Test",
-  (
-    iterables: Array<AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>>,
-    expected: Array<unknown>
-  ) => {
+  (iterables, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -76,7 +68,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<Array<any>>, Array<Array<any>>]> {
   return [
     [
       [],
@@ -170,7 +162,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Array<Generator<any>>, Array<Array<any>>]> {
   return [
     [
       [],
@@ -264,7 +256,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Array<Iterable<any>>, Array<Array<any>>]> {
   return [
     [
       [],
@@ -358,7 +350,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Array<Iterator<any>>, Array<Array<any>>]> {
   return [
     [
       [],
@@ -452,7 +444,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[Array<string>, Array<Array<string>>]> {
   return [
     [
       [],
@@ -546,7 +538,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Array<Set<any>>, Array<Array<any>>]> {
   return [
     [
       [],
@@ -640,7 +632,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Array<Map<any, any>>, Array<Array<any>>]> {
   return [
     [
       [],
@@ -751,7 +743,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[Array<AsyncGenerator<any>>, Array<Array<any>>]> {
   return [
     [
       [],
@@ -845,7 +837,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[Array<AsyncIterable<any>>, Array<Array<any>>]> {
   return [
     [
       [],
@@ -939,7 +931,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[Array<AsyncIterator<any>>, Array<Array<any>>]> {
   return [
     [
       [],
@@ -1033,7 +1025,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForMixed(): Array<unknown> {
+function dataProviderForMixed(): Array<[Array<Iterable<any> | Iterator<any>>, Array<Array<any>>]> {
   return [
     [
       [
@@ -1081,7 +1073,7 @@ function dataProviderForMixed(): Array<unknown> {
   ];
 }
 
-function dataProviderForMixedAsync(): Array<unknown> {
+function dataProviderForMixedAsync(): Array<[Array<Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>>, Array<Array<any>>]> {
   return [
     [
       [
