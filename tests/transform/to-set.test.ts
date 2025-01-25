@@ -9,12 +9,9 @@ import {
 } from '../fixture';
 import { transform } from '../../src';
 
-describe.each(dataProvider() as Array<[Iterable<unknown>|Iterator<unknown>, Array<unknown>]>)(
+describe.each(dataProvider())(
   "Transform To Set Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, expected) => {
     it("", () => {
       // Given
       const result = transform.toSet(input);
@@ -29,15 +26,9 @@ describe.each(dataProvider() as Array<[Iterable<unknown>|Iterator<unknown>, Arra
 describe.each([
   ...dataProvider(),
   ...dataProviderAsync(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  Array<unknown>
-]>)(
+])(
   "Transform To Set Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, expected) => {
     it("", async () => {
       // Given
       const result = await transform.toSetAsync(input);
@@ -49,7 +40,7 @@ describe.each([
   }
 );
 
-function dataProvider(): Array<unknown> {
+function dataProvider(): Array<[Iterable<any> | Iterator<any>, Set<any>]> {
   return [
     [
       '',
@@ -154,7 +145,7 @@ function dataProvider(): Array<unknown> {
   ];
 }
 
-function dataProviderAsync(): Array<unknown> {
+function dataProviderAsync(): Array<[AsyncIterable<any> | AsyncIterator<any>, Set<any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),

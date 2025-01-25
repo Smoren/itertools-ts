@@ -2,12 +2,9 @@
 import { createGeneratorFixture, createIterableFixture } from '../fixture';
 import { transform, summary, InvalidArgumentError } from '../../src';
 
-describe.each(dataProviderForSuccess() as Array<[Iterable<unknown>|Iterator<unknown>, Array<unknown>]>)(
+describe.each(dataProviderForSuccess())(
   "Transform To Iterable Test Success",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, expected) => {
     it("", () => {
       // Given
       const iterable = transform.toIterable(input);
@@ -25,7 +22,7 @@ describe.each(dataProviderForSuccess() as Array<[Iterable<unknown>|Iterator<unkn
   }
 );
 
-function dataProviderForSuccess(): Array<unknown> {
+function dataProviderForSuccess(): Array<[Iterable<any> | Iterator<any> | Record<any, any>, Array<any>]> {
   return [
     [
       '',
@@ -106,9 +103,9 @@ function dataProviderForSuccess(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForError() as Array<[Iterable<unknown>|Iterator<unknown>]>)(
+describe.each(dataProviderForError())(
   "Transform To Iterable Test Error",
-  (input: Iterable<unknown>|Iterator<unknown>) => {
+  (input) => {
     it("", () => {
       expect(() => {
         transform.toIterable(input);
@@ -117,7 +114,7 @@ describe.each(dataProviderForError() as Array<[Iterable<unknown>|Iterator<unknow
   }
 );
 
-function dataProviderForError(): Array<unknown> {
+function dataProviderForError(): Array<[any]> {
   return [
     [1],
     [1.0],

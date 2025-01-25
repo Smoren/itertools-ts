@@ -9,15 +9,9 @@ import {
 } from '../fixture';
 import { transform, single } from '../../src';
 
-describe.each(dataProvider() as Array<[
-  Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>|Record<string, unknown>,
-  Map<unknown, unknown>
-]>)(
+describe.each(dataProvider())(
   "Transform To Map Test",
-  (
-    input: Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>|Record<string, unknown>,
-    expected: Map<unknown, unknown>
-  ) => {
+  (input, expected) => {
     it("", () => {
       // Given
       const result = transform.toMap(input);
@@ -32,15 +26,9 @@ describe.each(dataProvider() as Array<[
 describe.each([
   ...dataProvider(),
   ...dataProviderAsync(),
-] as Array<[
-  AsyncIterable<[unknown, unknown]>|AsyncIterator<[unknown, unknown]>|Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>|Record<string, unknown>,
-  Map<unknown, unknown>
-]>)(
+])(
   "Transform To Map Async Test",
-  (
-    input: AsyncIterable<[unknown, unknown]>|AsyncIterator<[unknown, unknown]>|Iterable<[unknown, unknown]>|Iterator<[unknown, unknown]>|Record<string, unknown>,
-    expected: Map<unknown, unknown>
-  ) => {
+  (input, expected) => {
     it("", async () => {
       // Given
       const result = await transform.toMapAsync(input);
@@ -52,7 +40,7 @@ describe.each([
   }
 );
 
-function dataProvider(): Array<unknown> {
+function dataProvider(): Array<[Iterable<[any, any]> | Iterator<[any, any]> | Record<any, any>, Map<any, any>]> {
   return [
     [
       single.enumerate(''),
@@ -145,7 +133,7 @@ function dataProvider(): Array<unknown> {
   ];
 }
 
-function dataProviderAsync(): Array<unknown> {
+function dataProviderAsync(): Array<[AsyncIterable<[any, any]> | AsyncIterator<[any, any]> | Record<any, any>, Map<any, any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
