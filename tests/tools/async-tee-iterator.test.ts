@@ -8,9 +8,9 @@ import {
 import { AsyncTeeIterator } from '../../src/tools';
 import { toAsyncIterator } from "../../src/transform";
 
-describe.each(dataProvider() as Array<[Array<unknown>, boolean]>)(
+describe.each(dataProvider())(
   "Tools Async Tee Iterator Test",
-  (input: Array<unknown>, expected: boolean) => {
+  (input, expected) => {
     it("", async () => {
       // Given
       const iterator = new AsyncTeeIterator(toAsyncIterator(input), 3);
@@ -29,7 +29,7 @@ describe.each(dataProvider() as Array<[Array<unknown>, boolean]>)(
   }
 );
 
-function dataProvider(): Array<unknown> {
+function dataProvider(): Array<[Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>, any]> {
   return [
     [
       createAsyncGeneratorFixture([]),
