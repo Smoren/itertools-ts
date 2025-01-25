@@ -190,13 +190,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[AsyncIterable<unknown>|Iterable<unknown>, number, Array<Array<unknown>>]>)(
+])(
   "Transform Tee Async Chain Test",
-  (
-    input: AsyncIterable<unknown>|Iterable<unknown>,
-    relatedCount: number,
-    expected: Array<Array<unknown>>,
-  ) => {
+  (input, relatedCount, expected) => {
     it("", async () => {
       // Given
       const iterables = transform.teeAsync(input, relatedCount);
@@ -225,13 +221,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>, number, Array<Array<unknown>>]>)(
+])(
   "Transform Tee Zip Test",
-  (
-    input: Iterable<unknown>,
-    relatedCount: number,
-    expected: Array<Array<unknown>>,
-  ) => {
+  (input, relatedCount, expected) => {
     it("", () => {
       // Given
       const iterables = transform.tee(input, relatedCount);
@@ -262,13 +254,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[AsyncIterable<unknown>|Iterable<unknown>, number, Array<Array<unknown>>]>)(
+])(
   "Transform Tee Async Zip Test",
-  (
-    input: AsyncIterable<unknown>|Iterable<unknown>,
-    relatedCount: number,
-    expected: Array<Array<unknown>>,
-  ) => {
+  (input, relatedCount, expected) => {
     it("", async () => {
       // Given
       const iterables = transform.teeAsync(input, relatedCount);
@@ -296,13 +284,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>, number, Array<Array<unknown>>]>)(
+])(
   "Transform Tee Ladder Test",
-  (
-    input: Iterable<unknown>,
-    relatedCount: number,
-    expected: Array<Array<unknown>>,
-  ) => {
+  (input, relatedCount, expected) => {
     it("", () => {
       // Given
       const iterables = transform.tee(input, relatedCount);
@@ -350,13 +334,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[AsyncIterable<unknown>|Iterable<unknown>, number, Array<Array<unknown>>]>)(
+])(
   "Transform Tee Async Ladder Test",
-  (
-    input: AsyncIterable<unknown>|Iterable<unknown>,
-    relatedCount: number,
-    expected: Array<Array<unknown>>,
-  ) => {
+  (input, relatedCount, expected) => {
     it("", async () => {
       // Given
       const iterables = transform.teeAsync(input, relatedCount);
@@ -393,7 +373,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, number, Array<Array<any>>]> {
   return [
     [
       [],
@@ -446,7 +426,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, number, Array<Array<any>>]> {
   return [
     [
       createGeneratorFixture([]),
@@ -499,7 +479,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, number, Array<Array<any>>]> {
   return [
     [
       createIterableFixture([]),
@@ -552,7 +532,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, number, Array<Array<any>>]> {
   return [
     [
       createIteratorFixture([]),
@@ -605,7 +585,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, number, Array<Array<any>>]> {
   return [
     [
       '',
@@ -658,7 +638,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, number, Array<Array<any>>]> {
   return [
     [
       new Set([]),
@@ -711,7 +691,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, number, Array<Array<any>>]> {
   return [
     [
       createMapFixture([]),
@@ -764,7 +744,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, number, Array<Array<any>>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -817,7 +797,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, number, Array<Array<any>>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -870,7 +850,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, number, Array<Array<any>>]> {
   return [
     [
       createAsyncIteratorFixture([]),

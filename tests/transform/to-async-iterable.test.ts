@@ -9,12 +9,9 @@ import {
 } from '../fixture';
 import { transform, summary, InvalidArgumentError } from '../../src';
 
-describe.each(dataProviderForSuccess() as Array<[AsyncIterable<unknown>|AsyncIterator<unknown>, Array<unknown>]>)(
+describe.each(dataProviderForSuccess())(
   "Transform To Async Iterable Test Success",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, expected) => {
     it("", async () => {
       // Given
       const iterable = transform.toAsyncIterable(input);
@@ -32,7 +29,7 @@ describe.each(dataProviderForSuccess() as Array<[AsyncIterable<unknown>|AsyncIte
   }
 );
 
-function dataProviderForSuccess(): Array<unknown> {
+function dataProviderForSuccess(): Array<[Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any> | Record<any, any>, Array<any>]> {
   return [
     [
       '',
@@ -161,9 +158,9 @@ function dataProviderForSuccess(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForError() as Array<[AsyncIterable<unknown>|AsyncIterator<unknown>]>)(
+describe.each(dataProviderForError())(
   "Transform To Iterable Test Error",
-  (input: AsyncIterable<unknown>|AsyncIterator<unknown>) => {
+  (input) => {
     it("", () => {
       expect(() => {
         transform.toAsyncIterable(input);
@@ -172,7 +169,7 @@ describe.each(dataProviderForError() as Array<[AsyncIterable<unknown>|AsyncItera
   }
 );
 
-function dataProviderForError(): Array<unknown> {
+function dataProviderForError(): Array<[any]> {
   return [
     [1],
     [1.0],

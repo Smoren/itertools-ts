@@ -8,15 +8,9 @@ import {
 } from '../fixture';
 import { transform, summary, InvalidArgumentError } from '../../src';
 
-describe.each(dataProviderForSuccess() as Array<[
-  Iterable<unknown>|Iterator<unknown>|AsyncIterator<unknown>|AsyncIterable<unknown>,
-  Array<unknown>
-]>)(
+describe.each(dataProviderForSuccess())(
   "Transform To Async Iterator Test Success",
-  (
-    input: Iterable<unknown>|Iterator<unknown>|AsyncIterator<unknown>|AsyncIterable<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, expected) => {
     it("", async () => {
       // Given
       const iterator = transform.toAsyncIterator(input as Iterable<unknown>|Iterator<unknown>);
@@ -36,7 +30,7 @@ describe.each(dataProviderForSuccess() as Array<[
   }
 );
 
-function dataProviderForSuccess(): Array<unknown> {
+function dataProviderForSuccess(): Array<[Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>, Array<any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -141,11 +135,9 @@ function dataProviderForSuccess(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForError() as Array<[
-  Iterable<unknown>|Iterator<unknown>|AsyncIterator<unknown>|AsyncIterable<unknown>
-]>)(
+describe.each(dataProviderForError())(
   "Transform To Async Iterable Test Error",
-  (input: Iterable<unknown>|Iterator<unknown>|AsyncIterator<unknown>|AsyncIterable<unknown>) => {
+  (input) => {
     it("", () => {
       expect(() => {
         transform.toAsyncIterator(input);
@@ -154,7 +146,7 @@ describe.each(dataProviderForError() as Array<[
   }
 );
 
-function dataProviderForError(): Array<unknown> {
+function dataProviderForError(): Array<[any]> {
   return [
     [1],
     [1.0],

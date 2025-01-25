@@ -8,12 +8,9 @@ import {
 } from '../fixture';
 import { transform } from '../../src';
 
-describe.each(dataProvider() as Array<[Iterable<unknown>|Iterator<unknown>, Array<unknown>]>)(
+describe.each(dataProvider())(
   "Transform To Array Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, expected) => {
     it("", () => {
       // Given
       const result = transform.toArray(input);
@@ -28,15 +25,9 @@ describe.each(dataProvider() as Array<[Iterable<unknown>|Iterator<unknown>, Arra
 describe.each([
   ...dataProvider(),
   ...dataProviderAsync(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  Array<unknown>
-]>)(
+])(
   "Transform To Array Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, expected) => {
     it("", async () => {
       // Given
       const result = await transform.toArrayAsync(input);
@@ -48,7 +39,7 @@ describe.each([
   }
 );
 
-function dataProvider(): Array<unknown> {
+function dataProvider(): Array<[Iterable<any> | Iterator<any>, Array<any>]> {
   return [
     [
       '',
@@ -129,7 +120,7 @@ function dataProvider(): Array<unknown> {
   ];
 }
 
-function dataProviderAsync(): Array<unknown> {
+function dataProviderAsync(): Array<[AsyncIterable<any> | AsyncIterator<any>, Array<any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
