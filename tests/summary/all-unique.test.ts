@@ -16,9 +16,9 @@ describe.each([
   ...dataProviderForIteratorsTrue(),
   ...dataProviderForStringsTrue(),
   ...dataProviderForSetsTrue(),
-] as Array<[Iterable<unknown>|Iterator<unknown>]>)(
+])(
   "Summary All Unique Test True",
-  (input: Iterable<unknown>|Iterator<unknown>) => {
+  (input) => {
     it("", () => {
       expect(summary.allUnique(input)).toBeTruthy();
     });
@@ -35,13 +35,9 @@ describe.each([
   ...dataProviderForIteratorsTrue(),
   ...dataProviderForStringsTrue(),
   ...dataProviderForSetsTrue(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
-]>)(
+])(
   "Summary All Unique Async Test True",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
-  ) => {
+  (input) => {
     it("", async () => {
       expect(await summary.allUniqueAsync(input)).toBeTruthy();
     });
@@ -54,9 +50,9 @@ describe.each([
   ...dataProviderForIterablesFalse(),
   ...dataProviderForIteratorsFalse(),
   ...dataProviderForStringsFalse(),
-] as Array<[Iterable<unknown>|Iterator<unknown>]>)(
+])(
   "Summary All Unique Test False",
-  (input: Iterable<unknown>|Iterator<unknown>) => {
+  (input) => {
     it("", () => {
       expect(summary.allUnique(input)).toBeFalsy();
     });
@@ -72,20 +68,16 @@ describe.each([
   ...dataProviderForIterablesFalse(),
   ...dataProviderForIteratorsFalse(),
   ...dataProviderForStringsFalse(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
-]>)(
+])(
   "Summary All Unique Async Test False",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
-  ) => {
+  (input) => {
     it("", async () => {
       expect(await summary.allUniqueAsync(input)).toBeFalsy();
     });
   }
 );
 
-function dataProviderForArraysTrue(): Array<unknown> {
+function dataProviderForArraysTrue(): Array<[Array<any>]> {
   return [
     [[]],
     [[undefined]],
@@ -106,7 +98,7 @@ function dataProviderForArraysTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsTrue(): Array<unknown> {
+function dataProviderForGeneratorsTrue(): Array<[Generator<any>]> {
   return [
     [createGeneratorFixture([])],
     [createGeneratorFixture([undefined])],
@@ -127,7 +119,7 @@ function dataProviderForGeneratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterablesTrue(): Array<unknown> {
+function dataProviderForIterablesTrue(): Array<[Iterable<any>]> {
   return [
     [createIterableFixture([])],
     [createIterableFixture([undefined])],
@@ -148,7 +140,7 @@ function dataProviderForIterablesTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForIteratorsTrue(): Array<unknown> {
+function dataProviderForIteratorsTrue(): Array<[Iterator<any>]> {
   return [
     [createIteratorFixture([])],
     [createIteratorFixture([undefined])],
@@ -169,7 +161,7 @@ function dataProviderForIteratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForStringsTrue(): Array<unknown> {
+function dataProviderForStringsTrue(): Array<[string]> {
   return [
     [''],
     ['1'],
@@ -178,7 +170,7 @@ function dataProviderForStringsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForSetsTrue(): Array<unknown> {
+function dataProviderForSetsTrue(): Array<[Set<any>]> {
   return [
     [new Set([])],
     [new Set([undefined])],
@@ -200,7 +192,7 @@ function dataProviderForSetsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
+function dataProviderForAsyncGeneratorsTrue(): Array<[AsyncGenerator<any>]> {
   return [
     [createAsyncGeneratorFixture([])],
     [createAsyncGeneratorFixture([undefined])],
@@ -221,7 +213,7 @@ function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterablesTrue(): Array<unknown> {
+function dataProviderForAsyncIterablesTrue(): Array<[AsyncIterable<any>]> {
   return [
     [createAsyncIterableFixture([])],
     [createAsyncIterableFixture([undefined])],
@@ -242,7 +234,7 @@ function dataProviderForAsyncIterablesTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
+function dataProviderForAsyncIteratorsTrue(): Array<[AsyncIterator<any>]> {
   return [
     [createAsyncIteratorFixture([])],
     [createAsyncIteratorFixture([undefined])],
@@ -263,7 +255,7 @@ function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForArraysFalse(): Array<unknown> {
+function dataProviderForArraysFalse(): Array<[Array<any>]> {
   return [
     [[1, 1]],
     [[1, 1, 1]],
@@ -275,7 +267,7 @@ function dataProviderForArraysFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsFalse(): Array<unknown> {
+function dataProviderForGeneratorsFalse(): Array<[Generator<any>]> {
   return [
     [createGeneratorFixture([1, 1])],
     [createGeneratorFixture([1, 1, 1])],
@@ -287,7 +279,7 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterablesFalse(): Array<unknown> {
+function dataProviderForIterablesFalse(): Array<[Iterable<any>]> {
   return [
     [createIterableFixture([1, 1])],
     [createIterableFixture([1, 1, 1])],
@@ -299,7 +291,7 @@ function dataProviderForIterablesFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForStringsFalse(): Array<unknown> {
+function dataProviderForStringsFalse(): Array<[string]> {
   return [
     ['11'],
     ['111'],
@@ -309,7 +301,7 @@ function dataProviderForStringsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForIteratorsFalse(): Array<unknown> {
+function dataProviderForIteratorsFalse(): Array<[Iterator<any>]> {
   return [
     [createIteratorFixture([1, 1])],
     [createIteratorFixture([1, 1, 1])],
@@ -321,7 +313,7 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
+function dataProviderForAsyncGeneratorsFalse(): Array<[AsyncGenerator<any>]> {
   return [
     [createAsyncGeneratorFixture([1, 1])],
     [createAsyncGeneratorFixture([1, 1, 1])],
@@ -333,7 +325,7 @@ function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterablesFalse(): Array<unknown> {
+function dataProviderForAsyncIterablesFalse(): Array<[AsyncIterable<any>]> {
   return [
     [createAsyncIterableFixture([1, 1])],
     [createAsyncIterableFixture([1, 1, 1])],
@@ -345,7 +337,7 @@ function dataProviderForAsyncIterablesFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
+function dataProviderForAsyncIteratorsFalse(): Array<[AsyncIterator<any>]> {
   return [
     [createAsyncIteratorFixture([1, 1])],
     [createAsyncIteratorFixture([1, 1, 1])],
