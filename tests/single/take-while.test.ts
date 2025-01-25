@@ -19,13 +19,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (datum: unknown) => boolean, Array<unknown>]>)(
+])(
   "Single Take While Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    predicate: (datum: unknown) => boolean,
-    expected: Array<unknown>
-  ) => {
+  (input, predicate, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -52,17 +48,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (datum: unknown) => boolean | Promise<boolean>,
-  Array<unknown>
-]>)(
+])(
   "Single Take While Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    predicate: (datum: unknown) => boolean | Promise<boolean>,
-    expected: Array<unknown>
-  ) => {
+  (input, predicate, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -78,7 +66,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, (x: any) => boolean, Array<any>]> {
   return [
     [
       [0, 1, 2, 3, 4, 5],
@@ -163,7 +151,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, (x: any) => boolean, Array<any>]> {
   return [
     [
       createGeneratorFixture([0, 1, 2, 3, 4, 5]),
@@ -226,7 +214,7 @@ function dataProviderForGenerators(): Array<unknown> {
       [0, 1, 2, 3, 4, 5],
     ],
     [
-      [0, 1, 2, 3, 4, 5],
+      createGeneratorFixture([0, 1, 2, 3, 4, 5]),
       () => false,
       [],
     ],
@@ -248,7 +236,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, (x: any) => boolean, Array<any>]> {
   return [
     [
       createIterableFixture([0, 1, 2, 3, 4, 5]),
@@ -311,7 +299,7 @@ function dataProviderForIterables(): Array<unknown> {
       [0, 1, 2, 3, 4, 5],
     ],
     [
-      [0, 1, 2, 3, 4, 5],
+      createIterableFixture([0, 1, 2, 3, 4, 5]),
       () => false,
       [],
     ],
@@ -333,7 +321,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, (x: any) => boolean, Array<any>]> {
   return [
     [
       createIteratorFixture([0, 1, 2, 3, 4, 5]),
@@ -396,7 +384,7 @@ function dataProviderForIterators(): Array<unknown> {
       [0, 1, 2, 3, 4, 5],
     ],
     [
-      [0, 1, 2, 3, 4, 5],
+      createIteratorFixture([0, 1, 2, 3, 4, 5]),
       () => false,
       [],
     ],
@@ -418,7 +406,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, (x: any) => boolean, Array<any>]> {
   return [
     [
       '012345',
@@ -471,7 +459,7 @@ function dataProviderForStrings(): Array<unknown> {
       ['0', '1', '2', '3', '4', '5'],
     ],
     [
-      ['5', '4', '3', '2', '1', '0'],
+      '543210',
       (x: number) => x > 2,
       ['5', '4', '3'],
     ],
@@ -493,7 +481,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, (x: any) => boolean, Array<any>]> {
   return [
     [
       new Set([0, 1, 2, 3, 4, 5]),
@@ -556,7 +544,7 @@ function dataProviderForSets(): Array<unknown> {
       [0, 1, 2, 3, 4, 5],
     ],
     [
-      [0, 1, 2, 3, 4, 5],
+      new Set([0, 1, 2, 3, 4, 5]),
       () => false,
       [],
     ],
@@ -578,7 +566,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, (x: any) => boolean, Array<any>]> {
   return [
     [
       createMapFixture([0, 1, 2, 3, 4, 5]),
@@ -641,7 +629,7 @@ function dataProviderForMaps(): Array<unknown> {
       [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5]],
     ],
     [
-      [0, 1, 2, 3, 4, 5],
+      createMapFixture([0, 1, 2, 3, 4, 5]),
       () => false,
       [],
     ],
@@ -663,7 +651,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (x: any) => boolean | Promise<boolean>, Array<any>]> {
   return [
     [
       createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
@@ -726,7 +714,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
       [0, 1, 2, 3, 4, 5],
     ],
     [
-      [0, 1, 2, 3, 4, 5],
+      createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
       () => false,
       [],
     ],
@@ -756,7 +744,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, (x: any) => boolean | Promise<boolean>, Array<any>]> {
   return [
     [
       createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
@@ -819,7 +807,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
       [0, 1, 2, 3, 4, 5],
     ],
     [
-      [0, 1, 2, 3, 4, 5],
+      createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
       () => false,
       [],
     ],
@@ -849,7 +837,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, (x: any) => boolean | Promise<boolean>, Array<any>]> {
   return [
     [
       createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
@@ -912,7 +900,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
       [0, 1, 2, 3, 4, 5],
     ],
     [
-      [0, 1, 2, 3, 4, 5],
+      createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
       () => false,
       [],
     ],

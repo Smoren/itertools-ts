@@ -18,13 +18,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, Array<number>, Array<unknown>]>)(
+])(
   "Single Slice Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    config: Array<number>,
-    expected: Array<unknown>
-  ) => {
+  (input, config, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -51,17 +47,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  Array<number>,
-  Array<unknown>
-]>)(
+])(
   "Single Slice Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    config: Array<number>,
-    expected: Array<unknown>
-  ) => {
+  (input, config, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -79,9 +67,9 @@ describe.each([
 
 describe.each([
   ...dataProviderForErrors(),
-] as Array<[Array<number>]>)(
+])(
   "Single Slice Error Test",
-  (config: Array<number>) => {
+  (config) => {
     it("", () => {
       expect(() => {
         const result = single.slice([1, 2, 3], ...config);
@@ -96,9 +84,9 @@ describe.each([
 
 describe.each([
   ...dataProviderForErrors(),
-] as Array<[Array<number>]>)(
+])(
   "Single Slice Async Error Test",
-  (config: Array<number>) => {
+  (config) => {
     it("", async () => {
       try {
         const result = single.sliceAsync(createAsyncIterableFixture([1, 2, 3]), ...config);
@@ -114,7 +102,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, [number?] | [number?, number?] | [number?, number?, number?], Array<any>]> {
   return [
     [
       [],
@@ -509,7 +497,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, [number?] | [number?, number?] | [number?, number?, number?], Array<any>]> {
   return [
     [
       createGeneratorFixture([]),
@@ -904,7 +892,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, [number?] | [number?, number?] | [number?, number?, number?], Array<any>]> {
   return [
     [
       createIterableFixture([]),
@@ -1299,7 +1287,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, [number?] | [number?, number?] | [number?, number?, number?], Array<any>]> {
   return [
     [
       createIteratorFixture([]),
@@ -1694,7 +1682,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, [number?] | [number?, number?] | [number?, number?, number?], Array<any>]> {
   return [
     [
       '',
@@ -1949,7 +1937,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, [number?] | [number?, number?] | [number?, number?, number?], Array<any>]> {
   return [
     [
       new Set([]),
@@ -2344,7 +2332,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, [number?] | [number?, number?] | [number?, number?, number?], Array<any>]> {
   return [
     [
       createMapFixture([]),
@@ -2739,7 +2727,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, [number?] | [number?, number?] | [number?, number?, number?], Array<any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -3134,7 +3122,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, [number?] | [number?, number?] | [number?, number?, number?], Array<any>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -3529,7 +3517,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, [number?] | [number?, number?] | [number?, number?, number?], Array<any>]> {
   return [
     [
       createAsyncIteratorFixture([]),
@@ -3924,7 +3912,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForErrors(): Array<unknown> {
+function dataProviderForErrors(): Array<[[number?] | [number?, number?] | [number?, number?, number?]]> {
   return [
     [[-1]],
     [[-2]],

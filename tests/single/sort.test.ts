@@ -62,17 +62,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-    Iterable<unknown>|Iterator<unknown>,
-    Comparator<unknown>|undefined,
-  Array<unknown>,
-]>)(
+])(
   "Single Sort Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    comparator: Comparator<unknown>|undefined,
-    expected: Array<unknown>,
-  ) => {
+  (input, comparator, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -99,17 +91,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-    AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    Comparator<unknown>|undefined,
-  Array<unknown>,
-]>)(
+])(
   "Single Sort Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    comparator: Comparator<unknown>|undefined,
-    expected: Array<unknown>,
-  ) => {
+  (input, comparator, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -125,7 +109,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, Comparator<any> | undefined, Array<any>]> {
   return [
     [
       [],
@@ -285,7 +269,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, Comparator<any> | undefined, Array<any>]> {
   return [
     [
       createGeneratorFixture([]),
@@ -445,7 +429,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, Comparator<any> | undefined, Array<any>]> {
   return [
     [
       createIterableFixture([]),
@@ -605,7 +589,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, Comparator<any> | undefined, Array<any>]> {
   return [
     [
       createIteratorFixture([]),
@@ -765,7 +749,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, Comparator<any> | undefined, Array<any>]> {
   return [
     [
       '',
@@ -875,7 +859,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, Comparator<any> | undefined, Array<any>]> {
   return [
     [
       new Set([]),
@@ -970,7 +954,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, Comparator<any> | undefined, Array<any>]> {
   return [
     [
       new Map([]),
@@ -1000,7 +984,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, Comparator<any> | undefined, Array<any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -1160,7 +1144,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, Comparator<any> | undefined, Array<any>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -1320,7 +1304,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, Comparator<any> | undefined, Array<any>]> {
   return [
     [
       createAsyncIteratorFixture([]),
