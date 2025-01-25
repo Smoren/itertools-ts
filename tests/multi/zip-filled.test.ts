@@ -19,13 +19,9 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
   ...dataProviderForMixed(),
-] as Array<[Array<Iterable<unknown>|Iterator<unknown>>, unknown, Array<unknown>]>)(
+])(
   "Multi Zip Filled Test",
-  (
-    iterables: Array<Iterable<unknown>|Iterator<unknown>>,
-    filler: unknown,
-    expected: Array<unknown>
-  ) => {
+  (iterables, filler, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -54,15 +50,9 @@ describe.each([
   ...dataProviderForMaps(),
   ...dataProviderForMixed(),
   ...dataProviderForMixedAsync(),
-] as Array<[Array<
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
->, unknown, Array<unknown>]>)(
+])(
   "Multi Zip Filled Async Test",
-  (
-    iterables: Array<AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>>,
-    filler: unknown,
-    expected: Array<unknown>
-  ) => {
+  (iterables, filler, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -78,7 +68,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<Array<any>>, any, Array<Array<any>>]> {
   return [
     [
       [],
@@ -206,7 +196,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Array<Generator<any>>, any, Array<Array<any>>]> {
   return [
     [
       [],
@@ -334,7 +324,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Array<Iterable<any>>, any, Array<Array<any>>]> {
   return [
     [
       [],
@@ -462,7 +452,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Array<Iterator<any>>, any, Array<Array<any>>]> {
   return [
     [
       [],
@@ -590,7 +580,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[Array<string>, any, Array<Array<any>>]> {
   return [
     [
       [],
@@ -697,7 +687,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Array<Set<any>>, any, Array<Array<any>>]> {
   return [
     [
       [],
@@ -825,7 +815,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Array<Map<any, any>>, any, Array<Array<any>>]> {
   return [
     [
       [],
@@ -980,7 +970,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[Array<AsyncGenerator<any>>, any, Array<Array<any>>]> {
   return [
     [
       [],
@@ -1108,7 +1098,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[Array<AsyncIterable<any>>, any, Array<Array<any>>]> {
   return [
     [
       [],
@@ -1236,7 +1226,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[Array<AsyncIterator<any>>, any, Array<Array<any>>]> {
   return [
     [
       [],
@@ -1364,7 +1354,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForMixed(): Array<unknown> {
+function dataProviderForMixed(): Array<[Array<Iterable<any> | Iterator<any>>, any, Array<Array<any>>]> {
   return [
     [
       [
@@ -1522,7 +1512,7 @@ function dataProviderForMixed(): Array<unknown> {
   ];
 }
 
-function dataProviderForMixedAsync(): Array<unknown> {
+function dataProviderForMixedAsync(): Array<[Array<Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>>, any, Array<Array<any>>]> {
   return [
     [
       [
