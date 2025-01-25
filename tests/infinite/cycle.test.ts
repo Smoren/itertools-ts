@@ -18,13 +18,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, number, Array<unknown>]>)(
+])(
   "Infinite Cycle Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    limit: number,
-    expected: Array<unknown>
-  ) => {
+  (input, limit, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -56,17 +52,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  number,
-  Array<unknown>
-]>)(
+])(
   "Infinite Cycle Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    limit: number,
-    expected: Array<unknown>
-  ) => {
+  (input, limit, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -87,7 +75,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, number, Array<any>]> {
   return [
     [
       [],
@@ -132,142 +120,28 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
-  return [
-    [
-      createGeneratorFixture([]),
-      5,
-      [],
-    ],
-    [
-      createGeneratorFixture(['']),
-      3,
-      ['', '', ''],
-    ],
-    [
-      createGeneratorFixture([null]),
-      5,
-      [null, null, null, null, null],
-    ],
-    [
-      createGeneratorFixture([0, 1, 2]),
-      10,
-      [0, 1, 2, 0, 1, 2, 0, 1, 2, 0],
-    ],
-    [
-      createGeneratorFixture([1, 1]),
-      6,
-      [1, 1, 1, 1, 1, 1],
-    ],
-    [
-      createGeneratorFixture(['0', '1', '2']),
-      10,
-      ['0', '1', '2', '0', '1', '2', '0', '1', '2', '0'],
-    ],
-    [
-      createGeneratorFixture([[], []]),
-      6,
-      [[], [], [], [], [], []],
-    ],
-    [
-      createGeneratorFixture([[], [1]]),
-      6,
-      [[], [1], [], [1], [], [1]],
-    ],
-  ];
+function dataProviderForGenerators(): Array<[Generator<any>, number, Array<any>]> {
+  return dataProviderForArrays().map((x) => [
+    createGeneratorFixture(x[0]),
+    ...x.slice(1) as [number, Array<any>]
+  ]);
 }
 
-function dataProviderForIterables(): Array<unknown> {
-  return [
-    [
-      createIterableFixture([]),
-      5,
-      [],
-    ],
-    [
-      createIterableFixture(['']),
-      3,
-      ['', '', ''],
-    ],
-    [
-      createIterableFixture([null]),
-      5,
-      [null, null, null, null, null],
-    ],
-    [
-      createIterableFixture([0, 1, 2]),
-      10,
-      [0, 1, 2, 0, 1, 2, 0, 1, 2, 0],
-    ],
-    [
-      createIterableFixture([1, 1]),
-      6,
-      [1, 1, 1, 1, 1, 1],
-    ],
-    [
-      createIterableFixture(['0', '1', '2']),
-      10,
-      ['0', '1', '2', '0', '1', '2', '0', '1', '2', '0'],
-    ],
-    [
-      createIterableFixture([[], []]),
-      6,
-      [[], [], [], [], [], []],
-    ],
-    [
-      createIterableFixture([[], [1]]),
-      6,
-      [[], [1], [], [1], [], [1]],
-    ],
-  ];
+function dataProviderForIterables(): Array<[Iterable<any>, number, Array<any>]> {
+  return dataProviderForArrays().map((x) => [
+    createIterableFixture(x[0]),
+    ...x.slice(1) as [number, Array<any>]
+  ]);
 }
 
-function dataProviderForIterators(): Array<unknown> {
-  return [
-    [
-      createIteratorFixture([]),
-      5,
-      [],
-    ],
-    [
-      createIteratorFixture(['']),
-      3,
-      ['', '', ''],
-    ],
-    [
-      createIteratorFixture([null]),
-      5,
-      [null, null, null, null, null],
-    ],
-    [
-      createIteratorFixture([0, 1, 2]),
-      10,
-      [0, 1, 2, 0, 1, 2, 0, 1, 2, 0],
-    ],
-    [
-      createIteratorFixture([1, 1]),
-      6,
-      [1, 1, 1, 1, 1, 1],
-    ],
-    [
-      createIteratorFixture(['0', '1', '2']),
-      10,
-      ['0', '1', '2', '0', '1', '2', '0', '1', '2', '0'],
-    ],
-    [
-      createIteratorFixture([[], []]),
-      6,
-      [[], [], [], [], [], []],
-    ],
-    [
-      createIteratorFixture([[], [1]]),
-      6,
-      [[], [1], [], [1], [], [1]],
-    ],
-  ];
+function dataProviderForIterators(): Array<[Iterator<any>, number, Array<any>]> {
+  return dataProviderForArrays().map((x) => [
+    createIteratorFixture(x[0]),
+    ...x.slice(1) as [number, Array<any>]
+  ]);
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, number, Array<string>]> {
   return [
     [
       '',
@@ -292,7 +166,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, number, Array<any>]> {
   return [
     [
       new Set([]),
@@ -332,7 +206,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, number, Array<any>]> {
   return [
     [
       createMapFixture([]),
@@ -347,137 +221,68 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsync(): Array<[Array<any>, number, Array<any>]> {
   return [
     [
-      createAsyncGeneratorFixture([]),
+      [],
       5,
       [],
     ],
     [
-      createAsyncGeneratorFixture(['']),
+      [''],
       3,
       ['', '', ''],
     ],
     [
-      createAsyncGeneratorFixture([null]),
+      [null],
       5,
       [null, null, null, null, null],
     ],
     [
-      createAsyncGeneratorFixture([0, 1, 2]),
+      [0, 1, 2],
       10,
       [0, 1, 2, 0, 1, 2, 0, 1, 2, 0],
     ],
     [
-      createAsyncGeneratorFixture([1, 1]),
+      [1, 1],
       6,
       [1, 1, 1, 1, 1, 1],
     ],
     [
-      createAsyncGeneratorFixture(['0', '1', '2']),
+      ['0', '1', '2'],
       10,
       ['0', '1', '2', '0', '1', '2', '0', '1', '2', '0'],
     ],
     [
-      createAsyncGeneratorFixture([[], []]),
+      [[], []],
       6,
       [[], [], [], [], [], []],
     ],
     [
-      createAsyncGeneratorFixture([[], [1]]),
+      [[], [1]],
       6,
       [[], [1], [], [1], [], [1]],
     ],
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
-  return [
-    [
-      createAsyncIterableFixture([]),
-      5,
-      [],
-    ],
-    [
-      createAsyncIterableFixture(['']),
-      3,
-      ['', '', ''],
-    ],
-    [
-      createAsyncIterableFixture([null]),
-      5,
-      [null, null, null, null, null],
-    ],
-    [
-      createAsyncIterableFixture([0, 1, 2]),
-      10,
-      [0, 1, 2, 0, 1, 2, 0, 1, 2, 0],
-    ],
-    [
-      createAsyncIterableFixture([1, 1]),
-      6,
-      [1, 1, 1, 1, 1, 1],
-    ],
-    [
-      createAsyncIterableFixture(['0', '1', '2']),
-      10,
-      ['0', '1', '2', '0', '1', '2', '0', '1', '2', '0'],
-    ],
-    [
-      createAsyncIterableFixture([[], []]),
-      6,
-      [[], [], [], [], [], []],
-    ],
-    [
-      createAsyncIterableFixture([[], [1]]),
-      6,
-      [[], [1], [], [1], [], [1]],
-    ],
-  ];
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, number, Array<any>]> {
+  return dataProviderForAsync().map((x) => [
+    createAsyncGeneratorFixture(x[0]),
+    ...x.slice(1) as [number, Array<any>],
+  ]);
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
-  return [
-    [
-      createAsyncIteratorFixture([]),
-      5,
-      [],
-    ],
-    [
-      createAsyncIteratorFixture(['']),
-      3,
-      ['', '', ''],
-    ],
-    [
-      createAsyncIteratorFixture([null]),
-      5,
-      [null, null, null, null, null],
-    ],
-    [
-      createAsyncIteratorFixture([0, 1, 2]),
-      10,
-      [0, 1, 2, 0, 1, 2, 0, 1, 2, 0],
-    ],
-    [
-      createAsyncIteratorFixture([1, 1]),
-      6,
-      [1, 1, 1, 1, 1, 1],
-    ],
-    [
-      createAsyncIteratorFixture(['0', '1', '2']),
-      10,
-      ['0', '1', '2', '0', '1', '2', '0', '1', '2', '0'],
-    ],
-    [
-      createAsyncIteratorFixture([[], []]),
-      6,
-      [[], [], [], [], [], []],
-    ],
-    [
-      createAsyncIteratorFixture([[], [1]]),
-      6,
-      [[], [1], [], [1], [], [1]],
-    ],
-  ];
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, number, Array<any>]> {
+  return dataProviderForAsync().map((x) => [
+    createAsyncIterableFixture(x[0]),
+    ...x.slice(1) as [number, Array<any>],
+  ]);
+}
+
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, number, Array<any>]> {
+  return dataProviderForAsync().map((x) => [
+    createAsyncIteratorFixture(x[0]),
+    ...x.slice(1) as [number, Array<any>],
+  ]);
 }

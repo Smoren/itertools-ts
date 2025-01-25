@@ -3,13 +3,9 @@ import { infinite } from "../../src";
 
 describe.each([
   ...dataProvider(),
-] as Array<[Array<number>, number, Array<number>]>)(
+])(
   "Infinite Repeat Test",
-  (
-    itemToRepeat: unknown,
-    limit: number,
-    expected: Array<number>
-  ) => {
+  (itemToRepeat, limit, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -30,7 +26,7 @@ describe.each([
   }
 );
 
-function dataProvider(): Array<unknown> {
+function dataProvider(): Array<[any, number, Array<any>]> {
   return [
     [
       0,
