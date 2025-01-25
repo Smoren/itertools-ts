@@ -18,13 +18,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, Iterable<number>|Iterator<number>, Array<unknown>]>)(
+])(
   "Single Compress Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    selectors: Iterable<number>|Iterator<number>,
-    expected: Array<unknown>
-  ) => {
+  (input, selectors, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -52,17 +48,9 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
   ...dataProviderForMixedAsync(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  AsyncIterable<number>|AsyncIterator<number>|Iterable<number>|Iterator<number>,
-  Array<unknown>
-]>)(
+])(
   "Single Compress Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    selectors: AsyncIterable<number>|AsyncIterator<number>|Iterable<number>|Iterator<number>,
-    expected: Array<unknown>
-  ) => {
+  (input, selectors, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -78,7 +66,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, Array<number | boolean>, Array<any>]> {
   return [
     [
       [],
@@ -117,13 +105,13 @@ function dataProviderForArrays(): Array<unknown> {
     ],
     [
       [1, 2, 3, -4, -5],
-      [1, 'true', true, 0, false],
+      [1, 'true', true, 0, false] as Array<number | boolean>,
       [1, 2, 3],
     ],
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, Array<number | boolean>, Array<any>]> {
   return [
     [
       createGeneratorFixture([]),
@@ -162,13 +150,13 @@ function dataProviderForGenerators(): Array<unknown> {
     ],
     [
       createGeneratorFixture([1, 2, 3, -4, -5]),
-      [1, 'true', true, 0, false],
+      [1, 'true', true, 0, false] as Array<number | boolean>,
       [1, 2, 3],
     ],
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, Array<number | boolean>, Array<any>]> {
   return [
     [
       createIterableFixture([]),
@@ -207,13 +195,13 @@ function dataProviderForIterables(): Array<unknown> {
     ],
     [
       createIterableFixture([1, 2, 3, -4, -5]),
-      [1, 'true', true, 0, false],
+      [1, 'true', true, 0, false] as Array<number | boolean>,
       [1, 2, 3],
     ],
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, Array<number | boolean>, Array<any>]> {
   return [
     [
       createIteratorFixture([]),
@@ -252,13 +240,13 @@ function dataProviderForIterators(): Array<unknown> {
     ],
     [
       createIteratorFixture([1, 2, 3, -4, -5]),
-      [1, 'true', true, 0, false],
+      [1, 'true', true, 0, false] as Array<number | boolean>,
       [1, 2, 3],
     ],
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, Array<number | boolean>, Array<any>]> {
   return [
     [
       '',
@@ -293,7 +281,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, Array<number | boolean>, Array<any>]> {
   return [
     [
       new Set([]),
@@ -327,13 +315,13 @@ function dataProviderForSets(): Array<unknown> {
     ],
     [
       new Set([1, 2, 3, -4, -5]),
-      [1, 'true', true, 0, false],
+      [1, 'true', true, 0, false] as Array<number | boolean>,
       [1, 2, 3],
     ],
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, Array<number | boolean>, Array<any>]> {
   return [
     [
       createMapFixture([]),
@@ -372,13 +360,13 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([1, 2, 3, -4, -5]),
-      [1, 'true', true, 0, false],
+      [1, 'true', true, 0, false] as Array<number | boolean>,
       [[0, 1], [1, 2], [2, 3]],
     ],
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, Array<number | boolean>, Array<any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -417,13 +405,13 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([1, 2, 3, -4, -5]),
-      [1, 'true', true, 0, false],
+      [1, 'true', true, 0, false] as Array<number | boolean>,
       [1, 2, 3],
     ],
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, Array<number | boolean>, Array<any>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -462,13 +450,13 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([1, 2, 3, -4, -5]),
-      [1, 'true', true, 0, false],
+      [1, 'true', true, 0, false] as Array<number | boolean>,
       [1, 2, 3],
     ],
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, Array<number | boolean>, Array<any>]> {
   return [
     [
       createAsyncIteratorFixture([]),
@@ -507,13 +495,17 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([1, 2, 3, -4, -5]),
-      [1, 'true', true, 0, false],
+      [1, 'true', true, 0, false] as Array<number | boolean>,
       [1, 2, 3],
     ],
   ];
 }
 
-function dataProviderForMixedAsync(): Array<unknown> {
+function dataProviderForMixedAsync(): Array<[
+  Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>,
+  Iterable<number | boolean> | Iterator<number | boolean> | AsyncIterable<number | boolean> | AsyncIterator<number | boolean>,
+  Array<any>,
+]> {
   return [
     [
       createAsyncIteratorFixture([]),
@@ -552,7 +544,7 @@ function dataProviderForMixedAsync(): Array<unknown> {
     ],
     [
       [1, 2, 3, -4, -5],
-      createAsyncGeneratorFixture([1, 'true', true, 0, false]),
+      createAsyncGeneratorFixture([1, 'true', true, 0, false] as Array<number | boolean>),
       [1, 2, 3],
     ],
   ];
