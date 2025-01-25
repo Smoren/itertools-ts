@@ -19,19 +19,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  Iterable<unknown>|Iterator<unknown>,
-  (item: unknown) => string,
-  ((item: unknown) => string) | undefined,
-  Array<unknown>
-]>)(
+])(
   "Single Group By Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    groupKeyFunction: (item: unknown) => string,
-    itemKeyFunction: ((item: unknown) => string) | undefined,
-    expected: Array<unknown>
-  ) => {
+  (input, groupKeyFunction, itemKeyFunction, expected, ) => {
     it("", () => {
       // Given
       const result = [];
@@ -58,19 +48,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (item: unknown) => string | Promise<string>,
-  ((item: unknown) => string | Promise<string>) | undefined,
-  Array<unknown>
-]>)(
+])(
   "Single Group By Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    groupKeyFunction: (item: unknown) => string | Promise<string>,
-    itemKeyFunction: ((item: unknown) => string | Promise<string>) | undefined,
-    expected: Array<unknown>
-  ) => {
+  (input, groupKeyFunction, itemKeyFunction, expected, ) => {
     it("", async () => {
       // Given
       const result = [];
@@ -86,7 +66,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, (x: any) => any, ((x: any) => any) | undefined, Array<any>]> {
   return [
     [
       [],
@@ -517,7 +497,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, (x: any) => any, ((x: any) => any) | undefined, Array<any>]> {
   return [
     [
       createGeneratorFixture([]),
@@ -948,7 +928,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, (x: any) => any, ((x: any) => any) | undefined, Array<any>]> {
   return [
     [
       createIterableFixture([]),
@@ -1379,7 +1359,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, (x: any) => any, ((x: any) => any) | undefined, Array<any>]> {
   return [
     [
       createIteratorFixture([]),
@@ -1810,7 +1790,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, (x: any) => any, ((x: any) => any) | undefined, Array<any>]> {
   return [
     [
       '',
@@ -1845,7 +1825,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, (x: any) => any, ((x: any) => any) | undefined, Array<any>]> {
   return [
     [
       new Set([]),
@@ -2276,7 +2256,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, (x: any) => any, ((x: any) => any) | undefined, Array<any>]> {
   return [
     [
       createMapFixture([]),
@@ -2335,7 +2315,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (x: any) => any | Promise<any>, ((x: any) => any | Promise<any>) | undefined, Array<any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -2865,7 +2845,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, (x: any) => any | Promise<any>, ((x: any) => any | Promise<any>) | undefined, Array<any>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -3395,7 +3375,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, (x: any) => any | Promise<any>, ((x: any) => any | Promise<any>) | undefined, Array<any>]> {
   return [
     [
       createAsyncIteratorFixture([]),
