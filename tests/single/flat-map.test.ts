@@ -19,13 +19,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (datum: unknown) => unknown, Array<unknown>]>)(
+])(
   "Single Flat Map Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    mapper: (datum: unknown) => unknown,
-    expected: Array<unknown>
-  ) => {
+  (input, mapper, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -52,17 +48,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (datum: unknown) => unknown | Promise<unknown>,
-  Array<unknown>
-]>)(
+])(
   "Single Flat Map Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    mapper: (datum: unknown) => unknown | Promise<unknown>,
-    expected: Array<unknown>
-  ) => {
+  (input, mapper: AsyncFlatMapper<any, any> | FlatMapper<any, any>, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -78,7 +66,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, (item: any, func: FlatMapper<number, number>) => Iterable<any> | any, Array<any>]> {
   return [
     [
       [],
@@ -202,7 +190,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, (item: any, func: FlatMapper<number, number>) => Iterable<any> | any, Array<any>]> {
   return [
     [
       createGeneratorFixture([]),
@@ -326,7 +314,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, (item: any, func: FlatMapper<number, number>) => Iterable<any> | any, Array<any>]> {
   return [
     [
       createIterableFixture([]),
@@ -450,7 +438,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, (item: any, func: FlatMapper<number, number>) => Iterable<any> | any, Array<any>]> {
   return [
     [
       createIteratorFixture([]),
@@ -574,7 +562,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, (item: any, func: FlatMapper<number, number>) => Iterable<any> | any, Array<any>]> {
   return [
     [
       '',
@@ -644,7 +632,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, (item: any, func: FlatMapper<number, number>) => Iterable<any> | any, Array<any>]> {
   return [
     [
       new Set([]),
@@ -768,7 +756,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, (item: any, func: FlatMapper<number, number>) => Iterable<any> | any, Array<any>]> {
   return [
     [
       createMapFixture([]),
@@ -847,15 +835,15 @@ function dataProviderForMaps(): Array<unknown> {
     ],
     [
       createMapFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: [number, Array<number>|number], func: FlatMapper<Array<number>|number, number>) => summary.isIterable(item[1])
-        ? single.flatMap(createMapFixture(item[1] as Array<number>), func)
+      (item: [number, Array<number>|number], func) => summary.isIterable(item[1])
+        ? single.flatMap(createMapFixture(item[1] as Array<number>), func as FlatMapper<Array<number>|number, number>)
         : [item[1]],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       createMapFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: [number, Array<number>|number], func: FlatMapper<Array<number>|number, number>) => summary.isIterable(item[1])
-        ? single.flatMap(createMapFixture(item[1] as Array<number>), func)
+      (item: [number, Array<number>|number], func) => summary.isIterable(item[1])
+        ? single.flatMap(createMapFixture(item[1] as Array<number>), func as FlatMapper<Array<number>|number, number>)
         : item[1],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
@@ -892,7 +880,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (item: any, func: FlatMapper<number, number> | AsyncFlatMapper<number, number>) => Iterable<any> | any | Promise<Iterable<any> | any>, Array<any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -971,15 +959,15 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
-        ? single.flatMap(item as Array<number>, func)
+      (item: Array<number>|number, func) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func as FlatMapper<number, number>)
         : [item],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       createAsyncGeneratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
-        ? single.flatMap(item as Array<number>, func)
+      (item: Array<number>|number, func) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func as FlatMapper<number, number>)
         : item,
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
@@ -1023,10 +1011,10 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
     ],
     [
       createAsyncGeneratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      async (item: Array<number>|number, func: AsyncFlatMapper<number, number>) => {
+      async (item: Array<number>|number, func) => {
         await asyncTimeout(1);
         return summary.isIterable(item)
-          ? single.flatMapAsync(item as Array<number>, func)
+          ? single.flatMapAsync(item as Array<number>, func as AsyncFlatMapper<number, number>)
           : item
       },
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -1034,7 +1022,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, (item: any, func: FlatMapper<number, number> | AsyncFlatMapper<number, number>) => Iterable<any> | any | Promise<Iterable<any> | any>, Array<any>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -1113,15 +1101,15 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
-        ? single.flatMap(item as Array<number>, func)
+      (item: Array<number>|number, func) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func as FlatMapper<number, number>)
         : [item],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       createAsyncIterableFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
-        ? single.flatMap(item as Array<number>, func)
+      (item: Array<number>|number, func) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func as FlatMapper<number, number>)
         : item,
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
@@ -1165,10 +1153,10 @@ function dataProviderForAsyncIterables(): Array<unknown> {
     ],
     [
       createAsyncIterableFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      async (item: Array<number>|number, func: AsyncFlatMapper<number, number>) => {
+      async (item: Array<number>|number, func) => {
         await asyncTimeout(1);
         return summary.isIterable(item)
-          ? single.flatMapAsync(item as Array<number>, func)
+          ? single.flatMapAsync(item as Array<number>, func as AsyncFlatMapper<number, number>)
           : item
       },
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
@@ -1176,7 +1164,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, (item: any, func: FlatMapper<number, number> | AsyncFlatMapper<number, number>) => Iterable<any> | any | Promise<Iterable<any> | any>, Array<any>]> {
   return [
     [
       createAsyncIteratorFixture([]),
@@ -1255,15 +1243,15 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
-        ? single.flatMap(item as Array<number>, func)
+      (item: Array<number>|number, func) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func as FlatMapper<number, number>)
         : [item],
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
     [
       createAsyncIteratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      (item: Array<number>|number, func: FlatMapper<number, number>) => summary.isIterable(item)
-        ? single.flatMap(item as Array<number>, func)
+      (item: Array<number>|number, func) => summary.isIterable(item)
+        ? single.flatMap(item as Array<number>, func as FlatMapper<number, number>)
         : item,
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     ],
@@ -1307,10 +1295,10 @@ function dataProviderForAsyncIterators(): Array<unknown> {
     ],
     [
       createAsyncIteratorFixture([[1, 2, [3, [4, 5]], 6], [7], [8, 9], 10]),
-      async (item: Array<number>|number, func: AsyncFlatMapper<number, number>) => {
+      async (item: Array<number>|number, func) => {
         await asyncTimeout(1);
         return summary.isIterable(item)
-          ? single.flatMapAsync(item as Array<number>, func)
+          ? single.flatMapAsync(item as Array<number>, func as AsyncFlatMapper<number, number>)
           : item
       },
       [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
