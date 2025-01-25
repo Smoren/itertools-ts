@@ -9,16 +9,16 @@ import {
 } from '../fixture';
 import { summary } from '../../src';
 
-describe.each(dataProviderForTrue() as Array<[unknown]>)(
+describe.each(dataProviderForTrue())(
   "Summary Is Async Iterable Test True",
-  (input: unknown) => {
+  (input) => {
     it("", () => {
       expect(summary.isAsyncIterable(input)).toBeTruthy();
     });
   }
 );
 
-function dataProviderForTrue(): Array<unknown> {
+function dataProviderForTrue(): Array<[AsyncIterable<any>]> {
   return [
     [createAsyncGeneratorFixture([])],
     [createAsyncGeneratorFixture([1])],
@@ -29,16 +29,16 @@ function dataProviderForTrue(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForFalse() as Array<[unknown]>)(
+describe.each(dataProviderForFalse())(
   "Summary Is Async Iterable Test False",
-  (input: unknown) => {
+  (input) => {
     it("", () => {
       expect(summary.isAsyncIterable(input)).toBeFalsy();
     });
   }
 );
 
-function dataProviderForFalse(): Array<unknown> {
+function dataProviderForFalse(): Array<[any]> {
   return [
     [1],
     [1.0],

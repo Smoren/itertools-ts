@@ -10,9 +10,9 @@ import {
 } from '../fixture';
 import { summary } from '../../src';
 
-describe.each(dataProviderForTrue() as Array<[Iterable<unknown>|Iterator<unknown>]>)(
+describe.each(dataProviderForTrue())(
   "Summary Is Empty Test True",
-  (input: Iterable<unknown>|Iterator<unknown>) => {
+  (input) => {
     it("", () => {
       expect(summary.isEmpty(input)).toBeTruthy();
     });
@@ -22,22 +22,18 @@ describe.each(dataProviderForTrue() as Array<[Iterable<unknown>|Iterator<unknown
 describe.each([
   ...dataProviderForTrue(),
   ...dataProviderForTrueAsync(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
-]>)(
+])(
   "Summary Is Empty Async Test True",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
-  ) => {
+  (input) => {
     it("", async () => {
       expect(await summary.isEmptyAsync(input)).toBeTruthy();
     });
   }
 );
 
-describe.each(dataProviderForFalse() as Array<[Iterable<unknown>|Iterator<unknown>]>)(
+describe.each(dataProviderForFalse())(
   "Summary Is Empty Test False",
-  (input: Iterable<unknown>|Iterator<unknown>) => {
+  (input) => {
     it("", () => {
       expect(summary.isEmpty(input)).toBeFalsy();
     });
@@ -47,20 +43,16 @@ describe.each(dataProviderForFalse() as Array<[Iterable<unknown>|Iterator<unknow
 describe.each([
   ...dataProviderForFalse(),
   ...dataProviderForFalseAsync(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
-]>)(
+])(
   "Summary Is Empty Async Test False",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
-  ) => {
+  (input) => {
     it("", async () => {
       expect(await summary.isEmptyAsync(input)).toBeFalsy();
     });
   }
 );
 
-function dataProviderForTrue(): Array<unknown> {
+function dataProviderForTrue(): Array<[Iterable<any> | Iterator<any>]> {
   return [
     [[]],
     [createGeneratorFixture([])],
@@ -74,7 +66,7 @@ function dataProviderForTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForTrueAsync(): Array<unknown> {
+function dataProviderForTrueAsync(): Array<[AsyncIterable<any> | AsyncIterator<any>]> {
   return [
     [createAsyncGeneratorFixture([])],
     [createAsyncIterableFixture([])],
@@ -82,7 +74,7 @@ function dataProviderForTrueAsync(): Array<unknown> {
   ];
 }
 
-function dataProviderForFalse(): Array<unknown> {
+function dataProviderForFalse(): Array<[any]> {
   return [
     [[null]],
     [createGeneratorFixture([null])],
@@ -112,7 +104,7 @@ function dataProviderForFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForFalseAsync(): Array<unknown> {
+function dataProviderForFalseAsync(): Array<[any]> {
   return [
     [createAsyncGeneratorFixture([null])],
     [createAsyncIterableFixture([null])],

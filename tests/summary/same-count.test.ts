@@ -9,9 +9,9 @@ import {
 } from '../fixture';
 import { summary } from '../../src';
 
-describe.each(dataProviderForTrue() as Array<[Array<Iterable<unknown>|Iterator<unknown>>]>)(
+describe.each(dataProviderForTrue())(
   "Summary Same Count Test True",
-  (...input: Array<Iterable<unknown>|Iterator<unknown>>) => {
+  (...input) => {
     it("", () => {
       expect(summary.sameCount(...input)).toBeTruthy();
     });
@@ -21,13 +21,9 @@ describe.each(dataProviderForTrue() as Array<[Array<Iterable<unknown>|Iterator<u
 describe.each([
   ...dataProviderForTrue(),
   ...dataProviderForTrueAsync(),
-] as Array<[Array<
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
->]>)(
+])(
   "Summary Same Count Async Test True",
-  (
-    ...input: Array<AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>>
-  ) => {
+  (...input) => {
     it("", async () => {
       expect(await summary.sameCountAsync(...input)).toBeTruthy();
     });
@@ -36,7 +32,7 @@ describe.each([
 
 describe.each(dataProviderForFalse() as Array<[Array<Iterable<unknown>|Iterator<unknown>>]>)(
   "Summary Same Count Test False",
-  (...input: Array<Iterable<unknown>|Iterator<unknown>>) => {
+  (...input) => {
     it("", () => {
       expect(summary.sameCount(...input)).toBeFalsy();
     });
@@ -46,20 +42,16 @@ describe.each(dataProviderForFalse() as Array<[Array<Iterable<unknown>|Iterator<
 describe.each([
   ...dataProviderForFalse(),
   ...dataProviderForFalseAsync(),
-] as Array<[Array<
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>
->]>)(
+])(
   "Summary Same Count Async Test False",
-  (
-    ...input: Array<AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>>
-  ) => {
+  (...input) => {
     it("", async () => {
       expect(await summary.sameCountAsync(...input)).toBeFalsy();
     });
   }
 );
 
-function dataProviderForTrue(): Array<unknown> {
+function dataProviderForTrue(): Array<Array<Iterable<any> | Iterator<any>>> {
   return [
     [[]],
     [[1]],
@@ -153,7 +145,7 @@ function dataProviderForTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForTrueAsync(): Array<unknown> {
+function dataProviderForTrueAsync(): Array<Array<Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>>> {
   return [
     [[], createAsyncGeneratorFixture([])],
     [[], createAsyncIteratorFixture([])],
@@ -205,7 +197,7 @@ function dataProviderForTrueAsync(): Array<unknown> {
   ];
 }
 
-function dataProviderForFalse(): Array<unknown> {
+function dataProviderForFalse(): Array<Array<Iterable<any> | Iterator<any>>> {
   return [
     [[], [1]],
     [[], createGeneratorFixture([1])],
@@ -233,7 +225,7 @@ function dataProviderForFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForFalseAsync(): Array<unknown> {
+function dataProviderForFalseAsync(): Array<Array<Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>>> {
   return [
     [[], [1]],
     [[], createAsyncGeneratorFixture([1])],

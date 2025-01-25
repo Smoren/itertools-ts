@@ -7,7 +7,7 @@ import {
   createIteratorFixture,
   // @ts-ignore
 } from '../fixture';
-import { Comparable, summary } from '../../src';
+import { summary } from '../../src';
 
 describe.each([
   ...dataProviderForArraysTrue(),
@@ -16,9 +16,9 @@ describe.each([
   ...dataProviderForIteratorsTrue(),
   ...dataProviderForStringsTrue(),
   ...dataProviderForSetsTrue(),
-] as Array<[Iterable<Comparable>|Iterator<Comparable>]>)(
+])(
   "Summary Is Reversed Test True",
-  (input: Iterable<Comparable>|Iterator<Comparable>) => {
+  (input) => {
     it("", () => {
       expect(summary.isReversed(input)).toBeTruthy();
     });
@@ -35,13 +35,9 @@ describe.each([
   ...dataProviderForIteratorsTrue(),
   ...dataProviderForStringsTrue(),
   ...dataProviderForSetsTrue(),
-] as Array<[
-  AsyncIterable<Comparable>|AsyncIterator<Comparable>|Iterable<Comparable>|Iterator<Comparable>
-]>)(
+])(
   "Summary Is Reversed Async Test True",
-  (
-    input: AsyncIterable<Comparable>|AsyncIterator<Comparable>|Iterable<Comparable>|Iterator<Comparable>
-  ) => {
+  (input) => {
     it("", async () => {
       expect(await summary.isReversedAsync(input)).toBeTruthy();
     });
@@ -55,9 +51,9 @@ describe.each([
   ...dataProviderForIteratorsFalse(),
   ...dataProviderForStringsFalse(),
   ...dataProviderForSetsFalse(),
-] as Array<[Iterable<Comparable>|Iterator<Comparable>]>)(
+])(
   "Summary Is Reversed Test False",
-  (input: Iterable<Comparable>|Iterator<Comparable>) => {
+  (input) => {
     it("", () => {
       expect(summary.isReversed(input)).toBeFalsy();
     });
@@ -74,20 +70,16 @@ describe.each([
   ...dataProviderForIteratorsFalse(),
   ...dataProviderForStringsFalse(),
   ...dataProviderForSetsFalse(),
-] as Array<[
-  AsyncIterable<Comparable>|AsyncIterator<Comparable>|Iterable<Comparable>|Iterator<Comparable>
-]>)(
+])(
   "Summary Is Reversed Async Test False",
-  (
-    input: AsyncIterable<Comparable>|AsyncIterator<Comparable>|Iterable<Comparable>|Iterator<Comparable>
-  ) => {
+  (input) => {
     it("", async () => {
       expect(await summary.isReversedAsync(input)).toBeFalsy();
     });
   }
 );
 
-function dataProviderForArraysTrue(): Array<unknown> {
+function dataProviderForArraysTrue(): Array<[Array<any>]> {
   return [
     [
       [],
@@ -125,7 +117,7 @@ function dataProviderForArraysTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsTrue(): Array<unknown> {
+function dataProviderForGeneratorsTrue(): Array<[Generator<any>]> {
   return [
     [
       createGeneratorFixture([]),
@@ -163,7 +155,7 @@ function dataProviderForGeneratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterablesTrue(): Array<unknown> {
+function dataProviderForIterablesTrue(): Array<[Iterable<any>]> {
   return [
     [
       createIterableFixture([]),
@@ -201,7 +193,7 @@ function dataProviderForIterablesTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForIteratorsTrue(): Array<unknown> {
+function dataProviderForIteratorsTrue(): Array<[Iterator<any>]> {
   return [
     [
       createIteratorFixture([]),
@@ -239,7 +231,7 @@ function dataProviderForIteratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForStringsTrue(): Array<unknown> {
+function dataProviderForStringsTrue(): Array<[string]> {
   return [
     [
       '',
@@ -271,7 +263,7 @@ function dataProviderForStringsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForSetsTrue(): Array<unknown> {
+function dataProviderForSetsTrue(): Array<[Set<any>]> {
   return [
     [
       new Set([]),
@@ -309,7 +301,7 @@ function dataProviderForSetsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
+function dataProviderForAsyncGeneratorsTrue(): Array<[AsyncGenerator<any>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -347,7 +339,7 @@ function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterablesTrue(): Array<unknown> {
+function dataProviderForAsyncIterablesTrue(): Array<[AsyncIterable<any>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -385,7 +377,7 @@ function dataProviderForAsyncIterablesTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
+function dataProviderForAsyncIteratorsTrue(): Array<[AsyncIterator<any>]> {
   return [
     [
       createAsyncIteratorFixture([]),
@@ -423,7 +415,7 @@ function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForArraysFalse(): Array<unknown> {
+function dataProviderForArraysFalse(): Array<[Array<any>]> {
   return [
     [
       [0, 1],
@@ -461,7 +453,7 @@ function dataProviderForArraysFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsFalse(): Array<unknown> {
+function dataProviderForGeneratorsFalse(): Array<[Generator<any>]> {
   return [
     [
       createGeneratorFixture([0, 1]),
@@ -499,7 +491,7 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterablesFalse(): Array<unknown> {
+function dataProviderForIterablesFalse(): Array<[Iterable<any>]> {
   return [
     [
       createIterableFixture([0, 1]),
@@ -537,7 +529,7 @@ function dataProviderForIterablesFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForIteratorsFalse(): Array<unknown> {
+function dataProviderForIteratorsFalse(): Array<[Iterator<any>]> {
   return [
     [
       createIteratorFixture([0, 1]),
@@ -575,7 +567,7 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForStringsFalse(): Array<unknown> {
+function dataProviderForStringsFalse(): Array<[string]> {
   return [
     [
       '01',
@@ -601,7 +593,7 @@ function dataProviderForStringsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForSetsFalse(): Array<unknown> {
+function dataProviderForSetsFalse(): Array<[Set<any>]> {
   return [
     [
       new Set([0, 1]),
@@ -639,7 +631,7 @@ function dataProviderForSetsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
+function dataProviderForAsyncGeneratorsFalse(): Array<[AsyncGenerator<any>]> {
   return [
     [
       createAsyncGeneratorFixture([0, 1]),
@@ -677,7 +669,7 @@ function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterablesFalse(): Array<unknown> {
+function dataProviderForAsyncIterablesFalse(): Array<[AsyncIterable<any>]> {
   return [
     [
       createAsyncIterableFixture([0, 1]),
@@ -715,7 +707,7 @@ function dataProviderForAsyncIterablesFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
+function dataProviderForAsyncIteratorsFalse(): Array<[AsyncIterator<any>]> {
   return [
     [
       createAsyncIteratorFixture([0, 1]),

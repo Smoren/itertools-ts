@@ -2,16 +2,16 @@
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from '../fixture';
 import { summary } from '../../src';
 
-describe.each(dataProviderForTrue() as Array<[unknown]>)(
+describe.each(dataProviderForTrue())(
   "Summary Is Iterator Test True",
-  (input: unknown) => {
+  (input) => {
     it("", () => {
       expect(summary.isIterator(input)).toBeTruthy();
     });
   }
 );
 
-function dataProviderForTrue(): Array<unknown> {
+function dataProviderForTrue(): Array<[Iterator<any>]> {
   return [
     [createIteratorFixture([])],
     [createIteratorFixture([1])],
@@ -22,7 +22,7 @@ function dataProviderForTrue(): Array<unknown> {
   ];
 }
 
-describe.each(dataProviderForFalse() as Array<[unknown]>)(
+describe.each(dataProviderForFalse())(
   "Summary Is Iterator Test False",
   (input: unknown) => {
     it("", () => {
@@ -31,7 +31,7 @@ describe.each(dataProviderForFalse() as Array<[unknown]>)(
   }
 );
 
-function dataProviderForFalse(): Array<unknown> {
+function dataProviderForFalse(): Array<[any]> {
   return [
     [1],
     [1.0],
