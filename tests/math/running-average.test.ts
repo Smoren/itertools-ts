@@ -103,7 +103,7 @@ describe.each([
   }
 );
 
-function dataProviderForArraysWithInitialValue(): Array<[Array<Numeric>, number|undefined, Array<number>]> {
+function dataProviderForArraysWithInitialValue(): Array<[Array<Numeric>, number | undefined, Array<number>]> {
   return [
     [
       [],
@@ -163,7 +163,7 @@ function dataProviderForArraysWithInitialValue(): Array<[Array<Numeric>, number|
   ];
 }
 
-function dataProviderForAsyncWithInitialValue(): Array<[AsyncIterable<Numeric>, number|undefined, Array<number>]> {
+function dataProviderForAsyncWithInitialValue(): Array<[AsyncIterable<Numeric>, number | undefined, Array<number>]> {
   return [
     [
       createAsyncIterableFixture([]),
