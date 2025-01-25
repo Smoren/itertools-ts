@@ -14,12 +14,9 @@ describe.each([
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
-] as Array<[Iterable<number>|Iterator<number>, number]>)(
+])(
   "Reduce To Average Test",
-  (
-    input: Iterable<number>|Iterator<number>,
-    expected: number
-  ) => {
+  (input, expected) => {
     it("", () => {
       // When
       const result = reduce.toAverage(input);
@@ -44,15 +41,9 @@ describe.each([
   ...dataProviderForIterators(),
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
-] as Array<[
-  AsyncIterable<number>|AsyncIterator<number>|Iterable<number>|Iterator<number>,
-  number
-]>)(
+])(
   "Reduce To Average Async Test",
-  (
-    input: AsyncIterable<number>|AsyncIterator<number>|Iterable<number>|Iterator<number>,
-    expected: number
-  ) => {
+  (input, expected) => {
     it("", async () => {
       // When
       const result = await reduce.toAverageAsync(input);
@@ -67,7 +58,7 @@ describe.each([
   }
 );
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, any]> {
   return [
     [
       [],
@@ -148,7 +139,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, any]> {
   return [
     [
       createGeneratorFixture([]),
@@ -229,7 +220,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, any]> {
   return [
     [
       createIterableFixture([]),
@@ -310,7 +301,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, any]> {
   return [
     [
       createIteratorFixture([]),
@@ -391,7 +382,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, any]> {
   return [
     [
       '',
@@ -436,7 +427,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, any]> {
   return [
     [
       new Set([]),
@@ -517,7 +508,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, any]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -598,7 +589,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, any]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -679,7 +670,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, any]> {
   return [
     [
       createAsyncIteratorFixture([]),

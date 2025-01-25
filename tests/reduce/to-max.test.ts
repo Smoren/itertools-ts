@@ -19,13 +19,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, ((datum: unknown) => Comparable)|undefined, unknown]>)(
+])(
   "Reduce To Max Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    compareBy: ((datum: unknown) => Comparable)|undefined,
-    expected: unknown
-  ) => {
+  (input, compareBy, expected) => {
     it("", () => {
       // When
       const result = reduce.toMax(input, compareBy);
@@ -47,17 +43,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  ((datum: unknown) => Promise<Comparable>|Comparable)|undefined,
-  unknown
-]>)(
+])(
   "Reduce To Max Async Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    compareBy: ((datum: unknown) => Promise<Comparable>|Comparable)|undefined,
-    expected: unknown
-  ) => {
+  (input, compareBy, expected) => {
     it("", async () => {
       // When
       const result = await reduce.toMaxAsync(input, compareBy);
@@ -72,11 +60,7 @@ describe.each([
   ...dataProviderForUsingCustomComparator(),
 ] as Array<[Iterable<unknown>|Iterator<unknown>, ((datum: unknown) => Comparable)|undefined, unknown]>)(
   "Reduce To Max Using Custom Comparator Test",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    compareBy: ((datum: unknown) => Comparable)|undefined,
-    expected: unknown
-  ) => {
+  (input, compareBy, expected) => {
     it("", () => {
       // When
       const result = reduce.toMax(input, compareBy);
@@ -90,17 +74,9 @@ describe.each([
 describe.each([
   ...dataProviderForUsingCustomComparator(),
   ...dataProviderForUsingCustomComparatorAsync(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  ((datum: unknown) => Promise<Comparable>|Comparable)|undefined,
-  unknown
-]>)(
+])(
   "Reduce To Max Async Using Custom Comparator Test",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    compareBy: ((datum: unknown) => Promise<Comparable>|Comparable)|undefined,
-    expected: unknown
-  ) => {
+  (input, compareBy, expected) => {
     it("", async () => {
       // When
       const result = await reduce.toMaxAsync(input, compareBy);
@@ -111,7 +87,7 @@ describe.each([
   }
 );
 
-function dataProviderForUsingCustomComparator(): Array<unknown> {
+function dataProviderForUsingCustomComparator(): Array<[Array<Record<string, unknown>>, (movie: Record<string, unknown>) => number, Record<string, unknown>]> {
   return [
     [
       [
@@ -141,7 +117,7 @@ function dataProviderForUsingCustomComparator(): Array<unknown> {
   ];
 }
 
-function dataProviderForUsingCustomComparatorAsync(): Array<unknown> {
+function dataProviderForUsingCustomComparatorAsync(): Array<[Array<Record<string, unknown>>, (movie: Record<string, unknown>) => Promise<number>, Record<string, unknown>]> {
   return [
     [
       [
@@ -174,7 +150,7 @@ function dataProviderForUsingCustomComparatorAsync(): Array<unknown> {
   ];
 }
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, ((item: any) => any) | undefined, any]> {
   return [
     [
       [],
@@ -594,7 +570,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, ((item: any) => any) | undefined, any]> {
   return [
     [
       createGeneratorFixture([]),
@@ -1014,7 +990,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, ((item: any) => any) | undefined, any]> {
   return [
     [
       createIterableFixture([]),
@@ -1434,7 +1410,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, ((item: any) => any) | undefined, any]> {
   return [
     [
       createIteratorFixture([]),
@@ -1854,7 +1830,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, ((item: any) => any) | undefined, any]> {
   return [
     [
       '',
@@ -1979,7 +1955,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, ((item: any) => any) | undefined, any]> {
   return [
     [
       new Set([]),
@@ -2399,7 +2375,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, ((item: any) => any) | undefined, any]> {
   return [
     [
       createMapFixture([]),
@@ -2679,7 +2655,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, ((item: any) => any) | undefined, any]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -3107,7 +3083,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, ((item: any) => any) | undefined, any]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -3535,7 +3511,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, ((item: any) => any) | undefined, any]> {
   return [
     [
       createAsyncIteratorFixture([]),
