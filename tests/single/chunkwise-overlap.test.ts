@@ -18,15 +18,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, number, number, boolean, Array<unknown>]>)(
+])(
   "Chunkwise Overlap Test",
-  (
-    data: Iterable<unknown>|Iterator<unknown>,
-    chunkSize: number,
-    overlapSize: number,
-    includeIncompleteTail: boolean,
-    expected: Array<unknown>
-  ) => {
+  (data, chunkSize, overlapSize, includeIncompleteTail, expected) => {
     it("", () => {
       // Given
       const result = [];
@@ -59,21 +53,9 @@ describe.each([
   ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  number,
-  number,
-  boolean,
-  Array<unknown>
-]>)(
+])(
   "Chunkwise Overlap Async Test",
-  (
-    data: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    chunkSize: number,
-    overlapSize: number,
-    includeIncompleteTail: boolean,
-    expected: Array<unknown>
-  ) => {
+  (data, chunkSize, overlapSize, includeIncompleteTail, expected) => {
     it("", async () => {
       // Given
       const result = [];
@@ -97,14 +79,9 @@ describe.each([
 
 describe.each([
   ...dataProviderForError(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, number, number, boolean]>)(
+])(
   "Chunkwise Overlap Error Test",
-  (
-    data: Iterable<unknown>|Iterator<unknown>,
-    chunkSize: number,
-    overlapSize: number,
-    includeIncompleteTail: boolean
-  ) => {
+  (data, chunkSize, overlapSize, includeIncompleteTail) => {
     it("", () => {
       expect(() => {
         const chunks = single.chunkwiseOverlap(
@@ -125,19 +102,9 @@ describe.each([
 describe.each([
   ...dataProviderForErrorAsync(),
   ...dataProviderForError(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  number,
-  number,
-  boolean
-]>)(
+])(
   "Chunkwise Overlap Async Error Test",
-  (
-    data: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    chunkSize: number,
-    overlapSize: number,
-    includeIncompleteTail: boolean
-  ) => {
+  (data, chunkSize, overlapSize, includeIncompleteTail) => {
     it("", async () => {
       try {
         const chunks = single.chunkwiseOverlapAsync(
@@ -194,7 +161,7 @@ test("Chunkwise Overlap Async Default Param Value Test", async () => {
   expect(result).toEqual([[1, 2], [3, 4], [5]]);
 });
 
-function dataProviderForArrays(): Array<unknown> {
+function dataProviderForArrays(): Array<[Array<any>, number, number, boolean, Array<Array<any>>]> {
   return [
     [
       [],
@@ -899,7 +866,7 @@ function dataProviderForArrays(): Array<unknown> {
   ];
 }
 
-function dataProviderForGenerators(): Array<unknown> {
+function dataProviderForGenerators(): Array<[Generator<any>, number, number, boolean, Array<Array<any>>]> {
   return [
     [
       createGeneratorFixture([]),
@@ -1604,7 +1571,7 @@ function dataProviderForGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterables(): Array<unknown> {
+function dataProviderForIterables(): Array<[Iterable<any>, number, number, boolean, Array<Array<any>>]> {
   return [
     [
       createIterableFixture([]),
@@ -2309,7 +2276,7 @@ function dataProviderForIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterators(): Array<unknown> {
+function dataProviderForIterators(): Array<[Iterator<any>, number, number, boolean, Array<Array<any>>]> {
   return [
     [
       createIteratorFixture([]),
@@ -3014,7 +2981,7 @@ function dataProviderForIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForStrings(): Array<unknown> {
+function dataProviderForStrings(): Array<[string, number, number, boolean, Array<Array<any>>]> {
   return [
     [
       '',
@@ -3523,7 +3490,7 @@ function dataProviderForStrings(): Array<unknown> {
   ];
 }
 
-function dataProviderForSets(): Array<unknown> {
+function dataProviderForSets(): Array<[Set<any>, number, number, boolean, Array<Array<any>>]> {
   return [
     [
       new Set([]),
@@ -4200,7 +4167,7 @@ function dataProviderForSets(): Array<unknown> {
   ];
 }
 
-function dataProviderForMaps(): Array<unknown> {
+function dataProviderForMaps(): Array<[Map<any, any>, number, number, boolean, Array<Array<any>>]> {
   return [
     [
       createMapFixture([]),
@@ -4909,7 +4876,7 @@ function dataProviderForMaps(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGenerators(): Array<unknown> {
+function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, number, number, boolean, Array<Array<any>>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -5614,7 +5581,7 @@ function dataProviderForAsyncGenerators(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterables(): Array<unknown> {
+function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, number, number, boolean, Array<Array<any>>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -6319,7 +6286,7 @@ function dataProviderForAsyncIterables(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterators(): Array<unknown> {
+function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, number, number, boolean, Array<Array<any>>]> {
   return [
     [
       createAsyncIteratorFixture([]),
@@ -7024,7 +6991,7 @@ function dataProviderForAsyncIterators(): Array<unknown> {
   ];
 }
 
-function dataProviderForError(): Array<unknown> {
+function dataProviderForError(): Array<[Iterable<any> | Iterator<any>, number, number, boolean]> {
   return [
     [
       [],
@@ -7065,7 +7032,7 @@ function dataProviderForError(): Array<unknown> {
   ];
 }
 
-function dataProviderForErrorAsync(): Array<unknown> {
+function dataProviderForErrorAsync(): Array<[AsyncIterable<any> | AsyncIterator<any>, number, number, boolean]> {
   return [
     [
       createAsyncIterableFixture([]),
