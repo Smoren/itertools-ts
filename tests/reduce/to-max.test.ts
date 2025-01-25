@@ -58,7 +58,7 @@ describe.each([
 
 describe.each([
   ...dataProviderForUsingCustomComparator(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, ((datum: unknown) => Comparable)|undefined, unknown]>)(
+])(
   "Reduce To Max Using Custom Comparator Test",
   (input, compareBy, expected) => {
     it("", () => {

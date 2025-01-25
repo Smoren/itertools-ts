@@ -2,7 +2,7 @@ import { toAsyncIterable, toIterable } from "./transform";
 import { LengthError } from "./exceptions";
 import { isString } from "./summary";
 import { NoValueMonad } from "./tools";
-import { Comparable } from "./types";
+import { Comparable, Numeric } from "./types";
 import { map, mapAsync } from "./single";
 
 /**
@@ -312,9 +312,7 @@ export async function toMinMaxAsync<T>(
  *
  * @param numbers
  */
-export function toRange(
-  numbers: Iterable<number | string> | Iterator<number | string>
-): number {
+export function toRange(numbers: Iterable<Numeric> | Iterator<Numeric>): number {
   const [min, max] = toMinMax(map(numbers, (n) => Number(n)));
 
   return (max ?? 0) - (min ?? 0);
@@ -329,10 +327,10 @@ export function toRange(
  */
 export async function toRangeAsync(
   numbers:
-    | AsyncIterable<number>
-    | AsyncIterator<number>
-    | Iterable<number>
-    | Iterator<number>
+    | AsyncIterable<Numeric>
+    | AsyncIterator<Numeric>
+    | Iterable<Numeric>
+    | Iterator<Numeric>
 ): Promise<number> {
   const [min, max] = await toMinMaxAsync(mapAsync(numbers, (n) => Number(n)));
 
