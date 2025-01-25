@@ -1,5 +1,26 @@
 # IterTools Typescript Change Log
 
+## v2.0.0 - 2025-01-25
+
+### Improvements
+* Stream and AsyncStream are fully refactored
+  * Classes made generic.
+  * All the methods made generic and save the typing.
+* reduce
+  * `toValue()`, `toValueAsync()` — union return type has been replaced by inferred type.
+  * `toRange()`, `toRangeAsync()` — use `Numeric` type in arguments.
+* multi
+  * Type `ZipTuple` — added support for iterators and async iterables / iterators.
+* math
+  * All the methods use `Numeric` type in arguments.
+* All the tests are refactored to check the typing.
+* Found bugs fixed.
+
+### New features
+* types
+  * `Numeric`
+  * `NumericString`
+
 ## v1.29.1 - 2025-01-23
 
 ### Improvements

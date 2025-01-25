@@ -577,7 +577,10 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see set.partialIntersection
    */
-  partialIntersectionWith(minIntersectionCount: number, ...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T> {
+  partialIntersectionWith(
+    minIntersectionCount: number,
+    ...iterables: Array<Iterable<T> | Iterator<T>>
+  ): Stream<T> {
     this.data = partialIntersection(
       minIntersectionCount,
       this.data,
@@ -635,7 +638,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @param callback
    */
-  public peek(callback: (datum: unknown) => void): Stream<T> {
+  peek(callback: (datum: unknown) => void): Stream<T> {
     const [data, peekable] = tee(this.data, 2);
     this.data = data;
 
@@ -653,7 +656,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @param callback
    */
-  public peekStream(callback: (datum: Stream<T>) => void): Stream<T> {
+  peekStream(callback: (datum: Stream<T>) => void): Stream<T> {
     const [data, peekable] = tee(this.data, 2);
     this.data = data;
 
@@ -941,7 +944,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see transform.tee
    */
-  public tee(count: number): Array<Stream<T>> {
+  tee(count: number): Array<Stream<T>> {
     return tee(this.data, count).map((iterable) => new Stream(iterable));
   }
 
