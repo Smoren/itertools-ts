@@ -19,12 +19,9 @@ describe.each([
   ...dataProviderForStringsTrue(),
   ...dataProviderForSetsTrue(),
   ...dataProviderForMapsTrue(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (item: unknown) => boolean]>)(
+])(
   "Summary Any Match Test True",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    predicate: (item: unknown) => boolean
-  ) => {
+  (input, predicate) => {
     it("", () => {
       expect(summary.anyMatch(input, predicate)).toBeTruthy();
     });
@@ -42,15 +39,9 @@ describe.each([
   ...dataProviderForStringsTrue(),
   ...dataProviderForSetsTrue(),
   ...dataProviderForMapsTrue(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (item: unknown) => Promise<boolean>|boolean
-]>)(
+])(
   "Summary Any Match Async Test True",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    predicate: (item: unknown) => Promise<boolean>|boolean
-  ) => {
+  (input, predicate) => {
     it("", async () => {
       expect(await summary.anyMatchAsync(input, predicate)).toBeTruthy();
     });
@@ -65,12 +56,9 @@ describe.each([
   ...dataProviderForStringsFalse(),
   ...dataProviderForSetsFalse(),
   ...dataProviderForMapsFalse(),
-] as Array<[Iterable<unknown>|Iterator<unknown>, (item: unknown) => boolean]>)(
+])(
   "Summary Any Match Test False",
-  (
-    input: Iterable<unknown>|Iterator<unknown>,
-    predicate: (item: unknown) => boolean
-  ) => {
+  (input, predicate) => {
     it("", () => {
       expect(summary.anyMatch(input, predicate)).toBeFalsy();
     });
@@ -88,22 +76,16 @@ describe.each([
   ...dataProviderForStringsFalse(),
   ...dataProviderForSetsFalse(),
   ...dataProviderForMapsFalse(),
-] as Array<[
-  AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-  (item: unknown) => Promise<boolean>|boolean
-]>)(
+])(
   "Summary Any Match Async Test False",
-  (
-    input: AsyncIterable<unknown>|AsyncIterator<unknown>|Iterable<unknown>|Iterator<unknown>,
-    predicate: (item: unknown) => Promise<boolean>|boolean
-  ) => {
+  (input, predicate) => {
     it("", async () => {
       expect(await summary.anyMatchAsync(input, predicate)).toBeFalsy();
     });
   }
 );
 
-function dataProviderForArraysTrue(): Array<unknown> {
+function dataProviderForArraysTrue(): Array<[Array<any>, (item: any) => boolean]> {
   return [
     [
       [1],
@@ -148,7 +130,7 @@ function dataProviderForArraysTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsTrue(): Array<unknown> {
+function dataProviderForGeneratorsTrue(): Array<[Generator<any>, (item: any) => boolean]> {
   return [
     [
       createGeneratorFixture([1]),
@@ -193,7 +175,7 @@ function dataProviderForGeneratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterablesTrue(): Array<unknown> {
+function dataProviderForIterablesTrue(): Array<[Iterable<any>, (item: any) => boolean]> {
   return [
     [
       createIterableFixture([1]),
@@ -238,7 +220,7 @@ function dataProviderForIterablesTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForIteratorsTrue(): Array<unknown> {
+function dataProviderForIteratorsTrue(): Array<[Iterator<any>, (item: any) => boolean]> {
   return [
     [
       createIteratorFixture([1]),
@@ -283,7 +265,7 @@ function dataProviderForIteratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForStringsTrue(): Array<unknown> {
+function dataProviderForStringsTrue(): Array<[string, (item: any) => boolean]> {
   return [
     [
       '1',
@@ -320,7 +302,7 @@ function dataProviderForStringsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForSetsTrue(): Array<unknown> {
+function dataProviderForSetsTrue(): Array<[Set<any>, (item: any) => boolean]> {
   return [
     [
       new Set([1]),
@@ -365,7 +347,7 @@ function dataProviderForSetsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForMapsTrue(): Array<unknown> {
+function dataProviderForMapsTrue(): Array<[Map<any, any>, (item: any) => boolean]> {
   return [
     [
       createMapFixture([1]),
@@ -410,7 +392,7 @@ function dataProviderForMapsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
+function dataProviderForAsyncGeneratorsTrue(): Array<[AsyncGenerator<any>, (item: any) => boolean | Promise<boolean>]> {
   return [
     [
       createAsyncGeneratorFixture([1]),
@@ -462,7 +444,7 @@ function dataProviderForAsyncGeneratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterablesTrue(): Array<unknown> {
+function dataProviderForAsyncIterablesTrue(): Array<[AsyncIterable<any>, (item: any) => boolean | Promise<boolean>]> {
   return [
     [
       createAsyncIterableFixture([1]),
@@ -514,7 +496,7 @@ function dataProviderForAsyncIterablesTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
+function dataProviderForAsyncIteratorsTrue(): Array<[AsyncIterator<any>, (item: any) => boolean | Promise<boolean>]> {
   return [
     [
       createAsyncIteratorFixture([1]),
@@ -566,7 +548,7 @@ function dataProviderForAsyncIteratorsTrue(): Array<unknown> {
   ];
 }
 
-function dataProviderForArraysFalse(): Array<unknown> {
+function dataProviderForArraysFalse(): Array<[Array<any>, (item: any) => boolean]> {
   return [
     [
       [],
@@ -615,7 +597,7 @@ function dataProviderForArraysFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForGeneratorsFalse(): Array<unknown> {
+function dataProviderForGeneratorsFalse(): Array<[Generator<any>, (item: any) => boolean]> {
   return [
     [
       createGeneratorFixture([]),
@@ -664,7 +646,7 @@ function dataProviderForGeneratorsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForIterablesFalse(): Array<unknown> {
+function dataProviderForIterablesFalse(): Array<[Iterable<any>, (item: any) => boolean]> {
   return [
     [
       createIterableFixture([]),
@@ -713,7 +695,7 @@ function dataProviderForIterablesFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForIteratorsFalse(): Array<unknown> {
+function dataProviderForIteratorsFalse(): Array<[Iterator<any>, (item: any) => boolean]> {
   return [
     [
       createIteratorFixture([]),
@@ -762,7 +744,7 @@ function dataProviderForIteratorsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForStringsFalse(): Array<unknown> {
+function dataProviderForStringsFalse(): Array<[string, (item: any) => boolean]> {
   return [
     [
       '',
@@ -803,7 +785,7 @@ function dataProviderForStringsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForSetsFalse(): Array<unknown> {
+function dataProviderForSetsFalse(): Array<[Set<any>, (item: any) => boolean]> {
   return [
     [
       new Set([]),
@@ -852,7 +834,7 @@ function dataProviderForSetsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForMapsFalse(): Array<unknown> {
+function dataProviderForMapsFalse(): Array<[Map<any, any>, (item: any) => boolean]> {
   return [
     [
       createMapFixture([]),
@@ -901,7 +883,7 @@ function dataProviderForMapsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
+function dataProviderForAsyncGeneratorsFalse(): Array<[AsyncGenerator<any>, (item: any) => boolean | Promise<boolean>]> {
   return [
     [
       createAsyncGeneratorFixture([]),
@@ -957,7 +939,7 @@ function dataProviderForAsyncGeneratorsFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIterablesFalse(): Array<unknown> {
+function dataProviderForAsyncIterablesFalse(): Array<[AsyncIterable<any>, (item: any) => boolean | Promise<boolean>]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -1013,7 +995,7 @@ function dataProviderForAsyncIterablesFalse(): Array<unknown> {
   ];
 }
 
-function dataProviderForAsyncIteratorsFalse(): Array<unknown> {
+function dataProviderForAsyncIteratorsFalse(): Array<[AsyncIterator<any>, (item: any) => boolean | Promise<boolean>]> {
   return [
     [
       createAsyncIteratorFixture([]),
