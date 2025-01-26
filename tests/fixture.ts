@@ -76,7 +76,7 @@ export function roundEpsilon(n: number|string): number {
 
 export function expectToBeCloseToArray(actual: Array<number>, expected: Array<number>) {
   expect(actual.length).toBe(expected.length)
-  for (let i=0; i< actual.length; ++i) {
+  for (let i=0; i<actual.length; ++i) {
     expect(actual[i]).toBeCloseTo(expected[i]);
   }
 }
