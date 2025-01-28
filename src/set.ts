@@ -391,3 +391,39 @@ export async function* cartesianProductAsync<
     yield item as ZipTuple<T, never>;
   }
 }
+
+/**
+ * Generates all permutations of given iterable.
+ *
+ * @param data
+ * @param length
+ */
+function* permutations<T>(data: Iterable<T> | Iterator<T>, length: number): Iterable<Array<T>> {
+  const dataArray = toArray(data);
+
+  function* generate(n: number, arr: T[]): Generator<Array<T>> {
+    if (n === length) {
+      yield arr.slice(0, length);
+    } else {
+      for (let i = 0; i < dataArray.length; i++) {
+        const nextArr = [...arr, dataArray[i]];
+        yield* generate(n + 1, nextArr);
+      }
+    }
+  }
+
+  yield* generate(0, []);
+}
+
+/**
+ * Generates all permutations of given async iterable.
+ *
+ * @param data
+ * @param length
+ */
+async function* permutationsAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  length: number
+): AsyncIterable<Array<T>> {
+  yield* permutations(await toArrayAsync(data), length);
+}

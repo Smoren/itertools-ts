@@ -1,5 +1,19 @@
 # IterTools Typescript Change Log
 
+## v2.0.1 - TBD
+
+### New features
+* set
+  * `permutations()`
+  * `permutationsAsync()`
+* Stream
+  * `permutationsWith()`
+* AsyncStream
+  * `permutationsWith()`
+
+### Improvements
+* `toArray()` function optimized.
+
 ## v2.0.0 - 2025-01-25
 
 ### Improvements

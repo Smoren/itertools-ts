@@ -158,6 +158,9 @@ export function toAsyncIterator<T>(
  * @param collection
  */
 export function toArray<T>(collection: Iterable<T> | Iterator<T>): Array<T> {
+  if (Array.isArray(collection)) {
+    return collection;
+  }
   const result = [];
   for (const item of toIterable(collection)) {
     result.push(item);
@@ -173,6 +176,9 @@ export function toArray<T>(collection: Iterable<T> | Iterator<T>): Array<T> {
 export async function toArrayAsync<T>(
   collection: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>
 ): Promise<Array<T>> {
+  if (Array.isArray(collection)) {
+    return collection;
+  }
   const result = [];
   for await (const item of toAsyncIterable(collection)) {
     result.push(item);
