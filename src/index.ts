@@ -76,12 +76,14 @@ import {
   symmetricDifference,
   union,
   cartesianProduct,
+  permutations,
   distinctAsync,
   intersectionAsync,
   partialIntersectionAsync,
   symmetricDifferenceAsync,
   unionAsync,
   cartesianProductAsync,
+  permutationsAsync,
 } from "./set";
 
 import {
@@ -259,12 +261,14 @@ export const set = {
   symmetricDifference,
   union,
   cartesianProduct,
+  permutations,
   distinctAsync,
   intersectionAsync,
   partialIntersectionAsync,
   symmetricDifferenceAsync,
   unionAsync,
   cartesianProductAsync,
+  permutationsAsync,
 };
 
 export const reduce = {
