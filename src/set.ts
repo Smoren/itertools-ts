@@ -12,7 +12,7 @@ import {
   UsageMap,
 } from "./tools";
 import { enumerate, map, mapAsync } from "./single";
-import { Comparable, single, ZipTuple } from "./index";
+import { Comparable, InvalidArgumentError, single, ZipTuple } from "./index";
 
 /**
  * Iterate only the distinct elements.
@@ -398,21 +398,26 @@ export async function* cartesianProductAsync<
  * @param data
  * @param length
  */
-function* permutations<T>(data: Iterable<T> | Iterator<T>, length: number): Iterable<Array<T>> {
-  const dataArray = toArray(data);
+export function* permutations<T>(data: Iterable<T> | Iterator<T>, length: number): Iterable<Array<T>> {
+  const items = toArray(data);
 
-  function* generate(n: number, arr: T[]): Generator<Array<T>> {
-    if (n === length) {
-      yield arr.slice(0, length);
+  if (length < 0) {
+    throw new InvalidArgumentError("Parameter 'length' cannot be negative");
+  }
+
+  function* generate(current: T[], remaining: T[]): Iterable<Array<T>> {
+    if (current.length === length) {
+      yield current.slice();
     } else {
-      for (let i = 0; i < dataArray.length; i++) {
-        const nextArr = [...arr, dataArray[i]];
-        yield* generate(n + 1, nextArr);
+      for (let i = 0; i < remaining.length; i++) {
+        const nextCurrent = current.concat(remaining[i]);
+        const nextRemaining = remaining.slice(0, i).concat(remaining.slice(i + 1));
+        yield* generate(nextCurrent, nextRemaining);
       }
     }
   }
 
-  yield* generate(0, []);
+  yield* generate([], items);
 }
 
 /**
@@ -421,7 +426,7 @@ function* permutations<T>(data: Iterable<T> | Iterator<T>, length: number): Iter
  * @param data
  * @param length
  */
-async function* permutationsAsync<T>(
+export async function* permutationsAsync<T>(
   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
   length: number
 ): AsyncIterable<Array<T>> {
