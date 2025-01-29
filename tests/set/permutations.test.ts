@@ -79,15 +79,21 @@ describe.each([
 );
 
 describe.each([
-  // ...dataProviderForError(),
+  ...dataProviderForError(),
   ...dataProviderForErrorAsync(),
 ])(
   "Set Permutations Error Async Test",
   (input, len) => {
     it("", async () => {
-      expect(async () => {
-        for await (const _ of set.permutationsAsync(input, len)) {}
-      }).toThrow(InvalidArgumentError);
+      try {
+        // When
+        for await (const _ of set.permutationsAsync(input, len)) {
+          break;
+        }
+        expect(false).toBeTruthy();
+      } catch (e) {
+        expect(e).toBeInstanceOf(InvalidArgumentError);
+      }
     });
   }
 );
