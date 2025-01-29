@@ -393,7 +393,7 @@ export async function* cartesianProductAsync<
 }
 
 /**
- * Generates all permutations of given iterable.
+ * Iterates all permutations of given iterable.
  *
  * @param data
  * @param length
@@ -421,7 +421,7 @@ export function* permutations<T>(data: Iterable<T> | Iterator<T>, length: number
 }
 
 /**
- * Generates all permutations of given async iterable.
+ * Iterates all permutations of given async iterable.
  *
  * @param data
  * @param length

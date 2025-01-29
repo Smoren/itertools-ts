@@ -211,6 +211,7 @@ Quick Reference
 | [`distinct`](#distinct)                        | Iterate only distinct items            | `set.distinct(data)`                              | `set.distinctAsync(data)`                              |
 | [`intersection`](#intersection)                | Intersection of iterables              | `set.intersection(...iterables)`                  | `set.intersectionAsync(...iterables)`                  |
 | [`partialIntersection`](#partial-intersection) | Partial intersection of iterables      | `set.partialIntersection(minCount, ...iterables)` | `set.partialIntersectionAsync(minCount, ...iterables)` |
+| [`permutations`](#permutations)                | Permutations of iterables              | `set.permutations(data, length)`                  | `set.permutationsAsync(data, length)`                  |
 | [`symmetricDifference`](#symmetric-difference) | Symmetric difference of iterables      | `set.symmetricDifference(...iterables)`           | `set.symmetricDifferenceAsync(...iterables)`           |
 | [`union`](#union)                              | Union of iterables                     | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
 
@@ -1586,9 +1587,35 @@ const dynamicallyTyped   = ['php', 'python', 'javascript', 'typescript'];
 const supportsInterfaces = ['php', 'java', 'c#', 'typescript'];
 
 for (const language of set.partialIntersection(2, staticallyTyped, dynamicallyTyped, supportsInterfaces)) {
-    console.log(language);
+  console.log(language);
 }
 // c++, java, c#, go, php
+```
+
+### Permutations
+Iterates all permutations of given iterable.
+
+```
+function* permutations<T>(
+  data: Iterable<T> | Iterator<T>,
+  length: number
+): Iterable<Array<T>>
+```
+
+```typescript
+import { set } from 'itertools-ts';
+
+const fruits = ['apple', 'banana', 'cherry'];
+
+for (const permutation of set.permutations(fruits, 2)) {
+    console.log(permutation);
+}
+// ['apple', 'banana']
+// ['apple', 'cherry']
+// ['banana', 'apple']
+// ['banana', 'cherry']
+// ['cherry', 'apple']
+// ['cherry', 'banana']
 ```
 
 ### Symmetric difference
