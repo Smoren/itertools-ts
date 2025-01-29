@@ -8,14 +8,14 @@ import {
   createMapFixture
   // @ts-ignore
 } from "../fixture";
-import { set, Comparable, Numeric } from "../../src";
+import { set } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
   ...dataProviderForGenerators(),
   ...dataProviderForIterables(),
   ...dataProviderForIterators(),
-  // ...dataProviderForStrings(),
+  ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
 ])(
@@ -44,7 +44,7 @@ describe.each([
   ...dataProviderForGenerators(),
   ...dataProviderForIterables(),
   ...dataProviderForIterators(),
-  // ...dataProviderForStrings(),
+  ...dataProviderForStrings(),
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
 ])(
@@ -304,62 +304,142 @@ function dataProviderForIterators(): Array<[Iterator<any>, number, Array<any>]> 
   ]);
 }
 
-function dataProviderForStrings(): Array<[string, ((item: any) => Comparable) | undefined, Array<any>]> {
+function dataProviderForStrings(): Array<[string, number, Array<any>]> {
   return [
     [
       '',
-      undefined,
-      [],
+      0,
+      [[]],
+    ],
+    [
+      '1',
+      0,
+      [[]],
+    ],
+    [
+      '123',
+      0,
+      [[]],
     ],
     [
       '',
-      (item: string) => item,
+      1,
       [],
     ],
     [
       '1',
-      undefined,
-      ['1'],
+      1,
+      [['1']],
     ],
     [
-      '1',
-      (item: string) => item,
-      ['1'],
+      '12',
+      1,
+      [['1'], ['2']],
     ],
     [
-      '11',
-      undefined,
-      ['1'],
+      '12',
+      2,
+      [['1', '2'], ['2', '1']],
     ],
     [
-      '11',
-      (item: string) => item,
-      ['1'],
+      '12',
+      3,
+      [],
     ],
     [
-      'aabacc',
-      undefined,
-      ['a', 'b', 'c'],
+      '123',
+      1,
+      [['1'], ['2'], ['3']],
     ],
     [
-      'aabacc',
-      (item: string) => item,
-      ['a', 'b', 'c'],
+      '123',
+      2,
+      [['1', '2'], ['1', '3'], ['2', '1'], ['2', '3'], ['3', '1'], ['3', '2']],
     ],
     [
-      '12123',
-      undefined,
-      ['1', '2', '3'],
+      '123',
+      3,
+      [['1', '2', '3'], ['1', '3', '2'], ['2', '1', '3'], ['2', '3', '1'], ['3', '1', '2'], ['3', '2', '1']],
     ],
     [
-      '12123',
-      (item: string) => item,
-      ['1', '2', '3'],
+      '123',
+      4,
+      [],
     ],
     [
-      '12123',
-      () => 1,
-      ['1'],
+      '112',
+      2,
+      [['1', '1'], ['1', '2'], ['1', '1'], ['1', '2'], ['2', '1'], ['2', '1']],
+    ],
+    [
+      '111',
+      2,
+      [['1', '1'], ['1', '1'], ['1', '1'], ['1', '1'], ['1', '1'], ['1', '1']],
+    ],
+    [
+      'ABC',
+      2,
+      [
+        ['A', 'B'],
+        ['A', 'C'],
+        ['B', 'A'],
+        ['B', 'C'],
+        ['C', 'A'],
+        ['C', 'B'],
+      ],
+    ],
+    [
+      '1234',
+      2,
+      [
+        ['1', '2'],
+        ['1', '3'],
+        ['1', '4'],
+        ['2', '1'],
+        ['2', '3'],
+        ['2', '4'],
+        ['3', '1'],
+        ['3', '2'],
+        ['3', '4'],
+        ['4', '1'],
+        ['4', '2'],
+        ['4', '3'],
+      ],
+    ],
+    [
+      '1234',
+      3,
+      [
+        ['1', '2', '3'],
+        ['1', '2', '4'],
+        ['1', '3', '2'],
+        ['1', '3', '4'],
+        ['1', '4', '2'],
+        ['1', '4', '3'],
+        ['2', '1', '3'],
+        ['2', '1', '4'],
+        ['2', '3', '1'],
+        ['2', '3', '4'],
+        ['2', '4', '1'],
+        ['2', '4', '3'],
+        ['3', '1', '2'],
+        ['3', '1', '4'],
+        ['3', '2', '1'],
+        ['3', '2', '4'],
+        ['3', '4', '1'],
+        ['3', '4', '2'],
+        ['4', '1', '2'],
+        ['4', '1', '3'],
+        ['4', '2', '1'],
+        ['4', '2', '3'],
+        ['4', '3', '1'],
+        ['4', '3', '2'],
+      ],
+    ],
+    [
+      'abc',
+      0,
+      [[]],
     ],
   ];
 }
@@ -555,7 +635,7 @@ function dataProviderForSets(): Array<[Set<any>, number, Array<any>]> {
   ];
 }
 
-function dataProviderForMaps(): Array<[Map<any, any> | Iterable<any>, number, Array<any>]> {
+function dataProviderForMaps(): Array<[Map<any, any>, number, Array<any>]> {
   return [
     [
       createMapFixture([]),
