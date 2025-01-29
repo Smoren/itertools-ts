@@ -214,10 +214,10 @@ Quick Reference
 | [`union`](#union)                              | Union of iterables                     | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
 
 #### Combinatorics
-| Iterator                                       | Description                            | Sync Code Snippet                                 | Async Code Snippet                                     |
-|------------------------------------------------|----------------------------------------|---------------------------------------------------|--------------------------------------------------------|
-| [`cartesianProduct`](#cartesian-product)       | Iterate cartesian product of iterables | `set.cartesianProduct(...iterables)`              | `set.cartesianProductAsync(...iterables)`              |
-| [`permutations`](#permutations)                | Permutations of iterables              | `set.permutations(data, length)`                  | `set.permutationsAsync(data, length)`                  |
+| Iterator                                       | Description                            | Sync Code Snippet                             | Async Code Snippet                                 |
+|------------------------------------------------|----------------------------------------|-----------------------------------------------|----------------------------------------------------|
+| [`cartesianProduct`](#cartesian-product)       | Iterate cartesian product of iterables | `combinations.cartesianProduct(...iterables)` | `combinations.cartesianProductAsync(...iterables)` |
+| [`permutations`](#permutations)                | Permutations of iterables              | `combinations.permutations(data, length)`     | `combinations.permutationsAsync(data, length)`     |
 
 #### Summary
 | Summary                                 | Description                                             | Sync Code Snippet                      | Async Code Snippet                          |
