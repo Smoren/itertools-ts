@@ -8,7 +8,7 @@ import {
   createMapFixture
   // @ts-ignore
 } from "../fixture";
-import { InvalidArgumentError, set } from "../../src";
+import { InvalidArgumentError, combinatorics } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
@@ -19,14 +19,14 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
 ])(
-  "Set Permutations Test",
+  "Combinatorics Permutations Test",
   (input, len, expected) => {
     it("", () => {
       // Given
       const result = [];
 
       // When
-      for (const item of set.permutations(input, len)) {
+      for (const item of combinatorics.permutations(input, len)) {
         result.push(item);
       }
 
@@ -48,14 +48,14 @@ describe.each([
   ...dataProviderForSets(),
   ...dataProviderForMaps(),
 ])(
-  "Set Permutations Async Test",
+  "Combinatorics Permutations Async Test",
   (input, len, expected) => {
     it("", async () => {
       // Given
       const result = [];
 
       // When
-      for await (const item of set.permutationsAsync(input, len)) {
+      for await (const item of combinatorics.permutationsAsync(input, len)) {
         result.push(item);
       }
 
@@ -68,11 +68,11 @@ describe.each([
 describe.each([
   ...dataProviderForError(),
 ])(
-  "Set Permutations Error Test",
+  "Combinatorics Permutations Error Test",
   (input, len) => {
     it("", () => {
       expect(() => {
-        for (const _ of set.permutations(input, len)) {}
+        for (const _ of combinatorics.permutations(input, len)) {}
       }).toThrow(InvalidArgumentError);
     });
   }
@@ -82,14 +82,12 @@ describe.each([
   ...dataProviderForError(),
   ...dataProviderForErrorAsync(),
 ])(
-  "Set Permutations Error Async Test",
+  "Combinatorics Permutations Error Async Test",
   (input, len) => {
     it("", async () => {
       try {
         // When
-        for await (const _ of set.permutationsAsync(input, len)) {
-          break;
-        }
+        for await (const _ of combinatorics.permutationsAsync(input, len)) {}
         expect(false).toBeTruthy();
       } catch (e) {
         expect(e).toBeInstanceOf(InvalidArgumentError);

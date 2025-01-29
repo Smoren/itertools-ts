@@ -75,16 +75,21 @@ import {
   partialIntersection,
   symmetricDifference,
   union,
-  cartesianProduct,
-  permutations,
+  cartesianProduct as cartesianProductDeprecated,
   distinctAsync,
   intersectionAsync,
   partialIntersectionAsync,
   symmetricDifferenceAsync,
   unionAsync,
+  cartesianProductAsync as cartesianProductAsyncDeprecated,
+} from "./set";
+
+import {
+  cartesianProduct,
+  permutations,
   cartesianProductAsync,
   permutationsAsync,
-} from "./set";
+} from "./combinatorics";
 
 import {
   toAverage,
@@ -260,13 +265,18 @@ export const set = {
   partialIntersection,
   symmetricDifference,
   union,
-  cartesianProduct,
-  permutations,
+  cartesianProduct: cartesianProductDeprecated,
   distinctAsync,
   intersectionAsync,
   partialIntersectionAsync,
   symmetricDifferenceAsync,
   unionAsync,
+  cartesianProductAsync: cartesianProductAsyncDeprecated,
+};
+
+export const combinatorics = {
+  cartesianProduct,
+  permutations,
   cartesianProductAsync,
   permutationsAsync,
 };
