@@ -207,13 +207,17 @@ Quick Reference
 #### Set and multiset Iteration
 | Iterator                                       | Description                            | Sync Code Snippet                                 | Async Code Snippet                                     |
 |------------------------------------------------|----------------------------------------|---------------------------------------------------|--------------------------------------------------------|
-| [`cartesianProduct`](#cartesian-product)       | Iterate cartesian product of iterables | `set.cartesianProduct(...iterables)`              | `set.cartesianProductAsync(...iterables)`              |
 | [`distinct`](#distinct)                        | Iterate only distinct items            | `set.distinct(data)`                              | `set.distinctAsync(data)`                              |
 | [`intersection`](#intersection)                | Intersection of iterables              | `set.intersection(...iterables)`                  | `set.intersectionAsync(...iterables)`                  |
 | [`partialIntersection`](#partial-intersection) | Partial intersection of iterables      | `set.partialIntersection(minCount, ...iterables)` | `set.partialIntersectionAsync(minCount, ...iterables)` |
-| [`permutations`](#permutations)                | Permutations of iterables              | `set.permutations(data, length)`                  | `set.permutationsAsync(data, length)`                  |
 | [`symmetricDifference`](#symmetric-difference) | Symmetric difference of iterables      | `set.symmetricDifference(...iterables)`           | `set.symmetricDifferenceAsync(...iterables)`           |
 | [`union`](#union)                              | Union of iterables                     | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
+
+#### Combinatorics
+| Iterator                                       | Description                            | Sync Code Snippet                                 | Async Code Snippet                                     |
+|------------------------------------------------|----------------------------------------|---------------------------------------------------|--------------------------------------------------------|
+| [`cartesianProduct`](#cartesian-product)       | Iterate cartesian product of iterables | `set.cartesianProduct(...iterables)`              | `set.cartesianProductAsync(...iterables)`              |
+| [`permutations`](#permutations)                | Permutations of iterables              | `set.permutations(data, length)`                  | `set.permutationsAsync(data, length)`                  |
 
 #### Summary
 | Summary                                 | Description                                             | Sync Code Snippet                      | Async Code Snippet                          |
@@ -275,6 +279,7 @@ Quick Reference
 | [`map`](#map-1)                                         | Map function onto elements                                                                | `stream.map(mapper)`                                                 |
 | [`pairwise`](#pairwise-1)                               | Return pairs of elements from iterable source                                             | `stream.pairwise()`                                                  |
 | [`partialIntersectionWith`](#partial-intersection-with) | Partially intersect stream and given iterables                                            | `stream.partialIntersectionWith(minIntersectionCount, ...iterables)` |
+| [`permutations`](#permutations-1)                       | Permutations of the stream iterable                                                       | `stream.permutations(length)`                                        |
 | [`runningAverage`](#running-average-1)                  | Accumulate the running average (mean) over iterable source                                | `stream.runningAverage([initialValue])`                              |
 | [`runningDifference`](#running-difference-1)            | Accumulate the running difference over iterable source                                    | `stream.runningDifference([initialValue])`                           |
 | [`runningMax`](#running-max-1)                          | Accumulate the running max over iterable source                                           | `stream.runningMax([initialValue])`                                  |
@@ -1476,37 +1481,6 @@ const result = reduce.toValue(input, sum, 0);
 ```
 
 ## Set and multiset
-### Cartesian Product
-Iterates cartesian product of given iterables.
-
-```
-function* cartesianProduct<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
-  ...iterables: T
-): Iterable<ZipTuple<T, never>>
-```
-
-```typescript
-import { set } from 'itertools-ts';
-
-const numbers = [1, 2];
-const letters = ['a', 'b'];
-const chars = ['!', '?'];
-
-for (const tuple of set.cartesianProduct(numbers, letters, chars)) {
-  console.log(tuple);
-}
-/*
-  [1, 'a', '!'],
-  [1, 'a', '?'],
-  [1, 'b', '!'],
-  [1, 'b', '?'],
-  [2, 'a', '!'],
-  [2, 'a', '?'],
-  [2, 'b', '!'],
-  [2, 'b', '?'],
-*/
-```
-
 ### Distinct
 Filter out elements from the iterable only returning distinct elements.
 
@@ -1592,32 +1566,6 @@ for (const language of set.partialIntersection(2, staticallyTyped, dynamicallyTy
 // c++, java, c#, go, php
 ```
 
-### Permutations
-Iterates all permutations of given iterable.
-
-```
-function* permutations<T>(
-  data: Iterable<T> | Iterator<T>,
-  length: number
-): Iterable<Array<T>>
-```
-
-```typescript
-import { set } from 'itertools-ts';
-
-const fruits = ['apple', 'banana', 'cherry'];
-
-for (const permutation of set.permutations(fruits, 2)) {
-    console.log(permutation);
-}
-// ['apple', 'banana']
-// ['apple', 'cherry']
-// ['banana', 'apple']
-// ['banana', 'cherry']
-// ['cherry', 'apple']
-// ['cherry', 'banana']
-```
-
 ### Symmetric difference
 Iterates the symmetric difference of iterables.
 
@@ -1664,6 +1612,64 @@ for (const item of set.symmetricDifference(a, b, c)) {
     console.log(item);
 }
 // 1, 2, 3, 4, 5
+```
+
+## Combinatorics
+### Cartesian Product
+Iterates cartesian product of given iterables.
+
+```
+function* cartesianProduct<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
+  ...iterables: T
+): Iterable<ZipTuple<T, never>>
+```
+
+```typescript
+import { combinatorics } from 'itertools-ts';
+
+const numbers = [1, 2];
+const letters = ['a', 'b'];
+const chars = ['!', '?'];
+
+for (const tuple of combinatorics.cartesianProduct(numbers, letters, chars)) {
+  console.log(tuple);
+}
+/*
+  [1, 'a', '!'],
+  [1, 'a', '?'],
+  [1, 'b', '!'],
+  [1, 'b', '?'],
+  [2, 'a', '!'],
+  [2, 'a', '?'],
+  [2, 'b', '!'],
+  [2, 'b', '?'],
+*/
+```
+
+### Permutations
+Iterates all permutations of given iterable.
+
+```
+function* permutations<T>(
+  data: Iterable<T> | Iterator<T>,
+  length: number
+): Iterable<Array<T>>
+```
+
+```typescript
+import { combinatorics } from 'itertools-ts';
+
+const fruits = ['apple', 'banana', 'cherry'];
+
+for (const permutation of combinatorics.permutations(fruits, 2)) {
+  console.log(permutation);
+}
+// ['apple', 'banana']
+// ['apple', 'cherry']
+// ['banana', 'apple']
+// ['banana', 'cherry']
+// ['cherry', 'apple']
+// ['cherry', 'banana']
 ```
 
 ## Summary
@@ -2678,6 +2684,33 @@ const result = Stream.of(staticallyTyped)
   .partialIntersectionWith(2, dynamicallyTyped, supportsInterfaces)
   .toArray();
 // ['c++', 'java', 'c#', 'go', 'php']
+```
+
+#### Permutations
+Return a stream with permutations of the stream iterable.
+
+```
+Stream<T>.permutations(length: number): Stream<Array<T>>
+```
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const fruits = ['apple', 'banana', 'cherry'];
+
+const result = Stream.of(fruits)
+  .permutations(2)
+  .toArray();
+/*
+[
+  ['apple', 'banana'],
+  ['apple', 'cherry'],
+  ['banana', 'apple'],
+  ['banana', 'cherry'],
+  ['cherry', 'apple'],
+  ['cherry', 'banana']
+]
+*/
 ```
 
 #### Running Average

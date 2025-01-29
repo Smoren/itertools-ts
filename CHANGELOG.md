@@ -1,6 +1,6 @@
 # IterTools Typescript Change Log
 
-## v2.1.0 - TBD
+## v2.1.0 - 2025-01-29
 
 ### New features
 * combinatorics
