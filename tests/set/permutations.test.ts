@@ -8,7 +8,7 @@ import {
   createMapFixture
   // @ts-ignore
 } from "../fixture";
-import { set } from "../../src";
+import { InvalidArgumentError, set } from "../../src";
 
 describe.each([
   ...dataProviderForArrays(),
@@ -61,6 +61,33 @@ describe.each([
 
       // Then
       expect(result).toEqual(expected);
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForError(),
+])(
+  "Set Permutations Error Test",
+  (input, len) => {
+    it("", () => {
+      expect(() => {
+        for (const _ of set.permutations(input, len)) {}
+      }).toThrow(InvalidArgumentError);
+    });
+  }
+);
+
+describe.each([
+  // ...dataProviderForError(),
+  ...dataProviderForErrorAsync(),
+])(
+  "Set Permutations Error Async Test",
+  (input, len) => {
+    it("", async () => {
+      expect(async () => {
+        for await (const _ of set.permutationsAsync(input, len)) {}
+      }).toThrow(InvalidArgumentError);
     });
   }
 );
@@ -874,4 +901,116 @@ function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, number, Arr
     createAsyncIteratorFixture(item[0]),
     ...item.slice(1) as [number, Array<any>],
   ]);
+}
+
+function dataProviderForError(): Array<[Array<any>, number]> {
+  return [
+    [
+      [],
+      -1,
+    ],
+    [
+      [1],
+      -1,
+    ],
+    [
+      [1, 2, 3],
+      -1,
+    ],
+    [
+      [],
+      -1,
+    ],
+    [
+      [1],
+      -1,
+    ],
+    [
+      [1, 2],
+      -1,
+    ],
+    [
+      [1, 2],
+      -2,
+    ],
+    [
+      [1, 2],
+      -3,
+    ],
+    [
+      [1, 2, 3],
+      -1,
+    ],
+    [
+      [1, 2, 3],
+      -2,
+    ],
+    [
+      [1, 2, 3],
+      -3,
+    ],
+    [
+      [1, 2, 3],
+      -4,
+    ],
+    [
+      [1, 1, 2],
+      -2,
+    ],
+    [
+      [1, 1, 1],
+      -2,
+    ],
+    [
+      [[0, 1], [1, 2], [2, 3]],
+      -1,
+    ],
+    [
+      ['A', 'B', 'C'],
+      -2,
+    ],
+    [
+      ['apple', 'banana', 'cherry'],
+      -2,
+    ],
+    [
+      [1, 'two', 3],
+      -2,
+    ],
+    [
+      [{ id: 1 }, { id: 2 }, { id: 3 }],
+      -2,
+    ],
+    [
+      [1, 2, 3, 4],
+      -2,
+    ],
+    [
+      [1, 2, 3, 4],
+      -3,
+    ],
+    [
+      [null, undefined, 0],
+      -2,
+    ],
+    [
+      [42, 42, 42],
+      -2,
+    ],
+    [
+      [true, false],
+      -2,
+    ],
+    [
+      [true, 'string', 123, null],
+      -1,
+    ],
+  ];
+}
+
+function dataProviderForErrorAsync(): Array<[AsyncIterable<any>, number]> {
+  return dataProviderForError().map((item) => [
+    createAsyncIterableFixture(item[0]),
+    ...item.slice(1) as [number],
+  ])
 }

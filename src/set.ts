@@ -399,11 +399,11 @@ export async function* cartesianProductAsync<
  * @param length
  */
 export function* permutations<T>(data: Iterable<T> | Iterator<T>, length: number): Iterable<Array<T>> {
-  const items = toArray(data);
-
   if (length < 0) {
     throw new InvalidArgumentError("Parameter 'length' cannot be negative");
   }
+
+  const items = toArray(data);
 
   function* generate(current: T[], remaining: T[]): Iterable<Array<T>> {
     if (current.length === length) {
@@ -431,5 +431,9 @@ export async function* permutationsAsync<T>(
   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
   length: number
 ): AsyncIterable<Array<T>> {
+  if (length < 0) {
+    throw new InvalidArgumentError("Parameter 'length' cannot be negative");
+  }
+
   yield* permutations(await toArrayAsync(data), length);
 }
