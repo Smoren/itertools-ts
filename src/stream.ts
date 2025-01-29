@@ -29,14 +29,16 @@ import {
   runningTotal,
 } from "./math";
 import {
-  cartesianProduct,
   distinct,
   intersection,
   partialIntersection,
-  permutations,
   symmetricDifference,
   union,
 } from "./set";
+import {
+  cartesianProduct,
+  permutations,
+} from "./combinatorics";
 import {
   toAverage,
   toCount,

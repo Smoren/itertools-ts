@@ -1,18 +1,25 @@
 # IterTools Typescript Change Log
 
-## v2.0.1 - TBD
+## v2.1.0 - TBD
 
 ### New features
-* set
+* combinatorics
   * `permutations()`
   * `permutationsAsync()`
+  * `cartesianProduct()`
+  * `cartesianProductAsync()`
 * Stream
-  * `permutationsWith()`
+  * `permutations()`
 * AsyncStream
-  * `permutationsWith()`
+  * `permutations()`
 
 ### Improvements
 * `toArray()` function optimized.
+
+### Deprecations
+* set
+  * `cartesianProduct()` (use `combinatorics.cartesianProduct()` instead).
+  * `cartesianProductAsync()` (use `combinatorics.cartesianProductAsync()` instead).
 
 ## v2.0.0 - 2025-01-25
 

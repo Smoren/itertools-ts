@@ -41,14 +41,16 @@ import {
   runningTotalAsync,
 } from "./math";
 import {
-  cartesianProductAsync,
   distinctAsync,
   intersectionAsync,
   partialIntersectionAsync,
-  permutationsAsync,
   symmetricDifferenceAsync,
   unionAsync,
 } from "./set";
+import {
+  cartesianProductAsync,
+  permutationsAsync,
+} from "./combinatorics";
 import {
   toAverageAsync,
   toCountAsync,
