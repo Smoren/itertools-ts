@@ -410,7 +410,8 @@ export function* permutations<T>(data: Iterable<T> | Iterator<T>, length: number
       yield current.slice();
     } else {
       for (let i = 0; i < remaining.length; i++) {
-        const nextCurrent = current.concat(remaining[i]);
+        const nextCurrent = [...current, remaining[i]];
+        // const nextCurrent = current.concat(remaining[i]);
         const nextRemaining = remaining.slice(0, i).concat(remaining.slice(i + 1));
         yield* generate(nextCurrent, nextRemaining);
       }
