@@ -45,6 +45,7 @@ import {
   distinctAsync,
   intersectionAsync,
   partialIntersectionAsync,
+  permutationsAsync,
   symmetricDifferenceAsync,
   unionAsync,
 } from "./set";
@@ -713,6 +714,18 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   >>(...iterables: U): AsyncStream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = cartesianProductAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this as unknown as AsyncStream<ZipTuple<[Iterable<T>, ...U], never>>;
+  }
+
+  /**
+   * Generates all permutations of iterable source.
+   *
+   * @param length
+   *
+   * @see set.permutations
+   */
+  permutations(length: number): AsyncStream<Array<T>> {
+    this.data = permutationsAsync(this.data, length) as AsyncIterable<T>;
+    return this as unknown as AsyncStream<Array<T>>;
   }
 
   /**

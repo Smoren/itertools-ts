@@ -33,6 +33,7 @@ import {
   distinct,
   intersection,
   partialIntersection,
+  permutations,
   symmetricDifference,
   union,
 } from "./set";
@@ -629,6 +630,18 @@ export class Stream<T> implements Iterable<T> {
   ): Stream<ZipTuple<[Iterable<T>, ...U], never>> {
     this.data = cartesianProduct(this.data, ...iterables) as Iterable<T>;
     return this as unknown as Stream<ZipTuple<[Iterable<T>, ...U], never>>;
+  }
+
+  /**
+   * Generates all permutations of iterable source.
+   *
+   * @param length
+   *
+   * @see set.permutations
+   */
+  permutations(length: number): Stream<Array<T>> {
+    this.data = permutations(this.data, length) as Iterable<T>;
+    return this as unknown as Stream<Array<T>>;
   }
 
   /**
