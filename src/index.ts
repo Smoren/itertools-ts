@@ -265,12 +265,18 @@ export const set = {
   partialIntersection,
   symmetricDifference,
   union,
-  cartesianProduct: cartesianProductDeprecated,
   distinctAsync,
   intersectionAsync,
   partialIntersectionAsync,
   symmetricDifferenceAsync,
   unionAsync,
+  /**
+   * @deprecated Use `combinatorics.cartesianProduct()` instead.
+   */
+  cartesianProduct: cartesianProductDeprecated,
+  /**
+   * @deprecated Use `combinatorics.cartesianProductAsync()` instead.
+   */
   cartesianProductAsync: cartesianProductAsyncDeprecated,
 };
 
