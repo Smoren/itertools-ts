@@ -214,10 +214,11 @@ Quick Reference
 | [`union`](#union)                              | Union of iterables                     | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
 
 #### Combinatorics
-| Iterator                                       | Description                            | Sync Code Snippet                             | Async Code Snippet                                 |
-|------------------------------------------------|----------------------------------------|-----------------------------------------------|----------------------------------------------------|
-| [`cartesianProduct`](#cartesian-product)       | Iterate cartesian product of iterables | `combinations.cartesianProduct(...iterables)` | `combinations.cartesianProductAsync(...iterables)` |
-| [`permutations`](#permutations)                | Permutations of iterables              | `combinations.permutations(data, length)`     | `combinations.permutationsAsync(data, length)`     |
+| Iterator                                 | Description                            | Sync Code Snippet                             | Async Code Snippet                                 |
+|------------------------------------------|----------------------------------------|-----------------------------------------------|----------------------------------------------------|
+| [`cartesianProduct`](#cartesian-product) | Iterate cartesian product of iterables | `combinations.cartesianProduct(...iterables)` | `combinations.cartesianProductAsync(...iterables)` |
+| [`combinations`](#combinations)          | Combinations of iterables              | `combinations.combinations(data, length)`     | `combinations.combinationsAsync(data, length)`     |
+| [`permutations`](#permutations)          | Permutations of iterables              | `combinations.permutations(data, length)`     | `combinations.permutationsAsync(data, length)`     |
 
 #### Summary
 | Summary                                 | Description                                             | Sync Code Snippet                      | Async Code Snippet                          |
@@ -1644,6 +1645,29 @@ for (const tuple of combinatorics.cartesianProduct(numbers, letters, chars)) {
   [2, 'b', '!'],
   [2, 'b', '?'],
 */
+```
+
+### Combinations
+Iterates all combinations of given iterable.
+
+```
+function* combinations<T>(
+  data: Iterable<T> | Iterator<T>,
+  length: number
+): Iterable<Array<T>>
+```
+
+```typescript
+import { combinatorics } from 'itertools-ts';
+
+const fruits = ['apple', 'banana', 'cherry'];
+
+for (const combination of combinatorics.combinations(fruits, 2)) {
+  console.log(combination);
+}
+// ['apple', 'banana']
+// ['apple', 'cherry']
+// ['banana', 'cherry']
 ```
 
 ### Permutations
