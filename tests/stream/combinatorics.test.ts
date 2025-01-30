@@ -126,6 +126,45 @@ function dataProviderForArrays(
         .toArray(),
       [[1, 1], [1, 2], [1, 1], [1, 2], [2, 1], [2, 1]],
     ],
+    [
+      ['apple', 'banana', 'cherry'],
+      (iterable: Array<string>) => Stream.of(iterable)
+        .combinations(2)
+        .toArray(),
+      [
+        ['apple', 'banana'],
+        ['apple', 'cherry'],
+        ['banana', 'cherry'],
+      ],
+    ],
+    [
+      [1, 2, 3],
+      (input: Iterable<string> | Iterator<string>) => Stream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[1, 2], [1, 3], [2, 3]],
+    ],
+    [
+      [1, 2, 3],
+      (input: Iterable<string> | Iterator<string>) => Stream.of(input)
+        .combinations(3)
+        .toArray(),
+      [[1, 2, 3]],
+    ],
+    [
+      [1, 2, 3],
+      (input: Iterable<string> | Iterator<string>) => Stream.of(input)
+        .combinations(0)
+        .toArray(),
+      [[]],
+    ],
+    [
+      [1, 1, 2],
+      (input: Iterable<string> | Iterator<string>) => Stream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[1, 1], [1, 2], [1, 2]],
+    ],
   ];
 }
 
@@ -201,6 +240,43 @@ function dataProviderForStrings(): Array<[unknown, (data: any) => Array<unknown>
         .permutations(2)
         .toArray(),
       [['1', '1'], ['1', '2'], ['1', '1'], ['1', '2'], ['2', '1'], ['2', '1']],
+    ],
+
+
+    [
+      'abc',
+      (input: string) => Stream.of(input)
+        .combinations(2)
+        .toArray(),
+      [['a', 'b'], ['a', 'c'], ['b', 'c']],
+    ],
+    [
+      '123',
+      (input: string) => Stream.of(input)
+        .combinations(2)
+        .toArray(),
+      [['1', '2'], ['1', '3'], ['2', '3']],
+    ],
+    [
+      '123',
+      (input: string) => Stream.of(input)
+        .combinations(3)
+        .toArray(),
+      [['1', '2', '3']],
+    ],
+    [
+      '123',
+      (input: string) => Stream.of(input)
+        .combinations(0)
+        .toArray(),
+      [[]],
+    ],
+    [
+      '112',
+      (input: string) => Stream.of(input)
+        .combinations(2)
+        .toArray(),
+      [['1', '1'], ['1', '2'], ['1', '2']],
     ],
   ];
 }
@@ -285,6 +361,38 @@ function dataProviderForSets(): Array<[unknown, (data: any) => Array<unknown>, A
       new Set([1, 2, 3]),
       (input: Set<string>) => Stream.of(input)
         .permutations(0)
+        .toArray(),
+      [[]],
+    ],
+    [
+      new Set(['apple', 'banana', 'cherry']),
+      (input: Array<string>) => Stream.of(input)
+        .combinations(2)
+        .toArray(),
+      [
+        ['apple', 'banana'],
+        ['apple', 'cherry'],
+        ['banana', 'cherry'],
+      ],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (input: Set<string>) => Stream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[1, 2], [1, 3], [2, 3]],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (input: Set<string>) => Stream.of(input)
+        .combinations(3)
+        .toArray(),
+      [[1, 2, 3]],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (input: Set<string>) => Stream.of(input)
+        .combinations(0)
         .toArray(),
       [[]],
     ],
@@ -387,6 +495,47 @@ function dataProviderForMaps(): Array<[unknown, (data: any) => Array<unknown>, A
         .permutations(2)
         .toArray(),
       [[[0, 1], [1, 1]], [[0, 1], [2, 2]], [[1, 1], [0, 1]], [[1, 1], [2, 2]], [[2, 2], [0, 1]], [[2, 2], [1, 1]]],
+    ],
+    [
+      createMapFixture(['apple', 'banana', 'cherry']),
+      (iterable: Array<string>) => Stream.of(iterable)
+        .combinations(2)
+        .toArray(),
+      [
+        [[0, 'apple'], [1, 'banana']],
+        [[0, 'apple'], [2, 'cherry']],
+        [[1, 'banana'], [2, 'cherry']],
+      ],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => Stream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[[0, 1], [1, 2]], [[0, 1], [2, 3]], [[1, 2], [2, 3]]],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => Stream.of(input)
+        .combinations(3)
+        .toArray(),
+      [
+        [[0, 1], [1, 2], [2, 3]],
+      ],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => Stream.of(input)
+        .combinations(0)
+        .toArray(),
+      [[]],
+    ],
+    [
+      createMapFixture([1, 1, 2]),
+      (input: Iterable<string> | Iterator<string>) => Stream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[[0, 1], [1, 1]], [[0, 1], [2, 2]], [[1, 1], [2, 2]]],
     ],
   ];
 }

@@ -48,7 +48,7 @@ import {
   unionAsync,
 } from "./set";
 import {
-  cartesianProductAsync,
+  cartesianProductAsync, combinationsAsync,
   permutationsAsync,
 } from "./combinatorics";
 import {
@@ -706,7 +706,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @param iterables
    *
-   * @see set.cartesianProductAsync
+   * @see combinatorics.cartesianProductAsync
    */
   cartesianProductWith<U extends Array<
     | AsyncIterable<unknown>
@@ -719,14 +719,26 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
-   * Generates all permutations of iterable source.
+   * Iterates all permutations of iterable source.
    *
    * @param length
    *
-   * @see set.permutations
+   * @see combinatorics.permutations
    */
   permutations(length: number): AsyncStream<Array<T>> {
     this.data = permutationsAsync(this.data, length) as AsyncIterable<T>;
+    return this as unknown as AsyncStream<Array<T>>;
+  }
+
+  /**
+   * Iterates all combinations of iterable source.
+   *
+   * @param length
+   *
+   * @see combinatorics.combinations
+   */
+  combinations(length: number): AsyncStream<Array<T>> {
+    this.data = combinationsAsync(this.data, length) as AsyncIterable<T>;
     return this as unknown as AsyncStream<Array<T>>;
   }
 
