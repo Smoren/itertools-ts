@@ -48,7 +48,8 @@ import {
   unionAsync,
 } from "./set";
 import {
-  cartesianProductAsync, combinationsAsync,
+  cartesianProductAsync,
+  combinationsAsync,
   permutationsAsync,
 } from "./combinatorics";
 import {
