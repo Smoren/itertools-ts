@@ -1,5 +1,16 @@
 # IterTools Typescript Change Log
 
+## v2.2.0 - 2025-01-31
+
+### New features
+* combinatorics
+  * `combinations()`
+  * `combinationsAsync()`
+* Stream
+  * `combinations()`
+* AsyncStream
+  * `combinations()`
+
 ## v2.1.0 - 2025-01-29
 
 ### New features
