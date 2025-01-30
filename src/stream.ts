@@ -36,7 +36,8 @@ import {
   union,
 } from "./set";
 import {
-  cartesianProduct, combinations,
+  cartesianProduct,
+  combinations,
   permutations,
 } from "./combinatorics";
 import {
