@@ -111,9 +111,67 @@ export async function* permutationsAsync<T>(
   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
   length: number
 ): AsyncIterable<Array<T>> {
+  yield* permutations(await toArrayAsync(data), length);
+}
+
+/**
+ * Iterates all combinations of given iterable.
+ *
+ * @param data
+ * @param length
+ */
+export function* combinations<T>(data: Iterable<T> | Iterator<T>, length: number): Iterable<Array<T>> {
   if (length < 0) {
     throw new InvalidArgumentError("Parameter 'length' cannot be negative");
   }
 
-  yield* permutations(await toArrayAsync(data), length);
+  const items = toArray(data);
+  const n = items.length;
+
+  if (length === 0) {
+    yield [];
+    return;
+  }
+
+  if (length > n || length < 0) {
+    return;
+  }
+
+  const indices = Array.from({ length: length }, (_, i) => i);
+
+  yield indices.map((i) => items[i]);
+
+  while (true) {
+    let i = length - 1;
+
+    // Let's find the index that can be incremented
+    while (i >= 0 && indices[i] === i + n - length) {
+      i--;
+    }
+
+    if (i < 0) {
+      break; // All combinations have been generated
+    }
+
+    indices[i]++;
+
+    for (let j = i + 1; j < length; j++) {
+      indices[j] = indices[j - 1] + 1;
+    }
+
+    yield indices.map((i) => items[i])
+  }
+}
+
+/**
+ * Iterates all combinations of given async iterable.
+ *
+ * @param data
+ * @param length
+ */
+export async function* combinationsAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  length: number
+): AsyncIterable<Array<T>> {
+  yield* combinations(await toArrayAsync(data), length);
 }
