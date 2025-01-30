@@ -87,8 +87,10 @@ import {
 import {
   cartesianProduct,
   permutations,
+  combinations,
   cartesianProductAsync,
   permutationsAsync,
+  combinationsAsync,
 } from "./combinatorics";
 
 import {
@@ -283,8 +285,10 @@ export const set = {
 export const combinatorics = {
   cartesianProduct,
   permutations,
+  combinations,
   cartesianProductAsync,
   permutationsAsync,
+  combinationsAsync,
 };
 
 export const reduce = {
