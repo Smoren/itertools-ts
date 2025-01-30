@@ -266,6 +266,7 @@ Quick Reference
 | [`chainWith`](#chain-with)                              | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`                                     |
 | [`chunkwise`](#chunkwise-1)                             | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                                        |
 | [`chunkwiseOverlap`](#chunkwise-overlap-1)              | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)`                        |
+| [`combinations`](#combinations-1)                       | Combinations of the stream iterable                                                       | `stream.combinations(length)`                                        |
 | [`compress`](#compress-1)                               | Compress source by filtering out data not selected                                        | `stream.compress(selectors)`                                         |
 | [`distinct`](#distinct-1)                               | Filter out elements: iterate only unique items                                            | `stream.distinct()`                                                  |
 | [`dropWhile`](#drop-while-1)                            | Drop elements from the iterable source while the predicate function is true               | `stream.dropWhile(predicate)`                                        |
@@ -2376,6 +2377,30 @@ const result = Stream.of(numbers)
   .chunkwiseOverlap(3, 1)
   .toArray()
 // [[1, 2, 3], [3, 4, 5], [5, 6, 7], [7, 8, 9]]
+```
+
+#### Combinations
+Return a stream with combinations of the stream iterable.
+
+```
+Stream<T>.combinations(length: number): Stream<Array<T>>
+```
+
+```typescript
+import { Stream } from 'itertools-ts';
+
+const fruits = ['apple', 'banana', 'cherry'];
+
+const result = Stream.of(fruits)
+  .combinations(2)
+  .toArray();
+/*
+[
+  ['apple', 'banana'],
+  ['apple', 'cherry'],
+  ['banana', 'cherry'],
+]
+*/
 ```
 
 #### Compress
