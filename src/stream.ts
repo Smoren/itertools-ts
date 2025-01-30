@@ -36,7 +36,7 @@ import {
   union,
 } from "./set";
 import {
-  cartesianProduct,
+  cartesianProduct, combinations,
   permutations,
 } from "./combinatorics";
 import {
@@ -625,7 +625,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @param iterables
    *
-   * @see set.cartesianProduct
+   * @see combinatorics.cartesianProduct
    */
   cartesianProductWith<U extends Array<Iterable<unknown> | Iterator<unknown>>>(
     ...iterables: U
@@ -635,14 +635,26 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
-   * Generates all permutations of iterable source.
+   * Iterates all permutations of iterable source.
    *
    * @param length
    *
-   * @see set.permutations
+   * @see combinatorics.permutations
    */
   permutations(length: number): Stream<Array<T>> {
     this.data = permutations(this.data, length) as Iterable<T>;
+    return this as unknown as Stream<Array<T>>;
+  }
+
+  /**
+   * Iterates all combinations of iterable source.
+   *
+   * @param length
+   *
+   * @see combinatorics.combinations
+   */
+  combinations(length: number): Stream<Array<T>> {
+    this.data = combinations(this.data, length) as Iterable<T>;
     return this as unknown as Stream<Array<T>>;
   }
 

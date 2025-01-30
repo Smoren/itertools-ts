@@ -137,6 +137,45 @@ function dataProviderForArrays(
         .toArray(),
       [[1, 1], [1, 2], [1, 1], [1, 2], [2, 1], [2, 1]],
     ],
+    [
+      wrapper(['apple', 'banana', 'cherry']),
+      (iterable: Array<string>) => AsyncStream.of(iterable)
+        .combinations(2)
+        .toArray(),
+      [
+        ['apple', 'banana'],
+        ['apple', 'cherry'],
+        ['banana', 'cherry'],
+      ],
+    ],
+    [
+      wrapper([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[1, 2], [1, 3], [2, 3]],
+    ],
+    [
+      wrapper([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(3)
+        .toArray(),
+      [[1, 2, 3]],
+    ],
+    [
+      wrapper([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(0)
+        .toArray(),
+      [[]],
+    ],
+    [
+      wrapper([1, 1, 2]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[1, 1], [1, 2], [1, 2]],
+    ],
   ];
 }
 
@@ -212,6 +251,41 @@ function dataProviderForStrings(): Array<[unknown, (data: any) => Promise<Array<
         .permutations(2)
         .toArray(),
       [['1', '1'], ['1', '2'], ['1', '1'], ['1', '2'], ['2', '1'], ['2', '1']],
+    ],
+    [
+      'abc',
+      (input: string) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [['a', 'b'], ['a', 'c'], ['b', 'c']],
+    ],
+    [
+      '123',
+      (input: string) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [['1', '2'], ['1', '3'], ['2', '3']],
+    ],
+    [
+      '123',
+      (input: string) => AsyncStream.of(input)
+        .combinations(3)
+        .toArray(),
+      [['1', '2', '3']],
+    ],
+    [
+      '123',
+      (input: string) => AsyncStream.of(input)
+        .combinations(0)
+        .toArray(),
+      [[]],
+    ],
+    [
+      '112',
+      (input: string) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [['1', '1'], ['1', '2'], ['1', '2']],
     ],
   ];
 }
@@ -296,6 +370,38 @@ function dataProviderForSets(): Array<[unknown, (data: any) => Promise<Array<unk
       new Set([1, 2, 3]),
       (input: Set<string>) => AsyncStream.of(input)
         .permutations(0)
+        .toArray(),
+      [[]],
+    ],
+    [
+      new Set(['apple', 'banana', 'cherry']),
+      (input: Array<string>) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [
+        ['apple', 'banana'],
+        ['apple', 'cherry'],
+        ['banana', 'cherry'],
+      ],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (input: Set<string>) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[1, 2], [1, 3], [2, 3]],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (input: Set<string>) => AsyncStream.of(input)
+        .combinations(3)
+        .toArray(),
+      [[1, 2, 3]],
+    ],
+    [
+      new Set([1, 2, 3]),
+      (input: Set<string>) => AsyncStream.of(input)
+        .combinations(0)
         .toArray(),
       [[]],
     ],
@@ -398,6 +504,47 @@ function dataProviderForMaps(): Array<[unknown, (data: any) => Promise<Array<unk
         .permutations(2)
         .toArray(),
       [[[0, 1], [1, 1]], [[0, 1], [2, 2]], [[1, 1], [0, 1]], [[1, 1], [2, 2]], [[2, 2], [0, 1]], [[2, 2], [1, 1]]],
+    ],
+    [
+      createMapFixture(['apple', 'banana', 'cherry']),
+      (iterable: Array<string>) => AsyncStream.of(iterable)
+        .combinations(2)
+        .toArray(),
+      [
+        [[0, 'apple'], [1, 'banana']],
+        [[0, 'apple'], [2, 'cherry']],
+        [[1, 'banana'], [2, 'cherry']],
+      ],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[[0, 1], [1, 2]], [[0, 1], [2, 3]], [[1, 2], [2, 3]]],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(3)
+        .toArray(),
+      [
+        [[0, 1], [1, 2], [2, 3]],
+      ],
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(0)
+        .toArray(),
+      [[]],
+    ],
+    [
+      createMapFixture([1, 1, 2]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[[0, 1], [1, 1]], [[0, 1], [2, 2]], [[1, 1], [2, 2]]],
     ],
   ];
 }
@@ -504,6 +651,45 @@ function dataProviderForAsync(
         .permutations(2)
         .toArray(),
       [[1, 1], [1, 2], [1, 1], [1, 2], [2, 1], [2, 1]],
+    ],
+    [
+      wrapper(['apple', 'banana', 'cherry']),
+      (iterable: Array<string>) => AsyncStream.of(iterable)
+        .combinations(2)
+        .toArray(),
+      [
+        ['apple', 'banana'],
+        ['apple', 'cherry'],
+        ['banana', 'cherry'],
+      ],
+    ],
+    [
+      wrapper([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[1, 2], [1, 3], [2, 3]],
+    ],
+    [
+      wrapper([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(3)
+        .toArray(),
+      [[1, 2, 3]],
+    ],
+    [
+      wrapper([1, 2, 3]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(0)
+        .toArray(),
+      [[]],
+    ],
+    [
+      wrapper([1, 1, 2]),
+      (input: Iterable<string> | Iterator<string>) => AsyncStream.of(input)
+        .combinations(2)
+        .toArray(),
+      [[1, 1], [1, 2], [1, 2]],
     ],
   ];
 }
