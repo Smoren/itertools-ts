@@ -1,5 +1,6 @@
 import { percentage } from '../../src/random';
 import { InvalidArgumentError } from '../../src/exceptions';
+import { Stream } from '../../src/stream';
 
 describe('Stream Integration - percentage()', () => {
   it('should generate values between 0 and 1 for streams', () => {
@@ -30,3 +31,14 @@ describe('Stream Integration - percentage()', () => {
     });
   });
 });
+
+describe('Stream.percentage()', () => {
+    it('should generate values between 0 and 1', () => {
+      const values = Array.from(Stream.percentage(10));
+      expect(values.length).toBe(10);
+      values.forEach(num => {
+        expect(num).toBeGreaterThanOrEqual(0);
+        expect(num).toBeLessThan(1);
+      });
+    });
+  });

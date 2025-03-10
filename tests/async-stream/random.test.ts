@@ -1,5 +1,7 @@
 import { percentageAsync } from '../../src/random';
 import { InvalidArgumentError } from '../../src/exceptions';
+import { AsyncStream } from '../../src/async-stream';
+
 
 describe('Async Stream Integration - percentageAsync()', () => {
   it('should generate async values between 0 and 1', async () => {
@@ -45,3 +47,17 @@ describe('Async Stream Integration - percentageAsync()', () => {
     });
   });
 });
+
+describe('AsyncStream.percentage()', () => {
+    it('should generate async values between 0 and 1', async () => {
+      const values: number[] = [];
+      for await (const num of AsyncStream.percentage(10)) {
+        values.push(num);
+      }
+      expect(values.length).toBe(10);
+      values.forEach(num => {
+        expect(num).toBeGreaterThanOrEqual(0);
+        expect(num).toBeLessThan(1);
+      });
+    });
+  });
