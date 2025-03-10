@@ -185,6 +185,8 @@ import type {
   Pipe,
 } from "./types";
 
+import { percentage, percentageAsync } from "./random";
+
 export const single = {
   chunkwise,
   chunkwiseOverlap,
@@ -380,3 +382,11 @@ export type {
 };
 
 export { InvalidArgumentError, LengthError };
+
+export const random = {
+  percentage,
+  percentageAsync,
+};
+
+
+
