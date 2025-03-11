@@ -220,6 +220,11 @@ Quick Reference
 | [`combinations`](#combinations)          | Combinations of iterables              | `combinations.combinations(data, length)`     | `combinations.combinationsAsync(data, length)`     |
 | [`permutations`](#permutations)          | Permutations of iterables              | `combinations.permutations(data, length)`     | `combinations.permutationsAsync(data, length)`     |
 
+#### Random
+| Iterator                | Description                                    | Sync Code Snippet                     | Async Code Snippet                        |
+|-------------------------|------------------------------------------------|---------------------------------------|-------------------------------------------|
+| [`integers`](#integers) | Generate iterable with integers in an interval | `random.integers(min, max, [length])` | `random.integersAsync(min, max, [length]` |
+
 #### Summary
 | Summary                                 | Description                                             | Sync Code Snippet                      | Async Code Snippet                          |
 |-----------------------------------------|---------------------------------------------------------|----------------------------------------|---------------------------------------------|
@@ -251,13 +256,15 @@ Quick Reference
 
 ### Stream and AsyncStream Iteration Tools
 #### Stream Sources
-| Source                   | Description                         | Sync Code Snippet                 | Async Code Snippet                     |
-|--------------------------|-------------------------------------|-----------------------------------|----------------------------------------|
-| [`of`](#of)              | Create a stream from an iterable    | `Stream.of(iterable)`             | `AsyncStream.of(iterable)`             |
-| [`ofEmpty`](#of-empty)   | Create an empty stream              | `Stream.ofEmpty()`                | `AsyncStream.ofEmpty()`                |
-| [`ofCount`](#of-count)   | Create an infinite count stream     | `Stream.ofCount([start], [step])` | `AsyncStream.ofCount([start], [step])` |
-| [`ofCycle`](#of-cycle)   | Create an infinite cycle stream     | `Stream.ofCycle(iterable)`        | `AsyncStream.ofCycle(iterable)`        |
-| [`ofRepeat`](#of-repeat) | Create an infinite repeating stream | `Stream.ofRepeat(item)`           | `AsyncStream.ofRepeat(item)`           |
+| Source                       | Description                                                 | Sync Code Snippet                 | Async Code Snippet                     |
+|------------------------------|-------------------------------------------------------------|-----------------------------------|----------------------------------------|
+| [`of`](#of)                  | Create a stream from an iterable                            | `Stream.of(iterable)`             | `AsyncStream.of(iterable)`             |
+| [`ofEmpty`](#of-empty)       | Create an empty stream                                      | `Stream.ofEmpty()`                | `AsyncStream.ofEmpty()`                |
+| [`ofCount`](#of-count)       | Create an infinite count stream                             | `Stream.ofCount([start], [step])` | `AsyncStream.ofCount([start], [step])` |
+| [`ofCycle`](#of-cycle)       | Create an infinite cycle stream                             | `Stream.ofCycle(iterable)`        | `AsyncStream.ofCycle(iterable)`        |
+| [`ofRepeat`](#of-repeat)     | Create an infinite repeating stream                         | `Stream.ofRepeat(item)`           | `AsyncStream.ofRepeat(item)`           |
+| [`ofIntegers`](#of-integers) | Create an infinite stream of random integers in an interval | `Stream.ofIntegers(min, max)`     | `AsyncStream.ofIntegers(min, max)`     |
+
 
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
@@ -1697,6 +1704,32 @@ for (const permutation of combinatorics.permutations(fruits, 2)) {
 // ['cherry', 'banana']
 ```
 
+## Random
+
+### Integers
+Generates an iterator of random integers in an interval (both limits are inclusive). If repetitions is not provided, an
+infinite iterator is created
+
+```
+function* integers(
+  min: number,
+  max: number,
+  repetitions?: number
+): Iterable<number>
+```
+
+```typescript
+import { random } from 'itertools-ts';
+
+const items = []
+for (let item of random.integers(1, 100, 5)) {
+  items.push(item);
+}
+
+console.log(items)
+// [78, 42, 12, 54, 9]
+```
+
 ## Summary
 ### All Match
 Returns true if all elements match the predicate function.
@@ -2282,6 +2315,24 @@ const result = Stream.ofRepeat('bla')
   .toArray();
 // [bla, bla, bla, bla, bla]
 ```
+
+#### Of Integers
+Create an infinite stream with integers in an interval (both boundaries are inclusive)
+
+```
+Stream.ofIntegers(min: number, max: number): Stream<number>
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.ofIntegers(1, 10)
+  .limit(5)
+  .toArray();
+// [1, 5, 3, 3, 2]
+```
+
+
 
 ### Stream Operations
 #### Cartesian Product With
