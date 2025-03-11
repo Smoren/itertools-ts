@@ -78,7 +78,7 @@ import {
   sameCountAsync,
 } from "./summary";
 import { AsyncFlatMapper, Comparable, Comparator, Numeric, Pair, ZipTuple } from "./types";
-import { infinite } from "./index";
+import {infinite, random} from "./index";
 
 /**
  * Provides fluent interface for working with async iterables.
@@ -143,6 +143,17 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    */
   static ofRepeat<T>(item: T): AsyncStream<T> {
     return new AsyncStream(toAsyncIterable(infinite.repeat(item)));
+  }
+
+  /**
+   * Creates iterable instance with fluent interface from infinite random integer
+   * generation between inclusive lower and higher boundaries.
+   *
+   * @param min Lower boundary for the random numbers (Inclusive)
+   * @param max Higher boundary for the random numbers (Inclusive)
+   */
+  static ofIntegers(min: number, max: number): AsyncStream<number> {
+    return new AsyncStream<number>(random.integersAsync(min, max));
   }
 
   /**

@@ -1,6 +1,6 @@
 // @ts-ignore
 import { expectToBeCloseToArray } from "../fixture";
-import { AsyncStream } from '../../src';
+import {AsyncStream, InvalidArgumentError} from '../../src';
 
 describe.each([
   ...dataProviderForOfCount(),
@@ -49,6 +49,35 @@ describe.each([
     });
   }
 );
+
+describe("Stream Infinite Of Random Integers", () => {
+
+  it("Should provide proper integers", async () => {
+    const stream = AsyncStream.ofIntegers(1, 100);
+    const result = await stream.limit(10).toArray();
+
+    expect(result.length).toEqual(10);
+
+    for(let i = 0; i < result.length; i++) {
+      expect(result[i]).toBeGreaterThanOrEqual(1);
+      expect(result[i]).toBeLessThanOrEqual(100);
+    }
+  })
+
+  it("Should throw if min is bigger than max", async () => {
+    const stream = AsyncStream.ofIntegers(101, 100);
+    await expect(async () => await stream.limit(5).toArray())
+      .rejects.toBeInstanceOf(InvalidArgumentError);
+  })
+
+  it("Should be equivalent to repeat if min and max are equal", async () => {
+    const integerStream = AsyncStream.ofIntegers(100, 100);
+    const repeatStream = AsyncStream.ofRepeat(100);
+    expect(await repeatStream.limit(5).toArray())
+      .toEqual(await integerStream.limit(5).toArray());
+  })
+
+})
 
 function dataProviderForOfCount(): Array<[Array<number>, number, Array<number>]> {
   return [
