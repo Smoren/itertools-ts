@@ -50,6 +50,31 @@ describe.each([
   }
 );
 
+describe("Stream Infinite of Random Integers Test", () => {
+  it("Should provide proper integers", () => {
+    const stream = Stream.ofIntegers(1, 100);
+    const result = stream.limit(10).toArray();
+
+    expect(result.length).toEqual(10);
+
+    for(let i = 0; i < result.length; i++) {
+      expect(result[i]).toBeGreaterThanOrEqual(1);
+      expect(result[i]).toBeLessThanOrEqual(100);
+    }
+  })
+
+  it("Should throw if min is bigger than max", () => {
+    const stream = Stream.ofIntegers(101, 100);
+    expect(() => stream.limit(5).toArray()).toThrow("Max 100 cannot be less than min 101");
+  })
+
+  it("Should be equivalent to repeat if min and max are equal", () => {
+    const integerStream = Stream.ofIntegers(100, 100);
+    const repeatStream = Stream.ofRepeat(100);
+    expect(repeatStream.limit(5).toArray()).toEqual(integerStream.limit(5).toArray());
+  })
+})
+
 function dataProviderForOfCount(): Array<[Array<number>, number, Array<number>]> {
   return [
     [
