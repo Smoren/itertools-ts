@@ -66,7 +66,7 @@ import {
   sameCount,
 } from "./summary";
 import type { Comparable, Comparator, FlatMapper, Numeric, ZipTuple } from "./types";
-import { infinite } from "./index";
+import {infinite, random} from "./index";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -125,6 +125,19 @@ export class Stream<T> implements Iterable<T> {
    */
   static ofRepeat<T>(item: T): Stream<T> {
     return new Stream(infinite.repeat(item));
+  }
+
+  /**
+   * Creates iterable instance with fluent interface from random numbers between
+   * min and max (both inclusive)
+   *
+   * @param min Lower boundary for the random numbers (inclusive)
+   * @param max Higher boundary for the random numbers (inclusive)
+   *
+   * @see random.integers
+   */
+  static ofIntegers(min: number, max: number): Stream<number> {
+    return new Stream<number>(random.integers(min, max));
   }
 
   /**

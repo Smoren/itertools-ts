@@ -168,6 +168,8 @@ import {
 
 import { createPipe } from "./pipe";
 
+import { integers, integersAsync } from "./random";
+
 import { InvalidArgumentError, LengthError } from "./exceptions";
 
 import type {
@@ -358,6 +360,11 @@ export const transform = {
   toArrayAsync,
   toMapAsync,
   toSetAsync,
+};
+
+export const random = {
+  integers,
+  integersAsync
 };
 
 export { Stream, AsyncStream };
