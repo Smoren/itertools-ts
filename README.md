@@ -14,7 +14,7 @@ Inspired by Python — designed for TypeScript.
 Features
 --------
 
-IterTools makes you an iteration superstar by providing two types of tools:
+IterTools makes you an iteration superstar by providing 3 types of tools:
 
 * Loop iteration tools
 * Stream iteration tools
