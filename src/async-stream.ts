@@ -79,6 +79,7 @@ import {
 } from "./summary";
 import { AsyncFlatMapper, Comparable, Comparator, Numeric, Pair, ZipTuple } from "./types";
 import { infinite } from "./index";
+import { percentageAsync } from "./random";
 
 /**
  * Provides fluent interface for working with async iterables.
@@ -1129,4 +1130,17 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   protected constructor(iterable: AsyncIterable<T>) {
     this.data = iterable;
   }
+  /**
+     * Generate random percentages between 0 (inclusive) and 1 (exclusive) asynchronously.
+     * 
+     * If optional param `repetitions` is not given, iterates infinitely.
+     * 
+     * @param repetitions - Number of values to generate
+     * 
+     * @see random.percentageAsync
+     */
+  static percentage(repetitions?: number): AsyncStream<number> {
+    return new AsyncStream(percentageAsync(repetitions));
+  }
+
 }
