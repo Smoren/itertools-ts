@@ -177,6 +177,7 @@ Quick Reference
 | [`count`](#Count)     | Count sequentially forever | `infinite.count([start], [step])` |
 | [`cycle`](#Cycle)     | Cycle through a collection | `infinite.cycle(iterable)`        |
 | [`repeat`](#Repeat-1) | Repeat an item forever     | `infinite.repeat(item)`           |
+| [`booleans`](#Booleans) | Generate random booleans   | `infinite.booleans([repetitions])` |
 
 #### Math Iteration
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
@@ -996,6 +997,35 @@ for (const item of infinite.repeat('bla')) {
   console.log(item);
 }
 // bla, bla, bla, bla, bla, ...
+```
+
+### Booleans
+Generate random boolean values.
+
+```
+function* booleans(repetitions?: number): Iterable<boolean>
+```
+
+If `repetitions` is provided, generates exactly that many booleans. If not provided, generates booleans infinitely.
+
+```typescript
+import { infinite } from 'itertools-ts';
+
+for (const bool of infinite.booleans(5)) {
+  console.log(bool);
+}
+// true, false, false, true, false (random values)
+
+for (const bool of infinite.booleans()) {
+  console.log(bool);
+}
+// false, false, true, false, true, ... (infinite random values)
+
+// Async version
+for await (const bool of infinite.booleansAsync(5)) {
+  console.log(bool);
+}
+// true, false, true, false, true (random values)
 ```
 
 ## Math Iteration
