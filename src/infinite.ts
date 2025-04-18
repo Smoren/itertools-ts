@@ -59,3 +59,21 @@ export function* repeat<T>(item: T): Iterable<T> {
     yield item;
   }
 }
+
+export function* booleans(repetitions?: number): Iterable<boolean> {
+  let i = 0;  
+
+  while (repetitions === undefined || i < repetitions) {
+    yield Math.random() > 0.5;
+    i++;
+  }
+}
+
+export async function* booleansAsync(repetitions?: number): AsyncIterable<boolean> {
+  let i = 0;
+
+  while (repetitions === undefined || i < repetitions) {
+    yield Math.random() > 0.5;
+    i++;
+  }
+}

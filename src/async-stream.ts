@@ -146,6 +146,18 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Creates iterable instance with fluent interface from infinite random boolean values.
+   *
+   * @param repetitions (optional) If provided, generates exactly this many booleans.
+   *                   If not provided, generates booleans infinitely.
+   *
+   * @see infinite.booleansAsync
+   */
+  static booleans(repetitions?: number): AsyncStream<boolean> {
+    return new AsyncStream(infinite.booleansAsync(repetitions));
+  }
+
+  /**
    * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.

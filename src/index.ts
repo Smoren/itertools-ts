@@ -39,7 +39,7 @@ import {
   valuesAsync,
 } from "./single";
 
-import { count, cycle, cycleAsync, repeat as infiniteRepeat } from "./infinite";
+import { count, cycle, cycleAsync, repeat as infiniteRepeat, booleans, booleansAsync } from "./infinite";
 
 import {
   runningAverage,
@@ -231,6 +231,8 @@ export const infinite = {
   cycle,
   cycleAsync,
   repeat: infiniteRepeat,
+  booleans,
+  booleansAsync,
 };
 
 export const math = {
