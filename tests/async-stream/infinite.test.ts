@@ -50,6 +50,23 @@ describe.each([
   }
 );
 
+describe.each([
+  ...dataProviderForBooleans(),
+])(
+  "AsyncStream Infinite Booleans Test",
+  (repetitions: number | undefined, limit: number) => {
+    it("", async () => {
+      // When
+      const stream = AsyncStream.booleans(repetitions);
+      const result = await stream.limit(limit).toArray();
+
+      // Then
+      expect(result).toHaveLength(limit);
+      expect(result.every(x => typeof x === 'boolean')).toBe(true);
+    });
+  }
+);
+
 function dataProviderForOfCount(): Array<[Array<number>, number, Array<number>]> {
   return [
     [
@@ -191,6 +208,26 @@ function dataProviderForOfRepeat(): Array<[unknown, number, Array<unknown>]> {
       {a: [[1]]},
       3,
       [{a: [[1]]}, {a: [[1]]}, {a: [[1]]}],
+    ],
+  ];
+}
+
+function dataProviderForBooleans(): Array<[number | undefined, number, Array<boolean>]> {
+  return [
+    [
+      undefined,
+      5,
+      [true, false, true, false, true],
+    ],
+    [
+      10,
+      10,
+      [true, false, true, false, true, false, true, false, true, false],
+    ],
+    [
+      3,
+      3,
+      [true, false, true],
     ],
   ];
 }
