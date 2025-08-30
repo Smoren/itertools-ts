@@ -6,6 +6,7 @@ import {
   RelatedIterable,
   TeeIterator,
 } from "./tools";
+import { error } from "console";
 
 /**
  * Converts collection or record to Iterable instance.
@@ -289,3 +290,63 @@ export function teeAsync<T>(
     count
   ).getRelatedIterables();
 }
+
+/**
+ * Divides the elements of the iterable evenly into
+ * n smaller iterables while meantaining order
+ * EX: ([1, 2, 3, 4], 2) => [1, 2], [3, 4]
+ * @param data
+ * @param n
+ */
+export function* divide<T>(
+  data: Iterable<T> | Iterator<T>, 
+  n: number
+): Iterable<Array<T>> {
+  if (n<=0){
+    throw new Error("Number of chunks must be greater than 0");
+  }
+  //Convert iterator to iterable 
+  const iterable = toIterable(data);
+  //Convert input to array to know its length
+  const arr = Array.isArray(iterable) ? iterable : Array.from(iterable);
+  const len = arr.length;
+  //Calculate size of each chunk
+  const chunkSize = Math.ceil(len/n);
+  for (let i=0;i<len;i+=chunkSize){
+    //Slice each chunk and yield it
+    yield arr.slice(i,i+chunkSize);
+  }
+}
+
+
+/**
+ * Divides the elements of the iterable evenly into
+ * n smaller iterables while meantaining order
+ * EX: ([1, 2, 3, 4], 2) => [1, 2], [3, 4]
+ * @param data
+ * @param n
+ */
+export async function* divideAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> 
+  | Iterable<T> | Iterator<T>, 
+  n: number
+): AsyncIterable<Array<T>> {
+  if (n<=0){
+    throw new Error("Number of chunks must be greater than 0");
+  }
+  //Convert iterator to iterable 
+  const asynciterable = toAsyncIterable(data);
+  //Convert input to buffer to know its length
+  const buffer : T[] = [];
+  for await(const item of asynciterable){
+    buffer.push(item);
+  }
+  const len = buffer.length;
+  //Calculate size of each chunk
+  const chunkSize = Math.ceil(len/n);
+  for (let i=0;i<len;i+=chunkSize){
+    //Slice each chunk and yield it
+    yield buffer.slice(i,i+chunkSize);
+  }
+}
+
