@@ -407,7 +407,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.mapAsync
    */
   map<U>(mapper: (datum: T) => Promise<U> | U): AsyncStream<U> {
-    this.data = mapAsync(this.data, mapper) as AsyncIterable<T>;
+    this.data = mapAsync(this.data, mapper) as unknown as AsyncIterable<T>;
     return this as unknown as AsyncStream<U>;
   }
 
@@ -420,7 +420,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.flatMapAsync
    */
   flatMap<U>(mapper: AsyncFlatMapper<T, U>): AsyncStream<U> {
-    this.data = flatMapAsync(this.data, mapper) as AsyncIterable<T>;
+    this.data = flatMapAsync(this.data, mapper) as unknown as AsyncIterable<T>;
     return this as unknown as AsyncStream<U>;
   }
 
