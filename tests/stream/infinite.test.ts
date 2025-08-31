@@ -57,7 +57,7 @@ describe.each([
   (repetitions: number | undefined, limit: number) => {
     it("", () => {
       // When
-      const stream = Stream.booleans(repetitions);
+      const stream = Stream.ofBooleans(repetitions);
       const result = stream.limit(limit).toArray();
 
       // Then
@@ -212,22 +212,23 @@ function dataProviderForOfRepeat(): Array<[unknown, number, Array<unknown>]> {
   ];
 }
 
-function dataProviderForBooleans(): Array<[number | undefined, number, Array<boolean>]> {
+function dataProviderForBooleans(): Array<[number | undefined, number]> {
   return [
+    [
+      0,
+      0,
+    ],
     [
       undefined,
       5,
-      [true, false, true, false, true],
     ],
     [
       10,
       10,
-      [true, false, true, false, true, false, true, false, true, false],
     ],
     [
       3,
       3,
-      [true, false, true],
     ],
   ];
 }

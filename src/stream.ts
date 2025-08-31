@@ -135,7 +135,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see infinite.booleans
    */
-  static booleans(repetitions?: number): Stream<boolean> {
+  static ofBooleans(repetitions?: number): Stream<boolean> {
     return new Stream(infinite.booleans(repetitions));
   }
 

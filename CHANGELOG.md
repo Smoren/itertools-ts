@@ -1,5 +1,16 @@
 # IterTools Typescript Change Log
 
+## v2.3.0 - TBD
+
+### New features
+* infinite
+  * `booleans()`
+  * `booleansAsync()`
+* Stream
+  * `ofBooleans()`
+* AsyncStream
+  * `ofBooleans()`
+
 ## v2.2.0 - 2025-01-31
 
 ### New features

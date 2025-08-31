@@ -153,7 +153,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @see infinite.booleansAsync
    */
-  static booleans(repetitions?: number): AsyncStream<boolean> {
+  static ofBooleans(repetitions?: number): AsyncStream<boolean> {
     return new AsyncStream(infinite.booleansAsync(repetitions));
   }
 
