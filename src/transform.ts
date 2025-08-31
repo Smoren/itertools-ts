@@ -6,7 +6,6 @@ import {
   RelatedIterable,
   TeeIterator,
 } from "./tools";
-import { error } from "console";
 
 /**
  * Converts collection or record to Iterable instance.

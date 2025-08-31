@@ -80,7 +80,6 @@ import {
 } from "./summary";
 import { AsyncFlatMapper, Comparable, Comparator, Numeric, Pair, ZipTuple } from "./types";
 import { infinite } from "./index";
-import { Stream } from "nodemailer/lib/xoauth2";
 
 /**
  * Provides fluent interface for working with async iterables.
