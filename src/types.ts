@@ -54,7 +54,7 @@ export type Last<T extends any[]> = T extends [...any[], infer L] ? L : never;
  * const identityMapper = <T>(datum: Iterable<T> | Iterator<T> | T): T => datum;
  */
 export type FlatMapper<TInput, TOutput> = (
-  datum: Iterable<TInput> | Iterator<TInput> | TInput,
+  datum: TInput,
   mapper: FlatMapper<TInput, TOutput>
 ) => TOutput | Iterable<TInput> | Iterator<TInput>;
 
@@ -65,12 +65,7 @@ export type FlatMapper<TInput, TOutput> = (
  * const identityMapper = <T>(datum: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T> | T): Promise<T> => datum;
  */
 export type AsyncFlatMapper<TInput, TOutput> = (
-  datum:
-    | AsyncIterable<TInput>
-    | AsyncIterator<TInput>
-    | Iterable<TInput>
-    | Iterator<TInput>
-    | TInput,
+  datum: TInput,
   mapper: AsyncFlatMapper<TInput, TOutput>
 ) => TOutput | Promise<TOutput> | AsyncIterable<TInput> | AsyncIterator<TInput>;
 
