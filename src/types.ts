@@ -56,7 +56,7 @@ export type Last<T extends any[]> = T extends [...any[], infer L] ? L : never;
 export type FlatMapper<TInput, TOutput> = (
   datum: TInput,
   mapper: FlatMapper<TInput, TOutput>
-) => TOutput | Iterable<TInput> | Iterator<TInput>;
+) => TOutput | Iterable<TOutput> | Iterator<TOutput>;
 
 /**
  * Type of functions that map values to either a value or an iterable asynchronously.
@@ -67,7 +67,7 @@ export type FlatMapper<TInput, TOutput> = (
 export type AsyncFlatMapper<TInput, TOutput> = (
   datum: TInput,
   mapper: AsyncFlatMapper<TInput, TOutput>
-) => TOutput | Promise<TOutput> | AsyncIterable<TInput> | AsyncIterator<TInput>;
+) => TOutput | Promise<TOutput> | AsyncIterable<TOutput> | AsyncIterator<TOutput>;
 
 /**
  * Type of tuples of values that can be zipped with a filler value.
