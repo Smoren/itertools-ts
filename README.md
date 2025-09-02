@@ -2076,7 +2076,7 @@ function toAsyncIterable<T>(
     | Iterator<T>
     | AsyncIterable<T>
     | AsyncIterator<T>
-    | Record<RecordKey, unknown>
+    | Record<PropertyKey, unknown>
 ): AsyncIterable<T>
 ```
 
