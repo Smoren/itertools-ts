@@ -301,8 +301,13 @@ export function* divide<T>(
   data: Iterable<T> | Iterator<T>, 
   n: number
 ): Iterable<Array<T>> {
-  if (n<=0){
-    throw new Error("Number of chunks must be greater than 0");
+  if (typeof n !== "number" || !Number.isFinite(n) || n <= 0 || !Number.isInteger(n)) {
+    throw new InvalidArgumentError("divide: n must be a positive finite integer");
+  }
+
+  // Ensure input is iterable
+  if (data == null || (typeof (data as any)[Symbol.iterator] !== "function" && typeof (data as any).next !== "function")) {
+    throw new InvalidArgumentError('divide: input is not iterable or iterator');
   }
   //Convert iterator to iterable 
   const iterable = toIterable(data);
@@ -330,9 +335,22 @@ export async function* divideAsync<T>(
   | Iterable<T> | Iterator<T>, 
   n: number
 ): AsyncIterable<Array<T>> {
-  if (n<=0){
-    throw new Error("Number of chunks must be greater than 0");
+  if (typeof n !== "number" || !Number.isFinite(n) || n <= 0 || !Number.isInteger(n)) {
+    throw new InvalidArgumentError("divide: n must be a positive finite integer");
   }
+
+  // Ensure input is iterable
+  if (
+    data == null ||
+    (
+      typeof (data as any)[Symbol.asyncIterator] !== "function" &&
+      typeof (data as any)[Symbol.iterator] !== "function" &&
+      typeof (data as any).next !== "function"
+    )
+  ) {
+    throw new InvalidArgumentError('divide: input is not iterable, async iterable, or iterator');
+  }
+
   //Convert iterator to iterable 
   const asynciterable = toAsyncIterable(data);
   //Convert input to buffer to know its length
@@ -341,6 +359,8 @@ export async function* divideAsync<T>(
     buffer.push(item);
   }
   const len = buffer.length;
+  if (len === 0) return; // empty input
+  
   //Calculate size of each chunk
   const chunkSize = Math.ceil(len/n);
   for (let i=0;i<len;i+=chunkSize){
