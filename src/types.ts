@@ -1,9 +1,4 @@
 /**
- * Type of keys used in records.
- */
-export type RecordKey = string | number | symbol;
-
-/**
  * Type of values that can be compared.
  */
 export type Comparable = string | number | boolean | Array<unknown>;
