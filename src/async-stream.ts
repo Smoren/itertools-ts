@@ -146,6 +146,18 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Creates iterable instance with fluent interface from infinite random boolean values.
+   *
+   * @param repetitions (optional) If provided, generates exactly this many booleans.
+   *                   If not provided, generates booleans infinitely.
+   *
+   * @see infinite.booleansAsync
+   */
+  static ofBooleans(repetitions?: number): AsyncStream<boolean> {
+    return new AsyncStream(infinite.booleansAsync(repetitions));
+  }
+
+  /**
    * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.
@@ -395,7 +407,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.mapAsync
    */
   map<U>(mapper: (datum: T) => Promise<U> | U): AsyncStream<U> {
-    this.data = mapAsync(this.data, mapper) as AsyncIterable<T>;
+    this.data = mapAsync(this.data, mapper) as unknown as AsyncIterable<T>;
     return this as unknown as AsyncStream<U>;
   }
 
@@ -408,7 +420,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.flatMapAsync
    */
   flatMap<U>(mapper: AsyncFlatMapper<T, U>): AsyncStream<U> {
-    this.data = flatMapAsync(this.data, mapper) as AsyncIterable<T>;
+    this.data = flatMapAsync(this.data, mapper) as unknown as AsyncIterable<T>;
     return this as unknown as AsyncStream<U>;
   }
 

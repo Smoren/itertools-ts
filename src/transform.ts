@@ -1,6 +1,5 @@
 import { InvalidArgumentError } from "./exceptions";
 import { isAsyncIterable, isIterable, isIterator } from "./summary";
-import { RecordKey } from "./types";
 import {
   AsyncRelatedIterable,
   AsyncTeeIterator,
@@ -16,7 +15,7 @@ import {
  * @param collection
  */
 export function toIterable<T>(
-  collection: Iterable<T> | Iterator<T> | Record<RecordKey, unknown>
+  collection: Iterable<T> | Iterator<T> | Record<PropertyKey, unknown>
 ): Iterable<T> {
   if (isIterable(collection)) {
     return collection as Iterable<T>;
@@ -61,7 +60,7 @@ export function toAsyncIterable<T>(
     | Iterator<T>
     | AsyncIterable<T>
     | AsyncIterator<T>
-    | Record<RecordKey, unknown>
+    | Record<PropertyKey, unknown>
 ): AsyncIterable<T> {
   if (isAsyncIterable(collection)) {
     return collection as AsyncIterable<T>;
@@ -82,7 +81,7 @@ export function toAsyncIterable<T>(
   }
 
   if (typeof collection === "object" && collection !== null) {
-    collection = toIterable(collection as Record<RecordKey, unknown>);
+    collection = toIterable(collection as Record<PropertyKey, unknown>);
   }
 
   if (isIterable(collection)) {
@@ -195,7 +194,7 @@ export function toMap<TKey, TValue>(
   pairs:
     | Iterable<[TKey, TValue]>
     | Iterator<[TKey, TValue]>
-    | Record<RecordKey, unknown>
+    | Record<PropertyKey, unknown>
 ): Map<TKey, TValue> {
   const result: Map<TKey, TValue> = new Map();
   for (const [key, value] of toIterable(pairs)) {
@@ -215,7 +214,7 @@ export async function toMapAsync<TKey, TValue>(
     | AsyncIterator<[TKey, TValue]>
     | Iterable<[TKey, TValue]>
     | Iterator<[TKey, TValue]>
-    | Record<RecordKey, unknown>
+    | Record<PropertyKey, unknown>
 ): Promise<Map<TKey, TValue>> {
   const result: Map<TKey, TValue> = new Map();
   for await (const [key, value] of toAsyncIterable(pairs)) {

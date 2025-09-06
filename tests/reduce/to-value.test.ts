@@ -170,7 +170,7 @@ describe.each([
       };
 
       // When
-      const result = await reduce.toValueAsync(input, concat, initialValue);
+      const result = await reduce.toValueAsync(input as AsyncIterable<unknown>, concat, initialValue);
 
       // Then
       expect(result).toEqual(expected);
@@ -196,7 +196,7 @@ describe.each([
       const concat = (carry: unknown, datum: unknown): unknown =>`${carry as string}${datum as string}`;
 
       // When
-      const result = await reduce.toValueAsync(input, concat, initialValue);
+      const result = await reduce.toValueAsync(input as AsyncIterable<unknown>, concat, initialValue);
 
       // Then
       expect(result).toEqual(expected);
@@ -1078,7 +1078,7 @@ function dataProviderForConcatReducerAsyncGenerators(): Array<[AsyncGenerator<st
   ] as Array<[AsyncGenerator<string>, string, string]>;
 }
 
-function dataProviderForConcatReducerAsyncIterables(): Array<[AsyncIterable<number>, string, string]> {
+function dataProviderForConcatReducerAsyncIterables(): Array<[AsyncIterable<number>, any, any]> {
   return [
     [
       createAsyncIterableFixture([]),
@@ -1130,7 +1130,7 @@ function dataProviderForConcatReducerAsyncIterables(): Array<[AsyncIterable<numb
       null,
       'nullnull23',
     ],
-  ] as Array<[AsyncIterable<number>, string, string]>;
+  ] as Array<[AsyncIterable<number>, any, any]>;
 }
 
 function dataProviderForConcatReducerAsyncIterators(): Array<[AsyncIterator<number>, string, string]> {
