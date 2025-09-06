@@ -111,7 +111,7 @@
 
 ## v1.28.1 - 2024-12-23
 
-    @@ -93,7 +116,8 @@ Documentation fixed.
+Documentation fixed.
 
 ## v1.28.0 - 2024-12-22
 
@@ -121,7 +121,7 @@
 
 ## v1.27.1 - 2024-03-03
 
-    @@ -102,426 +126,461 @@ Package Size Optimization.
+Package Size Optimization.
 
 ## v1.27.0 - 2023-11-13
 
