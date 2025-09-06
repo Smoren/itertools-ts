@@ -1,6 +1,6 @@
 # IterTools Typescript Change Log
 
-## v2.3.0 - TBD
+## v2.3.0 - 2025-09-06
 
 ### New features
 * infinite
@@ -10,6 +10,10 @@
   * `ofBooleans()`
 * AsyncStream
   * `ofBooleans()`
+
+### Typing fixes
+* Using built-in `PropertyKey` instead of `RecordKey`
+* `FlatMapper` types fixed (for `single.flatMap()`)
 
 ## v2.2.0 - 2025-01-31
 
