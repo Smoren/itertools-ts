@@ -1,5 +1,10 @@
 # IterTools Typescript Change Log
 
+## v2.3.1 - 2025-09-06
+
+### Improvements
+* Package was publicated on DENO
+
 ## v2.3.0 - 2025-09-06
 
 ### New features
