@@ -83,6 +83,14 @@
     {
       "name": "Anastasiya Golubeva",
       "url": "https://github.com/anastansa"
+    },
+    {
+      "name": "James Tindal",
+      "url": "https://github.com/james-tindal"
+    },
+    {
+      "name": "Assaf Megirov",
+      "url": "https://github.com/Assaf-Megirov"
     }
   ],
   "jsnext:main": "./es/index.js",
