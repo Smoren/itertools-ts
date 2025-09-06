@@ -12,7 +12,6 @@ export { AsyncStream } from "./async-stream";
 export { createPipe } from "./pipe";
 export { InvalidArgumentError, LengthError } from "./exceptions";
 export type {
-  RecordKey,
   Comparable,
   NumericString,
   Numeric,
