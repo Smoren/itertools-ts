@@ -382,6 +382,14 @@ export async function* flattenAsync(
  * @param data
  * @param predicate
  */
+export function filter<T, S extends T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (datum: T) => datum is S
+): Iterable<S>
+export function filter<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (datum: T) => boolean
+): Iterable<T>
 export function* filter<T>(
   data: Iterable<T> | Iterator<T>,
   predicate: (datum: T) => boolean
@@ -401,6 +409,14 @@ export function* filter<T>(
  * @param data
  * @param predicate
  */
+export function filterAsync<T, S extends T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  predicate: (datum: T) => datum is S
+): AsyncIterable<S>
+export function filterAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  predicate: (datum: T) => boolean | Promise<boolean>
+): AsyncIterable<T>
 export async function* filterAsync<T>(
   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
   predicate: (datum: T) => boolean | Promise<boolean>

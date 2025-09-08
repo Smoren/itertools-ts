@@ -1,9 +1,4 @@
 /**
- * Type of keys used in records.
- */
-export type RecordKey = string | number | symbol;
-
-/**
  * Type of values that can be compared.
  */
 export type Comparable = string | number | boolean | Array<unknown>;
@@ -54,9 +49,9 @@ export type Last<T extends any[]> = T extends [...any[], infer L] ? L : never;
  * const identityMapper = <T>(datum: Iterable<T> | Iterator<T> | T): T => datum;
  */
 export type FlatMapper<TInput, TOutput> = (
-  datum: Iterable<TInput> | Iterator<TInput> | TInput,
+  datum: TInput,
   mapper: FlatMapper<TInput, TOutput>
-) => TOutput | Iterable<TInput> | Iterator<TInput>;
+) => TOutput | Iterable<TOutput> | Iterator<TOutput>;
 
 /**
  * Type of functions that map values to either a value or an iterable asynchronously.
@@ -65,14 +60,9 @@ export type FlatMapper<TInput, TOutput> = (
  * const identityMapper = <T>(datum: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T> | T): Promise<T> => datum;
  */
 export type AsyncFlatMapper<TInput, TOutput> = (
-  datum:
-    | AsyncIterable<TInput>
-    | AsyncIterator<TInput>
-    | Iterable<TInput>
-    | Iterator<TInput>
-    | TInput,
+  datum: TInput,
   mapper: AsyncFlatMapper<TInput, TOutput>
-) => TOutput | Promise<TOutput> | AsyncIterable<TInput> | AsyncIterator<TInput>;
+) => TOutput | Promise<TOutput> | AsyncIterable<TOutput> | AsyncIterator<TOutput>;
 
 /**
  * Type of tuples of values that can be zipped with a filler value.

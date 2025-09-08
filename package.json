@@ -1,6 +1,6 @@
 {
   "name": "itertools-ts",
-  "version": "2.2.0",
+  "version": "2.3.1",
   "description": "Extended itertools port for TypeScript and JavaScript. Provides a huge set of functions for working with iterable collections (including async ones)",
   "license": "MIT",
   "repository": {
@@ -71,18 +71,30 @@
   ],
   "devDependencies": {
     "@borderless/ts-scripts": "^0.13.6",
-    "@types/jest": "^29.2.4",
-    "jest": "^29.3.1",
+    "@types/jest": "^27.5.1",
+    "jest": "^27.5.1",
     "rimraf": "^4.4.0",
     "ts-expect": "^1.1.0",
-    "ts-jest": "^29.0.3",
-    "typescript": "^5.7.3"
+    "ts-jest": "^27.1.5",
+    "typescript": "^4.9.5"
   },
   "types": "./lib/index.d.ts",
   "contributors": [
     {
       "name": "Anastasiya Golubeva",
       "url": "https://github.com/anastansa"
+    },
+    {
+      "name": "Anton Morev",
+      "url": "https://github.com/amorev"
+    },
+    {
+      "name": "James Tindal",
+      "url": "https://github.com/james-tindal"
+    },
+    {
+      "name": "Assaf Megirov",
+      "url": "https://github.com/Assaf-Megirov"
     }
   ],
   "jsnext:main": "./es/index.js",

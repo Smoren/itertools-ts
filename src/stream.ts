@@ -129,6 +129,18 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Creates iterable instance with fluent interface from infinite random boolean values.
+   *
+   * @param repetitions (optional) If provided, generates exactly this many booleans.
+   *                   If not provided, generates booleans infinitely.
+   *
+   * @see infinite.booleans
+   */
+  static ofBooleans(repetitions?: number): Stream<boolean> {
+    return new Stream(infinite.booleans(repetitions));
+  }
+
+  /**
    * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.
@@ -343,7 +355,7 @@ export class Stream<T> implements Iterable<T> {
    * @see single.map
    */
   map<U>(mapper: (datum: T) => U): Stream<U> {
-    this.data = map(this.data, mapper) as Iterable<T>;
+    this.data = map(this.data, mapper) as unknown as Iterable<T>;
     return this as unknown as Stream<U>;
   }
 
@@ -356,7 +368,7 @@ export class Stream<T> implements Iterable<T> {
    * @see single.flatMap
    */
   flatMap<U>(mapper: FlatMapper<T, U>): Stream<U> {
-    this.data = flatMap(this.data, mapper) as Iterable<T>;
+    this.data = flatMap(this.data, mapper) as unknown as Iterable<T>;
     return this as unknown as Stream<U>;
   }
 
