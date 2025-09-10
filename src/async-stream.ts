@@ -1151,7 +1151,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
      * 
      * @see random.percentageAsync
      */
-  static percentage(repetitions?: number): AsyncStream<number> {
+  static ofPercentage(repetitions?: number): AsyncStream<number> {
     return new AsyncStream(percentageAsync(repetitions));
   }
 

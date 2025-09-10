@@ -77,11 +77,11 @@ describe.each([
 describe.each([
   ...dataProviderForStreamWrapperAsync(),
 ])(
-  'AsyncStream.percentage()',
+  'AsyncStream.ofPercentage()',
   (count) => {
     it('', async () => {
       const values: number[] = [];
-      for await (const num of AsyncStream.percentage(count)) {
+      for await (const num of AsyncStream.ofPercentage(count)) {
         values.push(num);
       }
       expect(values.length).toBe(count);

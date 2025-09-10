@@ -1045,7 +1045,7 @@ export class Stream<T> implements Iterable<T> {
    * 
    * @see random.percentage
    */
-  static percentage(repetitions?: number): Stream<number> {
+  static ofPercentage(repetitions?: number): Stream<number> {
     return new Stream(percentage(repetitions));
   }
 }

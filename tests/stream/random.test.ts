@@ -61,10 +61,10 @@ describe.each([
 describe.each([
   ...dataProviderForStreamWrapper(),
 ])(
-  'Stream.percentage()',
+  'Stream.ofPercentage()',
   (count) => {
     it('', () => {
-      const values = Array.from(Stream.percentage(count));
+      const values = Array.from(Stream.ofPercentage(count));
       expect(values.length).toBe(count);
       values.forEach((num) => {
         expect(num).toBeGreaterThanOrEqual(0);
