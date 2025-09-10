@@ -67,6 +67,7 @@ import {
 } from "./summary";
 import type { Comparable, Comparator, FlatMapper, Numeric, ZipTuple } from "./types";
 import { infinite } from "./index";
+import { percentage } from "./random";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -1033,5 +1034,18 @@ export class Stream<T> implements Iterable<T> {
    */
   protected constructor(iterable: Iterable<T>) {
     this.data = iterable;
+  }
+
+  /**
+   * Generate random percentages between 0 (inclusive) and 1 (exclusive).
+   * 
+   * If optional param `repetitions` is not given, iterates infinitely.
+   * 
+   * @param repetitions - Number of values to generate
+   * 
+   * @see random.percentage
+   */
+  static ofPercentage(repetitions?: number): Stream<number> {
+    return new Stream(percentage(repetitions));
   }
 }
