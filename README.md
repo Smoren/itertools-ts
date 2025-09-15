@@ -180,6 +180,11 @@ Quick Reference
 | [`cycle`](#Cycle)       | Cycle through a collection | `infinite.cycle(iterable)`         |
 | [`repeat`](#Repeat-1)   | Repeat an item forever     | `infinite.repeat(item)`            |
 
+#### Random Iteration
+| Iterator                    | Description                | Code Snippet                       |
+|-----------------------------|----------------------------|------------------------------------|
+| [`percentage`](#Percentage) | Generate random percentage | `random.percentage([repetitions])` |
+
 #### Math Iteration
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
 |--------------------------------------------|---------------------------------|---------------------------------------------------|--------------------------------------------------------|
@@ -1028,6 +1033,37 @@ for (const item of infinite.repeat('bla')) {
   console.log(item);
 }
 // bla, bla, bla, bla, bla, ...
+```
+
+## Random Iteration
+
+### Percentage
+Generate random percentage values.
+
+```
+function* percentage(repetitions?: number): Iterable<number>
+```
+
+If `repetitions` is provided, generates exactly that many numbers. If not provided, generates numbers infinitely.
+
+```typescript
+import { random } from 'itertools-ts';
+
+for (const num of infinite.percentage(5)) {
+  console.log(num);
+}
+// 0.7745835631877125, 0.6368758907434469, 0.6465445462428422, 0.49809604559145615, 0.7009703411939564 (random values)
+
+for (const num of infinite.percentage()) {
+  console.log(num);
+}
+// 0.7745835631877125, 0.6368758907434469, 0.6465445462428422... (random values)
+
+// Async version
+for await (const num of infinite.percentageAsync(5)) {
+  console.log(num);
+}
+// 0.7745835631877125, 0.6368758907434469, 0.6465445462428422... (random values)
 ```
 
 ## Math Iteration

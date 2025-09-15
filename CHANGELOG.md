@@ -1,5 +1,16 @@
 # IterTools Typescript Change Log
 
+## v2.3.2 - TBD
+
+### New features
+* random
+  * `percentage()`
+  * `percentageAsync()`
+* Stream
+  * `ofPercentage()`
+* AsyncStream
+  * `ofPercentage()`
+
 ## v2.3.1 - 2025-09-06
 
 ### Improvements
