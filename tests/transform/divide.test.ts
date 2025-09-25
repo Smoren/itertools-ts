@@ -22,18 +22,18 @@ describe.each(dataProvider())(
 function dataProvider():Array<[Iterable<any> | Iterator<any>,number,Array<any[]>]>{
     return [
         // Strings
-        ['', 2, []],
+        ['', 2, [[], []]],
         ['1234', 2, [['1', '2'], ['3', '4']]],
         ['12345', 2, [['1', '2', '3'], ['4', '5']]],
 
         // Arrays
-        [[], 2, []],
+        [[], 2, [[], []]],
         [[1, 2, 3, 4], 2, [[1, 2], [3, 4]]],
         [[1, 2, 3, 4, 5], 2, [[1, 2, 3], [4, 5]]],
 
         // Generators
-        [createGeneratorFixture([]), 2, []],
-        [createGeneratorFixture([1]), 2, [[1]]],
+        [createGeneratorFixture([]), 2, [[], []]],
+        [createGeneratorFixture([1]), 2, [[1], []]],
         [createGeneratorFixture([1, 2, 3]), 2, [[1, 2], [3]]],
 
         // Iterables
@@ -49,6 +49,7 @@ function dataProvider():Array<[Iterable<any> | Iterator<any>,number,Array<any[]>
         [new Map([['a', 1], ['b', 2]]), 2, [[['a', 1]], [['b', 2]]]],
     ]
 };
+
 
 describe.each(dataProviderAsync())(
     'transform.divideAsync',
@@ -67,8 +68,8 @@ describe.each(dataProviderAsync())(
 function dataProviderAsync():Array<[AsyncIterable<any> | AsyncIterator<any> | Iterable<any> | Iterator<any>, number, Array<any[]>]>{
     return [
         // Async Generators
-        [createAsyncGeneratorFixture([]), 2, []],
-        [createAsyncGeneratorFixture([1]), 2, [[1]]],
+        [createAsyncGeneratorFixture([]), 2, [[], []]],
+        [createAsyncGeneratorFixture([1]), 2, [[1], []]],
         [createAsyncGeneratorFixture([1, 2, 3]), 2, [[1, 2], [3]]],
 
         // Async Iterables
@@ -76,8 +77,9 @@ function dataProviderAsync():Array<[AsyncIterable<any> | AsyncIterator<any> | It
 
         // Async Iterators
         [createAsyncIteratorFixture([1, 2, 3, 4]), 2, [[1, 2], [3, 4]]],
-  ];
+    ];
 }
+
 
 
 describe.each(dataProviderForError())(
