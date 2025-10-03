@@ -1,5 +1,5 @@
-import { percentage } from '../../src/random';
-import { InvalidArgumentError } from '../../src/exceptions';
+import { percentage, choice } from '../../src/random';
+import { InvalidArgumentError, LengthError } from '../../src/exceptions';
 import { Stream } from '../../src/stream';
 
 describe.each([
@@ -73,6 +73,33 @@ describe.each([
     });
   }
 );
+
+describe.each([
+  ...dataProviderForFinite(),
+])('Stream Integration - choice() finite', (count) => {
+  it(`generates exactly ${count} values`, () => {
+    const values = Array.from(Stream.of([1, 2, 3]).choice(count));
+    expect(values.length).toBe(count);
+    values.forEach((val) => {
+      expect([1, 2, 3]).toContain(val);
+    });
+  });
+});
+
+describe.each([
+  ...dataProviderForNegative(),
+])('Stream Integration - choice() negative', (negativeCount) => {
+  it(`throws InvalidArgumentError for ${negativeCount}`, () => {
+    expect(() => Array.from(Stream.of([1, 2, 3]).choice(negativeCount)))
+      .toThrow(InvalidArgumentError);
+  });
+});
+
+describe('Stream Integration - choice() empty', () => {
+  it('throws LengthError when stream is empty', () => {
+    expect(() => Array.from(Stream.of([]).choice(5))).toThrow(LengthError);
+  });
+});
 
 function dataProviderForFinite(): Array<[number]> {
   return [
