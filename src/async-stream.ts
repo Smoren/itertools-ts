@@ -79,7 +79,7 @@ import {
 } from "./summary";
 import { AsyncFlatMapper, Comparable, Comparator, Numeric, Pair, ZipTuple } from "./types";
 import { infinite } from "./index";
-import { percentageAsync } from "./random";
+import { percentageAsync, choiceAsync } from "./random";
 
 /**
  * Provides fluent interface for working with async iterables.
@@ -1124,6 +1124,20 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   async toSet(): Promise<Set<T>> {
     return await toSetAsync(this);
   }
+
+  /**
+   * Asynchronously generates random elements from the given collection.
+   * 
+   * If optional param `repetitions` is not given, iterates infinitely.
+   * 
+   * @param repetitions - Number of values to generate
+   * @throws InvalidArgumentError if repetitions is negative
+   * @throws LengthError if stream is empty.
+   */
+  choice(repetitions?: number): AsyncStream<T> {
+    return new AsyncStream(choiceAsync(this, repetitions));
+  }
+
 
   /**
    * Aggregated iterator.

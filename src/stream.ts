@@ -67,7 +67,7 @@ import {
 } from "./summary";
 import type { Comparable, Comparator, FlatMapper, Numeric, ZipTuple } from "./types";
 import { infinite } from "./index";
-import { percentage } from "./random";
+import { percentage, choice } from "./random";
 
 /**
  * Provides fluent interface for working with iterables.
@@ -1016,6 +1016,19 @@ export class Stream<T> implements Iterable<T> {
    */
   toSet(): Set<T> {
     return toSet(this);
+  }
+
+  /**
+   * Generates random elements from the given collection.
+   * 
+   * If optional param `repetitions` is not given, iterates infinitely.
+   * 
+   * @param repetitions - Number of values to generate
+   * @throws InvalidArgumentError if repetitions is negative
+   * @throws LengthError if stream is empty.
+   */
+  choice(repetitions?: number): Stream<T> {
+    return new Stream(choice(this, repetitions));
   }
 
   /**
