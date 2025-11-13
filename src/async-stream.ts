@@ -71,6 +71,7 @@ import {
   allUniqueAsync,
   anyMatchAsync,
   exactlyNAsync,
+  isEmptyAsync,
   isReversedAsync,
   isSortedAsync,
   noneMatchAsync,
@@ -992,6 +993,15 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    */
   async exactlyN(n: number, predicate?: (item: T) => Promise<boolean> | boolean): Promise<boolean> {
     return exactlyNAsync(this, n, predicate);
+  }
+
+  /**
+   * Returns true if given stream is empty.
+   * 
+   * @see summary.isEmptyAsync
+   */
+  async isEmpty(): Promise<boolean> {
+    return await isEmptyAsync(this);
   }
 
   /**
