@@ -59,6 +59,7 @@ import {
   allUnique,
   anyMatch,
   exactlyN,
+  isEmpty,
   isReversed,
   isSorted,
   noneMatch,
@@ -905,6 +906,16 @@ export class Stream<T> implements Iterable<T> {
   exactlyN(n: number, predicate?: (item: T) => boolean): boolean {
     return exactlyN(this, n, predicate);
   }
+
+  /**
+   * Returns true if given stream is empty.
+   * 
+   * @see summary.isEmpty
+   */
+  isEmpty(): boolean {
+    return isEmpty(this);
+  }
+
   /**
    * Returns true if stream is sorted in ascending order; otherwise false.
    *
