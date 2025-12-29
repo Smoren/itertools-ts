@@ -1,84 +1,14 @@
-import {
-  teeAsync,
-  toArrayAsync,
-  toAsyncIterable,
-  toMapAsync,
-  toSetAsync,
-} from "./transform";
-import {
-  chunkwiseAsync,
-  chunkwiseOverlapAsync,
-  compressAsync,
-  dropWhileAsync,
-  enumerateAsync,
-  filterAsync,
-  flatMapAsync,
-  flattenAsync,
-  groupByAsync,
-  keysAsync,
-  limitAsync,
-  mapAsync,
-  pairwiseAsync,
-  skipAsync,
-  sliceAsync,
-  sortAsync,
-  takeWhileAsync,
-  valuesAsync,
-} from "./single";
-import {
-  chainAsync,
-  zipAsync,
-  zipEqualAsync,
-  zipFilledAsync,
-  zipLongestAsync,
-} from "./multi";
-import {
-  runningAverageAsync,
-  runningDifferenceAsync,
-  runningMaxAsync,
-  runningMinAsync,
-  runningProductAsync,
-  runningTotalAsync,
-} from "./math";
-import {
-  distinctAsync,
-  intersectionAsync,
-  partialIntersectionAsync,
-  symmetricDifferenceAsync,
-  unionAsync,
-} from "./set";
-import {
-  cartesianProductAsync,
-  combinationsAsync,
-  permutationsAsync,
-} from "./combinatorics";
-import {
-  toAverageAsync,
-  toCountAsync,
-  toFirstAndLastAsync,
-  toFirstAsync,
-  toLastAsync,
-  toMaxAsync,
-  toMinAsync,
-  toMinMaxAsync,
-  toProductAsync,
-  toRangeAsync,
-  toSumAsync,
-  toValueAsync,
-} from "./reduce";
-import {
-  allMatchAsync,
-  allUniqueAsync,
-  anyMatchAsync,
-  exactlyNAsync,
-  isReversedAsync,
-  isSortedAsync,
-  noneMatchAsync,
-  sameAsync,
-  sameCountAsync,
-} from "./summary";
+import * as transform from "./transform";
+import * as single from "./single";
+import * as multi from "./multi";
+import * as math from "./math";
+import * as set from "./set";
+import * as combinatorics from "./combinatorics";
+import * as reduce from "./reduce";
+import * as summary from "./summary";
+import * as infinite from "./infinite";
+import * as random from "./random";
 import { AsyncFlatMapper, Comparable, Comparator, Numeric, Pair, ZipTuple } from "./types";
-import { infinite } from "./index";
 
 /**
  * Provides fluent interface for working with async iterables.
@@ -101,14 +31,14 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterable<T>
       | Iterator<T>
   ): AsyncStream<T> {
-    return new AsyncStream(toAsyncIterable(data));
+    return new AsyncStream(transform.toAsyncIterable(data));
   }
 
   /**
    * Creates iterable instance with fluent interface from empty iterable source.
    */
   static ofEmpty(): AsyncStream<never> {
-    return new AsyncStream(toAsyncIterable([]));
+    return new AsyncStream(transform.toAsyncIterable([]));
   }
 
   /**
@@ -118,7 +48,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @param step (optional, default 1)
    */
   static ofCount(start: number = 1, step: number = 1): AsyncStream<number> {
-    return new AsyncStream(toAsyncIterable(infinite.count(start, step)));
+    return new AsyncStream(transform.toAsyncIterable(infinite.count(start, step)));
   }
 
   /**
@@ -142,7 +72,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @param item
    */
   static ofRepeat<T>(item: T): AsyncStream<T> {
-    return new AsyncStream(toAsyncIterable(infinite.repeat(item)));
+    return new AsyncStream(transform.toAsyncIterable(infinite.repeat(item)));
   }
 
   /**
@@ -151,10 +81,23 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @param repetitions (optional) If provided, generates exactly this many booleans.
    *                   If not provided, generates booleans infinitely.
    *
-   * @see infinite.booleansAsync
+   * @see random.booleansAsync
    */
   static ofBooleans(repetitions?: number): AsyncStream<boolean> {
-    return new AsyncStream(infinite.booleansAsync(repetitions));
+    return new AsyncStream(random.booleansAsync(repetitions));
+  }
+
+  /**
+   * Generate random percentages between 0 (inclusive) and 1 (exclusive) asynchronously.
+   *
+   * If optional param `repetitions` is not given, iterates infinitely.
+   *
+   * @param repetitions - Number of values to generate
+   *
+   * @see random.percentageAsync
+   */
+  static ofPercentage(repetitions?: number): AsyncStream<number> {
+    return new AsyncStream(random.percentageAsync(repetitions));
   }
 
   /**
@@ -177,7 +120,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterator<unknown>
     >
   >(...iterables: U): AsyncStream<ZipTuple<[Iterable<T>, ...U], never>> {
-    this.data = zipAsync(this.data, ...iterables) as AsyncIterable<T>;
+    this.data = multi.zipAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this as unknown as AsyncStream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
@@ -204,7 +147,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
     >,
     F
   >(filler: F, ...iterables: U): AsyncStream<ZipTuple<[Iterable<T>, ...U], F>> {
-    this.data = zipFilledAsync(filler, this.data, ...iterables) as AsyncIterable<T>;
+    this.data = multi.zipFilledAsync(filler, this.data, ...iterables) as AsyncIterable<T>;
     return this as unknown as AsyncStream<ZipTuple<[Iterable<T>, ...U], F>>;
   }
 
@@ -229,7 +172,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterator<unknown>
     >
   >(...iterables: U): AsyncStream<ZipTuple<[Iterable<T>, ...U], undefined>> {
-    this.data = zipLongestAsync(this.data, ...iterables) as AsyncIterable<T>;
+    this.data = multi.zipLongestAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this as unknown as AsyncStream<ZipTuple<[Iterable<T>, ...U], undefined>>;
   }
 
@@ -251,7 +194,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterator<unknown>
     >
   >(...iterables: U): AsyncStream<ZipTuple<[Iterable<T>, ...U], never>> {
-    this.data = zipEqualAsync(this.data, ...iterables) as AsyncIterable<T>;
+    this.data = multi.zipEqualAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this as unknown as AsyncStream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
@@ -272,7 +215,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterator<T>
     >
   ): AsyncStream<T> {
-    this.data = chainAsync(this.data, ...iterables) as AsyncIterable<T>;
+    this.data = multi.chainAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this;
   }
 
@@ -294,7 +237,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
     overlapSize: number,
     includeIncompleteTail = true
   ): AsyncStream<Array<T>> {
-    this.data = chunkwiseOverlapAsync(
+    this.data = single.chunkwiseOverlapAsync(
       this.data,
       chunkSize,
       overlapSize,
@@ -313,7 +256,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.chunkwiseAsync
    */
   chunkwise(chunkSize: number): AsyncStream<Array<T>> {
-    this.data = chunkwiseAsync(this.data, chunkSize) as AsyncIterable<T>;
+    this.data = single.chunkwiseAsync(this.data, chunkSize) as AsyncIterable<T>;
     return this as unknown as AsyncStream<Array<T>>;
   }
 
@@ -333,7 +276,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterable<number | boolean>
       | Iterator<number | boolean>
   ): AsyncStream<T> {
-    this.data = compressAsync(this.data, selectors);
+    this.data = single.compressAsync(this.data, selectors);
     return this;
   }
 
@@ -349,7 +292,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   dropWhile(
     predicate: (item: T) => Promise<boolean> | boolean
   ): AsyncStream<T> {
-    this.data = dropWhileAsync(this.data, predicate);
+    this.data = single.dropWhileAsync(this.data, predicate);
     return this;
   }
 
@@ -363,7 +306,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   filter(
     predicate: (item: T) => Promise<boolean> | boolean
   ): AsyncStream<T> {
-    this.data = filterAsync(this.data, predicate);
+    this.data = single.filterAsync(this.data, predicate);
     return this;
   }
 
@@ -373,7 +316,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.enumerateAsync
    */
   enumerate(): AsyncStream<[number, T]> {
-    this.data = enumerateAsync(this.data) as AsyncIterable<T>;
+    this.data = single.enumerateAsync(this.data) as AsyncIterable<T>;
     return this as unknown as AsyncStream<[number, T]>;
   }
 
@@ -383,7 +326,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.keysAsync
    */
   keys(): AsyncStream<T extends [infer TKey, infer _] ? TKey : never> {
-    this.data = keysAsync(this.data as AsyncIterable<[unknown, unknown]>) as AsyncIterable<T>;
+    this.data = single.keysAsync(this.data as AsyncIterable<[unknown, unknown]>) as AsyncIterable<T>;
     return this as AsyncStream<T extends [infer TKey, infer _] ? TKey : never>;
   }
 
@@ -395,7 +338,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.limitAsync
    */
   limit(count: number): AsyncStream<T> {
-    this.data = limitAsync(this.data, count);
+    this.data = single.limitAsync(this.data, count);
     return this;
   }
 
@@ -407,7 +350,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.mapAsync
    */
   map<U>(mapper: (datum: T) => Promise<U> | U): AsyncStream<U> {
-    this.data = mapAsync(this.data, mapper) as unknown as AsyncIterable<T>;
+    this.data = single.mapAsync(this.data, mapper) as unknown as AsyncIterable<T>;
     return this as unknown as AsyncStream<U>;
   }
 
@@ -420,7 +363,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.flatMapAsync
    */
   flatMap<U>(mapper: AsyncFlatMapper<T, U>): AsyncStream<U> {
-    this.data = flatMapAsync(this.data, mapper) as unknown as AsyncIterable<T>;
+    this.data = single.flatMapAsync(this.data, mapper) as unknown as AsyncIterable<T>;
     return this as unknown as AsyncStream<U>;
   }
 
@@ -432,7 +375,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.flattenAsync
    */
   flatten(dimensions = Infinity): AsyncStream<unknown> {
-    this.data = flattenAsync(this.data, dimensions) as AsyncIterable<T>;
+    this.data = single.flattenAsync(this.data, dimensions) as AsyncIterable<T>;
     return this as AsyncStream<unknown>;
   }
 
@@ -459,7 +402,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
     groupKeyFunction: (item: T) => Promise<string> | string,
     itemKeyFunction?: TItemKeyFunction
   ): AsyncStream<TResultItem> {
-    this.data = groupByAsync(this.data, groupKeyFunction, itemKeyFunction) as AsyncIterable<T>;
+    this.data = single.groupByAsync(this.data, groupKeyFunction, itemKeyFunction) as AsyncIterable<T>;
     return this as unknown as AsyncStream<TResultItem>;
   }
 
@@ -471,7 +414,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.pairwiseAsync
    */
   pairwise(): AsyncStream<Pair<T>> {
-    this.data = pairwiseAsync(this.data) as AsyncIterable<T>;
+    this.data = single.pairwiseAsync(this.data) as AsyncIterable<T>;
     return this as unknown as AsyncStream<Pair<T>>;
   }
 
@@ -483,7 +426,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see math.runningAverageAsync
    */
   runningAverage(initialValue?: number): AsyncStream<number> {
-    this.data = runningAverageAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
+    this.data = math.runningAverageAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this as unknown as AsyncStream<number>;
   }
 
@@ -495,7 +438,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see math.runningDifferenceAsync
    */
   runningDifference(initialValue?: number): AsyncStream<number> {
-    this.data = runningDifferenceAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
+    this.data = math.runningDifferenceAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this as unknown as AsyncStream<number>;
   }
 
@@ -507,7 +450,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see math.runningMaxAsync
    */
   runningMax(initialValue?: number): AsyncStream<number> {
-    this.data = runningMaxAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
+    this.data = math.runningMaxAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this as unknown as AsyncStream<number>;
   }
 
@@ -519,7 +462,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see math.runningMinAsync
    */
   runningMin(initialValue?: number): AsyncStream<number> {
-    this.data = runningMinAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
+    this.data = math.runningMinAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this as unknown as AsyncStream<number>;
   }
 
@@ -531,7 +474,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see math.runningProductAsync
    */
   runningProduct(initialValue?: number): AsyncStream<number> {
-    this.data = runningProductAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
+    this.data = math.runningProductAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this as unknown as AsyncStream<number>;
   }
 
@@ -543,7 +486,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see math.runningTotalAsync
    */
   runningTotal(initialValue?: number): AsyncStream<number> {
-    this.data = runningTotalAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
+    this.data = math.runningTotalAsync(this.data as AsyncIterable<Numeric>, initialValue) as AsyncIterable<T>;
     return this as unknown as AsyncStream<number>;
   }
 
@@ -556,7 +499,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.skipAsync
    */
   skip(count: number, offset = 0): AsyncStream<T> {
-    this.data = skipAsync(this.data, count, offset);
+    this.data = single.skipAsync(this.data, count, offset);
     return this;
   }
 
@@ -570,7 +513,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.sliceAsync
    */
   slice(start: number = 0, count?: number, step: number = 1): AsyncStream<T> {
-    this.data = sliceAsync(this.data, start, count, step);
+    this.data = single.sliceAsync(this.data, start, count, step);
     return this;
   }
 
@@ -586,7 +529,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   takeWhile(
     predicate: (item: T) => Promise<boolean> | boolean
   ): AsyncStream<T> {
-    this.data = takeWhileAsync(this.data, predicate);
+    this.data = single.takeWhileAsync(this.data, predicate);
     return this;
   }
 
@@ -596,7 +539,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.valuesAsync
    */
   values(): AsyncStream<T extends [infer _, infer TValue] ? TValue : never> {
-    this.data = valuesAsync(this.data as AsyncIterable<[unknown, unknown]>) as AsyncIterable<T>;
+    this.data = single.valuesAsync(this.data as AsyncIterable<[unknown, unknown]>) as AsyncIterable<T>;
     return this as AsyncStream<T extends [infer _, infer TValue] ? TValue : never>;
   }
 
@@ -608,7 +551,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see single.sort
    */
   sort(comparator?: Comparator<T>): AsyncStream<T> {
-    this.data = sortAsync(this.data, comparator);
+    this.data = single.sortAsync(this.data, comparator);
     return this;
   }
 
@@ -620,7 +563,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see set.distinctAsync
    */
   distinct(compareBy?: (datum: T) => Comparable): AsyncStream<T> {
-    this.data = distinctAsync(this.data, compareBy);
+    this.data = set.distinctAsync(this.data, compareBy);
     return this;
   }
 
@@ -641,7 +584,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterator<T>
     >
   ): AsyncStream<T> {
-    this.data = intersectionAsync(this.data, ...iterables);
+    this.data = set.intersectionAsync(this.data, ...iterables);
     return this;
   }
 
@@ -664,7 +607,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterator<T>
     >
   ): AsyncStream<T> {
-    this.data = partialIntersectionAsync(
+    this.data = set.partialIntersectionAsync(
       minIntersectionCount,
       this.data,
       ...iterables
@@ -689,7 +632,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterator<T>
     >
   ): AsyncStream<T> {
-    this.data = symmetricDifferenceAsync(this.data, ...iterables);
+    this.data = set.symmetricDifferenceAsync(this.data, ...iterables);
     return this;
   }
 
@@ -710,7 +653,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterator<T>
     >
   ): AsyncStream<T> {
-    this.data = unionAsync(this.data, ...iterables);
+    this.data = set.unionAsync(this.data, ...iterables);
     return this;
   }
 
@@ -727,7 +670,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
     | Iterable<unknown>
     | Iterator<unknown>
   >>(...iterables: U): AsyncStream<ZipTuple<[Iterable<T>, ...U], never>> {
-    this.data = cartesianProductAsync(this.data, ...iterables) as AsyncIterable<T>;
+    this.data = combinatorics.cartesianProductAsync(this.data, ...iterables) as AsyncIterable<T>;
     return this as unknown as AsyncStream<ZipTuple<[Iterable<T>, ...U], never>>;
   }
 
@@ -739,7 +682,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see combinatorics.permutations
    */
   permutations(length: number): AsyncStream<Array<T>> {
-    this.data = permutationsAsync(this.data, length) as AsyncIterable<T>;
+    this.data = combinatorics.permutationsAsync(this.data, length) as AsyncIterable<T>;
     return this as unknown as AsyncStream<Array<T>>;
   }
 
@@ -751,7 +694,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see combinatorics.combinations
    */
   combinations(length: number): AsyncStream<Array<T>> {
-    this.data = combinationsAsync(this.data, length) as AsyncIterable<T>;
+    this.data = combinatorics.combinationsAsync(this.data, length) as AsyncIterable<T>;
     return this as unknown as AsyncStream<Array<T>>;
   }
 
@@ -763,7 +706,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @param callback
    */
   peek(callback: (datum: unknown) => void): AsyncStream<T> {
-    const [data, peekable] = teeAsync(this.data, 2);
+    const [data, peekable] = transform.teeAsync(this.data, 2);
     this.data = data;
 
     (async () => {
@@ -783,7 +726,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @param callback
    */
   peekStream(callback: (datum: AsyncStream<T>) => void): AsyncStream<T> {
-    const [data, peekable] = teeAsync(this.data, 2);
+    const [data, peekable] = transform.teeAsync(this.data, 2);
     this.data = data;
 
     callback(AsyncStream.of(peekable));
@@ -803,7 +746,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
     reducer: (carry: U, datum: T) => Promise<U> | U,
     initialValue?: U
   ): Promise<U> {
-    return await toValueAsync(this, reducer, initialValue);
+    return await reduce.toValueAsync(this, reducer, initialValue as U);
   }
 
   /**
@@ -814,7 +757,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toAverageAsync
    */
   async toAverage(): Promise<number | undefined> {
-    return await toAverageAsync(this as AsyncIterable<number>);
+    return await reduce.toAverageAsync(this as AsyncIterable<number>);
   }
 
   /**
@@ -823,7 +766,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toCountAsync
    */
   async toCount(): Promise<number> {
-    return await toCountAsync(this as AsyncIterable<number>);
+    return await reduce.toCountAsync(this as AsyncIterable<number>);
   }
 
   /**
@@ -840,7 +783,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toMaxAsync
    */
   async toMax(compareBy?: (datum: T) => Promise<Comparable> | Comparable): Promise<T | undefined> {
-    return await toMaxAsync(this, compareBy);
+    return await reduce.toMaxAsync(this, compareBy);
   }
 
   /**
@@ -857,7 +800,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toMinAsync
    */
   async toMin(compareBy?: (datum: T) => Promise<Comparable> | Comparable): Promise<T | undefined> {
-    return await toMinAsync(this, compareBy);
+    return await reduce.toMinAsync(this, compareBy);
   }
 
   /**
@@ -874,7 +817,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toMinMaxAsync
    */
   async toMinMax(compareBy?: (item: T) => Promise<Comparable> | Comparable): Promise<[T?, T?]> {
-    return await toMinMaxAsync(this, compareBy);
+    return await reduce.toMinMaxAsync(this, compareBy);
   }
 
   /**
@@ -885,7 +828,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toFirstAsync
    */
   async toFirst(): Promise<T> {
-    return await toFirstAsync(this);
+    return await reduce.toFirstAsync(this);
   }
 
   /**
@@ -896,7 +839,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toFirstAndLastAsync
    */
   async toFirstAndLast(): Promise<[T, T]> {
-    return await toFirstAndLastAsync(this);
+    return await reduce.toFirstAndLastAsync(this);
   }
 
   /**
@@ -907,7 +850,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toLastAsync
    */
   async toLast(): Promise<T> {
-    return await toLastAsync(this);
+    return await reduce.toLastAsync(this);
   }
 
   /**
@@ -916,7 +859,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toSumAsync
    */
   async toSum(): Promise<number> {
-    return await toSumAsync(this as AsyncIterable<number>);
+    return await reduce.toSumAsync(this as AsyncIterable<number>);
   }
 
   /**
@@ -927,7 +870,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toProductAsync
    */
   async toProduct(): Promise<number | undefined> {
-    return await toProductAsync(this as AsyncIterable<number>);
+    return await reduce.toProductAsync(this as AsyncIterable<number>);
   }
 
   /**
@@ -938,7 +881,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see reduce.toRangeAsync
    */
   async toRange(): Promise<number> {
-    return await toRangeAsync(this as AsyncIterable<number>);
+    return await reduce.toRangeAsync(this as AsyncIterable<number>);
   }
 
   /**
@@ -951,7 +894,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see summary.allMatchAsync
    */
   async allMatch(predicate: (item: T) => Promise<boolean> | boolean): Promise<boolean> {
-    return await allMatchAsync(this, predicate);
+    return await summary.allMatchAsync(this, predicate);
   }
 
   /**
@@ -964,7 +907,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see summary.allUniqueAsync
    */
   async allUnique(): Promise<boolean> {
-    return await allUniqueAsync(this);
+    return await summary.allUniqueAsync(this);
   }
 
   /**
@@ -977,7 +920,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see summary.anyMatchAsync
    */
   async anyMatch(predicate: (item: T) => Promise<boolean> | boolean): Promise<boolean> {
-    return await anyMatchAsync(this, predicate);
+    return await summary.anyMatchAsync(this, predicate);
   }
 
   /**
@@ -991,7 +934,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see summary.exactlyNAsync
    */
   async exactlyN(n: number, predicate?: (item: T) => Promise<boolean> | boolean): Promise<boolean> {
-    return exactlyNAsync(this, n, predicate);
+    return summary.exactlyNAsync(this, n, predicate);
   }
 
   /**
@@ -1004,7 +947,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see summary.isSortedAsync
    */
   async isSorted(): Promise<boolean> {
-    return await isSortedAsync(this as AsyncIterable<Comparable>);
+    return await summary.isSortedAsync(this as AsyncIterable<Comparable>);
   }
 
   /**
@@ -1017,7 +960,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see summary.isReversedAsync
    */
   async isReversed(): Promise<boolean> {
-    return await isReversedAsync(this as AsyncIterable<Comparable>);
+    return await summary.isReversedAsync(this as AsyncIterable<Comparable>);
   }
 
   /**
@@ -1032,7 +975,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   async noneMatch(
     predicate: (item: T) => Promise<boolean> | boolean
   ): Promise<boolean> {
-    return await noneMatchAsync(this, predicate);
+    return await summary.noneMatchAsync(this, predicate);
   }
 
   /**
@@ -1052,7 +995,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterator<unknown>
     >
   ): Promise<boolean> {
-    return await sameAsync(this.data, ...collections);
+    return await summary.sameAsync(this.data, ...collections);
   }
 
   /**
@@ -1072,7 +1015,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
       | Iterator<unknown>
     >
   ): Promise<boolean> {
-    return await sameCountAsync(this.data, ...collections);
+    return await summary.sameCountAsync(this.data, ...collections);
   }
 
   /**
@@ -1090,7 +1033,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see transform.teeAsync
    */
   tee(count: number): Array<AsyncStream<T>> {
-    return teeAsync(this.data, count).map(
+    return transform.teeAsync(this.data, count).map(
       (iterable) => new AsyncStream(iterable)
     );
   }
@@ -1101,7 +1044,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see transform.toArrayAsync
    */
   async toArray(): Promise<Array<T>> {
-    return await toArrayAsync(this);
+    return await transform.toArrayAsync(this);
   }
 
   /**
@@ -1112,7 +1055,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see transform.toMapAsync
    */
   async toMap(): Promise<T extends [infer TKey, infer TValue] ? Map<TKey, TValue> : never> {
-    return await toMapAsync(this as AsyncIterable<[unknown, unknown]>) as unknown as Promise<T extends [infer TKey, infer TValue] ? Map<TKey, TValue> : never>;
+    return await transform.toMapAsync(this as AsyncIterable<[unknown, unknown]>) as unknown as Promise<T extends [infer TKey, infer TValue] ? Map<TKey, TValue> : never>;
   }
 
   /**
@@ -1121,7 +1064,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see transform.toSetAsync
    */
   async toSet(): Promise<Set<T>> {
-    return await toSetAsync(this);
+    return await transform.toSetAsync(this);
   }
 
   /**

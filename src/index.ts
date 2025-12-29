@@ -7,6 +7,7 @@ export * as reduce from "./reduce";
 export * as summary from "./summary";
 export * as transform from "./transform";
 export * as infinite from "./infinite";
+export * as random from "./random";
 export { Stream } from "./stream";
 export { AsyncStream } from "./async-stream";
 export { createPipe } from "./pipe";

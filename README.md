@@ -175,10 +175,15 @@ Quick Reference
 #### Infinite Iteration
 | Iterator                | Description                | Code Snippet                       |
 |-------------------------|----------------------------|------------------------------------|
-| [`booleans`](#Booleans) | Generate random booleans   | `infinite.booleans([repetitions])` |
 | [`count`](#Count)       | Count sequentially forever | `infinite.count([start], [step])`  |
 | [`cycle`](#Cycle)       | Cycle through a collection | `infinite.cycle(iterable)`         |
 | [`repeat`](#Repeat-1)   | Repeat an item forever     | `infinite.repeat(item)`            |
+
+#### Random Iteration
+| Iterator                    | Description                | Code Snippet                       |
+|-----------------------------|----------------------------|------------------------------------|
+| [`booleans`](#Booleans)     | Generate random booleans   | `random.booleans([repetitions])`   |
+| [`percentage`](#Percentage) | Generate random percentage | `random.percentage([repetitions])` |
 
 #### Math Iteration
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
@@ -253,14 +258,15 @@ Quick Reference
 
 ### Stream and AsyncStream Iteration Tools
 #### Stream Sources
-| Source                       | Description                         | Sync Code Snippet                  | Async Code Snippet                      |
-|------------------------------|-------------------------------------|------------------------------------|-----------------------------------------|
-| [`of`](#of)                  | Create a stream from an iterable    | `Stream.of(iterable)`              | `AsyncStream.of(iterable)`              |
-| [`ofCount`](#of-count)       | Create an infinite count stream     | `Stream.ofCount([start], [step])`  | `AsyncStream.ofCount([start], [step])`  |
-| [`ofBooleans`](#of-booleans) | Create an infinite booleans stream  | `Stream.ofBooleans([repetitions])` | `AsyncStream.ofBooleans([repetitions])` |
-| [`ofCycle`](#of-cycle)       | Create an infinite cycle stream     | `Stream.ofCycle(iterable)`         | `AsyncStream.ofCycle(iterable)`         |
-| [`ofEmpty`](#of-empty)       | Create an empty stream              | `Stream.ofEmpty()`                 | `AsyncStream.ofEmpty()`                 |
-| [`ofRepeat`](#of-repeat)     | Create an infinite repeating stream | `Stream.ofRepeat(item)`            | `AsyncStream.ofRepeat(item)`            |
+| Source                           | Description                         | Sync Code Snippet                  | Async Code Snippet                      |
+|----------------------------------|-------------------------------------|------------------------------------|-----------------------------------------|
+| [`of`](#of)                      | Create a stream from an iterable    | `Stream.of(iterable)`              | `AsyncStream.of(iterable)`              |
+| [`ofCount`](#of-count)           | Create an infinite count stream     | `Stream.ofCount([start], [step])`  | `AsyncStream.ofCount([start], [step])`  |
+| [`ofBooleans`](#of-booleans)     | Create booleans stream              | `Stream.ofBooleans([repetitions])` | `AsyncStream.ofBooleans([repetitions])` |
+| [`ofCycle`](#of-cycle)           | Create an infinite cycle stream     | `Stream.ofCycle(iterable)`         | `AsyncStream.ofCycle(iterable)`         |
+| [`ofEmpty`](#of-empty)           | Create an empty stream              | `Stream.ofEmpty()`                 | `AsyncStream.ofEmpty()`                 |
+| [`ofPercentage`](#of-percentage) | Create percentage stream            | `Stream.ofPercentage(item)`        | `AsyncStream.ofPercentage(item)`        |
+| [`ofRepeat`](#of-repeat)         | Create an infinite repeating stream | `Stream.ofRepeat(item)`            | `AsyncStream.ofRepeat(item)`            |
 
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
@@ -1028,6 +1034,37 @@ for (const item of infinite.repeat('bla')) {
   console.log(item);
 }
 // bla, bla, bla, bla, bla, ...
+```
+
+## Random Iteration
+
+### Percentage
+Generate random percentage values.
+
+```
+function* percentage(repetitions?: number): Iterable<number>
+```
+
+If `repetitions` is provided, generates exactly that many numbers. If not provided, generates numbers infinitely.
+
+```typescript
+import { random } from 'itertools-ts';
+
+for (const num of infinite.percentage(5)) {
+  console.log(num);
+}
+// 0.7745835631877125, 0.6368758907434469, 0.6465445462428422, 0.49809604559145615, 0.7009703411939564 (random values)
+
+for (const num of infinite.percentage()) {
+  console.log(num);
+}
+// 0.7745835631877125, 0.6368758907434469, 0.6465445462428422... (random values)
+
+// Async version
+for await (const num of infinite.percentageAsync(5)) {
+  console.log(num);
+}
+// 0.7745835631877125, 0.6368758907434469, 0.6465445462428422... (random values)
 ```
 
 ## Math Iteration
