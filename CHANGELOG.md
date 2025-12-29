@@ -6,10 +6,17 @@
 * random
   * `percentage()`
   * `percentageAsync()`
+  * `booleans()`
+  * `booleansAsync()`
 * Stream
   * `ofPercentage()`
 * AsyncStream
   * `ofPercentage()`
+
+### Deprecations
+* infinite
+  * `booleans()` (use `random.booleans()` instead).
+  * `booleansAsync()` (use `random.booleansAsync()` instead).
 
 ## v2.3.1 - 2025-09-06
 

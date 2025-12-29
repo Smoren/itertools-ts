@@ -175,7 +175,6 @@ Quick Reference
 #### Infinite Iteration
 | Iterator                | Description                | Code Snippet                       |
 |-------------------------|----------------------------|------------------------------------|
-| [`booleans`](#Booleans) | Generate random booleans   | `infinite.booleans([repetitions])` |
 | [`count`](#Count)       | Count sequentially forever | `infinite.count([start], [step])`  |
 | [`cycle`](#Cycle)       | Cycle through a collection | `infinite.cycle(iterable)`         |
 | [`repeat`](#Repeat-1)   | Repeat an item forever     | `infinite.repeat(item)`            |
@@ -183,6 +182,7 @@ Quick Reference
 #### Random Iteration
 | Iterator                    | Description                | Code Snippet                       |
 |-----------------------------|----------------------------|------------------------------------|
+| [`booleans`](#Booleans)     | Generate random booleans   | `infinite.booleans([repetitions])` |
 | [`percentage`](#Percentage) | Generate random percentage | `random.percentage([repetitions])` |
 
 #### Math Iteration
