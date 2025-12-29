@@ -82,6 +82,19 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Generate random percentages between 0 (inclusive) and 1 (exclusive).
+   *
+   * If optional param `repetitions` is not given, iterates infinitely.
+   *
+   * @param repetitions - Number of values to generate
+   *
+   * @see random.percentage
+   */
+  static ofPercentage(repetitions?: number): Stream<number> {
+    return new Stream(random.percentage(repetitions));
+  }
+
+  /**
    * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.
@@ -659,7 +672,7 @@ export class Stream<T> implements Iterable<T> {
     reducer: (carry: U, datum: T) => U,
     initialValue?: U
   ): U {
-    return reduce.toValue(this, reducer, initialValue) as U;
+    return reduce.toValue(this, reducer, initialValue as U);
   }
 
   /**
@@ -975,18 +988,5 @@ export class Stream<T> implements Iterable<T> {
    */
   protected constructor(iterable: Iterable<T>) {
     this.data = iterable;
-  }
-
-  /**
-   * Generate random percentages between 0 (inclusive) and 1 (exclusive).
-   *
-   * If optional param `repetitions` is not given, iterates infinitely.
-   *
-   * @param repetitions - Number of values to generate
-   *
-   * @see random.percentage
-   */
-  static ofPercentage(repetitions?: number): Stream<number> {
-    return new Stream(random.percentage(repetitions));
   }
 }

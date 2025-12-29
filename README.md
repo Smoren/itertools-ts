@@ -182,7 +182,7 @@ Quick Reference
 #### Random Iteration
 | Iterator                    | Description                | Code Snippet                       |
 |-----------------------------|----------------------------|------------------------------------|
-| [`booleans`](#Booleans)     | Generate random booleans   | `infinite.booleans([repetitions])` |
+| [`booleans`](#Booleans)     | Generate random booleans   | `random.booleans([repetitions])`   |
 | [`percentage`](#Percentage) | Generate random percentage | `random.percentage([repetitions])` |
 
 #### Math Iteration

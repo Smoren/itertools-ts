@@ -1,6 +1,6 @@
 # IterTools Typescript Change Log
 
-## v2.3.2 - TBD
+## v2.4.0 - 2025-12-29
 
 ### New features
 * random
