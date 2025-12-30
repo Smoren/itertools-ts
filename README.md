@@ -235,10 +235,10 @@ Quick Reference
 | [`anyMatch`](#any-match)                | True if any item is true according to predicate         | `summary.anyMatch(data, predicate)`    | `summary.anyMatchAsync(data, predicate)`    |
 | [`exactlyN`](#exactly-n)                | True if exactly n items are true according to predicate | `summary.exactlyN(data, n, predicate)` | `summary.exactlyNAsync(data, n, predicate)` |
 | [`isAsyncIterable`](#is-async-iterable) | True if given data is async iterable                    | `summary.isAsyncIterable(data)`        | —                                           |
+| [`isEmpty`](#is-empty)                  | True if iterable is empty                               | `summary.isEmpty(data)`                | `summary.isEmptyAsync(data)`                |
 | [`isIterable`](#is-iterable)            | True if given data is iterable                          | `summary.isIterable(data)`             | —                                           |
 | [`isIterator`](#is-iterator)            | True if given data is iterator                          | `summary.isIterator(data)`             | —                                           |
 | [`isReversed`](#is-reversed)            | True if iterable reverse sorted                         | `summary.isReversed(data)`             | `summary.isReversedAsync(data)`             |
-| [`isEmpty`](#is-empty)                  | True if iterable is empty                               | `summary.isEmpty(data)`                | `summary.isEmptyAsync(data)`                |
 | [`isSorted`](#is-sorted)                | True if iterable sorted                                 | `summary.isSorted(data)`               | `summary.isSortedAsync(data)`               |
 | [`isString`](#is-string)                | True if given data is string                            | `summary.isString(data)`               | `summary.isStringAsync(data)`               |
 | [`noneMatch`](#none-match)              | True if none of items true according to predicate       | `summary.noneMatch(data, predicate)`   | `summary.noneMatchAsync(data, predicate)`   |
@@ -342,8 +342,8 @@ Quick Reference
 | [`allUnique`](#all-unique-1)        | Returns true if all elements of stream are unique                      | `stream.allUnique(predicate)`          |
 | [`anyMatch`](#any-match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
 | [`exactlyN`](#exactly-n-1)          | Returns true if exactly n items are true according to predicate        | `stream.exactlyN(n, predicate)`        |
-| [`isReversed`](#is-reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
 | [`isEmpty`](#is-empty-1)            | Returns true if stream is empty                                        | `stream.isEmpty()`                     |
+| [`isReversed`](#is-reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
 | [`isSorted`](#is-sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
 | [`noneMatch`](#none-match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
 | [`sameWith`](#same-with)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |

@@ -1,5 +1,16 @@
 # IterTools Typescript Change Log
 
+## v2.5.0 - 2025-12-31
+
+### New features
+* summary
+  * `isEmpty()`
+  * `isEmptyAsync()`
+* Stream
+  * `isEmpty()`
+* AsyncStream
+  * `isEmpty()`
+
 ## v2.4.1 - 2025-12-30
 
 ### Fixes
