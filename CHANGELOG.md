@@ -1,5 +1,10 @@
 # IterTools Typescript Change Log
 
+## v2.4.1 - 2025-12-30
+
+### Fixes
+* Fix version in deno.json
+
 ## v2.4.0 - 2025-12-29
 
 ### New features
