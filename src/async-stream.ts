@@ -943,7 +943,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * @see summary.isEmptyAsync
    */
   async isEmpty(): Promise<boolean> {
-    return await summary.isEmptyAsync(this);
+    return summary.isEmptyAsync(this);
   }
 
   /**
