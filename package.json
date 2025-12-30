@@ -1,6 +1,6 @@
 {
   "name": "itertools-ts",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "Extended itertools port for TypeScript and JavaScript. Provides a huge set of functions for working with iterable collections (including async ones)",
   "license": "MIT",
   "repository": {
