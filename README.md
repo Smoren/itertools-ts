@@ -238,6 +238,7 @@ Quick Reference
 | [`isIterable`](#is-iterable)            | True if given data is iterable                          | `summary.isIterable(data)`             | —                                           |
 | [`isIterator`](#is-iterator)            | True if given data is iterator                          | `summary.isIterator(data)`             | —                                           |
 | [`isReversed`](#is-reversed)            | True if iterable reverse sorted                         | `summary.isReversed(data)`             | `summary.isReversedAsync(data)`             |
+| [`isEmpty`](#is-empty)                  | True if iterable is empty                               | `summary.isEmpty(data)`                | `summary.isEmptyAsync(data)`                |
 | [`isSorted`](#is-sorted)                | True if iterable sorted                                 | `summary.isSorted(data)`               | `summary.isSortedAsync(data)`               |
 | [`isString`](#is-string)                | True if given data is string                            | `summary.isString(data)`               | `summary.isStringAsync(data)`               |
 | [`noneMatch`](#none-match)              | True if none of items true according to predicate       | `summary.noneMatch(data, predicate)`   | `summary.noneMatchAsync(data, predicate)`   |
@@ -342,6 +343,7 @@ Quick Reference
 | [`anyMatch`](#any-match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
 | [`exactlyN`](#exactly-n-1)          | Returns true if exactly n items are true according to predicate        | `stream.exactlyN(n, predicate)`        |
 | [`isReversed`](#is-reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
+| [`isEmpty`](#is-empty-1)            | Returns true if stream is empty                                        | `stream.isEmpty()`                     |
 | [`isSorted`](#is-sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
 | [`noneMatch`](#none-match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
 | [`sameWith`](#same-with)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |
@@ -1942,6 +1944,30 @@ Summary.isReversed(reversedNumbers);
 const numbers = [1, 4, 3, 2, 1];
 
 Summary.isReversed(numbers);
+// false
+```
+
+### Is Empty
+Returns true if there are no elements, otherwise false.
+
+```
+function isEmpty(data: Iterable<unknown> | Iterator<unknown>): boolean
+```
+
+- Returns true if empty.
+- Returns false if one or more elements.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const emptyArray = [];
+
+Summary.isEmpty(emptyArray);
+// true
+
+const numbers = [3];
+
+Summary.isEmpty(numbers);
 // false
 ```
 
@@ -3615,6 +3641,33 @@ const input = [1, 2, 3, 2, 1];
 
 Stream.of(input)
   .isReversed();
+// false
+```
+
+##### Is Empty
+Returns true if iterable source is empty, otherwise false.
+
+```
+Stream<T>.isEmpty(): boolean
+```
+
+Returns true if iterable source is empty.
+
+Returns false if iterable source has one or more elements.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const emptyArray = [];
+
+Stream.of(emptyArray)
+  .isEmpty();
+// true
+
+const input = [1];
+
+Stream.of(isEmpty)
+  .isEmpty();
 // false
 ```
 

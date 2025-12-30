@@ -98,6 +98,11 @@ function dataProviderForArraysTrue(): Array<[Array<any>, (iterable: Array<any>) 
         .exactlyN(3),
     ],
     [
+      [],
+      (iterable: Iterable<number> | Iterator<number>) => Stream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: Iterable<number> | Iterator<number>) => Stream.of(iterable)
         .filter((item) => item > 0)
@@ -217,6 +222,11 @@ function dataProviderForStringsTrue(): Array<[string, (iterable: string) => bool
       '',
       (iterable) => Stream.of(iterable)
         .exactlyN(0),
+    ],
+    [
+      '',
+      (iterable) => Stream.of(iterable)
+        .isEmpty(),
     ],
     [
       '123',
@@ -342,6 +352,11 @@ function dataProviderForSetsTrue(): Array<[Set<any>, (iterable: Set<any>) => boo
         .exactlyN(3),
     ],
     [
+      new Set([]),
+      (iterable: Set<number>) => Stream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       new Set([1, -1, 2, -2, 3, -3]),
       (iterable: Set<number>) => Stream.of(iterable)
         .filter((item) => item > 0)
@@ -443,6 +458,11 @@ function dataProviderForMapsTrue(): Array<[Map<any, any>, (iterable: Map<any, an
       createMapFixture([1, 3, 5]),
       (iterable: Map<unknown, number>) => Stream.of(iterable)
         .anyMatch((x) => x[1] > 0),
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .isEmpty(),
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
@@ -548,6 +568,11 @@ function dataProviderForArraysFalse(): Array<[Array<any>, (iterable: Array<any>)
         .exactlyN(4),
     ],
     [
+      [1],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: Iterable<number>) => Stream.of(iterable)
         .runningTotal()
@@ -647,6 +672,11 @@ function dataProviderForStringsFalse(): Array<[string, (iterable: string) => boo
         .exactlyN(1),
     ],
     [
+      '1',
+      (iterable) => Stream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       '131',
       (iterable) => Stream.of(iterable)
         .isSorted(),
@@ -734,6 +764,11 @@ function dataProviderForSetsFalse(): Array<[Set<any>, (iterable: Set<any>) => bo
         .exactlyN(4),
     ],
     [
+      new Set([1]),
+      (iterable: Set<number>) => Stream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       new Set([1, -1, 2, -2, 3, -3]),
       (iterable: Set<number>) => Stream.of(iterable)
         .runningTotal()
@@ -806,6 +841,11 @@ function dataProviderForMapsFalse(): Array<[Map<any, any>, (iterable: Map<any, a
       createMapFixture([1, 3, 5]),
       (iterable: Map<unknown, number>) => Stream.of(iterable)
         .anyMatch((x) => x[1] > 10),
+    ],
+    [
+      createMapFixture([1]),
+      (iterable: Map<unknown, number>) => Stream.of(iterable)
+        .isEmpty(),
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),

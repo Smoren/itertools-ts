@@ -938,6 +938,15 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Returns true if given stream is empty.
+   * 
+   * @see summary.isEmptyAsync
+   */
+  async isEmpty(): Promise<boolean> {
+    return summary.isEmptyAsync(this);
+  }
+
+  /**
    * Returns true if stream is sorted in ascending order; otherwise false.
    *
    * Items of stream source must be comparable.
