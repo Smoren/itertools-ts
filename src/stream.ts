@@ -95,6 +95,19 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Generate random coin flips (0 or 1).
+   *
+   * If optional param `repetitions` is not given, iterates infinitely.
+   *
+   * @param repetitions - Number of values to generate
+   *
+   * @see random.coinFlip
+   */
+  static ofCoinFlip(repetitions?: number): Stream<number> {
+    return new Stream(random.coinFlip(repetitions));
+  }
+
+  /**
    * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.

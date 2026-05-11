@@ -101,6 +101,19 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Generate random coin flips (0 or 1) asynchronously.
+   *
+   * If optional param `repetitions` is not given, iterates infinitely.
+   *
+   * @param repetitions - Number of values to generate
+   *
+   * @see random.coinFlipAsync
+   */
+  static ofCoinFlip(repetitions?: number): AsyncStream<number> {
+    return new AsyncStream(random.coinFlipAsync(repetitions));
+  }
+
+  /**
    * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.

@@ -1,6 +1,48 @@
 import { InvalidArgumentError } from "./exceptions";
 
 /**
+ * Generate random coin flips (0 or 1).
+ *
+ * If optional param `repetitions` is not given, iterates infinitely.
+ *
+ * @param repetitions - Number of values to generate
+ * @throws {InvalidArgumentError} If repetitions is negative
+ * @see coinFlipAsync For asynchronous version
+ */
+export function* coinFlip(repetitions?: number): Generator<number> {
+  if (repetitions !== undefined && repetitions < 0) {
+    throw new InvalidArgumentError(`Number of repetitions cannot be negative: ${repetitions}`);
+  }
+
+  let count = 0;
+  while (repetitions === undefined || count < repetitions) {
+    yield Math.random() < 0.5 ? 0 : 1;
+    if (repetitions !== undefined) count++;
+  }
+}
+
+/**
+ * Generate random coin flips (0 or 1) asynchronously.
+ *
+ * If optional param `repetitions` is not given, iterates infinitely.
+ *
+ * @param repetitions - Number of values to generate
+ * @throws {InvalidArgumentError} If repetitions is negative
+ * @see coinFlip For synchronous version
+ */
+export async function* coinFlipAsync(repetitions?: number): AsyncGenerator<number> {
+  if (repetitions !== undefined && repetitions < 0) {
+    throw new InvalidArgumentError(`Number of repetitions cannot be negative: ${repetitions}`);
+  }
+
+  let count = 0;
+  while (repetitions === undefined || count < repetitions) {
+    yield Math.random() < 0.5 ? 0 : 1;
+    if (repetitions !== undefined) count++;
+  }
+}
+
+/**
  * Generate a sequence of random booleans
  *
  * @param repetitions (optional) Number of values to generate
