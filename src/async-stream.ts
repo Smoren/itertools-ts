@@ -88,6 +88,19 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Generate random rock-paper-scissors values asynchronously.
+   *
+   * If optional param `repetitions` is not given, iterates infinitely.
+   *
+   * @param repetitions - Number of values to generate
+   *
+   * @see random.rockPaperScissorsAsync
+   */
+  static ofRockPaperScissors(repetitions?: number): AsyncStream<"rock" | "paper" | "scissors"> {
+    return new AsyncStream(random.rockPaperScissorsAsync(repetitions));
+  }
+
+  /**
    * Generate random percentages between 0 (inclusive) and 1 (exclusive) asynchronously.
    *
    * If optional param `repetitions` is not given, iterates infinitely.

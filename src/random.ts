@@ -1,5 +1,14 @@
 import { InvalidArgumentError } from "./exceptions";
 
+const ROCK_PAPER_SCISSORS_VALUES = ["rock", "paper", "scissors"] as const;
+type RockPaperScissors = typeof ROCK_PAPER_SCISSORS_VALUES[number];
+
+function randomRockPaperScissors(): RockPaperScissors {
+  return ROCK_PAPER_SCISSORS_VALUES[
+    Math.floor(Math.random() * ROCK_PAPER_SCISSORS_VALUES.length)
+  ];
+}
+
 /**
  * Generate a sequence of random booleans
  *
@@ -29,6 +38,48 @@ export async function* booleansAsync(repetitions?: number): AsyncIterable<boolea
   while (repetitions === undefined || i < repetitions) {
     yield Math.random() > 0.5;
     i++;
+  }
+}
+
+/**
+ * Generate a sequence of random rock-paper-scissors values.
+ *
+ * If optional param `repetitions` is not given, iterates infinitely.
+ *
+ * @param repetitions - Number of values to generate
+ * @throws {InvalidArgumentError} If repetitions is negative
+ * @see rockPaperScissorsAsync For asynchronous version
+ */
+export function* rockPaperScissors(repetitions?: number): Iterable<RockPaperScissors> {
+  if (repetitions !== undefined && repetitions < 0) {
+    throw new InvalidArgumentError(`Number of repetitions cannot be negative: ${repetitions}`);
+  }
+
+  let count = 0;
+  while (repetitions === undefined || count < repetitions) {
+    yield randomRockPaperScissors();
+    if (repetitions !== undefined) count++;
+  }
+}
+
+/**
+ * Generate a sequence of random rock-paper-scissors values asynchronously.
+ *
+ * If optional param `repetitions` is not given, iterates infinitely.
+ *
+ * @param repetitions - Number of values to generate
+ * @throws {InvalidArgumentError} If repetitions is negative
+ * @see rockPaperScissors For synchronous version
+ */
+export async function* rockPaperScissorsAsync(repetitions?: number): AsyncIterable<RockPaperScissors> {
+  if (repetitions !== undefined && repetitions < 0) {
+    throw new InvalidArgumentError(`Number of repetitions cannot be negative: ${repetitions}`);
+  }
+
+  let count = 0;
+  while (repetitions === undefined || count < repetitions) {
+    yield randomRockPaperScissors();
+    if (repetitions !== undefined) count++;
   }
 }
 
