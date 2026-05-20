@@ -2,6 +2,8 @@ import { percentage } from '../../src/random';
 import { InvalidArgumentError } from '../../src/exceptions';
 import { Stream } from '../../src/stream';
 
+const ROCK_PAPER_SCISSORS_VALUES = ['rock', 'paper', 'scissors'];
+
 describe.each([
   ...dataProviderForFinite(),
 ])(
@@ -70,6 +72,32 @@ describe.each([
         expect(num).toBeGreaterThanOrEqual(0);
         expect(num).toBeLessThan(1);
       });
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForStreamWrapper(),
+])(
+  'Stream.ofRockPaperScissors()',
+  (count) => {
+    it('', () => {
+      const values = Stream.ofRockPaperScissors(count).toArray();
+      expect(values.length).toBe(count);
+      values.forEach((value) => {
+        expect(ROCK_PAPER_SCISSORS_VALUES).toContain(value);
+      });
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForNegative(),
+])(
+  'Stream.ofRockPaperScissors() negative',
+  (negativeCount) => {
+    it('', () => {
+      expect(() => Stream.ofRockPaperScissors(negativeCount).toArray()).toThrow(InvalidArgumentError);
     });
   }
 );
