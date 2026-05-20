@@ -3,6 +3,8 @@ import { InvalidArgumentError } from '../../src/exceptions';
 import { AsyncStream } from '../../src/async-stream';
 
 
+const ROCK_PAPER_SCISSORS_VALUES = ['rock', 'paper', 'scissors'];
+
 describe.each([
   ...dataProviderForFiniteAsync(),
 ])(
@@ -89,6 +91,32 @@ describe.each([
         expect(num).toBeGreaterThanOrEqual(0);
         expect(num).toBeLessThan(1);
       });
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForStreamWrapperAsync(),
+])(
+  'AsyncStream.ofRockPaperScissors()',
+  (count) => {
+    it('', async () => {
+      const values = await AsyncStream.ofRockPaperScissors(count).toArray();
+      expect(values.length).toBe(count);
+      values.forEach((value) => {
+        expect(ROCK_PAPER_SCISSORS_VALUES).toContain(value);
+      });
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForNegativeAsync(),
+])(
+  'AsyncStream.ofRockPaperScissors() negative',
+  (negativeCount) => {
+    it('', async () => {
+      await expect(AsyncStream.ofRockPaperScissors(negativeCount).toArray()).rejects.toThrow(InvalidArgumentError);
     });
   }
 );
