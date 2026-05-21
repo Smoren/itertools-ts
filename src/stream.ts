@@ -82,6 +82,19 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Generate random rock-paper-scissors values.
+   *
+   * If optional param `repetitions` is not given, iterates infinitely.
+   *
+   * @param repetitions - Number of values to generate
+   *
+   * @see random.rockPaperScissors
+   */
+  static ofRockPaperScissors(repetitions?: number): Stream<"rock" | "paper" | "scissors"> {
+    return new Stream(random.rockPaperScissors(repetitions));
+  }
+
+  /**
    * Generate random percentages between 0 (inclusive) and 1 (exclusive).
    *
    * If optional param `repetitions` is not given, iterates infinitely.

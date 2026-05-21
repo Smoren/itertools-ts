@@ -180,10 +180,11 @@ Quick Reference
 | [`repeat`](#Repeat-1)   | Repeat an item forever     | `infinite.repeat(item)`            |
 
 #### Random Iteration
-| Iterator                    | Description                | Code Snippet                       |
-|-----------------------------|----------------------------|------------------------------------|
-| [`booleans`](#Booleans)     | Generate random booleans   | `random.booleans([repetitions])`   |
-| [`percentage`](#Percentage) | Generate random percentage | `random.percentage([repetitions])` |
+| Iterator                                      | Description                            | Code Snippet                                  |
+|-----------------------------------------------|----------------------------------------|-----------------------------------------------|
+| [`booleans`](#Booleans)                       | Generate random booleans               | `random.booleans([repetitions])`              |
+| [`percentage`](#Percentage)                   | Generate random percentage             | `random.percentage([repetitions])`            |
+| [`rockPaperScissors`](#Rock-Paper-Scissors)   | Generate random rock-paper-scissors    | `random.rockPaperScissors([repetitions])`     |
 
 #### Math Iteration
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
@@ -259,15 +260,16 @@ Quick Reference
 
 ### Stream and AsyncStream Iteration Tools
 #### Stream Sources
-| Source                           | Description                         | Sync Code Snippet                  | Async Code Snippet                      |
-|----------------------------------|-------------------------------------|------------------------------------|-----------------------------------------|
-| [`of`](#of)                      | Create a stream from an iterable    | `Stream.of(iterable)`              | `AsyncStream.of(iterable)`              |
-| [`ofCount`](#of-count)           | Create an infinite count stream     | `Stream.ofCount([start], [step])`  | `AsyncStream.ofCount([start], [step])`  |
-| [`ofBooleans`](#of-booleans)     | Create booleans stream              | `Stream.ofBooleans([repetitions])` | `AsyncStream.ofBooleans([repetitions])` |
-| [`ofCycle`](#of-cycle)           | Create an infinite cycle stream     | `Stream.ofCycle(iterable)`         | `AsyncStream.ofCycle(iterable)`         |
-| [`ofEmpty`](#of-empty)           | Create an empty stream              | `Stream.ofEmpty()`                 | `AsyncStream.ofEmpty()`                 |
-| [`ofPercentage`](#of-percentage) | Create percentage stream            | `Stream.ofPercentage(item)`        | `AsyncStream.ofPercentage(item)`        |
-| [`ofRepeat`](#of-repeat)         | Create an infinite repeating stream | `Stream.ofRepeat(item)`            | `AsyncStream.ofRepeat(item)`            |
+| Source                                           | Description                              | Sync Code Snippet                         | Async Code Snippet                             |
+|--------------------------------------------------|------------------------------------------|-------------------------------------------|------------------------------------------------|
+| [`of`](#of)                                      | Create a stream from an iterable         | `Stream.of(iterable)`                     | `AsyncStream.of(iterable)`                     |
+| [`ofCount`](#of-count)                           | Create an infinite count stream          | `Stream.ofCount([start], [step])`         | `AsyncStream.ofCount([start], [step])`         |
+| [`ofBooleans`](#of-booleans)                     | Create booleans stream                   | `Stream.ofBooleans([repetitions])`        | `AsyncStream.ofBooleans([repetitions])`        |
+| [`ofCycle`](#of-cycle)                           | Create an infinite cycle stream          | `Stream.ofCycle(iterable)`                | `AsyncStream.ofCycle(iterable)`                |
+| [`ofEmpty`](#of-empty)                           | Create an empty stream                   | `Stream.ofEmpty()`                        | `AsyncStream.ofEmpty()`                        |
+| [`ofPercentage`](#of-percentage)                 | Create percentage stream                 | `Stream.ofPercentage(item)`               | `AsyncStream.ofPercentage(item)`               |
+| [`ofRepeat`](#of-repeat)                         | Create an infinite repeating stream      | `Stream.ofRepeat(item)`                   | `AsyncStream.ofRepeat(item)`                   |
+| [`ofRockPaperScissors`](#of-rock-paper-scissors) | Create rock-paper-scissors stream        | `Stream.ofRockPaperScissors([repetitions])` | `AsyncStream.ofRockPaperScissors([repetitions])` |
 
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
@@ -1039,6 +1041,35 @@ for (const item of infinite.repeat('bla')) {
 ```
 
 ## Random Iteration
+
+### Rock Paper Scissors
+Generate random rock-paper-scissors values.
+
+```
+function* rockPaperScissors(repetitions?: number): Iterable<"rock" | "paper" | "scissors">
+```
+
+If `repetitions` is provided, generates exactly that many values. If not provided, generates values infinitely.
+
+```typescript
+import { random } from 'itertools-ts';
+
+for (const value of random.rockPaperScissors(5)) {
+  console.log(value);
+}
+// 'rock', 'scissors', 'paper', 'rock', 'paper' (random values)
+
+for (const value of random.rockPaperScissors()) {
+  console.log(value);
+}
+// 'rock', 'scissors', 'paper', ... (infinite random values)
+
+// Async version
+for await (const value of random.rockPaperScissorsAsync(5)) {
+  console.log(value);
+}
+// 'paper', 'rock', 'scissors', 'paper', 'rock' (random values)
+```
 
 ### Percentage
 Generate random percentage values.
@@ -2332,6 +2363,26 @@ const result1 = Stream.ofBooleans()
 const result2 = Stream.ofBooleans(5)
   .toArray();
 // [false, true, true, false, true]
+```
+
+#### Of Rock Paper Scissors
+Create a rock-paper-scissors stream.
+
+```
+Stream.ofRockPaperScissors(repetitions?: number): Stream<"rock" | "paper" | "scissors">
+AsyncStream.ofRockPaperScissors(repetitions?: number): AsyncStream<"rock" | "paper" | "scissors">
+```
+
+```typescript
+import { Stream, AsyncStream } from "itertools-ts";
+
+const result = Stream.ofRockPaperScissors(5)
+  .toArray();
+// ['rock', 'scissors', 'paper', 'rock', 'paper']
+
+const asyncResult = await AsyncStream.ofRockPaperScissors(5)
+  .toArray();
+// ['paper', 'rock', 'scissors', 'paper', 'rock']
 ```
 
 #### Of Count
