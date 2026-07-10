@@ -8,13 +8,14 @@ on:
     branches:
       - master
       - dev
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 17.x, 18.x, 19.x, 20.x, 21.x, 22.x, 23.x]
+        node-version: [18.x, 19.x, 20.x, 21.x, 22.x, 23.x, 24.x, 25.x, 26.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -24,9 +25,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Run tests
+      - name: Build and run tests
         run: |
           npm install
+          npm run build
           npm run test
         env:
           CI: true

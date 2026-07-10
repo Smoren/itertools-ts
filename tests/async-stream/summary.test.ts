@@ -112,6 +112,11 @@ function dataProviderForArraysTrue(): Array<[Array<any>, (iterable: Array<any>) 
         .exactlyN(3),
     ],
     [
+      [],
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
         .filter((item) => item > 0)
@@ -231,6 +236,11 @@ function dataProviderForStringsTrue(): Array<[string, (iterable: string) => Prom
       '',
       (iterable) => AsyncStream.of(iterable)
         .exactlyN(0),
+    ],
+    [
+      '',
+      (iterable) => AsyncStream.of(iterable)
+        .isEmpty(),
     ],
     [
       '123',
@@ -356,6 +366,11 @@ function dataProviderForSetsTrue(): Array<[Set<any>, (iterable: Set<any>) => Pro
         .exactlyN(3),
     ],
     [
+      new Set([]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       new Set([1, -1, 2, -2, 3, -3]),
       (iterable: Set<number>) => AsyncStream.of(iterable)
         .filter((item) => item > 0)
@@ -457,6 +472,11 @@ function dataProviderForMapsTrue(): Array<[Map<any, any>, (iterable: Map<any, an
       createMapFixture([1, 3, 5]),
       (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .anyMatch((x) => x[1] > 0),
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .isEmpty(),
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
@@ -583,6 +603,11 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
         .exactlyN(3),
     ],
     [
+      [],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((item) => item > 0)
@@ -707,6 +732,11 @@ function dataProviderForArraysFalse(): Array<[Array<any>, (iterable: Array<any>)
         .exactlyN(4),
     ],
     [
+      [1],
+      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .runningTotal()
@@ -806,6 +836,11 @@ function dataProviderForStringsFalse(): Array<[string, (iterable: string) => Pro
         .exactlyN(1),
     ],
     [
+      '1',
+      (iterable) => AsyncStream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       '131',
       (iterable) => AsyncStream.of(iterable)
         .isSorted(),
@@ -893,6 +928,11 @@ function dataProviderForSetsFalse(): Array<[Set<any>, (iterable: Set<any>) => Pr
         .exactlyN(4),
     ],
     [
+      new Set([1]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .isEmpty(),
+    ],
+    [
       new Set([1, -1, 2, -2, 3, -3]),
       (iterable: Set<number>) => AsyncStream.of(iterable)
         .runningTotal()
@@ -965,6 +1005,11 @@ function dataProviderForMapsFalse(): Array<[Map<any, any>, (iterable: Map<any, a
       createMapFixture([1, 3, 5]),
       (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .anyMatch((x) => x[1] > 10),
+    ],
+    [
+      createMapFixture([1]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .isEmpty(),
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
@@ -1065,6 +1110,11 @@ function dataProviderForAsyncFalse(): Array<[Array<any>, (iterable: AsyncIterabl
       [1, 3, 5],
       (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .exactlyN(4),
+    ],
+    [
+      [1],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .isEmpty(),
     ],
     [
       [1, -1, 2, -2, 3, -3],

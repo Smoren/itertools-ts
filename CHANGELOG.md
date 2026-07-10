@@ -1,16 +1,53 @@
 # IterTools Typescript Change Log
 
-## v2.3.2 - TBD
+## v2.6.0 - 2026-07-10
 
 ### New features
+* random
+  * `coinFlip()`
+  * `coinFlipAsync()`
+  * `rockPaperScissors()`
+  * `rockPaperScissorsAsync()`
+* Stream
+  * `ofCoinFlip()`
+  * `ofRockPaperScissors()`
+* AsyncStream
+  * `ofCoinFlip()`
+  * `ofRockPaperScissors()`
 
-- transform
-  - `divide()`
-  - `divideAsync()`
-- Stream
-  - `divide()`
-- AsyncStream
-  - `divide()`
+## v2.5.0 - 2025-12-31
+
+### New features
+* summary
+  * `isEmpty()`
+  * `isEmptyAsync()`
+* Stream
+  * `isEmpty()`
+* AsyncStream
+  * `isEmpty()`
+
+## v2.4.1 - 2025-12-30
+
+### Fixes
+* Fix version in deno.json
+
+## v2.4.0 - 2025-12-29
+
+### New features
+* random
+  * `percentage()`
+  * `percentageAsync()`
+  * `booleans()`
+  * `booleansAsync()`
+* Stream
+  * `ofPercentage()`
+* AsyncStream
+  * `ofPercentage()`
+
+### Deprecations
+* infinite
+  * `booleans()` (use `random.booleans()` instead).
+  * `booleansAsync()` (use `random.booleansAsync()` instead).
 
 ## v2.3.1 - 2025-09-06
 
