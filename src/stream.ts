@@ -980,6 +980,26 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   *Splits the elements of the stream into `n` smaller arrays (chunks), maintaining order.
+ *
+ * Each chunk is returned as an array in a new Stream. The resulting Stream is chainable,
+ * so you can continue applying other Stream operations like `map`, `filter`, or further `divide`.
+ *
+ * Example:
+ * const s = new Stream([1, 2, 3, 4])
+ * // Output:
+ * // [1, 2]
+ * // [3, 4]
+   * @param n The number of chunks to divide the stream into
+   * @see transform.divide
+   * @returns A new Stream where each element is an array representing a chunk of the original data.
+   */
+  divide(n:number): Stream<Array<T>>{
+    const dividedIterable = divide(this.data,n); //split into chunks
+    return new Stream(dividedIterable); //wrap into stream
+  }
+
+  /**
    * Converts stream to Array.
    *
    * @see transform.toArray
@@ -1025,4 +1045,5 @@ export class Stream<T> implements Iterable<T> {
   protected constructor(iterable: Iterable<T>) {
     this.data = iterable;
   }
+
 }

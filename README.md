@@ -12,50 +12,51 @@
 
 Inspired by Python — designed for TypeScript.
 
-Features
---------
+## Features
 
 IterTools makes you an iteration superstar by providing 3 types of tools:
 
-* Loop iteration tools
-* Stream iteration tools
-* Pipe iteration tools
+- Loop iteration tools
+- Stream iteration tools
+- Pipe iteration tools
 
 **Loop Iteration Tools Example**
 
 ```typescript
-import { multi } from 'itertools-ts';
+import { multi } from "itertools-ts";
 
-for (const [letter, number] of multi.zip(['a', 'b'], [1, 2])) {
-  console.log(`${letter}${number}`);  // a1, b2
+for (const [letter, number] of multi.zip(["a", "b"], [1, 2])) {
+  console.log(`${letter}${number}`); // a1, b2
 }
 
 // Async example
-const letters = ['a', 'b'].map((x) => Promise.resolve(x));
+const letters = ["a", "b"].map((x) => Promise.resolve(x));
 const numbers = [1, 2].map((x) => Promise.resolve(x));
 
 for await (const [letter, number] of multi.zipAsync(letters, numbers)) {
-  console.log(`${letter}${number}`);  // a1, b2
+  console.log(`${letter}${number}`); // a1, b2
 }
 ```
 
 **Stream Iteration Tools Example**
 
 ```typescript
-import { Stream, AsyncStream } from 'itertools-ts';
+import { Stream, AsyncStream } from "itertools-ts";
 
 const result1 = Stream.of([1, 1, 2, 2, 3, 4, 5])
-  .distinct()             // [1, 2, 3, 4, 5]
-  .map((x) => x**2)       // [1, 4, 9, 16, 25]
-  .filter((x) => x < 10)  // [1, 4, 9]
-  .toSum();               // 14
+  .distinct() // [1, 2, 3, 4, 5]
+  .map((x) => x ** 2) // [1, 4, 9, 16, 25]
+  .filter((x) => x < 10) // [1, 4, 9]
+  .toSum(); // 14
 
 // Async example
-const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)))
-  .distinct()             // [1, 2, 3, 4, 5]
-  .map((x) => x**2)       // [1, 4, 9, 16, 25]
-  .filter((x) => x < 10)  // [1, 4, 9]
-  .toSum();               // 14
+const result2 = await AsyncStream.of(
+  [1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x))
+)
+  .distinct() // [1, 2, 3, 4, 5]
+  .map((x) => x ** 2) // [1, 4, 9, 16, 25]
+  .filter((x) => x < 10) // [1, 4, 9]
+  .toSum(); // 14
 ```
 
 [More about Streams](#Stream-and-Async-Stream)
@@ -63,57 +64,63 @@ const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.re
 **Pipe Iteration Tools Example**
 
 ```typescript
-import { createPipe } from 'itertools-ts';
+import { createPipe } from "itertools-ts";
 
 const pipe = createPipe(
   set.distinct<number>,
-  (input) => single.map(input, (x) => x**2),
+  (input) => single.map(input, (x) => x ** 2),
   (input) => single.filter(input, (x) => x < 10),
-  reduce.toSum,
+  reduce.toSum
 );
 const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
-const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
+const result2 = pipe([1, 1, 1, 2, 2, 2]); // 5
 
 // Async example
 const asyncPipe = createPipe(
   set.distinctAsync<number>,
-  (input) => single.mapAsync(input, (x) => x**2),
+  (input) => single.mapAsync(input, (x) => x ** 2),
   (input) => single.filterAsync(input, (x) => x < 10),
-  reduce.toSumAsync,
+  reduce.toSumAsync
 );
-const result3 = await asyncPipe([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x))); // 14
-const result4 = await asyncPipe([1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x)));    // 5
+const result3 = await asyncPipe(
+  [1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x))
+); // 14
+const result4 = await asyncPipe(
+  [1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x))
+); // 5
 
 // Another way to create pipes
 const anotherPipe = createPipe()
   .add(set.distinct<number>)
-  .add((input) => single.map(input, (x) => x**2))
+  .add((input) => single.map(input, (x) => x ** 2))
   .add((input) => single.filter(input, (x) => x < 10))
   .add(reduce.toSum);
 
 const result5 = anotherPipe([1, 1, 2, 2, 3, 4, 5]); // 14
-const result6 = anotherPipe([1, 1, 1, 2, 2, 2]);    // 5
+const result6 = anotherPipe([1, 1, 1, 2, 2, 2]); // 5
 ```
 
 [More about Pipes](#Pipes)
 
 All functions work on iterable collections and iterators:
-* `Array`
-* `Set`
-* `Map`
-* `String`
-* `Generator`
-* `Iterable`
-* `Iterator`
+
+- `Array`
+- `Set`
+- `Map`
+- `String`
+- `Generator`
+- `Iterable`
+- `Iterator`
 
 Every function have an analog with "Async"-suffixed name for working with async iterable and iterators (e.g. `zip` and `zipAsync`):
-* `AsyncIterable`
-* `AsyncIterator`
+
+- `AsyncIterable`
+- `AsyncIterator`
 
 If an asynchronous function takes other functions as input, they can also be asynchronous.
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const starWarsEpisodes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -128,21 +135,20 @@ for await (const goodMovie of single.filterAsync(
 // 4, 5, 6, 7
 ```
 
-Setup
------
+## Setup
 
 ```bash
 npm i itertools-ts
 ```
 
-Quick Reference
----------------
+## Quick Reference
 
 ### Loop Iteration Tools
 
 #### Multi Iteration
+
 | Iterator                     | Description                                                                                                       | Sync Code Snippet                            | Async Code Snippet                                |
-|------------------------------|-------------------------------------------------------------------------------------------------------------------|----------------------------------------------|---------------------------------------------------|
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------- |
 | [`chain`](#chain)            | Chain multiple iterables together                                                                                 | `multi.chain(list1, list2, ...)`             | `multi.chainAsync(list1, list2, ...)`             |
 | [`zip`](#zip)                | Iterate multiple collections simultaneously until the shortest iterator completes                                 | `multi.zip(list1, list2, ...)`               | `multi.zipAsync(list1, list2, ...)`               |
 | [`zipEqual`](#zip-equal)     | Iterate multiple collections of equal length simultaneously, error if lengths not equal                           | `multi.zipEqual(list1, list2, ...)`          | `multi.zipEqualAsync(list1, list2, ...)`          |
@@ -150,8 +156,9 @@ Quick Reference
 | [`zipLongest`](#zip-longest) | Iterate multiple collections simultaneously until the longest iterator completes                                  | `multi.zipLongest(list1, list2, ...)`        | `multi.zipLongestAsync(list1, list2, ...)`        |
 
 #### Single Iteration
+
 | Iterator                                 | Description                                 | Sync Code Snippet                                       | Async Code Snippet                                           |
-|------------------------------------------|---------------------------------------------|---------------------------------------------------------|--------------------------------------------------------------|
+| ---------------------------------------- | ------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------ |
 | [`chunkwise`](#chunkwise)                | Iterate by chunks                           | `single.chunkwise(data, chunkSize)`                     | `single.chunkwiseAsync(data, chunkSize)`                     |
 | [`chunkwiseOverlap`](#chunkwise-overlap) | Iterate by overlapped chunks                | `single.chunkwiseOverlap(data, chunkSize, overlapSize)` | `single.chunkwiseOverlapAsync(data, chunkSize, overlapSize)` |
 | [`compress`](#compress)                  | Filter out elements not selected            | `single.compress(data, selectors)`                      | `single.compressAsync(data, selectors)`                      |
@@ -173,6 +180,7 @@ Quick Reference
 | [`values`](#values)                      | Iterate values of key-value pairs           | `single.values(data)`                                   | `single.valuesAsync(data)`                                   |
 
 #### Infinite Iteration
+
 | Iterator                | Description                | Code Snippet                       |
 |-------------------------|----------------------------|------------------------------------|
 | [`count`](#Count)       | Count sequentially forever | `infinite.count([start], [step])`  |
@@ -188,8 +196,9 @@ Quick Reference
 | [`rockPaperScissors`](#Rock-Paper-Scissors)   | Generate random rock-paper-scissors    | `random.rockPaperScissors([repetitions])`     |
 
 #### Math Iteration
+
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
-|--------------------------------------------|---------------------------------|---------------------------------------------------|--------------------------------------------------------|
+| ------------------------------------------ | ------------------------------- | ------------------------------------------------- | ------------------------------------------------------ |
 | [`runningAverage`](#Running-Average)       | Running average accumulation    | `math.runningAverage(numbers, [initialValue])`    | `math.runningAverageAsync(numbers, [initialValue])`    |
 | [`runningDifference`](#Running-Difference) | Running difference accumulation | `math.runningDifference(numbers, [initialValue])` | `math.runningDifferenceAsync(numbers, [initialValue])` |
 | [`runningMax`](#Running-Max)               | Running maximum accumulation    | `math.runningMax(numbers, [initialValue])`        | `math.runningMax(numbers, [initialValue])`             |
@@ -198,8 +207,9 @@ Quick Reference
 | [`runningTotal`](#Running-Total)           | Running total accumulation      | `math.runningTotal(numbers, [initialValue])`      | `math.runningTotalAsync(numbers, [initialValue])`      |
 
 #### Reduce
+
 | Reducer                                | Description                                | Sync Code Snippet                             | Async Code Snippet                                 |
-|----------------------------------------|--------------------------------------------|-----------------------------------------------|----------------------------------------------------|
+| -------------------------------------- | ------------------------------------------ | --------------------------------------------- | -------------------------------------------------- |
 | [`toAverage`](#To-Average)             | Mean average of elements                   | `reduce.toAverage(numbers)`                   | `reduce.toAverageAsync(numbers)`                   |
 | [`toCount`](#To-Count)                 | Reduce to length of iterable               | `reduce.toCount(data)`                        | `reduce.toCountAsync(data)`                        |
 | [`toFirst`](#To-First)                 | Reduce to its first value                  | `reduce.toFirst(data)`                        | `reduce.toFirstAsync(data)`                        |
@@ -214,24 +224,27 @@ Quick Reference
 | [`toValue`](#To-Value)                 | Reduce to value using callable reducer     | `reduce.toValue(data, reducer, initialValue)` | `reduce.toValueAsync(data, reducer, initialValue)` |
 
 #### Set and multiset Iteration
-| Iterator                                       | Description                            | Sync Code Snippet                                 | Async Code Snippet                                     |
-|------------------------------------------------|----------------------------------------|---------------------------------------------------|--------------------------------------------------------|
-| [`distinct`](#distinct)                        | Iterate only distinct items            | `set.distinct(data)`                              | `set.distinctAsync(data)`                              |
-| [`intersection`](#intersection)                | Intersection of iterables              | `set.intersection(...iterables)`                  | `set.intersectionAsync(...iterables)`                  |
-| [`partialIntersection`](#partial-intersection) | Partial intersection of iterables      | `set.partialIntersection(minCount, ...iterables)` | `set.partialIntersectionAsync(minCount, ...iterables)` |
-| [`symmetricDifference`](#symmetric-difference) | Symmetric difference of iterables      | `set.symmetricDifference(...iterables)`           | `set.symmetricDifferenceAsync(...iterables)`           |
-| [`union`](#union)                              | Union of iterables                     | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
+
+| Iterator                                       | Description                       | Sync Code Snippet                                 | Async Code Snippet                                     |
+| ---------------------------------------------- | --------------------------------- | ------------------------------------------------- | ------------------------------------------------------ |
+| [`distinct`](#distinct)                        | Iterate only distinct items       | `set.distinct(data)`                              | `set.distinctAsync(data)`                              |
+| [`intersection`](#intersection)                | Intersection of iterables         | `set.intersection(...iterables)`                  | `set.intersectionAsync(...iterables)`                  |
+| [`partialIntersection`](#partial-intersection) | Partial intersection of iterables | `set.partialIntersection(minCount, ...iterables)` | `set.partialIntersectionAsync(minCount, ...iterables)` |
+| [`symmetricDifference`](#symmetric-difference) | Symmetric difference of iterables | `set.symmetricDifference(...iterables)`           | `set.symmetricDifferenceAsync(...iterables)`           |
+| [`union`](#union)                              | Union of iterables                | `set.union(...iterables)`                         | `set.unionAsync(...iterables)`                         |
 
 #### Combinatorics
+
 | Iterator                                 | Description                            | Sync Code Snippet                             | Async Code Snippet                                 |
-|------------------------------------------|----------------------------------------|-----------------------------------------------|----------------------------------------------------|
+| ---------------------------------------- | -------------------------------------- | --------------------------------------------- | -------------------------------------------------- |
 | [`cartesianProduct`](#cartesian-product) | Iterate cartesian product of iterables | `combinations.cartesianProduct(...iterables)` | `combinations.cartesianProductAsync(...iterables)` |
 | [`combinations`](#combinations)          | Combinations of iterables              | `combinations.combinations(data, length)`     | `combinations.combinationsAsync(data, length)`     |
 | [`permutations`](#permutations)          | Permutations of iterables              | `combinations.permutations(data, length)`     | `combinations.permutationsAsync(data, length)`     |
 
 #### Summary
+
 | Summary                                 | Description                                             | Sync Code Snippet                      | Async Code Snippet                          |
-|-----------------------------------------|---------------------------------------------------------|----------------------------------------|---------------------------------------------|
+| --------------------------------------- | ------------------------------------------------------- | -------------------------------------- | ------------------------------------------- |
 | [`allMatch`](#all-match)                | True if all items are true according to predicate       | `summary.allMatch(data, predicate)`    | `summary.allMatchAsync(data, predicate)`    |
 | [`allUnique`](#all-unique)              | True if all elements in collection are unique           | `summary.allUnique(data)`              | `summary.allUniqueAsync(data)`              |
 | [`anyMatch`](#any-match)                | True if any item is true according to predicate         | `summary.anyMatch(data, predicate)`    | `summary.anyMatchAsync(data, predicate)`    |
@@ -248,8 +261,10 @@ Quick Reference
 | [`sameCount`](#same-count)              | True if collections have the same lengths               | `summary.sameCount(...collections)`    | `summary.sameCountAsync(...collections)`    |
 
 #### Transform
+
 | Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet                |
-|-----------------------------------------|-----------------------------------------|-----------------------------------|-----------------------------------|
+| --------------------------------------- | --------------------------------------- | --------------------------------- | --------------------------------- |
+| [`divide`](#divide)                     | Divide the elements of the iterable     | `transform.divide(data, n)`       | `transform.divideAsync(data, n)`  |
 | [`tee`](#tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | `transform.teeAsync(data, count)` |
 | [`toArray`](#to-array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)`    |
 | [`toAsyncIterable`](#to-async-iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                                 |
@@ -260,6 +275,7 @@ Quick Reference
 | [`toSet`](#to-set)                      | Transforms collection to set            | `transform.toSet(data)`           | `transform.toSetAsync(data)`      |
 
 ### Stream and AsyncStream Iteration Tools
+
 #### Stream Sources
 | Source                                           | Description                         | Sync Code Snippet                           | Async Code Snippet                               |
 |--------------------------------------------------|-------------------------------------|---------------------------------------------|--------------------------------------------------|
@@ -274,8 +290,9 @@ Quick Reference
 | [`ofRockPaperScissors`](#of-rock-paper-scissors) | Create rock-paper-scissors stream   | `Stream.ofRockPaperScissors([repetitions])` | `AsyncStream.ofRockPaperScissors([repetitions])` |
 
 #### Stream Operations
+
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
-|---------------------------------------------------------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------|
+| ------------------------------------------------------- | ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | [`cartesianProductWith`](#cartesian-product-with)       | Iterate cartesian product of iterable source with another iterable collections            | `stream.cartesianProductWith(...iterables)`                          |
 | [`chainWith`](#chain-with)                              | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`                                     |
 | [`chunkwise`](#chunkwise-1)                             | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                                        |
@@ -315,17 +332,21 @@ Quick Reference
 | [`zipLongestWith`](#zip-longest-with)                   | Iterate iterable source with another iterable collections simultaneously                  | `stream.zipLongestWith(...iterables)`                                |
 
 #### Stream Terminal Operations
+
 ##### Transformation Terminal Operations
-| Terminal Operation       | Description                                      | Code Snippet        |
-|--------------------------|--------------------------------------------------|---------------------|
-| [`tee`](#tee-1)          | Returns array of multiple identical Streams      | `stream.tee(count)` |
-| [`toArray`](#to-array-1) | Returns array of stream elements                 | `stream.toArray()`  |
-| [`toMap`](#to-map-1)     | Returns map of stream elements (key-value pairs) | `stream.toMap()`    |
-| [`toSet`](#to-set-1)     | Returns set of stream elements                   | `stream.toSet()`    |
+
+| Terminal Operation       | Description                                                         | Code Snippet        |
+| ------------------------ | ------------------------------------------------------------------- | ------------------- |
+| [`divide`](#divide-1)    | Splits the elements of the stream into `n` evenly sized sub-streams | `stream.divide(n)`  |
+| [`tee`](#tee-1)          | Returns array of multiple identical Streams                         | `stream.tee(count)` |
+| [`toArray`](#to-array-1) | Returns array of stream elements                                    | `stream.toArray()`  |
+| [`toMap`](#to-map-1)     | Returns map of stream elements (key-value pairs)                    | `stream.toMap()`    |
+| [`toSet`](#to-set-1)     | Returns set of stream elements                                      | `stream.toSet()`    |
 
 ##### Reduction Terminal Operations
+
 | Terminal Operation                       | Description                                        | Code Snippet                            |
-|------------------------------------------|----------------------------------------------------|-----------------------------------------|
+| ---------------------------------------- | -------------------------------------------------- | --------------------------------------- |
 | [`toAverage`](#to-average-1)             | Reduces stream to the mean average of its items    | `stream.toAverage()`                    |
 | [`toCount`](#to-count-1)                 | Reduces stream to its length                       | `stream.toCount()`                      |
 | [`toFirst`](#to-first-1)                 | Reduces stream to its first value                  | `stream.toFirst()`                      |
@@ -340,8 +361,9 @@ Quick Reference
 | [`toValue`](#to-value-1)                 | Reduces stream like array.reduce() function        | `stream.toValue(reducer, initialValue)` |
 
 ##### Summary Terminal Operations
+
 | Terminal Operation                  | Description                                                            | Code Snippet                           |
-|-------------------------------------|------------------------------------------------------------------------|----------------------------------------|
+| ----------------------------------- | ---------------------------------------------------------------------- | -------------------------------------- |
 | [`allMatch`](#all-match-1)          | Returns true if all items in stream match predicate                    | `stream.allMatch(predicate)`           |
 | [`allUnique`](#all-unique-1)        | Returns true if all elements of stream are unique                      | `stream.allUnique(predicate)`          |
 | [`anyMatch`](#any-match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
@@ -354,16 +376,18 @@ Quick Reference
 | [`sameCountWith`](#same-count-with) | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)` |
 
 #### Stream Debug Operations
+
 | Debug Operation              | Description                                    | Code Snippet                  |
-|------------------------------|------------------------------------------------|-------------------------------|
+| ---------------------------- | ---------------------------------------------- | ----------------------------- |
 | [`peek`](#peek)              | Peek at each element between stream operations | `stream.peek(peekFunc)`       |
 | [`peekStream`](#peek-stream) | Peek at the entire stream between operations   | `stream.peekStream(peekFunc)` |
 
-Usage
------
+## Usage
 
 ## Multi Iteration
+
 ### Chain
+
 Chain multiple iterables together into a single continuous sequence.
 
 ```
@@ -371,11 +395,16 @@ function* chain<T>(
   ...iterables: Array<Iterable<T> | Iterator<T>>
 ): Iterable<T>
 ```
-```typescript
-import { multi } from 'itertools-ts';
 
-const prequels = ['Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith'];
-const originals = ['A New Hope', 'Empire Strikes Back', 'Return of the Jedi'];
+```typescript
+import { multi } from "itertools-ts";
+
+const prequels = [
+  "Phantom Menace",
+  "Attack of the Clones",
+  "Revenge of the Sith",
+];
+const originals = ["A New Hope", "Empire Strikes Back", "Return of the Jedi"];
 
 for (const movie of multi.chain(prequels, originals)) {
   console.log(movie);
@@ -384,6 +413,7 @@ for (const movie of multi.chain(prequels, originals)) {
 ```
 
 ### Zip
+
 Iterate multiple iterable collections simultaneously.
 
 ```
@@ -393,10 +423,10 @@ function* zip<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
 ```
 
 ```typescript
-import { multi } from 'itertools-ts';
+import { multi } from "itertools-ts";
 
-const languages = ['PHP', 'Python', 'Java', 'Go'];
-const mascots = ['elephant', 'snake', 'bean', 'gopher'];
+const languages = ["PHP", "Python", "Java", "Go"];
+const mascots = ["elephant", "snake", "bean", "gopher"];
 
 for (const [language, mascot] of multi.zip(languages, mascots)) {
   console.log(`The ${language} language mascot is an ${mascot}.`);
@@ -406,20 +436,32 @@ for (const [language, mascot] of multi.zip(languages, mascots)) {
 ```
 
 Zip works with multiple iterable inputs - not limited to just two.
+
 ```typescript
-import { multi } from 'itertools-ts';
+import { multi } from "itertools-ts";
 
-const names          = ['Ryu', 'Ken', 'Chun Li', 'Guile'];
-const countries      = ['Japan', 'USA', 'China', 'USA'];
-const signatureMoves = ['hadouken', 'shoryuken', 'spinning bird kick', 'sonic boom'];
+const names = ["Ryu", "Ken", "Chun Li", "Guile"];
+const countries = ["Japan", "USA", "China", "USA"];
+const signatureMoves = [
+  "hadouken",
+  "shoryuken",
+  "spinning bird kick",
+  "sonic boom",
+];
 
-for (const [name, country, signatureMove] of multi.zip(names, countries, signatureMoves)) {
+for (const [name, country, signatureMove] of multi.zip(
+  names,
+  countries,
+  signatureMoves
+)) {
   const streetFighter = new StreetFighter(name, country, signatureMove);
 }
 ```
+
 Note: For uneven lengths, iteration stops when the shortest iterable is exhausted.
 
 ### Zip Filled
+
 Iterate multiple iterable collections simultaneously.
 
 ```
@@ -432,17 +474,18 @@ function* zipFilled<T extends Array<Iterable<unknown> | Iterator<unknown>>, F>(
 For uneven lengths, the exhausted iterables will produce `filler` value for the remaining iterations.
 
 ```typescript
-import { multi } from 'itertools-ts';
+import { multi } from "itertools-ts";
 
-const letters = ['A', 'B', 'C'];
+const letters = ["A", "B", "C"];
 const numbers = [1, 2];
 
-for (const [letter, number] of multi.zipFilled('filler', letters, numbers)) {
+for (const [letter, number] of multi.zipFilled("filler", letters, numbers)) {
   // ['A', 1], ['B', 2], ['C', 'filler']
 }
 ```
 
 ### Zip Longest
+
 Iterate multiple iterable collections simultaneously.
 
 ```
@@ -454,9 +497,9 @@ function* zipLongest<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
 For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
 
 ```typescript
-import { multi } from 'itertools-ts';
+import { multi } from "itertools-ts";
 
-const letters = ['A', 'B', 'C'];
+const letters = ["A", "B", "C"];
 const numbers = [1, 2];
 
 for (const [letter, number] of multi.zipLongest(letters, numbers)) {
@@ -465,6 +508,7 @@ for (const [letter, number] of multi.zipLongest(letters, numbers)) {
 ```
 
 ### Zip Equal
+
 Iterate multiple iterable collections with equal lengths simultaneously.
 
 Throws `LengthException` if lengths are not equal, meaning that at least one iterator ends before the others.
@@ -476,18 +520,20 @@ function* zipEqual<T extends Array<Iterable<unknown> | Iterator<unknown>>>(
 ```
 
 ```typescript
-import { multi } from 'itertools-ts';
+import { multi } from "itertools-ts";
 
-const letters = ['A', 'B', 'C'];
+const letters = ["A", "B", "C"];
 const numbers = [1, 2, 3];
 
 for (const [letter, number] of multi.zipEqual(letters, numbers)) {
-    // ['A', 1], ['B', 2], ['C', 3]
+  // ['A', 1], ['B', 2], ['C', 3]
 }
 ```
 
 ## Single Iteration
+
 ### Chunkwise
+
 Return elements in chunks of a certain size.
 
 ```
@@ -500,17 +546,23 @@ function* chunkwise<T>(
 Chunk size must be at least 1.
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const movies = [
-    'Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith',
-    'A New Hope', 'Empire Strikes Back', 'Return of the Jedi',
-    'The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker',
+  "Phantom Menace",
+  "Attack of the Clones",
+  "Revenge of the Sith",
+  "A New Hope",
+  "Empire Strikes Back",
+  "Return of the Jedi",
+  "The Force Awakens",
+  "The Last Jedi",
+  "The Rise of Skywalker",
 ];
 const trilogies = [];
 
 for (const trilogy of single.chunkwise(movies, 3)) {
-    trilogies.push(trilogy);
+  trilogies.push(trilogy);
 }
 // [
 //     ['Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith'],
@@ -520,6 +572,7 @@ for (const trilogy of single.chunkwise(movies, 3)) {
 ```
 
 ### Chunkwise Overlap
+
 Return overlapped chunks of elements.
 
 ```
@@ -531,11 +584,11 @@ function* chunkwiseOverlap<T>(
 ): Iterable<Array<T>>
 ```
 
-* Chunk size must be at least 1.
-* Overlap size must be less than chunk size.
+- Chunk size must be at least 1.
+- Overlap size must be less than chunk size.
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -545,6 +598,7 @@ for (const chunk of single.chunkwiseOverlap(numbers, 3, 1)) {
 ```
 
 ### Compress
+
 Compress an iterable by filtering out data that is not selected.
 
 ```
@@ -555,12 +609,18 @@ function* compress<T>(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const movies = [
-  'Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith',
-  'A New Hope', 'Empire Strikes Back', 'Return of the Jedi',
-  'The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker'
+  "Phantom Menace",
+  "Attack of the Clones",
+  "Revenge of the Sith",
+  "A New Hope",
+  "Empire Strikes Back",
+  "Return of the Jedi",
+  "The Force Awakens",
+  "The Last Jedi",
+  "The Rise of Skywalker",
 ];
 const goodMovies = [0, 0, 0, 1, 1, 1, 1, 0, 0];
 
@@ -571,6 +631,7 @@ for (const goodMovie of single.compress(movies, goodMovies)) {
 ```
 
 ### Drop While
+
 Drop elements from the iterable while the predicate function is true.
 
 Once the predicate function returns false once, all remaining elements are returned.
@@ -583,9 +644,9 @@ function* dropWhile<T>(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
-const scores    = [50, 60, 70, 85, 65, 90];
+const scores = [50, 60, 70, 85, 65, 90];
 const predicate = (x) => x < 70;
 
 for (const score of single.dropWhile(scores, predicate)) {
@@ -595,6 +656,7 @@ for (const score of single.dropWhile(scores, predicate)) {
 ```
 
 ### Enumerate
+
 Enumerates elements of given collection.
 
 ```
@@ -602,9 +664,9 @@ function* enumerate<T>(data: Iterable<T>|Iterator<T>): Iterable<[number, T]>
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
-const letters = ['a', 'b', 'c', 'd', 'e'];
+const letters = ["a", "b", "c", "d", "e"];
 
 for (const item of single.enumerate(letters)) {
   // [[0, 'a'], [1, 'b'], [2, 'c'], [3, 'd'], [4, 'e']]
@@ -612,6 +674,7 @@ for (const item of single.enumerate(letters)) {
 ```
 
 ### Filter
+
 Filter out elements from the iterable only returning elements where the predicate function is true.
 
 ```
@@ -622,7 +685,7 @@ function* filter<T>(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const starWarsEpisodes = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const goodMoviePredicate = (episode) => episode > 3 && episode < 8;
@@ -634,6 +697,7 @@ for (const goodMovie of single.filter(starWarsEpisodes, goodMoviePredicate)) {
 ```
 
 ### Flat Map
+
 Map a function only the elements of the iterable and then flatten the results.
 
 ```
@@ -644,7 +708,7 @@ function* flatMap<TInput, TOutput>(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const data = [1, 2, 3, 4, 5];
 const mapper = (item) => [item, -item];
@@ -656,6 +720,7 @@ for (number of single.flatMap(data, mapper)) {
 ```
 
 ### Flatten
+
 Flatten a multidimensional iterable.
 
 ```
@@ -666,18 +731,19 @@ function* flatten(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const multidimensional = [1, [2, 3], [4, 5]];
 
 const flattened = [];
 for (const number of single.flatten(multidimensional)) {
-    flattened.push(number);
+  flattened.push(number);
 }
 // [1, 2, 3, 4, 5]
 ```
 
 ### Group By
+
 Group data by a common data element.
 
 Iterate pairs of group name and collection of grouped items.
@@ -694,28 +760,31 @@ export function* groupBy<
 ): Iterable<TResultItem>
 ```
 
-* The `groupKeyFunction` determines the key to group elements by.
-* The optional `itemKeyFunction` allows custom indexes within each group member.
-* Collection of grouped items may be an array or an object (depends on presence of `itemKeyFunction` param).
+- The `groupKeyFunction` determines the key to group elements by.
+- The optional `itemKeyFunction` allows custom indexes within each group member.
+- Collection of grouped items may be an array or an object (depends on presence of `itemKeyFunction` param).
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const cartoonCharacters = [
-    ['Garfield', 'cat'],
-    ['Tom', 'cat'],
-    ['Felix', 'cat'],
-    ['Heathcliff', 'cat'],
-    ['Snoopy', 'dog'],
-    ['Scooby-Doo', 'dog'],
-    ['Odie', 'dog'],
-    ['Donald', 'duck'],
-    ['Daffy', 'duck'],
+  ["Garfield", "cat"],
+  ["Tom", "cat"],
+  ["Felix", "cat"],
+  ["Heathcliff", "cat"],
+  ["Snoopy", "dog"],
+  ["Scooby-Doo", "dog"],
+  ["Odie", "dog"],
+  ["Donald", "duck"],
+  ["Daffy", "duck"],
 ];
 
 const charactersGroupedByAnimal = {};
-for (const [animal, characters] of single.groupBy(cartoonCharacters, (x) => x[1])) {
-    charactersGroupedByAnimal[animal] = characters;
+for (const [animal, characters] of single.groupBy(
+  cartoonCharacters,
+  (x) => x[1]
+)) {
+  charactersGroupedByAnimal[animal] = characters;
 }
 /*
 {
@@ -739,6 +808,7 @@ for (const [animal, characters] of single.groupBy(cartoonCharacters, (x) => x[1]
 ```
 
 ### Keys
+
 Iterate keys of key-value pairs.
 
 ```
@@ -748,9 +818,13 @@ function* keys<TKey, TValue>(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
-const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
+const dict = new Map([
+  ["a", 1],
+  ["b", 2],
+  ["c", 3],
+]);
 
 for (const key of single.keys(dict)) {
   console.log(key);
@@ -759,6 +833,7 @@ for (const key of single.keys(dict)) {
 ```
 
 ### Limit
+
 Iterate up to a limit.
 
 Stops even if more data available if limit reached.
@@ -768,18 +843,24 @@ function* limit<T>(data: Iterable<T>|Iterator<T>, count: number): Iterable<T>
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
-const matrixMovies = ['The Matrix', 'The Matrix Reloaded', 'The Matrix Revolutions', 'The Matrix Resurrections'];
+const matrixMovies = [
+  "The Matrix",
+  "The Matrix Reloaded",
+  "The Matrix Revolutions",
+  "The Matrix Resurrections",
+];
 const limit = 1;
 
 for (const goodMovie of single.limit(matrixMovies, limit)) {
-    console.log(goodMovie);
+  console.log(goodMovie);
 }
 // 'The Matrix' (and nothing else)
 ```
 
 ### Map
+
 Map a function onto each element.
 
 ```
@@ -790,10 +871,10 @@ function* map<TInput, TOutput>(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const grades = [100, 99, 95, 98, 100];
-const strictParentsOpinion = (g) => (g === 100) ? 'A' : 'F';
+const strictParentsOpinion = (g) => (g === 100 ? "A" : "F");
 
 for (const actualGrade of single.map(grades, strictParentsOpinion)) {
   console.log(actualGrade);
@@ -802,6 +883,7 @@ for (const actualGrade of single.map(grades, strictParentsOpinion)) {
 ```
 
 ### Pairwise
+
 Returns successive overlapping pairs.
 
 Returns empty generator if given collection contains fewer than 2 elements.
@@ -811,9 +893,9 @@ function* pairwise<T>(data: Iterable<T>|Iterator<T>): Iterable<Pair<T>>
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
-const friends = ['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey', 'Phoebe'];
+const friends = ["Ross", "Rachel", "Chandler", "Monica", "Joey", "Phoebe"];
 
 for (const [leftFriend, rightFriend] of single.pairwise(friends)) {
   console.log(`${leftFriend} and ${rightFriend}`);
@@ -822,6 +904,7 @@ for (const [leftFriend, rightFriend] of single.pairwise(friends)) {
 ```
 
 ### Repeat
+
 Repeat an item.
 
 ```
@@ -829,9 +912,9 @@ function* repeat<T>(item: T, repetitions: number): Iterable<T>
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
-data = 'Beetlejuice';
+data = "Beetlejuice";
 repetitions = 3;
 
 for (const repeated of single.repeat(data, repetitions)) {
@@ -841,6 +924,7 @@ for (const repeated of single.repeat(data, repetitions)) {
 ```
 
 ### Skip
+
 Skip n elements in the iterable after optional offset offset.
 
 ```
@@ -852,12 +936,18 @@ function* skip<T>(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const movies = [
-    'The Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith',
-    'A New Hope', 'The Empire Strikes Back', 'Return of the Jedi',
-    'The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker'
+  "The Phantom Menace",
+  "Attack of the Clones",
+  "Revenge of the Sith",
+  "A New Hope",
+  "The Empire Strikes Back",
+  "Return of the Jedi",
+  "The Force Awakens",
+  "The Last Jedi",
+  "The Rise of Skywalker",
 ];
 
 const prequelsRemoved = [];
@@ -873,6 +963,7 @@ for (const nonSequel of Single.skip(prequelsRemoved, 3, 3)) {
 ```
 
 ### Slice
+
 Extract a slice of the iterable.
 
 ```
@@ -885,18 +976,22 @@ function* slice<T>(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
-const olympics = [1992, 1994, 1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022];
+const olympics = [
+  1992, 1994, 1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016,
+  2018, 2020, 2022,
+];
 const winterOlympics = [];
 
 for (const winterYear of single.slice(olympics, 1, 8, 2)) {
-    winterOlympics.push(winterYear);
+  winterOlympics.push(winterYear);
 }
 // [1994, 1998, 2002, 2006, 2010, 2014, 2018, 2022]
 ```
 
 ### Sort
+
 Iterate the collection sorted.
 
 ```
@@ -909,7 +1004,7 @@ function* sort<T>(
 Uses default sorting if optional comparator function not provided.
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const data = [3, 4, 5, 9, 8, 7, 1, 6, 2];
 
@@ -920,6 +1015,7 @@ for (const datum of single.sort(data)) {
 ```
 
 ### Take While
+
 Return elements from the iterable as long as the predicate is true.
 
 Stops iteration as soon as the predicate returns false, even if other elements later on would eventually return true (different from filterTrue).
@@ -932,7 +1028,7 @@ function* takeWhile<T>(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
 const prices = [0, 0, 5, 10, 0, 0, 9];
 const isFree = (price) => price == 0;
@@ -944,6 +1040,7 @@ for (const freePrice of single.takeWhile(prices, isFree)) {
 ```
 
 ### Values
+
 Iterate values of key-value pairs.
 
 ```
@@ -953,9 +1050,13 @@ function* values<TKey, TValue>(
 ```
 
 ```typescript
-import { single } from 'itertools-ts';
+import { single } from "itertools-ts";
 
-const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
+const dict = new Map([
+  ["a", 1],
+  ["b", 2],
+  ["c", 3],
+]);
 
 for (const value of single.keys(dict)) {
   console.log(value);
@@ -966,6 +1067,7 @@ for (const value of single.keys(dict)) {
 ## Infinite Iteration
 
 ### Booleans
+
 Generate random boolean values.
 
 ```
@@ -975,7 +1077,7 @@ function* booleans(repetitions?: number): Iterable<boolean>
 If `repetitions` is provided, generates exactly that many booleans. If not provided, generates booleans infinitely.
 
 ```typescript
-import { infinite } from 'itertools-ts';
+import { infinite } from "itertools-ts";
 
 for (const bool of infinite.booleans(5)) {
   console.log(bool);
@@ -995,6 +1097,7 @@ for await (const bool of infinite.booleansAsync(5)) {
 ```
 
 ### Count
+
 Count sequentially forever.
 
 ```
@@ -1002,7 +1105,7 @@ function* count(start: number = 1, step: number = 1): Iterable<number>
 ```
 
 ```typescript
-import { infinite } from 'itertools-ts';
+import { infinite } from "itertools-ts";
 
 for (const i of infinite.count()) {
   console.log(i);
@@ -1011,6 +1114,7 @@ for (const i of infinite.count()) {
 ```
 
 ### Cycle
+
 Cycle through the elements of a collection sequentially forever.
 
 ```
@@ -1018,15 +1122,16 @@ function* cycle<T>(iterable: Iterable<T> | Iterator<T>): Iterable<T>
 ```
 
 ```typescript
-import { infinite } from 'itertools-ts';
+import { infinite } from "itertools-ts";
 
-for (const item of infinite.cycle(['rock', 'paper', 'scissors'])) {
+for (const item of infinite.cycle(["rock", "paper", "scissors"])) {
   console.log(item);
 }
 // 'rock', 'paper', 'scissors', 'rock', 'paper', 'scissors', 'rock', ...
 ```
 
 ### Repeat
+
 Repeat an item forever.
 
 ```
@@ -1034,9 +1139,9 @@ function* repeat<T>(item: T): Iterable<T>
 ```
 
 ```typescript
-import { infinite } from 'itertools-ts';
+import { infinite } from "itertools-ts";
 
-for (const item of infinite.repeat('bla')) {
+for (const item of infinite.repeat("bla")) {
   console.log(item);
 }
 // bla, bla, bla, bla, bla, ...
@@ -1134,6 +1239,7 @@ for await (const num of infinite.percentageAsync(5)) {
 ## Math Iteration
 
 ### Running Average
+
 Accumulate the running average over a list of numbers.
 
 ```
@@ -1144,7 +1250,7 @@ function* runningAverage(
 ```
 
 ```typescript
-import { math } from 'itertools-ts';
+import { math } from "itertools-ts";
 
 const grades = [100, 80, 80, 90, 85];
 
@@ -1155,6 +1261,7 @@ for (const runningAverage of math.runningAverage(grades)) {
 ```
 
 ### Running Difference
+
 Accumulate the running difference over a list of numbers.
 
 ```
@@ -1165,12 +1272,12 @@ function* runningDifference(
 ```
 
 ```typescript
-import { math } from 'itertools-ts';
+import { math } from "itertools-ts";
 
 const credits = [1, 2, 3, 4, 5];
 
 for (const runningDifference of math.runningDifference(credits)) {
-    console.log(runningDifference);
+  console.log(runningDifference);
 }
 // -1, -3, -6, -10, -15
 ```
@@ -1178,9 +1285,9 @@ for (const runningDifference of math.runningDifference(credits)) {
 Provide an optional initial value to lead off the running difference.
 
 ```typescript
-import { math } from 'itertools-ts';
+import { math } from "itertools-ts";
 
-const dartsScores   = [50, 50, 25, 50];
+const dartsScores = [50, 50, 25, 50];
 const startingScore = 501;
 
 for (const runningScore of math.runningDifference(dartsScores, startingScore)) {
@@ -1190,6 +1297,7 @@ for (const runningScore of math.runningDifference(dartsScores, startingScore)) {
 ```
 
 ### Running Max
+
 Accumulate the running maximum over a list of numbers.
 
 ```
@@ -1200,7 +1308,7 @@ function* runningMax(
 ```
 
 ```typescript
-import { math } from 'itertools-ts';
+import { math } from "itertools-ts";
 
 const numbers = [1, 2, 1, 3, 5];
 
@@ -1211,6 +1319,7 @@ for (const runningMax of math.runningMax(numbers)) {
 ```
 
 ### Running Min
+
 Accumulate the running minimum over a list of numbers.
 
 ```
@@ -1221,17 +1330,18 @@ function* runningMin(
 ```
 
 ```typescript
-import { math } from 'itertools-ts';
+import { math } from "itertools-ts";
 
 const numbers = [3, 4, 2, 5, 1];
 
 for (const runningMin of math.runningMin(numbers)) {
-    console.log(runningMin);
+  console.log(runningMin);
 }
 // 3, 3, 2, 2, 1
 ```
 
 ### Running Product
+
 Accumulate the running product over a list of numbers.
 
 ```
@@ -1242,7 +1352,7 @@ function* runningProduct(
 ```
 
 ```typescript
-import { math } from 'itertools-ts';
+import { math } from "itertools-ts";
 
 const numbers = [1, 2, 3, 4, 5];
 
@@ -1255,7 +1365,7 @@ for (const runningProduct of math.runningProduct(numbers)) {
 Provide an optional initial value to lead off the running product.
 
 ```typescript
-import { math } from 'itertools-ts';
+import { math } from "itertools-ts";
 
 const numbers = [1, 2, 3, 4, 5];
 const initialValue = 5;
@@ -1267,6 +1377,7 @@ for (const runningProduct of math.runningProduct(numbers, initialValue)) {
 ```
 
 ### Running Total
+
 Accumulate the running total over a list of numbers.
 
 ```
@@ -1277,19 +1388,20 @@ function* runningTotal(
 ```
 
 ```typescript
-import { math } from 'itertools-ts';
+import { math } from "itertools-ts";
 
 const prices = [1, 2, 3, 4, 5];
 
 for (const runningTotal of math.runningTotal(prices)) {
-    console.log(runningTotal);
+  console.log(runningTotal);
 }
 // 1, 3, 6, 10, 15
 ```
 
 Provide an optional initial value to lead off the running total.
+
 ```typescript
-import { math } from 'itertools-ts';
+import { math } from "itertools-ts";
 
 const prices = [1, 2, 3, 4, 5];
 const initialValue = 5;
@@ -1301,7 +1413,9 @@ for (const runningTotal of math.runningTotal(prices, initialValue)) {
 ```
 
 ## Reduce
+
 ### To Average
+
 Reduces to the mean average.
 
 Returns `undefined` if collection is empty.
@@ -1313,7 +1427,7 @@ function toAverage(
 ```
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
 const grades = [100, 90, 95, 85, 94];
 
@@ -1322,6 +1436,7 @@ const finalGrade = reduce.toAverage(numbers);
 ```
 
 ### To Count
+
 Reduces iterable to its length.
 
 ```
@@ -1329,7 +1444,7 @@ function toCount(data: Iterable<unknown>|Iterator<unknown>): number
 ```
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
 const data = [1, 2, 3];
 
@@ -1338,6 +1453,7 @@ const length = reduce.toCount(data);
 ```
 
 ### To First
+
 Reduces iterable to its first element.
 
 ```
@@ -1347,15 +1463,16 @@ function toFirst<T>(data: Iterable<T> | Iterator<T>): T
 Throws `LengthException` if collection is empty.
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
-const medals = ['gold', 'silver', 'bronze'];
+const medals = ["gold", "silver", "bronze"];
 
 const first = reduce.toFirst(medals);
 // gold
 ```
 
 ### To First And Last
+
 Reduces iterable to its first and last elements.
 
 ```
@@ -1365,15 +1482,16 @@ function toFirstAndLast<T>(data: Iterable<T> | Iterator<T>): [T, T]
 Throws `LengthException` if collection is empty.
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
-const medals = ['gold', 'silver', 'bronze'];
+const medals = ["gold", "silver", "bronze"];
 
 const result = reduce.toFirstAndLast(medals);
 // [gold, bronze]
 ```
 
 ### To Last
+
 Reduces iterable to its last element.
 
 ```
@@ -1383,15 +1501,16 @@ function toLast<T>(data: Iterable<T> | Iterator<T>): T
 Throws `LengthException` if collection is empty.
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
-const medals = ['gold', 'silver', 'bronze'];
+const medals = ["gold", "silver", "bronze"];
 
 const first = reduce.toFirst(medals);
 // bronze
 ```
 
 ### To Max
+
 Reduces to the max value.
 
 ```
@@ -1406,7 +1525,7 @@ function toMax<TValue>(
 - Returns `undefined` if collection is empty.
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
 const numbers = [5, 3, 1, 2, 4];
 
@@ -1415,19 +1534,19 @@ const result = reduce.toMax(numbers);
 
 const movieRatings = [
   {
-    title: 'The Matrix',
+    title: "The Matrix",
     rating: 4.7,
   },
   {
-    title: 'The Matrix Reloaded',
+    title: "The Matrix Reloaded",
     rating: 4.3,
   },
   {
-    title: 'The Matrix Revolutions',
+    title: "The Matrix Revolutions",
     rating: 3.9,
   },
   {
-    title: 'The Matrix Resurrections',
+    title: "The Matrix Resurrections",
     rating: 2.5,
   },
 ];
@@ -1441,6 +1560,7 @@ const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
 ```
 
 ### To Min
+
 Reduces to the min value.
 
 ```
@@ -1455,7 +1575,7 @@ function toMin<TValue>(
 - Returns `undefined` if collection is empty.
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
 const numbers = [5, 3, 1, 2, 4];
 
@@ -1464,19 +1584,19 @@ const result = reduce.toMin(numbers);
 
 const movieRatings = [
   {
-    title: 'The Matrix',
+    title: "The Matrix",
     rating: 4.7,
   },
   {
-    title: 'The Matrix Reloaded',
+    title: "The Matrix Reloaded",
     rating: 4.3,
   },
   {
-    title: 'The Matrix Revolutions',
+    title: "The Matrix Revolutions",
     rating: 3.9,
   },
   {
-    title: 'The Matrix Resurrections',
+    title: "The Matrix Resurrections",
     rating: 2.5,
   },
 ];
@@ -1490,6 +1610,7 @@ const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
 ```
 
 ### To Min Max
+
 Reduces collection to its lower and upper bounds.
 
 ```
@@ -1504,7 +1625,7 @@ function toMinMax<T>(
 - Returns `[undefined, undefined]` if collection is empty.
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
 const numbers = [5, 3, 1, 2, 4];
 
@@ -1513,19 +1634,19 @@ const result = reduce.toMinMax(numbers);
 
 const movieRatings = [
   {
-    title: 'The Matrix',
+    title: "The Matrix",
     rating: 4.7,
   },
   {
-    title: 'The Matrix Reloaded',
+    title: "The Matrix Reloaded",
     rating: 4.3,
   },
   {
-    title: 'The Matrix Revolutions',
+    title: "The Matrix Revolutions",
     rating: 3.9,
   },
   {
-    title: 'The Matrix Resurrections',
+    title: "The Matrix Resurrections",
     rating: 2.5,
   },
 ];
@@ -1543,6 +1664,7 @@ const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
 ```
 
 ### To Product
+
 Reduces to the product of its elements.
 
 Returns `undefined` if collection is empty.
@@ -1552,7 +1674,7 @@ function toProduct(data: Iterable<number>|Iterator<number>): number|undefined
 ```
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
 const primeFactors = [5, 2, 2];
 
@@ -1561,6 +1683,7 @@ const number = reduce.toProduct(primeFactors);
 ```
 
 ### To Range
+
 Reduces given collection to its range (difference between max and min).
 
 ```
@@ -1570,7 +1693,7 @@ function toRange(numbers: Iterable<Numeric> | Iterator<Numeric>): number
 Returns `0` if iterable source is empty.
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
 const grades = [100, 90, 80, 85, 95];
 
@@ -1579,6 +1702,7 @@ const range = reduce.toRange(numbers);
 ```
 
 ### To Sum
+
 Reduces to the sum of its elements.
 
 ```
@@ -1586,7 +1710,7 @@ function toSum(data: Iterable<number>|Iterator<number>): number
 ```
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
 const parts = [10, 20, 30];
 
@@ -1595,6 +1719,7 @@ const sum = reduce.toSum(parts);
 ```
 
 ### To Value
+
 Reduce elements to a single value using reducer function.
 
 ```
@@ -1606,7 +1731,7 @@ function toValue<TInput, TOutput>(
 ```
 
 ```typescript
-import { reduce } from 'itertools-ts';
+import { reduce } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 const sum = (carry, item) => carry + item;
@@ -1616,7 +1741,9 @@ const result = reduce.toValue(input, sum, 0);
 ```
 
 ## Set and multiset
+
 ### Distinct
+
 Filter out elements from the iterable only returning distinct elements.
 
 ```
@@ -1629,53 +1756,74 @@ function* distinct<T>(
 Always treats different instances of objects and arrays as unequal.
 
 ```typescript
-import { set } from 'itertools-ts';
+import { set } from "itertools-ts";
 
-const chessSet = ['rook', 'rook', 'knight', 'knight', 'bishop', 'bishop', 'king', 'queen', 'pawn', 'pawn'];
+const chessSet = [
+  "rook",
+  "rook",
+  "knight",
+  "knight",
+  "bishop",
+  "bishop",
+  "king",
+  "queen",
+  "pawn",
+  "pawn",
+];
 
 for (const chessPiece of set.distinct(chessSet)) {
   console.log(chessPiece);
 }
 // rook, knight, bishop, king, queen, pawn
 
-
 const users = [
-  { 'name': 'John', 'id': 1 },
-  { 'name': 'Mary', 'id': 2 },
-  { 'name': 'Mary', 'id': 3 },
-  { 'name': 'John', 'id': 4 },
-  { 'name': 'Jane', 'id': 5 },
+  { name: "John", id: 1 },
+  { name: "Mary", id: 2 },
+  { name: "Mary", id: 3 },
+  { name: "John", id: 4 },
+  { name: "Jane", id: 5 },
 ];
 
-for (const user of set.distinct(users, (item) => item['name'])) {
+for (const user of set.distinct(users, (item) => item["name"])) {
   console.log(user);
 }
 // { 'name': 'John', 'id': 1 }, { 'name': 'Mary', 'id': 2 }, { 'name': 'Jane', 'id': 5 }
 ```
 
 ### Intersection
+
 Iterates intersection of iterables.
 
 ```
 function* intersection<T>(...iterables: Array<Iterable<T> | Iterator<T>>): Iterable<T>
 ```
 
-* Always treats different instances of objects and arrays as unequal.
-* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
+- Always treats different instances of objects and arrays as unequal.
+- If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
 
 ```typescript
-import { set } from 'itertools-ts';
+import { set } from "itertools-ts";
 
-const chessPieces = ['rook', 'knight', 'bishop', 'queen', 'king', 'pawn'];
-const shogiPieces = ['rook', 'knight', 'bishop', 'king', 'pawn', 'lance', 'gold general', 'silver general'];
+const chessPieces = ["rook", "knight", "bishop", "queen", "king", "pawn"];
+const shogiPieces = [
+  "rook",
+  "knight",
+  "bishop",
+  "king",
+  "pawn",
+  "lance",
+  "gold general",
+  "silver general",
+];
 
 for (const commonPiece of set.intersection(chessPieces, shogiPieces)) {
-    console.log(commonPiece);
+  console.log(commonPiece);
 }
 // rook, knight, bishop, king, pawn
 ```
 
 ### Partial Intersection
+
 Iterates [M-partial intersection](https://github.com/Smoren/partial-intersection-php) of iterables.
 
 ```
@@ -1685,23 +1833,29 @@ function* partialIntersection<T>(
 ): Iterable<T>
 ```
 
-* Always treats different instances of objects and arrays as unequal.
-* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
+- Always treats different instances of objects and arrays as unequal.
+- If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
 
 ```typescript
-import { set } from 'itertools-ts';
+import { set } from "itertools-ts";
 
-const staticallyTyped    = ['c++', 'java', 'c#', 'go', 'haskell'];
-const dynamicallyTyped   = ['php', 'python', 'javascript', 'typescript'];
-const supportsInterfaces = ['php', 'java', 'c#', 'typescript'];
+const staticallyTyped = ["c++", "java", "c#", "go", "haskell"];
+const dynamicallyTyped = ["php", "python", "javascript", "typescript"];
+const supportsInterfaces = ["php", "java", "c#", "typescript"];
 
-for (const language of set.partialIntersection(2, staticallyTyped, dynamicallyTyped, supportsInterfaces)) {
+for (const language of set.partialIntersection(
+  2,
+  staticallyTyped,
+  dynamicallyTyped,
+  supportsInterfaces
+)) {
   console.log(language);
 }
 // c++, java, c#, go, php
 ```
 
 ### Symmetric difference
+
 Iterates the symmetric difference of iterables.
 
 ```
@@ -1710,11 +1864,11 @@ function* symmetricDifference<T>(
 ): Iterable<T>
 ```
 
-* Always treats different instances of objects and arrays as unequal.
-* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
+- Always treats different instances of objects and arrays as unequal.
+- If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
 
 ```typescript
-import { set } from 'itertools-ts';
+import { set } from "itertools-ts";
 
 const a = [2, 3, 4, 7];
 const b = [2, 3, 5, 8];
@@ -1727,30 +1881,33 @@ for (const item of set.symmetricDifference(a, b, c)) {
 ```
 
 ### Union
+
 Iterates the union of iterables.
 
 ```
 function* union<T>(...iterables: Array<Iterable<T> | Iterator<T>>): Iterable<T>
 ```
 
-* Always treats different instances of objects and arrays as unequal.
-* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
+- Always treats different instances of objects and arrays as unequal.
+- If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
 
 ```typescript
-import { set } from 'itertools-ts';
+import { set } from "itertools-ts";
 
 const a = [1, 2, 3];
 const b = [2, 3, 4];
 const c = [3, 4, 5];
 
 for (const item of set.symmetricDifference(a, b, c)) {
-    console.log(item);
+  console.log(item);
 }
 // 1, 2, 3, 4, 5
 ```
 
 ## Combinatorics
+
 ### Cartesian Product
+
 Iterates cartesian product of given iterables.
 
 ```
@@ -1760,11 +1917,11 @@ function* cartesianProduct<T extends Array<Iterable<unknown> | Iterator<unknown>
 ```
 
 ```typescript
-import { combinatorics } from 'itertools-ts';
+import { combinatorics } from "itertools-ts";
 
 const numbers = [1, 2];
-const letters = ['a', 'b'];
-const chars = ['!', '?'];
+const letters = ["a", "b"];
+const chars = ["!", "?"];
 
 for (const tuple of combinatorics.cartesianProduct(numbers, letters, chars)) {
   console.log(tuple);
@@ -1782,6 +1939,7 @@ for (const tuple of combinatorics.cartesianProduct(numbers, letters, chars)) {
 ```
 
 ### Combinations
+
 Iterates all combinations of given iterable.
 
 ```
@@ -1792,9 +1950,9 @@ function* combinations<T>(
 ```
 
 ```typescript
-import { combinatorics } from 'itertools-ts';
+import { combinatorics } from "itertools-ts";
 
-const fruits = ['apple', 'banana', 'cherry'];
+const fruits = ["apple", "banana", "cherry"];
 
 for (const combination of combinatorics.combinations(fruits, 2)) {
   console.log(combination);
@@ -1805,6 +1963,7 @@ for (const combination of combinatorics.combinations(fruits, 2)) {
 ```
 
 ### Permutations
+
 Iterates all permutations of given iterable.
 
 ```
@@ -1815,9 +1974,9 @@ function* permutations<T>(
 ```
 
 ```typescript
-import { combinatorics } from 'itertools-ts';
+import { combinatorics } from "itertools-ts";
 
-const fruits = ['apple', 'banana', 'cherry'];
+const fruits = ["apple", "banana", "cherry"];
 
 for (const permutation of combinatorics.permutations(fruits, 2)) {
   console.log(permutation);
@@ -1831,7 +1990,9 @@ for (const permutation of combinatorics.permutations(fruits, 2)) {
 ```
 
 ## Summary
+
 ### All Match
+
 Returns true if all elements match the predicate function.
 
 ```
@@ -1847,7 +2008,7 @@ Empty collections return true.
 import { summary } from "itertools-ts";
 
 const finalFantasyNumbers = [4, 5, 6];
-const isOnSuperNintendo   = (ff) => ff >= 4 && ff <= 6;
+const isOnSuperNintendo = (ff) => ff >= 4 && ff <= 6;
 
 const trueResult = summary.allMatch(finalFantasyNumbers, isOnSuperNintendo);
 // true
@@ -1859,6 +2020,7 @@ const falseResult = summary.allMatch(finalFantasyNumbers, isOnPlaystation);
 ```
 
 ### All Unique
+
 Return true if all elements in given collection are unique.
 
 ```
@@ -1882,6 +2044,7 @@ summary.allUnique(notUniqueNumbers);
 ```
 
 ### Any Match
+
 Returns true if any element matches the predicate function.
 
 ```
@@ -1896,7 +2059,7 @@ Empty collections return false.
 ```typescript
 import { summary } from "itertools-ts";
 
-const answers          = ['fish', 'towel', 42, "don't panic"];
+const answers = ["fish", "towel", 42, "don't panic"];
 const isUltimateAnswer = (a) => a == 42;
 
 const trueResult = summary.anyMatch(answers, isUltimateAnswer);
@@ -1904,6 +2067,7 @@ const trueResult = summary.anyMatch(answers, isUltimateAnswer);
 ```
 
 ### Exactly N
+
 Returns true if exactly n items are true according to a predicate function.
 
 - Predicate is optional.
@@ -1935,6 +2099,7 @@ const falseResult = Summary::exactlyN(ages, m, predicate);
 ```
 
 ### Is Async Iterable
+
 Returns true if given data is an `AsyncIterable` instance.
 
 ```
@@ -1947,11 +2112,12 @@ import { summary } from "itertools-ts";
 const input = [1, 2, 3, 4, 5];
 
 summary.isIterable(input); // false
-summary.isIterable(input[Symbol.asyncIterator]()) // false
+summary.isIterable(input[Symbol.asyncIterator]()); // false
 summary.isIterable(1); // false
 ```
 
 ### Is Iterable
+
 Returns true if given data is an `Iterable` instance.
 
 ```
@@ -1964,11 +2130,12 @@ import { summary } from "itertools-ts";
 const input = [1, 2, 3, 4, 5];
 
 summary.isIterable(input); // true
-summary.isIterable(input[Symbol.iterator]()) // false
+summary.isIterable(input[Symbol.iterator]()); // false
 summary.isIterable(1); // false
 ```
 
 ### Is Iterator
+
 Returns true if given data is an `Iterator` instance.
 
 ```
@@ -1980,12 +2147,13 @@ import { summary } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-summary.isIterator(input[Symbol.iterator]()) // true
+summary.isIterator(input[Symbol.iterator]()); // true
 summary.isIterator(input); // false
 summary.isIterator(1); // false
 ```
 
 ### Is Reversed
+
 Returns true if elements are reverse sorted, otherwise false.
 
 ```
@@ -2034,6 +2202,7 @@ Summary.isEmpty(numbers);
 ```
 
 ### Is Sorted
+
 Returns true if elements are sorted, otherwise false.
 
 ```
@@ -2058,6 +2227,7 @@ Summary.isSorted(numbers);
 ```
 
 ### Is String
+
 Returns true if given data is a string.
 
 ```
@@ -2067,13 +2237,14 @@ function isString(input: unknown): boolean
 ```typescript
 import { summary } from "itertools-ts";
 
-summary.isString('') // true
-summary.isString('abc') // true
-summary.isString(String('abc')) // true
+summary.isString(""); // true
+summary.isString("abc"); // true
+summary.isString(String("abc")); // true
 summary.isString(1); // false
 ```
 
 ### None Match
+
 Returns true if no element matches the predicate function.
 
 ```
@@ -2088,7 +2259,7 @@ Empty collections return true.
 ```typescript
 import { summary } from "itertools-ts";
 
-const grades         = [45, 50, 61, 0];
+const grades = [45, 50, 61, 0];
 const isPassingGrade = (grade) => grade >= 70;
 
 const trueResult = summary.noneMatch(grades, isPassingGrade);
@@ -2096,6 +2267,7 @@ const trueResult = summary.noneMatch(grades, isPassingGrade);
 ```
 
 ### Same
+
 Returns true if all given collections are the same.
 
 For single collection or empty collections list returns true.
@@ -2107,9 +2279,24 @@ function same(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boo
 ```typescript
 import { summary } from "itertools-ts";
 
-const cocaColaIngredients = ['carbonated water', 'sugar', 'caramel color', 'phosphoric acid'];
-const pepsiIngredients    = ['carbonated water', 'sugar', 'caramel color', 'phosphoric acid'];
-const spriteIngredients   = ['carbonated water', 'sugar', 'citric acid', 'lemon lime flavorings'];
+const cocaColaIngredients = [
+  "carbonated water",
+  "sugar",
+  "caramel color",
+  "phosphoric acid",
+];
+const pepsiIngredients = [
+  "carbonated water",
+  "sugar",
+  "caramel color",
+  "phosphoric acid",
+];
+const spriteIngredients = [
+  "carbonated water",
+  "sugar",
+  "citric acid",
+  "lemon lime flavorings",
+];
 
 const trueResult = summary.same(cocaColaIngredients, pepsiIngredients);
 // true
@@ -2119,6 +2306,7 @@ const falseResult = summary.same(cocaColaIngredients, spriteIngredients);
 ```
 
 ### Same Count
+
 Returns true if all given collections have the same lengths.
 
 For single collection or empty collections list returns true.
@@ -2132,22 +2320,62 @@ function same(
 ```typescript
 import { summary } from "itertools-ts";
 
-const prequels  = ['Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith'];
-const originals = ['A New Hope', 'Empire Strikes Back', 'Return of the Jedi'];
-const sequels   = ['The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker'];
+const prequels = [
+  "Phantom Menace",
+  "Attack of the Clones",
+  "Revenge of the Sith",
+];
+const originals = ["A New Hope", "Empire Strikes Back", "Return of the Jedi"];
+const sequels = ["The Force Awakens", "The Last Jedi", "The Rise of Skywalker"];
 
 const trueResult = summary.sameCount(prequels, originals, sequels);
 // true
 
-const batmanMovies = ['Batman Begins', 'The Dark Knight', 'The Dark Knight Rises'];
-const matrixMovies = ['The Matrix', 'The Matrix Reloaded', 'The Matrix Revolutions', 'The Matrix Resurrections'];
+const batmanMovies = [
+  "Batman Begins",
+  "The Dark Knight",
+  "The Dark Knight Rises",
+];
+const matrixMovies = [
+  "The Matrix",
+  "The Matrix Reloaded",
+  "The Matrix Revolutions",
+  "The Matrix Resurrections",
+];
 
 const falseResult = summary.sameCount(batmanMovies, matrixMovies);
 // false
 ```
 
 ## Transform
+
+### Divide
+
+Split the elements of an iterable evenly into n smaller arrays, maintaining order.
+
+```
+function* divide<T>(
+  data: Iterable<T> | Iterator<T>,
+  n: number
+): Iterable<Array<T>>
+```
+
+Each sub-array preserves the order of the original iterable.
+If the total length is not divisible by n, the last chunk will contain the remainder.
+
+Dividing consumes the input iterator as it processes elements. Once divide has been called, you should avoid re-using the original iterator directly. For large collections, keep in mind that arrays are materialized in memory for each chunk.
+
+```typescript
+import { transform } from "itertools-ts";
+
+const numbers = [1, 2, 3, 4];
+const chunks = transform.divide(numbers, 2);
+
+// chunks: [[1, 2], [3, 4]]
+```
+
 ### Tee
+
 Return several independent (duplicated) iterators from a single iterable.
 
 ```
@@ -2165,7 +2393,7 @@ iterators can be rewound and reiterated without need for duplication.
 ```typescript
 import { transform } from "itertools-ts";
 
-const daysOfWeek = ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'];
+const daysOfWeek = ["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
 const count = 3;
 
 const [week1, week2, week3] = transform.tee(data, count);
@@ -2173,6 +2401,7 @@ const [week1, week2, week3] = transform.tee(data, count);
 ```
 
 ### To Array
+
 Returns `Array` instance of given collection or iterator.
 
 ```
@@ -2191,6 +2420,7 @@ const result = transform.toArray(iterator);
 ```
 
 ### To Async Iterable
+
 Returns `AsyncIterable` instance of given collection, record or iterator (sync or async).
 
 Throws `InvalidArgumentError` if given data is not a collection or an iterator.
@@ -2216,6 +2446,7 @@ const result = transform.toAsyncIterable(input);
 ```
 
 ### To Async Iterator
+
 Returns `AsyncIterator` instance of given collection or iterator.
 
 Throws `InvalidArgumentError` if given data is not a collection or an iterator.
@@ -2237,6 +2468,7 @@ console.log(result.next !== undefined);
 ```
 
 ### To Iterable
+
 Returns `Iterable` instance of given collection, record or iterator.
 
 Throws `InvalidArgumentError` if given data is not a collection or an iterator.
@@ -2257,6 +2489,7 @@ const result = transform.toIterable(input);
 ```
 
 ### To Iterator
+
 Returns `Iterator` instance of given collection or iterator.
 
 Throws `InvalidArgumentError` if given data is not a collection or an iterator.
@@ -2276,6 +2509,7 @@ console.log(result.next !== undefined);
 ```
 
 ### To Map
+
 Converts given iterable of key-value pairs to Map.
 
 ```
@@ -2287,13 +2521,18 @@ function toMap<TKey, TValue>(
 ```typescript
 import { transform } from "itertools-ts";
 
-const input = [['a', 1], ['b', 2], ['c', 3]];
+const input = [
+  ["a", 1],
+  ["b", 2],
+  ["c", 3],
+];
 
 const result = transform.toMap(input);
 // Map([['a', 1], ['b', 2], ['c', 3]])
 ```
 
 ### To Set
+
 Converts given iterable to Set.
 
 ```
@@ -2312,6 +2551,7 @@ const result = transform.toSet(input);
 ```
 
 ## Stream and Async Stream
+
 Streams provide a fluent interface to transform arrays and iterables (sync or async) through a pipeline of operations.
 
 Streams are made up of:
@@ -2319,26 +2559,32 @@ Streams are made up of:
 1. One stream source factory method to create the stream.
 2. Zero or more stream operators that transform the stream to a new stream.
 3. Terminal operation of either:
-   * Stream terminal operation to transform the stream to a value or data structure.
+
+   - Stream terminal operation to transform the stream to a value or data structure.
+
      ```typescript
      const result1 = Stream.of([1, 1, 2, 2, 3, 4, 5])
-       .distinct()             // [1, 2, 3, 4, 5]
-       .map((x) => x**2)       // [1, 4, 9, 16, 25]
-       .filter((x) => x < 10)  // [1, 4, 9]
-       .toSum();               // 14
+       .distinct() // [1, 2, 3, 4, 5]
+       .map((x) => x ** 2) // [1, 4, 9, 16, 25]
+       .filter((x) => x < 10) // [1, 4, 9]
+       .toSum(); // 14
 
      // Async example
-     const result2 = await AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)))
-       .distinct()             // [1, 2, 3, 4, 5]
-       .map((x) => x**2)       // [1, 4, 9, 16, 25]
-       .filter((x) => x < 10)  // [1, 4, 9]
-       .toSum();               // 14
+     const result2 = await AsyncStream.of(
+       [1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x))
+     )
+       .distinct() // [1, 2, 3, 4, 5]
+       .map((x) => x ** 2) // [1, 4, 9, 16, 25]
+       .filter((x) => x < 10) // [1, 4, 9]
+       .toSum(); // 14
      ```
-   * The stream is iterated via a `for` loop.
+
+   - The stream is iterated via a `for` loop.
+
      ```typescript
      const result1 = Stream.of([1, 1, 2, 2, 3, 4, 5])
-       .distinct()             // [1, 2, 3, 4, 5]
-       .map((x) => x**2)       // [1, 4, 9, 16, 25]
+       .distinct() // [1, 2, 3, 4, 5]
+       .map((x) => x ** 2) // [1, 4, 9, 16, 25]
        .filter((x) => x < 10); // [1, 4, 9]
 
      for (const item of result1) {
@@ -2346,9 +2592,11 @@ Streams are made up of:
      }
 
      // Async example
-     const result2 = AsyncStream.of([1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x)))
-       .distinct()             // [1, 2, 3, 4, 5]
-       .map((x) => x**2)       // [1, 4, 9, 16, 25]
+     const result2 = AsyncStream.of(
+       [1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x))
+     )
+       .distinct() // [1, 2, 3, 4, 5]
+       .map((x) => x ** 2) // [1, 4, 9, 16, 25]
        .filter((x) => x < 10); // [1, 4, 9]
 
      for await (const item of result2) {
@@ -2357,7 +2605,9 @@ Streams are made up of:
      ```
 
 ### Stream Sources
+
 #### Of
+
 Creates stream from an iterable.
 
 ```
@@ -2377,6 +2627,7 @@ const result = Stream.of(iterable)
 ```
 
 #### Of Booleans
+
 Create an infinite boolean stream.
 
 ```
@@ -2386,13 +2637,10 @@ Stream.ofBooleans(repetitions?: boolean): Stream<number>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const result1 = Stream.ofBooleans()
-  .limit(5)
-  .toArray();
+const result1 = Stream.ofBooleans().limit(5).toArray();
 // [false, true, true, false, true]
 
-const result2 = Stream.ofBooleans(5)
-  .toArray();
+const result2 = Stream.ofBooleans(5).toArray();
 // [false, true, true, false, true]
 ```
 
@@ -2437,6 +2685,7 @@ const asyncResult = await AsyncStream.ofRockPaperScissors(5)
 ```
 
 #### Of Count
+
 Create an infinite count stream.
 
 ```
@@ -2446,13 +2695,12 @@ Stream.ofCount(start: number = 1, step: number = 1): Stream<number>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const result = Stream.ofCount(0, 10)
-  .limit(5)
-  .toArray();
+const result = Stream.ofCount(0, 10).limit(5).toArray();
 // [0, 10, 20, 30, 40]
 ```
 
 #### Of Cycle
+
 Create an infinite cycle stream.
 
 ```
@@ -2462,13 +2710,12 @@ Stream.ofCycle<T>(iterable: Iterable<T> | Iterator<T>): Stream<T>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const result = Stream.ofCycle([1, 2, 3])
-  .limit(7)
-  .toArray();
+const result = Stream.ofCycle([1, 2, 3]).limit(7).toArray();
 // [1, 2, 3, 1, 2, 3, 1]
 ```
 
 #### Of Empty
+
 Creates stream of nothing.
 
 ```
@@ -2478,13 +2725,12 @@ Stream.ofEmpty(): Stream<never>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const result = Stream.ofEmpty()
-  .chainWith([1, 2, 3])
-  .toArray();
+const result = Stream.ofEmpty().chainWith([1, 2, 3]).toArray();
 // [1, 2, 3]
 ```
 
 #### Of Repeat
+
 Create an infinite stream repeating given item.
 
 ```
@@ -2494,14 +2740,14 @@ Stream.ofRepeat<T>(item: T): Stream<T>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const result = Stream.ofRepeat('bla')
-  .limit(5)
-  .toArray();
+const result = Stream.ofRepeat("bla").limit(5).toArray();
 // [bla, bla, bla, bla, bla]
 ```
 
 ### Stream Operations
+
 #### Cartesian Product With
+
 Iterate cartesian product of iterable source with another iterable collections.
 
 ```
@@ -2516,7 +2762,7 @@ import { Stream } from "itertools-ts";
 const numbers = [1, 2];
 
 const result = Stream.of(numbers)
-  .cartesianProductWith(['a', 'b'], ['!', '?'])
+  .cartesianProductWith(["a", "b"], ["!", "?"])
   .toArray();
 /*
 [
@@ -2533,6 +2779,7 @@ const result = Stream.of(numbers)
 ```
 
 #### Chain With
+
 Return a stream chaining additional sources together into a single consecutive stream.
 
 ```
@@ -2552,6 +2799,7 @@ const result = Stream.of(input)
 ```
 
 #### Chunkwise
+
 Return a stream consisting of chunks of elements from the stream.
 
 ```
@@ -2563,15 +2811,14 @@ Chunk size must be at least 1.
 ```typescript
 import { Stream } from "itertools-ts";
 
-const friends = ['Ross', 'Rachel', 'Chandler', 'Monica', 'Joey'];
+const friends = ["Ross", "Rachel", "Chandler", "Monica", "Joey"];
 
-const result = Stream.of(friends)
-  .chunkwise(2)
-  .toArray();
+const result = Stream.of(friends).chunkwise(2).toArray();
 // [['Ross', 'Rachel'], ['Chandler', 'Monica'], ['Joey']]
 ```
 
 #### Chunkwise Overlap
+
 Return a stream consisting of overlapping chunks of elements from the stream.
 
 ```
@@ -2582,21 +2829,20 @@ Stream<T>.chunkwiseOverlap(
 ): Stream<Array<T>>
 ```
 
-* Chunk size must be at least 1.
-* Overlap size must be less than chunk size.
+- Chunk size must be at least 1.
+- Overlap size must be less than chunk size.
 
 ```typescript
 import { Stream } from "itertools-ts";
 
 const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-const result = Stream.of(numbers)
-  .chunkwiseOverlap(3, 1)
-  .toArray()
+const result = Stream.of(numbers).chunkwiseOverlap(3, 1).toArray();
 // [[1, 2, 3], [3, 4, 5], [5, 6, 7], [7, 8, 9]]
 ```
 
 #### Combinations
+
 Return a stream with combinations of the stream iterable.
 
 ```
@@ -2604,13 +2850,11 @@ Stream<T>.combinations(length: number): Stream<Array<T>>
 ```
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
-const fruits = ['apple', 'banana', 'cherry'];
+const fruits = ["apple", "banana", "cherry"];
 
-const result = Stream.of(fruits)
-  .combinations(2)
-  .toArray();
+const result = Stream.of(fruits).combinations(2).toArray();
 /*
 [
   ['apple', 'banana'],
@@ -2621,6 +2865,7 @@ const result = Stream.of(fruits)
 ```
 
 #### Compress
+
 Compress to a new stream by filtering out data that is not selected.
 
 ```
@@ -2636,13 +2881,12 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3];
 
-const result = Stream.of(input)
-  .compress([0, 1, 1])
-  .toArray();
+const result = Stream.of(input).compress([0, 1, 1]).toArray();
 // [2, 3]
 ```
 
 #### Distinct
+
 Return a stream filtering out elements from the stream only returning distinct elements.
 
 ```
@@ -2652,21 +2896,19 @@ Stream<T>.distinct(compareBy?: (datum: T) => Comparable): Stream<T>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const input = [1, 2, 1, 2, 3, 3, '1', '1', '2', '3'];
-const numbers = Stream.of(input)
-  .distinct()
-  .toArray();
+const input = [1, 2, 1, 2, 3, 3, "1", "1", "2", "3"];
+const numbers = Stream.of(input).distinct().toArray();
 // [1, 2, 3, '1', '2', '3']
 
 const users = [
-  { 'name': 'John', 'id': 1 },
-  { 'name': 'Mary', 'id': 2 },
-  { 'name': 'Mary', 'id': 3 },
-  { 'name': 'John', 'id': 4 },
-  { 'name': 'Jane', 'id': 5 },
+  { name: "John", id: 1 },
+  { name: "Mary", id: 2 },
+  { name: "Mary", id: 3 },
+  { name: "John", id: 4 },
+  { name: "Jane", id: 5 },
 ];
 const result = Stream.of(input)
-  .distinct((item) => item['name'])
+  .distinct((item) => item["name"])
   .toArray();
 /*
 [
@@ -2678,6 +2920,7 @@ const result = Stream.of(input)
 ```
 
 #### Drop While
+
 Drop elements from the stream while the predicate function is true.
 
 ```
@@ -2689,7 +2932,7 @@ Once the predicate function returns false once, all remaining elements are retur
 ```typescript
 import { Stream } from "itertools-ts";
 
-const input = [1, 2, 3, 4, 5]
+const input = [1, 2, 3, 4, 5];
 
 const result = Stream.of(input)
   .dropWhile((value) => value < 3)
@@ -2698,6 +2941,7 @@ const result = Stream.of(input)
 ```
 
 #### Enumerate
+
 Enumerates elements of the stream.
 
 ```
@@ -2707,14 +2951,13 @@ Stream<T>.enumerate(): Stream<[number, T]>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const input = ['a', 'b', 'c', 'd', 'e'];
-const stream = Stream.of(input)
-  .enumerate()
-  .toArray();
+const input = ["a", "b", "c", "d", "e"];
+const stream = Stream.of(input).enumerate().toArray();
 // [[0, 'a'], [1, 'b'], [2, 'c'], [3, 'd'], [4, 'e']]
 ```
 
 #### Filter
+
 Filter out elements from the stream only keeping elements where there predicate function is true.
 
 ```
@@ -2733,6 +2976,7 @@ const result = Stream.of(input)
 ```
 
 #### Flat Map
+
 Map a function onto the elements of the stream and flatten the results.
 
 ```
@@ -2743,15 +2987,14 @@ Stream<T>.flatMap<U>(mapper: FlatMapper<T, U>): Stream<U>
 import { Stream } from "itertools-ts";
 
 const data = [1, 2, 3, 4, 5];
-const mapper = (item) => (item % 2 === 0) ? [item, item] : item;
+const mapper = (item) => (item % 2 === 0 ? [item, item] : item);
 
-const result = Stream.of(data)
-  .flatMap(mapper)
-  .toArray();
+const result = Stream.of(data).flatMap(mapper).toArray();
 // [1, 2, 2, 3, 4, 4, 5]
 ```
 
 #### Flatten
+
 Flatten a multidimensional stream.
 
 ```
@@ -2763,35 +3006,42 @@ import { Stream } from "itertools-ts";
 
 const data = [1, [2, 3], [4, 5]];
 
-const result = Stream.of(data)
-  .flatten()
-  .toArray();
+const result = Stream.of(data).flatten().toArray();
 // [1, 2, 3, 4, 5]
 ```
 
 #### Intersection With
+
 Return a stream intersecting the stream with the input iterables.
 
 ```
 Stream<T>.intersectionWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T>
 ```
 
-* Always treats different instances of objects and arrays as unequal.
-* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
+- Always treats different instances of objects and arrays as unequal.
+- If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
-const chessPieces = ['rook', 'knight', 'bishop', 'queen', 'king', 'pawn'];
-const shogiPieces = ['rook', 'knight', 'bishop', 'king', 'pawn', 'lance', 'gold general', 'silver general'];
+const chessPieces = ["rook", "knight", "bishop", "queen", "king", "pawn"];
+const shogiPieces = [
+  "rook",
+  "knight",
+  "bishop",
+  "king",
+  "pawn",
+  "lance",
+  "gold general",
+  "silver general",
+];
 
-const result = Stream.of(chessPieces)
-  .intersectionWith(shogiPieces)
-  .toArray();
+const result = Stream.of(chessPieces).intersectionWith(shogiPieces).toArray();
 // [rook, knight, bishop, king, pawn]
 ```
 
 #### Group By
+
 Group stream data by a common data element.
 
 Iterate pairs of group name and collection of grouped items.
@@ -2806,23 +3056,23 @@ Stream<T>.groupBy<
 ): Stream<TResultItem>
 ```
 
-* The `groupKeyFunction` determines the key to group elements by.
-* The optional `itemKeyFunction` allows custom indexes within each group member.
-* Collection of grouped items may be an array or an object (depends on presence of `itemKeyFunction` param).
+- The `groupKeyFunction` determines the key to group elements by.
+- The optional `itemKeyFunction` allows custom indexes within each group member.
+- Collection of grouped items may be an array or an object (depends on presence of `itemKeyFunction` param).
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
 const cartoonCharacters = [
-    ['Garfield', 'cat'],
-    ['Tom', 'cat'],
-    ['Felix', 'cat'],
-    ['Heathcliff', 'cat'],
-    ['Snoopy', 'dog'],
-    ['Scooby-Doo', 'dog'],
-    ['Odie', 'dog'],
-    ['Donald', 'duck'],
-    ['Daffy', 'duck'],
+  ["Garfield", "cat"],
+  ["Tom", "cat"],
+  ["Felix", "cat"],
+  ["Heathcliff", "cat"],
+  ["Snoopy", "dog"],
+  ["Scooby-Doo", "dog"],
+  ["Odie", "dog"],
+  ["Donald", "duck"],
+  ["Daffy", "duck"],
 ];
 
 const result = Stream.of(cartoonCharacters)
@@ -2850,6 +3100,7 @@ const result = Stream.of(cartoonCharacters)
 ```
 
 #### Keys
+
 Iterate keys of key-value pairs.
 
 ```
@@ -2857,17 +3108,20 @@ Stream<T>.keys(): Stream<T extends [infer TKey, infer _] ? TKey : never>
 ```
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
-const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
+const dict = new Map([
+  ["a", 1],
+  ["b", 2],
+  ["c", 3],
+]);
 
-const result = Stream.of(dict)
-  .keys()
-  .toArray();
+const result = Stream.of(dict).keys().toArray();
 // ['a', 'b', 'c']
 ```
 
 #### Limit
+
 Return a stream up to a limit.
 
 Stops even if more data available if limit reached.
@@ -2879,16 +3133,20 @@ Stream<T>.limit(count: number): Stream<T>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const matrixMovies = ['The Matrix', 'The Matrix Reloaded', 'The Matrix Revolutions', 'The Matrix Resurrections'];
+const matrixMovies = [
+  "The Matrix",
+  "The Matrix Reloaded",
+  "The Matrix Revolutions",
+  "The Matrix Resurrections",
+];
 const limit = 1;
 
-const goodMovies = Stream.of(matrixMovies)
-  .limit(limit)
-  .toArray();
+const goodMovies = Stream.of(matrixMovies).limit(limit).toArray();
 // ['The Matrix'] (and nothing else)
 ```
 
 #### Map
+
 Return a stream containing the result of mapping a function onto each element of the stream.
 
 ```
@@ -2901,12 +3159,13 @@ import { Stream } from "itertools-ts";
 const grades = [100, 95, 98, 89, 100];
 
 const result = Stream.of(grades)
-  .map((grade) => grade === 100 ? 'A' : 'F')
+  .map((grade) => (grade === 100 ? "A" : "F"))
   .toArray();
 // [A, F, F, F, A]
 ```
 
 #### Pairwise
+
 Return a stream consisting of pairs of elements from the stream.
 
 ```
@@ -2920,13 +3179,12 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const stream = Stream.of(input)
-  .pairwise()
-  .toArray();
+const stream = Stream.of(input).pairwise().toArray();
 // [[1, 2], [2, 3], [3, 4], [4, 5]]
 ```
 
 #### Partial Intersection With
+
 Return a stream [partially intersecting](https://github.com/Smoren/partial-intersection-php) the stream with the input iterables.
 
 ```
@@ -2936,15 +3194,15 @@ Stream<T>.partialIntersectionWith(
 ): Stream<T>
 ```
 
-* Always treats different instances of objects and arrays as unequal.
-* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
+- Always treats different instances of objects and arrays as unequal.
+- If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) intersection rules apply.
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
-const staticallyTyped    = ['c++', 'java', 'c#', 'go', 'haskell'];
-const dynamicallyTyped   = ['php', 'python', 'javascript', 'typescript'];
-const supportsInterfaces = ['php', 'java', 'c#', 'typescript'];
+const staticallyTyped = ["c++", "java", "c#", "go", "haskell"];
+const dynamicallyTyped = ["php", "python", "javascript", "typescript"];
+const supportsInterfaces = ["php", "java", "c#", "typescript"];
 
 const result = Stream.of(staticallyTyped)
   .partialIntersectionWith(2, dynamicallyTyped, supportsInterfaces)
@@ -2953,6 +3211,7 @@ const result = Stream.of(staticallyTyped)
 ```
 
 #### Permutations
+
 Return a stream with permutations of the stream iterable.
 
 ```
@@ -2960,13 +3219,11 @@ Stream<T>.permutations(length: number): Stream<Array<T>>
 ```
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
-const fruits = ['apple', 'banana', 'cherry'];
+const fruits = ["apple", "banana", "cherry"];
 
-const result = Stream.of(fruits)
-  .permutations(2)
-  .toArray();
+const result = Stream.of(fruits).permutations(2).toArray();
 /*
 [
   ['apple', 'banana'],
@@ -2980,6 +3237,7 @@ const result = Stream.of(fruits)
 ```
 
 #### Running Average
+
 Return a stream accumulating the running average (mean) over the stream.
 
 ```
@@ -2987,17 +3245,16 @@ Stream<T>.runningAverage(initialValue?: number): Stream<number>
 ```
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
 const input = [1, 3, 5];
 
-const result = Stream.of(input)
-  .runningAverage()
-  .toArray();
+const result = Stream.of(input).runningAverage().toArray();
 // [1, 2, 3]
 ```
 
 #### Running Difference
+
 Return a stream accumulating the running difference over the stream.
 
 ```
@@ -3005,17 +3262,16 @@ Stream<T>.runningDifference(initialValue?: number): Stream<number>
 ```
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const result = Stream.of(input)
-  .runningDifference()
-  .toArray();
+const result = Stream.of(input).runningDifference().toArray();
 // [-1, -3, -6, -10, -15]
 ```
 
 #### Running Max
+
 Return a stream accumulating the running max over the stream.
 
 ```
@@ -3023,17 +3279,16 @@ Stream<T>.runningMax(initialValue?: number): Stream<number>
 ```
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
 const input = [1, -1, 2, -2, 3, -3];
 
-const result = Stream.of(input)
-  .runningMax()
-  .toArray();
+const result = Stream.of(input).runningMax().toArray();
 // [1, 1, 2, 2, 3, 3]
 ```
 
 #### Running Min
+
 Return a stream accumulating the running min over the stream.
 
 ```
@@ -3041,17 +3296,16 @@ Stream<T>.runningMin(initialValue?: number): Stream<number>
 ```
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
 const input = [1, -1, 2, -2, 3, -3];
 
-const result = Stream.of(input)
-  .runningMin()
-  .toArray();
+const result = Stream.of(input).runningMin().toArray();
 // [1, -1, -1, -2, -2, -3]
 ```
 
 #### Running Product
+
 Return a stream accumulating the running product over the stream.
 
 ```
@@ -3063,13 +3317,12 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const result = Stream.of(input)
-  .runningProduct()
-  .toArray();
+const result = Stream.of(input).runningProduct().toArray();
 // [1, 2, 6, 24, 120]
 ```
 
 #### Running Total
+
 Return a stream accumulating the running total over the stream.
 
 ```
@@ -3081,13 +3334,12 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const result = Stream.of(input)
-  .runningTotal()
-  .toArray();
+const result = Stream.of(input).runningTotal().toArray();
 // [1, 3, 6, 10, 15]
 ```
 
 #### Skip
+
 Skip some elements of the stream.
 
 ```
@@ -3098,19 +3350,23 @@ Stream<T>.skip(count: number, offset = 0): Stream<T>
 import { Stream } from "itertools-ts";
 
 const movies = [
-    'The Phantom Menace', 'Attack of the Clones', 'Revenge of the Sith',
-    'A New Hope', 'The Empire Strikes Back', 'Return of the Jedi',
-    'The Force Awakens', 'The Last Jedi', 'The Rise of Skywalker'
+  "The Phantom Menace",
+  "Attack of the Clones",
+  "Revenge of the Sith",
+  "A New Hope",
+  "The Empire Strikes Back",
+  "Return of the Jedi",
+  "The Force Awakens",
+  "The Last Jedi",
+  "The Rise of Skywalker",
 ];
 
-const onlyTheBest = Stream.of(movies)
-  .skip(3)
-  .skip(3, 3)
-  .toArray();
+const onlyTheBest = Stream.of(movies).skip(3).skip(3, 3).toArray();
 // ['A New Hope', 'The Empire Strikes Back', 'Return of the Jedi']
 ```
 
 #### Slice
+
 Extract a slice of the stream.
 
 ```
@@ -3120,15 +3376,17 @@ Stream<T>.slice(start: number = 0, count?: number, step: number = 1): Stream<T>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const olympics = [1992, 1994, 1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016, 2018, 2020, 2022];
+const olympics = [
+  1992, 1994, 1996, 1998, 2000, 2002, 2004, 2006, 2008, 2010, 2012, 2014, 2016,
+  2018, 2020, 2022,
+];
 
-const summerOlympics = Stream.of(olympics)
-  .slice(0, 8, 2)
-  .toArray();
+const summerOlympics = Stream.of(olympics).slice(0, 8, 2).toArray();
 // [1992, 1996, 2000, 2004, 2008, 2012, 2016, 2020]
 ```
 
 #### Sort
+
 Sorts the stream.
 
 ```
@@ -3142,36 +3400,34 @@ import { Stream } from "itertools-ts";
 
 const input = [3, 4, 5, 9, 8, 7, 1, 6, 2];
 
-const result = Stream.of(input)
-  .sort()
-  .toArray();
+const result = Stream.of(input).sort().toArray();
 // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
 #### Symmetric difference With
+
 Return a stream of the symmetric difference of the stream and the given iterables.
 
 ```
 Stream<T>.symmetricDifferenceWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T>
 ```
 
-* Always treats different instances of objects and arrays as unequal.
-* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
+- Always treats different instances of objects and arrays as unequal.
+- If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
 const a = [2, 3, 4, 7];
 const b = [2, 3, 5, 8];
 const c = [2, 3, 6, 9];
 
-const result = Stream.of(a)
-  .symmetricDifferenceWith(b, c)
-  .toArray();
+const result = Stream.of(a).symmetricDifferenceWith(b, c).toArray();
 // [4, 5, 6, 7, 8, 9]
 ```
 
 #### Take While
+
 Keep elements from the stream as long as the predicate is true.
 
 ```
@@ -3179,7 +3435,7 @@ Stream<T>.takeWhile(predicate: (item: T) => boolean): Stream<T>
 ```
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
 const input = [1, -1, 2, -2, 3, -3];
 
@@ -3190,29 +3446,29 @@ const result = Stream.of(input)
 ```
 
 #### Union With
+
 Return a stream of union of the stream with the input iterables.
 
 ```
 Stream<T>.unionWith(...iterables: Array<Iterable<T> | Iterator<T>>): Stream<T>
 ```
 
-* Always treats different instances of objects and arrays as unequal.
-* If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
+- Always treats different instances of objects and arrays as unequal.
+- If input iterables produce duplicate items, then [multiset](https://en.wikipedia.org/wiki/Multiset) difference rules apply.
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
 const a = [1, 2, 3];
 const b = [2, 3, 4];
 const c = [3, 4, 5];
 
-const result = Stream.of(a)
-  .unionWith(b, c)
-  .toArray();
+const result = Stream.of(a).unionWith(b, c).toArray();
 // [1, 2, 3, 4, 5]
 ```
 
 #### Values
+
 Iterate keys of key-value pairs.
 
 ```
@@ -3220,17 +3476,20 @@ Stream<T>.values(): Stream<T extends [infer _, infer TValue] ? TValue : never>
 ```
 
 ```typescript
-import { Stream } from 'itertools-ts';
+import { Stream } from "itertools-ts";
 
-const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
+const dict = new Map([
+  ["a", 1],
+  ["b", 2],
+  ["c", 3],
+]);
 
-const result = Stream.of(dict)
-  .values()
-  .toArray();
+const result = Stream.of(dict).values().toArray();
 // [1, 2, 3]
 ```
 
 #### Zip With
+
 Return a stream consisting of multiple iterable collections streamed simultaneously.
 
 ```
@@ -3246,13 +3505,12 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3];
 
-const stream = Stream.of(input)
-  .zipWith([4, 5, 6])
-  .toArray();
+const stream = Stream.of(input).zipWith([4, 5, 6]).toArray();
 // [[1, 4], [2, 5], [3, 6]]
 ```
 
 #### Zip Equal With
+
 Return a stream consisting of multiple iterable collections of equal lengths streamed simultaneously.
 
 ```
@@ -3269,15 +3527,15 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3];
 
-const stream = Stream.of(input)
-  .zipEqualWith([4, 5, 6]);
+const stream = Stream.of(input).zipEqualWith([4, 5, 6]);
 
 for (const zipped of stream) {
-    // [1, 4], [2, 5], [3, 6]
+  // [1, 4], [2, 5], [3, 6]
 }
 ```
 
 #### Zip Filled With
+
 Return a stream consisting of multiple iterable collections streamed simultaneously.
 
 ```
@@ -3287,16 +3545,15 @@ Stream<T>.zipFilledWith<
 >(filler: F, ...iterables: U): Stream<ZipTuple<[Iterable<T>, ...U], F>>
 ```
 
-* Iteration continues until the longest iterable is exhausted.
-* For uneven lengths, the exhausted iterables will produce `filler` value for the remaining iterations.
+- Iteration continues until the longest iterable is exhausted.
+- For uneven lengths, the exhausted iterables will produce `filler` value for the remaining iterations.
 
 ```typescript
 import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const stream = Stream.of(input)
-  .zipFilledWith('filler', [4, 5, 6]);
+const stream = Stream.of(input).zipFilledWith("filler", [4, 5, 6]);
 
 for (const zipped of stream) {
   // [1, 4], [2, 5], [3, 6], [4, 'filler'], [5, 'filler']
@@ -3304,6 +3561,7 @@ for (const zipped of stream) {
 ```
 
 #### Zip Longest With
+
 Return a stream consisting of multiple iterable collections streamed simultaneously.
 
 ```
@@ -3312,16 +3570,15 @@ Stream<T>.zipLongestWith<
 >(...iterables: U): Stream<ZipTuple<[Iterable<T>, ...U], undefined>>
 ```
 
-* Iteration continues until the longest iterable is exhausted.
-* For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
+- Iteration continues until the longest iterable is exhausted.
+- For uneven lengths, the exhausted iterables will produce `undefined` for the remaining iterations.
 
 ```typescript
 import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const stream = Stream.of(input)
-  .zipLongestWith([4, 5, 6]);
+const stream = Stream.of(input).zipLongestWith([4, 5, 6]);
 
 for (const zipped of stream) {
   // [1, 4], [2, 5], [3, 6], [4, undefined], [5, undefined]
@@ -3329,8 +3586,30 @@ for (const zipped of stream) {
 ```
 
 ### Terminal operations
+
 #### Transformation Terminal Operations
+
+##### Divide
+
+Split the elements of a stream evenly into smaller streams.
+
+```
+Stream<T>.divide(n: number): Stream<Array<T>>
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const numbers = [1, 2, 3, 4];
+const n = 2;
+
+const dividedStream = Stream.of(numbers).divide(n);
+
+// dividedStream contains [[1, 2], [3, 4]]
+```
+
 ##### Tee
+
 Return several independent (duplicated) streams.
 
 ```
@@ -3350,6 +3629,7 @@ const [week1Stream, week2Stream, week3Stream] = Stream.of(daysOfWeek)
 ```
 
 ##### To Array
+
 Returns an array of stream elements.
 
 ```
@@ -3360,12 +3640,13 @@ Stream<T>.toArray(): Array<T>
 import { Stream } from "itertools-ts";
 
 const result = Stream.of([1, 2, 3, 4, 5])
-  .map((x) => x**2)
+  .map((x) => x ** 2)
   .toArray();
 // [1, 4, 9, 16, 25]
 ```
 
 ##### To Map
+
 Converts stream to Map.
 
 ```
@@ -3377,13 +3658,12 @@ Stream collection must contain only key-value pairs as elements.
 ```typescript
 import { Stream } from "itertools-ts";
 
-const result = Stream.of([1, 2, 3])
-  .enumerate()
-  .toMap();
+const result = Stream.of([1, 2, 3]).enumerate().toMap();
 // Map([[0, 1], [1, 2], [2, 3]])
 ```
 
 ##### To Set
+
 Converts stream to Set.
 
 ```
@@ -3393,13 +3673,14 @@ Stream<T>.toSet(): Set<T>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const result = Stream.of([1, 1, 2, 2, 3, 3])
-  .toMap();
+const result = Stream.of([1, 1, 2, 2, 3, 3]).toMap();
 // Set([1, 2, 3])
 ```
 
 #### Reduce Terminal Operations
+
 ##### To Average
+
 Reduces iterable source to the mean average of its items.
 
 ```
@@ -3413,12 +3694,12 @@ import { Stream } from "itertools-ts";
 
 const input = [2, 4, 6, 8];
 
-const result = Stream.of(iterable)
-  .toAverage();
+const result = Stream.of(iterable).toAverage();
 // 5
 ```
 
 ##### To Count
+
 Reduces iterable source to its length.
 
 ```
@@ -3430,12 +3711,12 @@ import { Stream } from "itertools-ts";
 
 const input = [10, 20, 30, 40, 50];
 
-const result = Stream.of(iterable)
-  .toCount();
+const result = Stream.of(iterable).toCount();
 // 5
 ```
 
 ##### To First
+
 Reduces stream to its first element.
 
 ```
@@ -3449,12 +3730,12 @@ import { Stream } from "itertools-ts";
 
 const input = [10, 20, 30];
 
-const result = Stream.of(input)
-  .toFirst();
+const result = Stream.of(input).toFirst();
 // 10
 ```
 
 ##### To First And Last
+
 Reduces stream to its first last elements.
 
 ```
@@ -3468,12 +3749,12 @@ import { Stream } from "itertools-ts";
 
 const input = [10, 20, 30];
 
-const result = Stream.of(input)
-  .toFirstAndLast();
+const result = Stream.of(input).toFirstAndLast();
 // [10, 30]
 ```
 
 ##### To Last
+
 Reduces stream to its last element.
 
 ```
@@ -3487,12 +3768,12 @@ import { Stream } from "itertools-ts";
 
 const input = [10, 20, 30];
 
-const result = Stream.of(input)
-  .toLast();
+const result = Stream.of(input).toLast();
 // 30
 ```
 
 ##### To Max
+
 Reduces stream to its max value.
 
 ```
@@ -3508,12 +3789,12 @@ import { Stream } from "itertools-ts";
 
 const input = [1, -1, 2, -2, 3, -3];
 
-const result = Stream.of(iterable)
-  .toMax();
+const result = Stream.of(iterable).toMax();
 // 3
 ```
 
 ##### To Min
+
 Reduces stream to its min value.
 
 ```
@@ -3529,12 +3810,12 @@ import { Stream } from "itertools-ts";
 
 const input = [1, -1, 2, -2, 3, -3];
 
-const result = Stream.of(iterable)
-  .toMin();
+const result = Stream.of(iterable).toMin();
 // -3
 ```
 
 ##### To Min Max
+
 Reduces stream to its min and max values.
 
 ```
@@ -3550,12 +3831,12 @@ import { Stream } from "itertools-ts";
 
 const input = [1, -1, 2, -2, 3, -3];
 
-const result = Stream.of(iterable)
-  .toMinMax();
+const result = Stream.of(iterable).toMinMax();
 // [-3, 3]
 ```
 
 ##### To Product
+
 Reduces iterable source to the product of its items.
 
 ```
@@ -3569,12 +3850,12 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const result = Stream.of(input)
-  .toProduct();
+const result = Stream.of(input).toProduct();
 // 120
 ```
 
 ##### To Range
+
 Reduces stream to its range (difference between max and min).
 
 ```
@@ -3588,12 +3869,12 @@ import { Stream } from "itertools-ts";
 
 const grades = [100, 90, 80, 85, 95];
 
-const range = stream.of(numbers)
-  .toRange();
+const range = stream.of(numbers).toRange();
 // 20
 ```
 
 ##### To Sum
+
 Reduces iterable source to the sum of its items.
 
 ```
@@ -3605,12 +3886,12 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const result = Stream.of(iterable)
-  .toSum();
+const result = Stream.of(iterable).toSum();
 // 15
 ```
 
 ##### To Value
+
 Reduces iterable source like array_reduce() function.
 
 ```
@@ -3625,13 +3906,14 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const result = Stream.of(input)
-  .toValue((carry, item) => carry + item);
+const result = Stream.of(input).toValue((carry, item) => carry + item);
 // 15
 ```
 
 #### Stream Summary Terminal Operations
+
 ##### All Match
+
 Returns true if all elements of stream match the predicate function.
 
 ```
@@ -3644,14 +3926,14 @@ For empty stream returns true.
 import { Stream } from "itertools-ts";
 
 const finalFantasyNumbers = [4, 5, 6];
-const isOnSuperNintendo   = (ff) => ff >= 4 && ff <= 6;
+const isOnSuperNintendo = (ff) => ff >= 4 && ff <= 6;
 
-const trueResult = Stream.of(finalFantasyNumbers)
-  .allMatch(isOnSuperNintendo);
+const trueResult = Stream.of(finalFantasyNumbers).allMatch(isOnSuperNintendo);
 // true
 ```
 
 ##### All Unique
+
 Returns true if all elements in stream are unique.
 
 ```
@@ -3664,20 +3946,19 @@ Considers different instances of data containers to be different, even if they h
 
 ```typescript
 import { summary } from "itertools-ts";
-import { Stream } from './stream';
+import { Stream } from "./stream";
 
 const uniqueNumbers = [1, 2, 3, 4, 5];
-Stream.of(uniqueNumbers)
-  .allUnique();
+Stream.of(uniqueNumbers).allUnique();
 // true
 
 const notUniqueNumbers = [1, 1, 2, 2, 3];
-Stream.of(notUniqueNumbers)
-  .allUnique();
+Stream.of(notUniqueNumbers).allUnique();
 // false
 ```
 
 ##### Any Match
+
 Returns true if any element of stream matches the predicate function.
 
 ```
@@ -3689,15 +3970,15 @@ For empty stream returns false.
 ```typescript
 import { Stream } from "itertools-ts";
 
-const answers          = ['fish', 'towel', 42, "don't panic"];
+const answers = ["fish", "towel", 42, "don't panic"];
 const isUltimateAnswer = (a) => a == 42;
 
-const trueResult = Stream.of(answers)
-  .anyMatch(answers, isUltimateAnswer);
+const trueResult = Stream.of(answers).anyMatch(answers, isUltimateAnswer);
 // true
 ```
 
 ##### Exactly N
+
 Returns true if exactly n items are true according to a predicate function.
 
 - Predicate is optional.
@@ -3714,12 +3995,12 @@ import stream = require("node:stream");
 const twoTruthsAndALie = [true, true, false];
 const n = 2;
 
-const boolean = stream.of(twoTruthsAndALie)
-  .exactlyN(n);
+const boolean = stream.of(twoTruthsAndALie).exactlyN(n);
 // true
 ```
 
 ##### Is Reversed
+
 Returns true if stream is sorted in reverse descending order; otherwise false.
 
 ```
@@ -3735,14 +4016,12 @@ import { Stream } from "itertools-ts";
 
 const reversed = [5, 4, 3, 2, 1];
 
-Stream.of(reversed)
-  .isReversed();
+Stream.of(reversed).isReversed();
 // true
 
 const input = [1, 2, 3, 2, 1];
 
-Stream.of(input)
-  .isReversed();
+Stream.of(input).isReversed();
 // false
 ```
 
@@ -3774,6 +4053,7 @@ Stream.of(isEmpty)
 ```
 
 ##### Is Sorted
+
 Returns true if iterable source is sorted in ascending order; otherwise false.
 
 ```
@@ -3789,18 +4069,17 @@ import { Stream } from "itertools-ts";
 
 const sorted = [1, 2, 3, 4, 5];
 
-Stream.of(sorted)
-  .isSorted();
+Stream.of(sorted).isSorted();
 // true
 
 const input = [1, 2, 3, 2, 1];
 
-Stream.of(input)
-  .isSorted();
+Stream.of(input).isSorted();
 // false
 ```
 
 ##### None Match
+
 Returns true if no element of stream matches the predicate function.
 
 ```
@@ -3812,15 +4091,15 @@ For empty stream returns true.
 ```typescript
 import { Stream } from "itertools-ts";
 
-const grades         = [45, 50, 61, 0];
+const grades = [45, 50, 61, 0];
 const isPassingGrade = (grade) => grade >= 70;
 
-const trueResult = Stream.of(grades)
-  .noneMatch(isPassingGrade);
+const trueResult = Stream.of(grades).noneMatch(isPassingGrade);
 // true
 ```
 
 ##### Same With
+
 Returns true if stream and all given collections are the same.
 
 ```
@@ -3834,16 +4113,15 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const trueResult = Stream.of(input)
-  .sameWith([1, 2, 3, 4, 5]);
+const trueResult = Stream.of(input).sameWith([1, 2, 3, 4, 5]);
 // true
 
-const falseResult = Stream.of(input)
-  .sameWith([5, 4, 3, 2, 1]);
+const falseResult = Stream.of(input).sameWith([5, 4, 3, 2, 1]);
 // false
 ```
 
 ##### Same Count With
+
 Returns true if stream collection and all given collections have the same lengths.
 
 ```
@@ -3857,17 +4135,17 @@ import { Stream } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-const trueResult = Stream.of(input)
-  .sameCountWith([5, 4, 3, 2, 1]);
+const trueResult = Stream.of(input).sameCountWith([5, 4, 3, 2, 1]);
 // true
 
-const falseResult = Stream.of(input)
-  .sameCountWith([1, 2, 3]);
+const falseResult = Stream.of(input).sameCountWith([1, 2, 3]);
 // false
 ```
 
 #### Stream Debug Operations
+
 #### Peek
+
 Peek at each element between other Stream operations to do some action without modifying the stream.
 
 ```
@@ -3877,7 +4155,7 @@ Stream<T>.peek(callback: (datum: unknown) => void): Stream<T>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const result = Stream.of(['some', 'items'])
+const result = Stream.of(["some", "items"])
   .peek((x) => console.log(x)) // 'some', 'items'
   .toArray();
 
@@ -3886,6 +4164,7 @@ console.log(result);
 ```
 
 #### Peek Stream
+
 Peek at the entire stream between other Stream operations to do some action without modifying the stream.
 
 ```
@@ -3895,7 +4174,7 @@ Stream<T>.peekStream(callback: (datum: Stream<T>) => void): Stream<T>
 ```typescript
 import { Stream } from "itertools-ts";
 
-const result = Stream.of(['some', 'items'])
+const result = Stream.of(["some", "items"])
   .peekStream((stream) => console.log(stream.toArray())) // ['some', 'items']
   .toArray();
 
@@ -3904,23 +4183,31 @@ console.log(result);
 ```
 
 ## Pipes
+
 Pipes are a way to chain multiple operations together.
 
 Types notation:
+
 ```typescript
 type PipeOperation<TInput, TOutput> = (input: TInput) => TOutput;
-type PipeOperationSequence<TFlow extends any[]> =
-  TFlow extends [infer T1, infer T2, ...infer Rest]
-    ? [PipeOperation<T1, T2>, ...PipeOperationSequence<[T2, ...Rest]>]
-    : [];
+type PipeOperationSequence<TFlow extends any[]> = TFlow extends [
+  infer T1,
+  infer T2,
+  ...infer Rest
+]
+  ? [PipeOperation<T1, T2>, ...PipeOperationSequence<[T2, ...Rest]>]
+  : [];
 type Pipe<TFlow extends any[]> = PipeOperation<First<TFlow>, Last<TFlow>> & {
   add: TFlow extends []
-    ? <TInput, TOutput>(operation: PipeOperation<TInput, TOutput>) => Pipe<[TInput, TOutput]>
+    ? <TInput, TOutput>(
+        operation: PipeOperation<TInput, TOutput>
+      ) => Pipe<[TInput, TOutput]>
     : <T>(operation: PipeOperation<Last<TFlow>, T>) => Pipe<[...TFlow, T]>;
 };
 ```
 
 Pipe creation function:
+
 ```
 function createPipe<T1, T2, ..., TN>(
   ...operations: [PipeOperation<T1, T2>, PipeOperation<T2, T3>, ..., PipeOperation<TN-1, TN>]
@@ -3928,29 +4215,33 @@ function createPipe<T1, T2, ..., TN>(
 ```
 
 Example with explicit type specification:
+
 ```typescript
 import { createPipe } from "itertools-ts";
 
-const pipe = createPipe<[
-  Iterable<number>,  // INPUT => set.distinct
-  Iterable<number>,  // set.distinct => single.map
-  Iterable<number>,  // single.map => single.filter
-  Iterable<number>,  // single.filter => reduce.toSum
-  number             // reduce.toSum => OUTPUT
-]>(
+const pipe = createPipe<
+  [
+    Iterable<number>, // INPUT => set.distinct
+    Iterable<number>, // set.distinct => single.map
+    Iterable<number>, // single.map => single.filter
+    Iterable<number>, // single.filter => reduce.toSum
+    number // reduce.toSum => OUTPUT
+  ]
+>(
   set.distinct,
   (input) => single.map(input, (x) => x ** 2),
   (input) => single.filter(input, (x) => x < 10),
-  reduce.toSum,
+  reduce.toSum
 );
 
 const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
 
 // You can reuse the pipe
-const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
+const result2 = pipe([1, 1, 1, 2, 2, 2]); // 5
 ```
 
 Example with implicit type specification (works up to 16 operations if you use TypeScript):
+
 ```typescript
 import { createPipe } from "itertools-ts";
 
@@ -3958,52 +4249,54 @@ const pipe = createPipe(
   set.distinct<number>,
   (input) => single.map(input, (x) => x ** 2),
   (input) => single.filter(input, (x) => x < 10),
-  reduce.toSum,
+  reduce.toSum
 );
 
 const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
 
 // You can reuse the pipe
-const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
+const result2 = pipe([1, 1, 1, 2, 2, 2]); // 5
 ```
 
 Example with creating pipe using chain calls:
+
 ```typescript
 import { createPipe } from "itertools-ts";
 
 const pipe = createPipe()
   .add(set.distinct<number>)
-  .add((input) => single.map(input, (x) => x**2))
+  .add((input) => single.map(input, (x) => x ** 2))
   .add((input) => single.filter(input, (x) => x < 10))
   .add(reduce.toSum);
 
 const result1 = pipe([1, 1, 2, 2, 3, 4, 5]); // 14
-const result2 = pipe([1, 1, 1, 2, 2, 2]);    // 5
+const result2 = pipe([1, 1, 1, 2, 2, 2]); // 5
 
 // You can create a new pipe adding some operations
-const extendedPipe = pipe
-  .add((x) => x * 2)
-  .add((x) => x + 1);
+const extendedPipe = pipe.add((x) => x * 2).add((x) => x + 1);
 
 const result3 = extendedPipe([1, 1, 2, 2, 3, 4, 5]); // 29
-const result4 = extendedPipe([1, 1, 1, 2, 2, 2]);    // 11
+const result4 = extendedPipe([1, 1, 1, 2, 2, 2]); // 11
 ```
 
 Asynchronous pipe example:
+
 ```typescript
 import { createPipe } from "itertools-ts";
 
-const asyncPipe = createPipe<[
-  AsyncIterable<number>,  // INPUT => set.distinctAsync
-  AsyncIterable<number>,  // set.distinctAsync => single.mapAsync
-  AsyncIterable<number>,  // single.mapAsync => single.filterAsync
-  AsyncIterable<number>,  // single.filterAsync => reduce.toSumAsync
-  Promise<number>         // reduce.toSumAsync => OUTPUT
-]>(
+const asyncPipe = createPipe<
+  [
+    AsyncIterable<number>, // INPUT => set.distinctAsync
+    AsyncIterable<number>, // set.distinctAsync => single.mapAsync
+    AsyncIterable<number>, // single.mapAsync => single.filterAsync
+    AsyncIterable<number>, // single.filterAsync => reduce.toSumAsync
+    Promise<number> // reduce.toSumAsync => OUTPUT
+  ]
+>(
   set.distinctAsync,
-  (input) => single.mapAsync(input, (x) => x**2),
+  (input) => single.mapAsync(input, (x) => x ** 2),
   (input) => single.filterAsync(input, (x) => x < 10),
-  reduce.toSumAsync,
+  reduce.toSumAsync
 );
 
 const asyncInput1 = [1, 1, 2, 2, 3, 4, 5].map((x) => Promise.resolve(x));
@@ -4011,7 +4304,7 @@ const result1 = await asyncPipe(asyncInput1); // 14
 
 // You can reuse the pipe
 const asyncInput2 = [1, 1, 1, 2, 2, 2].map((x) => Promise.resolve(x));
-const result4 = await asyncPipe(asyncInput2);    // 5
+const result4 = await asyncPipe(asyncInput2); // 5
 
 // You can create a new pipe adding some asynchronous operations
 const extendedAsyncPipe = asyncPipe.add(async (x) => (await x) * 2);
@@ -4019,45 +4312,43 @@ const result5 = await extendedAsyncPipe(asyncInput2); // 10
 ```
 
 You can also use pipe for non-iterables:
+
 ```typescript
 import { createPipe } from "itertools-ts";
 
 const pipe = createPipe(
-  (x: number) => x+1,
-  (x) => x**3,
+  (x: number) => x + 1,
+  (x) => x ** 3,
   (x) => Math.sqrt(x),
   (x) => Math.round(x)
 );
 
-const result1 = pipe(2);  // 5
+const result1 = pipe(2); // 5
 
 const asyncPipe = createPipe(
-  async (x: Promise<number>) => (await x)+1,
-  async (x) => (await x)**3,
+  async (x: Promise<number>) => (await x) + 1,
+  async (x) => (await x) ** 3,
   async (x) => Math.sqrt(await x),
   async (x) => Math.round(await x)
 );
-const result2 = await pipe(Promise.resolve(2));  // 5
+const result2 = await pipe(Promise.resolve(2)); // 5
 ```
 
-Similar Libraries in Other Languages
-------------------------------------
+## Similar Libraries in Other Languages
 
 IterTools functionality is not limited to TypeScript and Python. Other languages have similar libraries.
 Familiar functionality is available when working in other languages.
 
-* [IterTools PHP](https://github.com/markrogoyski/itertools-php)
-* [IterTools Python](https://docs.python.org/3/library/itertools.html): The original!
+- [IterTools PHP](https://github.com/markrogoyski/itertools-php)
+- [IterTools Python](https://docs.python.org/3/library/itertools.html): The original!
 
-Unit testing
-------------
+## Unit testing
 
 ```bash
 npm i
 npm run test
 ```
 
-License
--------
+## License
 
 IterTools TS is licensed under the MIT License.
