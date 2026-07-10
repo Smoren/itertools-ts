@@ -1,5 +1,20 @@
 # IterTools Typescript Change Log
 
+## v2.6.0 - 2026-07-10
+
+### New features
+* random
+  * `coinFlip()`
+  * `coinFlipAsync()`
+  * `rockPaperScissors()`
+  * `rockPaperScissorsAsync()`
+* Stream
+  * `ofCoinFlip()`
+  * `ofRockPaperScissors()`
+* AsyncStream
+  * `ofCoinFlip()`
+  * `ofRockPaperScissors()`
+
 ## v2.5.0 - 2025-12-31
 
 ### New features

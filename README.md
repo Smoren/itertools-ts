@@ -183,6 +183,7 @@ Quick Reference
 | Iterator                                      | Description                            | Code Snippet                                  |
 |-----------------------------------------------|----------------------------------------|-----------------------------------------------|
 | [`booleans`](#Booleans)                       | Generate random booleans               | `random.booleans([repetitions])`              |
+| [`coinFlip`](#Coin-Flip)                      | Generate random coin flips (0 or 1)    | `random.coinFlip([repetitions])`              |
 | [`percentage`](#Percentage)                   | Generate random percentage             | `random.percentage([repetitions])`            |
 | [`rockPaperScissors`](#Rock-Paper-Scissors)   | Generate random rock-paper-scissors    | `random.rockPaperScissors([repetitions])`     |
 
@@ -260,16 +261,17 @@ Quick Reference
 
 ### Stream and AsyncStream Iteration Tools
 #### Stream Sources
-| Source                                           | Description                              | Sync Code Snippet                         | Async Code Snippet                             |
-|--------------------------------------------------|------------------------------------------|-------------------------------------------|------------------------------------------------|
-| [`of`](#of)                                      | Create a stream from an iterable         | `Stream.of(iterable)`                     | `AsyncStream.of(iterable)`                     |
-| [`ofCount`](#of-count)                           | Create an infinite count stream          | `Stream.ofCount([start], [step])`         | `AsyncStream.ofCount([start], [step])`         |
-| [`ofBooleans`](#of-booleans)                     | Create booleans stream                   | `Stream.ofBooleans([repetitions])`        | `AsyncStream.ofBooleans([repetitions])`        |
-| [`ofCycle`](#of-cycle)                           | Create an infinite cycle stream          | `Stream.ofCycle(iterable)`                | `AsyncStream.ofCycle(iterable)`                |
-| [`ofEmpty`](#of-empty)                           | Create an empty stream                   | `Stream.ofEmpty()`                        | `AsyncStream.ofEmpty()`                        |
-| [`ofPercentage`](#of-percentage)                 | Create percentage stream                 | `Stream.ofPercentage(item)`               | `AsyncStream.ofPercentage(item)`               |
-| [`ofRepeat`](#of-repeat)                         | Create an infinite repeating stream      | `Stream.ofRepeat(item)`                   | `AsyncStream.ofRepeat(item)`                   |
-| [`ofRockPaperScissors`](#of-rock-paper-scissors) | Create rock-paper-scissors stream        | `Stream.ofRockPaperScissors([repetitions])` | `AsyncStream.ofRockPaperScissors([repetitions])` |
+| Source                                           | Description                         | Sync Code Snippet                           | Async Code Snippet                               |
+|--------------------------------------------------|-------------------------------------|---------------------------------------------|--------------------------------------------------|
+| [`of`](#of)                                      | Create a stream from an iterable    | `Stream.of(iterable)`                       | `AsyncStream.of(iterable)`                       |
+| [`ofCoinFlip`](#of-coin-flip)                    | Create coin flip stream             | `Stream.ofCoinFlip([repetitions])`          | `AsyncStream.ofCoinFlip([repetitions])`          |
+| [`ofCount`](#of-count)                           | Create an infinite count stream     | `Stream.ofCount([start], [step])`           | `AsyncStream.ofCount([start], [step])`           |
+| [`ofBooleans`](#of-booleans)                     | Create booleans stream              | `Stream.ofBooleans([repetitions])`          | `AsyncStream.ofBooleans([repetitions])`          |
+| [`ofCycle`](#of-cycle)                           | Create an infinite cycle stream     | `Stream.ofCycle(iterable)`                  | `AsyncStream.ofCycle(iterable)`                  |
+| [`ofEmpty`](#of-empty)                           | Create an empty stream              | `Stream.ofEmpty()`                          | `AsyncStream.ofEmpty()`                          |
+| [`ofPercentage`](#of-percentage)                 | Create percentage stream            | `Stream.ofPercentage(item)`                 | `AsyncStream.ofPercentage(item)`                 |
+| [`ofRepeat`](#of-repeat)                         | Create an infinite repeating stream | `Stream.ofRepeat(item)`                     | `AsyncStream.ofRepeat(item)`                     |
+| [`ofRockPaperScissors`](#of-rock-paper-scissors) | Create rock-paper-scissors stream   | `Stream.ofRockPaperScissors([repetitions])` | `AsyncStream.ofRockPaperScissors([repetitions])` |
 
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
@@ -1069,6 +1071,35 @@ for await (const value of random.rockPaperScissorsAsync(5)) {
   console.log(value);
 }
 // 'paper', 'rock', 'scissors', 'paper', 'rock' (random values)
+```
+
+### Coin Flip
+Generate random coin flips (0 or 1).
+
+```
+function* coinFlip(repetitions?: number): Iterable<number>
+```
+
+If `repetitions` is provided, generates exactly that many values. If not provided, generates values infinitely.
+
+```typescript
+import { random } from 'itertools-ts';
+
+for (const value of random.coinFlip(5)) {
+  console.log(value);
+}
+// 0, 1, 0, 0, 1 (random values)
+
+for (const value of random.coinFlip()) {
+  console.log(value);
+}
+// 1, 0, 1, 1, 0, ... (infinite random values)
+
+// Async version
+for await (const value of random.coinFlipAsync(5)) {
+  console.log(value);
+}
+// 0, 1, 1, 0, 0 (random values)
 ```
 
 ### Percentage
@@ -2363,6 +2394,26 @@ const result1 = Stream.ofBooleans()
 const result2 = Stream.ofBooleans(5)
   .toArray();
 // [false, true, true, false, true]
+```
+
+#### Of Coin Flip
+Create a coin flip stream.
+
+```
+Stream.ofCoinFlip(repetitions?: number): Stream<number>
+AsyncStream.ofCoinFlip(repetitions?: number): AsyncStream<number>
+```
+
+```typescript
+import { Stream, AsyncStream } from "itertools-ts";
+
+const result = Stream.ofCoinFlip(5)
+  .toArray();
+// [0, 1, 0, 0, 1] (random values)
+
+const asyncResult = await AsyncStream.ofCoinFlip(5)
+  .toArray();
+// [1, 0, 1, 1, 0] (random values)
 ```
 
 #### Of Rock Paper Scissors
