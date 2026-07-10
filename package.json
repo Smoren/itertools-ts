@@ -72,6 +72,7 @@
   "devDependencies": {
     "@borderless/ts-scripts": "^0.13.6",
     "@types/jest": "^27.5.1",
+    "@types/node": "^18.19.0",
     "jest": "^27.5.1",
     "rimraf": "^4.4.0",
     "ts-expect": "^1.1.0",
