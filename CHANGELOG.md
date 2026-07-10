@@ -25,6 +25,9 @@
   * `ofCoinFlip()`
   * `ofRockPaperScissors()`
 
+### Fixes
+* Fix README bugs
+
 ## v2.5.0 - 2025-12-31
 
 ### New features

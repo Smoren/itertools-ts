@@ -865,12 +865,12 @@ const movies = [
 ];
 
 const prequelsRemoved = [];
-for (const nonPrequel of Single.skip(movies, 3)) {
+for (const nonPrequel of single.skip(movies, 3)) {
   prequelsRemoved.push(nonPrequel);
 } // Episodes IV - IX
 
 const onlyTheBest = [];
-for (const nonSequel of Single.skip(prequelsRemoved, 3, 3)) {
+for (const nonSequel of single.skip(prequelsRemoved, 3, 3)) {
   onlyTheBest.push(nonSequel);
 }
 // 'A New Hope', 'The Empire Strikes Back', 'Return of the Jedi'
@@ -961,7 +961,7 @@ import { single } from 'itertools-ts';
 
 const dict = new Map([['a', 1], ['b', 2], ['c', 3]]);
 
-for (const value of single.keys(dict)) {
+for (const value of single.values(dict)) {
   console.log(value);
 }
 // 1, 2, 3
@@ -1355,7 +1355,7 @@ import { reduce } from 'itertools-ts';
 
 const grades = [100, 90, 95, 85, 94];
 
-const finalGrade = reduce.toAverage(numbers);
+const finalGrade = reduce.toAverage(grades);
 // 92.8
 ```
 
@@ -1425,7 +1425,7 @@ import { reduce } from 'itertools-ts';
 
 const medals = ['gold', 'silver', 'bronze'];
 
-const first = reduce.toFirst(medals);
+const last = reduce.toLast(medals);
 // bronze
 ```
 
@@ -1449,7 +1449,7 @@ import { reduce } from 'itertools-ts';
 const numbers = [5, 3, 1, 2, 4];
 
 const result = reduce.toMax(numbers);
-// 1
+// 5
 
 const movieRatings = [
   {
@@ -1471,7 +1471,7 @@ const movieRatings = [
 ];
 const compareBy = (movie) => movie.rating;
 
-const lowestRatedMovie = reduce.toMin(movieRatings, compareBy);
+const highestRatedMovie = reduce.toMax(movieRatings, compareBy);
 // {
 //   title: 'The Matrix',
 //   rating: 4.7,
@@ -1612,7 +1612,7 @@ import { reduce } from 'itertools-ts';
 
 const grades = [100, 90, 80, 85, 95];
 
-const range = reduce.toRange(numbers);
+const range = reduce.toRange(grades);
 // 20
 ```
 
@@ -1781,7 +1781,7 @@ const a = [1, 2, 3];
 const b = [2, 3, 4];
 const c = [3, 4, 5];
 
-for (const item of set.symmetricDifference(a, b, c)) {
+for (const item of set.union(a, b, c)) {
     console.log(item);
 }
 // 1, 2, 3, 4, 5
@@ -1968,7 +1968,7 @@ const ages = [18, 21, 24, 54];
 const m = 4;
 const predicate = (age) => age >= 21;
 
-const falseResult = Summary::exactlyN(ages, m, predicate);
+const falseResult = summary.exactlyN(ages, m, predicate);
 // false
 ```
 
@@ -1984,9 +1984,9 @@ import { summary } from "itertools-ts";
 
 const input = [1, 2, 3, 4, 5];
 
-summary.isIterable(input); // false
-summary.isIterable(input[Symbol.asyncIterator]()) // false
-summary.isIterable(1); // false
+summary.isAsyncIterable(input); // false
+summary.isAsyncIterable(input[Symbol.asyncIterator]()) // false
+summary.isAsyncIterable(1); // false
 ```
 
 ### Is Iterable
@@ -2038,12 +2038,12 @@ import { summary } from "itertools-ts";
 
 const reversedNumbers = [5, 4, 3, 2, 1];
 
-Summary.isReversed(reversedNumbers);
+summary.isReversed(reversedNumbers);
 // true
 
 const numbers = [1, 4, 3, 2, 1];
 
-Summary.isReversed(numbers);
+summary.isReversed(numbers);
 // false
 ```
 
@@ -2062,12 +2062,12 @@ import { summary } from "itertools-ts";
 
 const emptyArray = [];
 
-Summary.isEmpty(emptyArray);
+summary.isEmpty(emptyArray);
 // true
 
 const numbers = [3];
 
-Summary.isEmpty(numbers);
+summary.isEmpty(numbers);
 // false
 ```
 
@@ -2086,12 +2086,12 @@ import { summary } from "itertools-ts";
 
 const sortedNumbers = [1, 2, 3, 4, 5];
 
-Summary.isSorted(sortedNumbers);
+summary.isSorted(sortedNumbers);
 // true
 
 const numbers = [3, 2, 3, 4, 5];
 
-Summary.isSorted(numbers);
+summary.isSorted(numbers);
 // false
 ```
 
