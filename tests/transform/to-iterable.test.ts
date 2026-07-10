@@ -100,6 +100,10 @@ function dataProviderForSuccess(): Array<[Iterable<any> | Iterator<any> | Record
       {a: [1], b: {x: 2}, c: 3},
       [['a', [1]], ['b', {x: 2}], ['c', 3]],
     ],
+    [
+      Object.assign(Object.create({inherited: 'value'}), {own: 1}),
+      [['own', 1]],
+    ],
   ];
 }
 

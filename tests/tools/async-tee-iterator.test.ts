@@ -29,6 +29,29 @@ describe.each(dataProvider())(
   }
 );
 
+describe.each(dataProvider())(
+  "Tools Async Tee Iterator Next When Exhausted Test",
+  (input) => {
+    it("", async () => {
+      // Given
+      const iterator = new AsyncTeeIterator(toAsyncIterator(input), 1);
+      const [iterable] = iterator.getRelatedIterables();
+
+      // When
+      const results: Array<IteratorResult<any>> = [];
+      let done: boolean | undefined = false;
+      while (!done) {
+        const result = await iterable.next();
+        results.push(result);
+        done = result.done;
+      }
+
+      // Then
+      expect(results[results.length - 1].done).toBeTruthy();
+    });
+  }
+);
+
 function dataProvider(): Array<[Iterable<any> | Iterator<any> | AsyncIterable<any> | AsyncIterator<any>, any]> {
   return [
     [
