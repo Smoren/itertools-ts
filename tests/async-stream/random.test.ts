@@ -1,5 +1,5 @@
 import { percentageAsync } from '../../src/random';
-import { InvalidArgumentError } from '../../src/exceptions';
+import { InvalidArgumentError, LengthError} from '../../src/exceptions';
 import { AsyncStream } from '../../src/async-stream';
 
 
@@ -109,6 +109,41 @@ describe.each([
     });
   }
 );
+
+describe.each([
+  ...dataProviderForFiniteAsync(),
+])('AsyncStream.choice() finite', (count) => {
+  it(`generates exactly ${count} values`, async () => {
+    const values: number[] = [];
+    for await (const val of AsyncStream.of([1, 2, 3]).choice(count)) {
+      values.push(val);
+    }
+    expect(values.length).toBe(count);
+    values.forEach((val) => {
+      expect([1, 2, 3]).toContain(val);
+    });
+  });
+});
+
+describe.each([
+  ...dataProviderForNegativeAsync(),
+])('AsyncStream.choice() negative', (negativeCount) => {
+  it(`throws InvalidArgumentError for ${negativeCount}`, async () => {
+    const gen = AsyncStream.of([1, 2, 3]).choice(negativeCount);
+    await expect((async () => {
+      for await (const _ of gen) {}
+    })()).rejects.toThrow(InvalidArgumentError);
+  });
+});
+
+describe('AsyncStream.choice() empty', () => {
+  it('throws LengthError when stream is empty', async () => {
+    const gen = AsyncStream.of([]).choice(5);
+    await expect((async () => {
+      for await (const _ of gen) {}
+    })()).rejects.toThrow(LengthError);
+  });
+});
 
 describe.each([
   ...dataProviderForNegativeAsync(),

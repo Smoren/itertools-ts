@@ -57,6 +57,29 @@ describe.each([
   }
 );
 
+describe.each(dataProviderForDivide())(
+  "AsyncStream Transform Divide Test",
+  (input, count, expected) => {
+    it(`divides input into ${count} chunks`, async () => {
+      // Given
+      const inputStream = AsyncStream.of(input);
+
+      // When
+      const divided = inputStream.divide(count); // returns AsyncStream<unknown[]>
+
+      const result: any[] = [];
+      for await (const chunk of divided) {
+        result.push(chunk); // each chunk is already an array
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+
+
 function dataProviderForArrays(): Array<[Array<any>, (data: Array<any>) => any, any]> {
   return [
     [
@@ -473,3 +496,50 @@ function dataProviderForTee(): Array<[AsyncIterable<any> | AsyncIterator<any> | 
     ],
   ];
 }
+
+
+function dataProviderForDivide(): Array<[any, number, any[]]> {
+  return [
+    // Arrays
+    [[], 2, [[], []]],
+    [[1], 2, [[1], []]],
+    [[1, 2], 2, [[1], [2]]],
+    [[1, 2, 3, 4], 2, [[1, 2], [3, 4]]],
+    [[1, 2, 3, 4, 5], 2, [[1, 2, 3], [4, 5]]],
+    [[1, 2, 3, 4], 3, [[1, 2], [3], [4]]],
+    [[1, 2, 3], 5, [[1], [2], [3], [], []]], // more parts than elements
+
+    // Strings
+    ['abcd', 2, [['a', 'b'], ['c', 'd']]],
+    ['abc', 3, [['a'], ['b'], ['c']]],
+    ['abc', 5, [['a'], ['b'], ['c'], [], []]],
+
+    // Sets
+    [new Set([1, 2, 3, 4]), 2, [[1, 2], [3, 4]]],
+    [new Set(['a', 'b', 'c']), 3, [['a'], ['b'], ['c']]],
+
+    // Maps
+    [new Map([['a', 1], ['b', 2], ['c', 3], ['d', 4]]), 2,
+      [[['a', 1], ['b', 2]], [['c', 3], ['d', 4]]],
+    ],
+
+    // Generators
+    [createGeneratorFixture([1, 2, 3, 4]), 2, [[1, 2], [3, 4]]],
+
+    // Iterables
+    [createIterableFixture([1, 2, 3]), 2, [[1, 2], [3]]],
+
+    // Iterators
+    [createIteratorFixture([1, 2, 3, 4, 5]), 3, [[1, 2], [3, 4], [5]]],
+
+    // Async Generators
+    [createAsyncGeneratorFixture([1, 2, 3, 4]), 2, [[1, 2], [3, 4]]],
+
+    // Async Iterables
+    [createAsyncIterableFixture([1, 2, 3]), 2, [[1, 2], [3]]],
+
+    // Async Iterators
+    [createAsyncIteratorFixture([1, 2, 3, 4, 5]), 3, [[1, 2], [3, 4], [5]]],
+  ];
+}
+

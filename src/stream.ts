@@ -108,6 +108,19 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Generate random coin flips (0 or 1).
+   *
+   * If optional param `repetitions` is not given, iterates infinitely.
+   *
+   * @param repetitions - Number of values to generate
+   *
+   * @see random.coinFlip
+   */
+  static ofCoinFlip(repetitions?: number): Stream<number> {
+    return new Stream(random.coinFlip(repetitions));
+  }
+
+  /**
    * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.
@@ -876,7 +889,7 @@ export class Stream<T> implements Iterable<T> {
 
   /**
    * Returns true if given stream is empty.
-   * 
+   *
    * @see summary.isEmpty
    */
   isEmpty(): boolean {
@@ -967,6 +980,27 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Splits the elements of the stream into `n` smaller arrays (chunks), maintaining order.
+   *
+   * Each chunk is returned as an array in a new Stream. The resulting Stream is chainable,
+   * so you can continue applying other Stream operations like `map`, `filter`, or further `divide`.
+   *
+   * Example:
+   * const s = new Stream([1, 2, 3, 4])
+   * // Output:
+   * // [1, 2]
+   * // [3, 4]
+   *
+   * @param n The number of chunks to divide the stream into
+   *
+   * @see transform.divide
+   */
+  divide(n: number): Stream<Array<T>> {
+    const dividedIterable = transform.divide(this.data, n); // split into chunks
+    return new Stream(dividedIterable); // wrap into stream
+  }
+
+  /**
    * Converts stream to Array.
    *
    * @see transform.toArray
@@ -996,6 +1030,19 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Generates random elements from the given collection.
+   * 
+   * If optional param `repetitions` is not given, iterates infinitely.
+   * 
+   * @param repetitions - Number of values to generate
+   * @throws InvalidArgumentError if repetitions is negative
+   * @throws LengthError if stream is empty.
+   */
+  choice(repetitions?: number): Stream<T> {
+    return new Stream(random.choice(this, repetitions));
+  }
+
+  /**
    * Aggregated iterator.
    */
   *[Symbol.iterator](): Iterator<T> {
@@ -1012,4 +1059,5 @@ export class Stream<T> implements Iterable<T> {
   protected constructor(iterable: Iterable<T>) {
     this.data = iterable;
   }
+
 }

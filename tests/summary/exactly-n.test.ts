@@ -164,6 +164,40 @@ describe.each([
   }
 );
 
+describe.each([
+  ...dataProviderForExactlyNWithPredicateTrue(),
+  ...dataProviderForGeneratorsExactlyNWithPredicateTrue(),
+  ...dataProviderForIterablesExactlyNWithPredicateTrue(),
+  ...dataProviderForIteratorsExactlyNWithPredicateTrue(),
+  ...dataProviderForStringsExactlyNWithPredicateTrue(),
+  ...dataProviderForSetsExactlyNWithPredicateTrue(),
+  ...dataProviderForMapsExactlyNWithPredicateTrue(),
+])(
+  "Summary Exactly N Async Test With Predicate Non Zero N When N Matches",
+  (input, n, predicate) => {
+    it("", async () => {
+      expect(await summary.exactlyNAsync(input, n, predicate)).toBeTruthy();
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForExactlyNWithPredicateFalse(),
+  ...dataProviderForGeneratorsExactlyNWithPredicateFalse(),
+  ...dataProviderForIterablesExactlyNWithPredicateFalse(),
+  ...dataProviderForIteratorsExactlyNWithPredicateFalse(),
+  ...dataProviderForStringsExactlyNWithPredicateFalse(),
+  ...dataProviderForSetsExactlyNWithPredicateFalse(),
+  ...dataProviderForMapsExactlyNWithPredicateFalse(),
+])(
+  "Summary Exactly N Async Test With Predicate Non Zero N When N Doesn't Match",
+  (input, n, predicate) => {
+    it("", async () => {
+      expect(await summary.exactlyNAsync(input, n, predicate)).toBeFalsy();
+    });
+  }
+);
+
 function dataProviderForArraysExactlyNTrue(): Array<[Array<any>, number]> {
   return [
     [

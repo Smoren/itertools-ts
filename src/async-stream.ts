@@ -114,6 +114,19 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Generate random coin flips (0 or 1) asynchronously.
+   *
+   * If optional param `repetitions` is not given, iterates infinitely.
+   *
+   * @param repetitions - Number of values to generate
+   *
+   * @see random.coinFlipAsync
+   */
+  static ofCoinFlip(repetitions?: number): AsyncStream<number> {
+    return new AsyncStream(random.coinFlipAsync(repetitions));
+  }
+
+  /**
    * Iterate stream collection with another iterable collections simultaneously.
    *
    * Make an iterator that aggregates items from multiple iterators.
@@ -952,7 +965,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
 
   /**
    * Returns true if given stream is empty.
-   * 
+   *
    * @see summary.isEmptyAsync
    */
   async isEmpty(): Promise<boolean> {
@@ -1061,6 +1074,27 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Splits the elements of the async stream into `n` smaller arrays (chunks), maintaining order.
+   *
+   * Each chunk is returned as an array in a new AsyncStream. The resulting AsyncStream is chainable,
+   * so you can continue applying other operations like `map`, `filter`, or further `divide`.
+   *
+   * Example:
+   * const s = new AsyncStream([1, 2, 3, 4]);
+   * // Output:
+   * // [1, 2]
+   * // [3, 4]
+   *
+   * @param n The number of chunks to divide the async stream into. Must be greater than 0.
+   *
+   * @see transform.divideAsync
+   */
+  divide(n: number): AsyncStream<Array<T>> {
+    const dividedIterable = transform.divideAsync(this.data,n);
+    return new AsyncStream(dividedIterable);
+  }
+
+  /**
    * Converts stream to Array.
    *
    * @see transform.toArrayAsync
@@ -1087,6 +1121,19 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    */
   async toSet(): Promise<Set<T>> {
     return await transform.toSetAsync(this);
+  }
+
+  /**
+   * Asynchronously generates random elements from the given collection.
+   *
+   * If optional param `repetitions` is not given, iterates infinitely.
+   *
+   * @param repetitions - Number of values to generate
+   * @throws InvalidArgumentError if repetitions is negative
+   * @throws LengthError if stream is empty.
+   */
+  choice(repetitions?: number): AsyncStream<T> {
+    return new AsyncStream(random.choiceAsync(this, repetitions));
   }
 
   /**
