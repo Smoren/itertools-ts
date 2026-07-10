@@ -180,12 +180,13 @@ Quick Reference
 | [`repeat`](#Repeat-1)   | Repeat an item forever     | `infinite.repeat(item)`            |
 
 #### Random Iteration
-| Iterator                                      | Description                            | Code Snippet                                  |
-|-----------------------------------------------|----------------------------------------|-----------------------------------------------|
-| [`booleans`](#Booleans)                       | Generate random booleans               | `random.booleans([repetitions])`              |
-| [`coinFlip`](#Coin-Flip)                      | Generate random coin flips (0 or 1)    | `random.coinFlip([repetitions])`              |
-| [`percentage`](#Percentage)                   | Generate random percentage             | `random.percentage([repetitions])`            |
-| [`rockPaperScissors`](#Rock-Paper-Scissors)   | Generate random rock-paper-scissors    | `random.rockPaperScissors([repetitions])`     |
+| Iterator                                      | Description                               | Code Snippet                                  |
+|-----------------------------------------------|-------------------------------------------|-----------------------------------------------|
+| [`booleans`](#Booleans)                       | Generate random booleans                  | `random.booleans([repetitions])`              |
+| [`choice`](#Choice)                           | Generate random choices from a collection | `random.choice(data, [repetitions])`          |
+| [`coinFlip`](#Coin-Flip)                      | Generate random coin flips (0 or 1)       | `random.coinFlip([repetitions])`              |
+| [`percentage`](#Percentage)                   | Generate random percentage                | `random.percentage([repetitions])`            |
+| [`rockPaperScissors`](#Rock-Paper-Scissors)   | Generate random rock-paper-scissors       | `random.rockPaperScissors([repetitions])`     |
 
 #### Math Iteration
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
@@ -1131,6 +1132,40 @@ for await (const num of infinite.percentageAsync(5)) {
   console.log(num);
 }
 // 0.7745835631877125, 0.6368758907434469, 0.6465445462428422... (random values)
+```
+
+### Choice
+Generate random choices from a collection.
+
+```
+function* choice<T>(
+  data: Iterable<T> | Iterator<T>,
+  repetitions?: number
+): Iterable<T>
+```
+
+If `repetitions` is provided, generates exactly that many choices. If not provided, generates choices infinitely.
+
+```typescript
+import { random } from 'itertools-ts';
+
+const choices = [1, 2, 3, 4, 5];
+
+for (const num of random.choice(choices, 5)) {
+  console.log(num);
+}
+// 4, 5, 1, 2, 1 (random values)
+
+for (const num of random.choice(choices)) {
+  console.log(num);
+}
+// 1, 3, 4, 2, 4, ... (random values)
+
+// Async version
+for await (const num of random.choiceAsync(choices, 3)) {
+  console.log(num);
+}
+// 3, 1, 4 (random values)
 ```
 
 ## Math Iteration

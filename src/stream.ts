@@ -1030,6 +1030,19 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Generates random elements from the given collection.
+   * 
+   * If optional param `repetitions` is not given, iterates infinitely.
+   * 
+   * @param repetitions - Number of values to generate
+   * @throws InvalidArgumentError if repetitions is negative
+   * @throws LengthError if stream is empty.
+   */
+  choice(repetitions?: number): Stream<T> {
+    return new Stream(random.choice(this, repetitions));
+  }
+
+  /**
    * Aggregated iterator.
    */
   *[Symbol.iterator](): Iterator<T> {

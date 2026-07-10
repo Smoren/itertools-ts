@@ -1124,6 +1124,20 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Asynchronously generates random elements from the given collection.
+   * 
+   * If optional param `repetitions` is not given, iterates infinitely.
+   * 
+   * @param repetitions - Number of values to generate
+   * @throws InvalidArgumentError if repetitions is negative
+   * @throws LengthError if stream is empty.
+   */
+  choice(repetitions?: number): AsyncStream<T> {
+    return new AsyncStream(choiceAsync(this, repetitions));
+  }
+
+
+  /**
    * Aggregated iterator.
    */
   async *[Symbol.asyncIterator](): AsyncIterator<T> {
