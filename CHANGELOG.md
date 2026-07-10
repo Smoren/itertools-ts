@@ -4,11 +4,14 @@
 
 ### New features
 * random
+  * `choice()`
+  * `choiceAsync()`
   * `coinFlip()`
   * `coinFlipAsync()`
   * `rockPaperScissors()`
   * `rockPaperScissorsAsync()`
 * transform
+  * `choice()`
   * `divide()`
   * `divideAsync()`
 * Stream
@@ -16,6 +19,7 @@
   * `ofCoinFlip()`
   * `ofRockPaperScissors()`
 * AsyncStream
+  * `choice()`
   * `divide()`
   * `ofCoinFlip()`
   * `ofRockPaperScissors()`

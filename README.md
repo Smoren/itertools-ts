@@ -282,10 +282,11 @@ Quick Reference
 | [`chainWith`](#chain-with)                              | Chain iterable source withs given iterables together into a single iteration              | `stream.chainWith(...iterables)`                                     |
 | [`chunkwise`](#chunkwise-1)                             | Iterate by chunks                                                                         | `stream.chunkwise(chunkSize)`                                        |
 | [`chunkwiseOverlap`](#chunkwise-overlap-1)              | Iterate by overlapped chunks                                                              | `stream.chunkwiseOverlap(chunkSize, overlap)`                        |
+| [`choice`](#choice-1)                                   | Generate random choices from stream                                                       | `stream.choice([repetitions])`                                       |
 | [`combinations`](#combinations-1)                       | Combinations of the stream iterable                                                       | `stream.combinations(length)`                                        |
 | [`compress`](#compress-1)                               | Compress source by filtering out data not selected                                        | `stream.compress(selectors)`                                         |
 | [`distinct`](#distinct-1)                               | Filter out elements: iterate only unique items                                            | `stream.distinct()`                                                  |
-| [`divide`](#divide-1)                                   | Splits stream into n chunks                                                             | `stream.divide(n)`                                                   |
+| [`divide`](#divide-1)                                   | Splits stream into n chunks                                                               | `stream.divide(n)`                                                   |
 | [`dropWhile`](#drop-while-1)                            | Drop elements from the iterable source while the predicate function is true               | `stream.dropWhile(predicate)`                                        |
 | [`enumerate`](#enumerate-1)                             | Enumerates elements of stream                                                             | `stream.enumerate()`                                                 |
 | [`filter`](#filter-1)                                   | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                                           |
@@ -2698,6 +2699,35 @@ const result = Stream.of(fruits)
   ['banana', 'cherry'],
 ]
 */
+```
+
+#### Choice
+Generates random elements from the stream.
+
+```
+Stream<T>.choice(repetitions?: number): Stream<T>
+```
+
+* If `repetitions` is provided, generates exactly that many choices.
+* If not provided, generates choices infinitely.
+* Throws `InvalidArgumentError` if repetitions is negative.
+* Throws `LengthError` if stream is empty.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const choices = [1, 2, 3, 4, 5];
+
+const result = Stream.of(choices)
+  .choice(5)
+  .toArray();
+// [4, 5, 1, 2, 1] (random values)
+
+const infiniteLimitedResult = Stream.of(choices)
+  .choice()
+  .limit(5)
+  .toArray();
+// [1, 3, 4, 2, 4] (random values)
 ```
 
 #### Compress
