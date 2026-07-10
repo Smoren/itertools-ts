@@ -79,6 +79,10 @@
     "ts-jest": "^29.4.11",
     "typescript": "^5.9.3"
   },
+  "overrides": {
+    "inflight": "^1.0.6",
+    "glob": "^13.0.6"
+  },
   "types": "./lib/index.d.ts",
   "contributors": [
     {
