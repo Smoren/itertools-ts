@@ -8,10 +8,15 @@
   * `coinFlipAsync()`
   * `rockPaperScissors()`
   * `rockPaperScissorsAsync()`
+* transform
+  * `divide()`
+  * `divideAsync()`
 * Stream
+  * `divide()`
   * `ofCoinFlip()`
   * `ofRockPaperScissors()`
 * AsyncStream
+  * `divide()`
   * `ofCoinFlip()`
   * `ofRockPaperScissors()`
 

@@ -250,6 +250,7 @@ Quick Reference
 #### Transform
 | Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet                |
 |-----------------------------------------|-----------------------------------------|-----------------------------------|-----------------------------------|
+| [`divide`](#divide)                     | Divides iterable into n chunks          | `transform.divide(data, n)`       | `transform.divideAsync(data, n)`  |
 | [`tee`](#tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | `transform.teeAsync(data, count)` |
 | [`toArray`](#to-array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)`    |
 | [`toAsyncIterable`](#to-async-iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                                 |
@@ -283,6 +284,7 @@ Quick Reference
 | [`combinations`](#combinations-1)                       | Combinations of the stream iterable                                                       | `stream.combinations(length)`                                        |
 | [`compress`](#compress-1)                               | Compress source by filtering out data not selected                                        | `stream.compress(selectors)`                                         |
 | [`distinct`](#distinct-1)                               | Filter out elements: iterate only unique items                                            | `stream.distinct()`                                                  |
+| [`divide`](#divide-1)                                   | Splits stream into n chunks                                                             | `stream.divide(n)`                                                   |
 | [`dropWhile`](#drop-while-1)                            | Drop elements from the iterable source while the predicate function is true               | `stream.dropWhile(predicate)`                                        |
 | [`enumerate`](#enumerate-1)                             | Enumerates elements of stream                                                             | `stream.enumerate()`                                                 |
 | [`filter`](#filter-1)                                   | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                                           |
@@ -2147,6 +2149,31 @@ const falseResult = summary.sameCount(batmanMovies, matrixMovies);
 ```
 
 ## Transform
+### Divide
+Divides the elements of the iterable evenly into n smaller arrays while maintaining order.
+
+```
+function* divide<T>(
+  data: Iterable<T> | Iterator<T>,
+  n: number
+): Iterable<Array<T>>
+```
+
+* `n` must be a positive finite integer.
+* Throws `InvalidArgumentError` if `n` is invalid.
+
+```typescript
+import { transform } from "itertools-ts";
+
+const data = [1, 2, 3, 4, 5];
+
+const result = Array.from(transform.divide(data, 2));
+// [[1, 2, 3], [4, 5]]
+
+const result2 = Array.from(transform.divide(data, 3));
+// [[1, 2], [3, 4], [5]]
+```
+
 ### Tee
 Return several independent (duplicated) iterators from a single iterable.
 
@@ -2484,6 +2511,24 @@ const result = Stream.ofEmpty()
 // [1, 2, 3]
 ```
 
+#### Of Percentage
+Create a percentage stream (random numbers between 0 and 1).
+
+```
+Stream.ofPercentage(repetitions?: number): Stream<number>
+AsyncStream.ofPercentage(repetitions?: number): AsyncStream<number>
+```
+
+If `repetitions` is provided, generates exactly that many numbers. If not provided, generates numbers infinitely.
+
+```typescript
+import { Stream, AsyncStream } from "itertools-ts";
+
+const result = Stream.ofPercentage(5)
+  .toArray();
+// [0.7745835631877125, 0.6368758907434469, 0.6465445462428422, 0.49809604559145615, 0.7009703411939564] (random values)
+```
+
 #### Of Repeat
 Create an infinite stream repeating given item.
 
@@ -2767,6 +2812,33 @@ const result = Stream.of(data)
   .flatten()
   .toArray();
 // [1, 2, 3, 4, 5]
+```
+
+#### Divide
+Splits the stream into n chunks while maintaining order.
+
+```
+Stream<T>.divide(n: number): Stream<Array<T>>
+```
+
+* `n` must be a positive finite integer.
+* Each chunk is returned as an array in a new Stream.
+* The resulting Stream is chainable.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const data = [1, 2, 3, 4, 5];
+
+const result = Stream.of(data)
+  .divide(2)
+  .toArray();
+// [[1, 2, 3], [4, 5]]
+
+const result2 = Stream.of(data)
+  .divide(3)
+  .toArray();
+// [[1, 2], [3, 4], [5]]
 ```
 
 #### Intersection With
