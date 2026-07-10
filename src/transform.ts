@@ -291,9 +291,10 @@ export function teeAsync<T>(
 }
 
 /**
- * Divides the elements of the iterable evenly into
- * n smaller iterables while meantaining order
- * EX: ([1, 2, 3, 4], 2) => [1, 2], [3, 4]
+ * Divides the elements of the iterable evenly into n smaller iterables while maintaining order.
+ *
+ * Example: ([1, 2, 3, 4], 2) => [1, 2], [3, 4]
+ *
  * @param data
  * @param n
  */
@@ -322,11 +323,11 @@ export function* divide<T>(
   }
 }
 
-
 /**
- * Divides the elements of the iterable evenly into
- * n smaller iterables while meantaining order
- * EX: ([1, 2, 3, 4], 2) => [1, 2], [3, 4]
+ * Divides the elements of the async iterable evenly into n smaller iterables while maintaining order.
+ *
+ * Example: ([1, 2, 3, 4], 2) => [1, 2], [3, 4]
+ *
  * @param data
  * @param n
  */

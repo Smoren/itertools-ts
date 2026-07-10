@@ -965,7 +965,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
 
   /**
    * Returns true if given stream is empty.
-   * 
+   *
    * @see summary.isEmptyAsync
    */
   async isEmpty(): Promise<boolean> {
@@ -1074,9 +1074,11 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
-   * * Splits the elements of the async stream into `n` smaller arrays (chunks), maintaining order.
+   * Splits the elements of the async stream into `n` smaller arrays (chunks), maintaining order.
+   *
    * Each chunk is returned as an array in a new AsyncStream. The resulting AsyncStream is chainable,
    * so you can continue applying other operations like `map`, `filter`, or further `divide`.
+   *
    * Example:
    * const s = new AsyncStream([1, 2, 3, 4]);
    * // Output:
@@ -1084,13 +1086,13 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    * // [3, 4]
    *
    * @param n The number of chunks to divide the async stream into. Must be greater than 0.
+   *
    * @see transform.divideAsync
-   * @returns A new AsyncStream where each element is an array representing a chunk of the original data.
    */
-  divide(n:number): AsyncStream<Array<T>>{
-    const dividedIterable = divideAsync(this.data,n);
+  divide(n: number): AsyncStream<Array<T>> {
+    const dividedIterable = transform.divideAsync(this.data,n);
     return new AsyncStream(dividedIterable);
-  }  
+  }
 
   /**
    * Converts stream to Array.

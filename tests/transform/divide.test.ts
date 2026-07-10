@@ -5,14 +5,15 @@ import {
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
+  // @ts-ignore
 } from '../fixture';
 import { InvalidArgumentError, transform } from '../../src';
 
 describe.each(dataProvider())(
     'transform.divide',
-    (input,n,expected) =>{
+    (input, n, expected) =>{
         it(`splits input into ${n} chunks`,()=>{
-            const result = Array.from(transform.divide(input,n));
+            const result = Array.from(transform.divide(input, n));
 
             expect(result).toEqual(expected);
         });
@@ -143,5 +144,3 @@ function dataProviderAsyncForError(): Array<[any, any]> {
     [NaN, 2],
   ];
 }
-
-
