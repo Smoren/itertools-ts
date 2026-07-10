@@ -2,6 +2,8 @@ import { percentage, choice } from '../../src/random';
 import { InvalidArgumentError, LengthError } from '../../src/exceptions';
 import { Stream } from '../../src/stream';
 
+const ROCK_PAPER_SCISSORS_VALUES = ['rock', 'paper', 'scissors'];
+
 describe.each([
   ...dataProviderForFinite(),
 ])(
@@ -75,8 +77,34 @@ describe.each([
 );
 
 describe.each([
+  ...dataProviderForStreamWrapper(),
+])(
+  'Stream.ofRockPaperScissors()',
+  (count) => {
+    it('', () => {
+      const values = Stream.ofRockPaperScissors(count).toArray();
+      expect(values.length).toBe(count);
+      values.forEach((value) => {
+        expect(ROCK_PAPER_SCISSORS_VALUES).toContain(value);
+      });
+    });
+  }
+);
+
+describe.each([
+  ...dataProviderForNegative(),
+])(
+  'Stream.ofRockPaperScissors() negative',
+  (negativeCount) => {
+    it('', () => {
+      expect(() => Stream.ofRockPaperScissors(negativeCount).toArray()).toThrow(InvalidArgumentError);
+    });
+  }
+);
+
+describe.each([
   ...dataProviderForFinite(),
-])('Stream Integration - choice() finite', (count) => {
+])('Stream.choice() finite', (count) => {
   it(`generates exactly ${count} values`, () => {
     const values = Array.from(Stream.of([1, 2, 3]).choice(count));
     expect(values.length).toBe(count);
@@ -88,14 +116,14 @@ describe.each([
 
 describe.each([
   ...dataProviderForNegative(),
-])('Stream Integration - choice() negative', (negativeCount) => {
+])('Stream.choice() negative', (negativeCount) => {
   it(`throws InvalidArgumentError for ${negativeCount}`, () => {
     expect(() => Array.from(Stream.of([1, 2, 3]).choice(negativeCount)))
       .toThrow(InvalidArgumentError);
   });
 });
 
-describe('Stream Integration - choice() empty', () => {
+describe('Stream.choice() empty', () => {
   it('throws LengthError when stream is empty', () => {
     expect(() => Array.from(Stream.of([]).choice(5))).toThrow(LengthError);
   });

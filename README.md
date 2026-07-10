@@ -4,7 +4,7 @@
 [![jsr](https://jsr.io/badges/@smoren/itertools-ts)](https://jsr.io/@smoren/itertools-ts)
 [![npm](https://img.shields.io/npm/dm/itertools-ts.svg?style=flat)](https://www.npmjs.com/package/itertools-ts)
 [![Coverage Status](https://coveralls.io/repos/github/Smoren/itertools-ts/badge.svg?branch=master&rand=222)](https://coveralls.io/github/Smoren/itertools-ts?branch=master)
-![Build and test](https://github.com/Smoren/itertools-ts/actions/workflows/test_master.yml/badge.svg)
+![Build and test](https://github.com/Smoren/itertools-ts/actions/workflows/test.yml/badge.svg)
 [![Minified Size](https://badgen.net/bundlephobia/minzip/itertools-ts)](https://bundlephobia.com/result?p=itertools-ts)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -175,16 +175,18 @@ Quick Reference
 #### Infinite Iteration
 | Iterator                | Description                | Code Snippet                       |
 |-------------------------|----------------------------|------------------------------------|
-| [`booleans`](#Booleans) | Generate random booleans   | `infinite.booleans([repetitions])` |
 | [`count`](#Count)       | Count sequentially forever | `infinite.count([start], [step])`  |
 | [`cycle`](#Cycle)       | Cycle through a collection | `infinite.cycle(iterable)`         |
 | [`repeat`](#Repeat-1)   | Repeat an item forever     | `infinite.repeat(item)`            |
 
 #### Random Iteration
-| Iterator                    | Description                | Code Snippet                       |
-|-----------------------------|----------------------------|------------------------------------|
-| [`percentage`](#Percentage) | Generate random percentage | `random.percentage([repetitions])` |
-| [`choice`](#Choice) | Generate random choices from a collection | `random.choice(data, [repetitions])` |
+| Iterator                                      | Description                               | Code Snippet                                  |
+|-----------------------------------------------|-------------------------------------------|-----------------------------------------------|
+| [`booleans`](#Booleans)                       | Generate random booleans                  | `random.booleans([repetitions])`              |
+| [`choice`](#Choice)                           | Generate random choices from a collection | `random.choice(data, [repetitions])`          |
+| [`coinFlip`](#Coin-Flip)                      | Generate random coin flips (0 or 1)       | `random.coinFlip([repetitions])`              |
+| [`percentage`](#Percentage)                   | Generate random percentage                | `random.percentage([repetitions])`            |
+| [`rockPaperScissors`](#Rock-Paper-Scissors)   | Generate random rock-paper-scissors       | `random.rockPaperScissors([repetitions])`     |
 
 #### Math Iteration
 | Iterator                                   | Description                     | Sync Code Snippet                                 | Async Code Snippet                                     |
@@ -236,6 +238,7 @@ Quick Reference
 | [`anyMatch`](#any-match)                | True if any item is true according to predicate         | `summary.anyMatch(data, predicate)`    | `summary.anyMatchAsync(data, predicate)`    |
 | [`exactlyN`](#exactly-n)                | True if exactly n items are true according to predicate | `summary.exactlyN(data, n, predicate)` | `summary.exactlyNAsync(data, n, predicate)` |
 | [`isAsyncIterable`](#is-async-iterable) | True if given data is async iterable                    | `summary.isAsyncIterable(data)`        | —                                           |
+| [`isEmpty`](#is-empty)                  | True if iterable is empty                               | `summary.isEmpty(data)`                | `summary.isEmptyAsync(data)`                |
 | [`isIterable`](#is-iterable)            | True if given data is iterable                          | `summary.isIterable(data)`             | —                                           |
 | [`isIterator`](#is-iterator)            | True if given data is iterator                          | `summary.isIterator(data)`             | —                                           |
 | [`isReversed`](#is-reversed)            | True if iterable reverse sorted                         | `summary.isReversed(data)`             | `summary.isReversedAsync(data)`             |
@@ -248,6 +251,7 @@ Quick Reference
 #### Transform
 | Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet                |
 |-----------------------------------------|-----------------------------------------|-----------------------------------|-----------------------------------|
+| [`divide`](#divide)                     | Divides iterable into n chunks          | `transform.divide(data, n)`       | `transform.divideAsync(data, n)`  |
 | [`tee`](#tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | `transform.teeAsync(data, count)` |
 | [`toArray`](#to-array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)`    |
 | [`toAsyncIterable`](#to-async-iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                                 |
@@ -259,15 +263,17 @@ Quick Reference
 
 ### Stream and AsyncStream Iteration Tools
 #### Stream Sources
-| Source                           | Description                         | Sync Code Snippet                  | Async Code Snippet                      |
-|----------------------------------|-------------------------------------|------------------------------------|-----------------------------------------|
-| [`of`](#of)                      | Create a stream from an iterable    | `Stream.of(iterable)`              | `AsyncStream.of(iterable)`              |
-| [`ofCount`](#of-count)           | Create an infinite count stream     | `Stream.ofCount([start], [step])`  | `AsyncStream.ofCount([start], [step])`  |
-| [`ofBooleans`](#of-booleans)     | Create booleans stream              | `Stream.ofBooleans([repetitions])` | `AsyncStream.ofBooleans([repetitions])` |
-| [`ofCycle`](#of-cycle)           | Create an infinite cycle stream     | `Stream.ofCycle(iterable)`         | `AsyncStream.ofCycle(iterable)`         |
-| [`ofEmpty`](#of-empty)           | Create an empty stream              | `Stream.ofEmpty()`                 | `AsyncStream.ofEmpty()`                 |
-| [`ofPercentage`](#of-percentage) | Create percentage stream            | `Stream.ofPercentage(item)`        | `AsyncStream.ofPercentage(item)`        |
-| [`ofRepeat`](#of-repeat)         | Create an infinite repeating stream | `Stream.ofRepeat(item)`            | `AsyncStream.ofRepeat(item)`            |
+| Source                                           | Description                         | Sync Code Snippet                           | Async Code Snippet                               |
+|--------------------------------------------------|-------------------------------------|---------------------------------------------|--------------------------------------------------|
+| [`of`](#of)                                      | Create a stream from an iterable    | `Stream.of(iterable)`                       | `AsyncStream.of(iterable)`                       |
+| [`ofCoinFlip`](#of-coin-flip)                    | Create coin flip stream             | `Stream.ofCoinFlip([repetitions])`          | `AsyncStream.ofCoinFlip([repetitions])`          |
+| [`ofCount`](#of-count)                           | Create an infinite count stream     | `Stream.ofCount([start], [step])`           | `AsyncStream.ofCount([start], [step])`           |
+| [`ofBooleans`](#of-booleans)                     | Create booleans stream              | `Stream.ofBooleans([repetitions])`          | `AsyncStream.ofBooleans([repetitions])`          |
+| [`ofCycle`](#of-cycle)                           | Create an infinite cycle stream     | `Stream.ofCycle(iterable)`                  | `AsyncStream.ofCycle(iterable)`                  |
+| [`ofEmpty`](#of-empty)                           | Create an empty stream              | `Stream.ofEmpty()`                          | `AsyncStream.ofEmpty()`                          |
+| [`ofPercentage`](#of-percentage)                 | Create percentage stream            | `Stream.ofPercentage(item)`                 | `AsyncStream.ofPercentage(item)`                 |
+| [`ofRepeat`](#of-repeat)                         | Create an infinite repeating stream | `Stream.ofRepeat(item)`                     | `AsyncStream.ofRepeat(item)`                     |
+| [`ofRockPaperScissors`](#of-rock-paper-scissors) | Create rock-paper-scissors stream   | `Stream.ofRockPaperScissors([repetitions])` | `AsyncStream.ofRockPaperScissors([repetitions])` |
 
 #### Stream Operations
 | Operation                                               | Description                                                                               | Code Snippet                                                         |
@@ -279,6 +285,7 @@ Quick Reference
 | [`combinations`](#combinations-1)                       | Combinations of the stream iterable                                                       | `stream.combinations(length)`                                        |
 | [`compress`](#compress-1)                               | Compress source by filtering out data not selected                                        | `stream.compress(selectors)`                                         |
 | [`distinct`](#distinct-1)                               | Filter out elements: iterate only unique items                                            | `stream.distinct()`                                                  |
+| [`divide`](#divide-1)                                   | Splits stream into n chunks                                                             | `stream.divide(n)`                                                   |
 | [`dropWhile`](#drop-while-1)                            | Drop elements from the iterable source while the predicate function is true               | `stream.dropWhile(predicate)`                                        |
 | [`enumerate`](#enumerate-1)                             | Enumerates elements of stream                                                             | `stream.enumerate()`                                                 |
 | [`filter`](#filter-1)                                   | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                                           |
@@ -342,6 +349,7 @@ Quick Reference
 | [`allUnique`](#all-unique-1)        | Returns true if all elements of stream are unique                      | `stream.allUnique(predicate)`          |
 | [`anyMatch`](#any-match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
 | [`exactlyN`](#exactly-n-1)          | Returns true if exactly n items are true according to predicate        | `stream.exactlyN(n, predicate)`        |
+| [`isEmpty`](#is-empty-1)            | Returns true if stream is empty                                        | `stream.isEmpty()`                     |
 | [`isReversed`](#is-reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
 | [`isSorted`](#is-sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
 | [`noneMatch`](#none-match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
@@ -1038,6 +1046,64 @@ for (const item of infinite.repeat('bla')) {
 ```
 
 ## Random Iteration
+
+### Rock Paper Scissors
+Generate random rock-paper-scissors values.
+
+```
+function* rockPaperScissors(repetitions?: number): Iterable<"rock" | "paper" | "scissors">
+```
+
+If `repetitions` is provided, generates exactly that many values. If not provided, generates values infinitely.
+
+```typescript
+import { random } from 'itertools-ts';
+
+for (const value of random.rockPaperScissors(5)) {
+  console.log(value);
+}
+// 'rock', 'scissors', 'paper', 'rock', 'paper' (random values)
+
+for (const value of random.rockPaperScissors()) {
+  console.log(value);
+}
+// 'rock', 'scissors', 'paper', ... (infinite random values)
+
+// Async version
+for await (const value of random.rockPaperScissorsAsync(5)) {
+  console.log(value);
+}
+// 'paper', 'rock', 'scissors', 'paper', 'rock' (random values)
+```
+
+### Coin Flip
+Generate random coin flips (0 or 1).
+
+```
+function* coinFlip(repetitions?: number): Iterable<number>
+```
+
+If `repetitions` is provided, generates exactly that many values. If not provided, generates values infinitely.
+
+```typescript
+import { random } from 'itertools-ts';
+
+for (const value of random.coinFlip(5)) {
+  console.log(value);
+}
+// 0, 1, 0, 0, 1 (random values)
+
+for (const value of random.coinFlip()) {
+  console.log(value);
+}
+// 1, 0, 1, 1, 0, ... (infinite random values)
+
+// Async version
+for await (const value of random.coinFlipAsync(5)) {
+  console.log(value);
+}
+// 0, 1, 1, 0, 0 (random values)
+```
 
 ### Percentage
 Generate random percentage values.
@@ -1980,6 +2046,30 @@ Summary.isReversed(numbers);
 // false
 ```
 
+### Is Empty
+Returns true if there are no elements, otherwise false.
+
+```
+function isEmpty(data: Iterable<unknown> | Iterator<unknown>): boolean
+```
+
+- Returns true if empty.
+- Returns false if one or more elements.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const emptyArray = [];
+
+Summary.isEmpty(emptyArray);
+// true
+
+const numbers = [3];
+
+Summary.isEmpty(numbers);
+// false
+```
+
 ### Is Sorted
 Returns true if elements are sorted, otherwise false.
 
@@ -2094,6 +2184,31 @@ const falseResult = summary.sameCount(batmanMovies, matrixMovies);
 ```
 
 ## Transform
+### Divide
+Divides the elements of the iterable evenly into n smaller arrays while maintaining order.
+
+```
+function* divide<T>(
+  data: Iterable<T> | Iterator<T>,
+  n: number
+): Iterable<Array<T>>
+```
+
+* `n` must be a positive finite integer.
+* Throws `InvalidArgumentError` if `n` is invalid.
+
+```typescript
+import { transform } from "itertools-ts";
+
+const data = [1, 2, 3, 4, 5];
+
+const result = Array.from(transform.divide(data, 2));
+// [[1, 2, 3], [4, 5]]
+
+const result2 = Array.from(transform.divide(data, 3));
+// [[1, 2], [3, 4], [5]]
+```
+
 ### Tee
 Return several independent (duplicated) iterators from a single iterable.
 
@@ -2343,6 +2458,46 @@ const result2 = Stream.ofBooleans(5)
 // [false, true, true, false, true]
 ```
 
+#### Of Coin Flip
+Create a coin flip stream.
+
+```
+Stream.ofCoinFlip(repetitions?: number): Stream<number>
+AsyncStream.ofCoinFlip(repetitions?: number): AsyncStream<number>
+```
+
+```typescript
+import { Stream, AsyncStream } from "itertools-ts";
+
+const result = Stream.ofCoinFlip(5)
+  .toArray();
+// [0, 1, 0, 0, 1] (random values)
+
+const asyncResult = await AsyncStream.ofCoinFlip(5)
+  .toArray();
+// [1, 0, 1, 1, 0] (random values)
+```
+
+#### Of Rock Paper Scissors
+Create a rock-paper-scissors stream.
+
+```
+Stream.ofRockPaperScissors(repetitions?: number): Stream<"rock" | "paper" | "scissors">
+AsyncStream.ofRockPaperScissors(repetitions?: number): AsyncStream<"rock" | "paper" | "scissors">
+```
+
+```typescript
+import { Stream, AsyncStream } from "itertools-ts";
+
+const result = Stream.ofRockPaperScissors(5)
+  .toArray();
+// ['rock', 'scissors', 'paper', 'rock', 'paper']
+
+const asyncResult = await AsyncStream.ofRockPaperScissors(5)
+  .toArray();
+// ['paper', 'rock', 'scissors', 'paper', 'rock']
+```
+
 #### Of Count
 Create an infinite count stream.
 
@@ -2389,6 +2544,24 @@ const result = Stream.ofEmpty()
   .chainWith([1, 2, 3])
   .toArray();
 // [1, 2, 3]
+```
+
+#### Of Percentage
+Create a percentage stream (random numbers between 0 and 1).
+
+```
+Stream.ofPercentage(repetitions?: number): Stream<number>
+AsyncStream.ofPercentage(repetitions?: number): AsyncStream<number>
+```
+
+If `repetitions` is provided, generates exactly that many numbers. If not provided, generates numbers infinitely.
+
+```typescript
+import { Stream, AsyncStream } from "itertools-ts";
+
+const result = Stream.ofPercentage(5)
+  .toArray();
+// [0.7745835631877125, 0.6368758907434469, 0.6465445462428422, 0.49809604559145615, 0.7009703411939564] (random values)
 ```
 
 #### Of Repeat
@@ -2674,6 +2847,33 @@ const result = Stream.of(data)
   .flatten()
   .toArray();
 // [1, 2, 3, 4, 5]
+```
+
+#### Divide
+Splits the stream into n chunks while maintaining order.
+
+```
+Stream<T>.divide(n: number): Stream<Array<T>>
+```
+
+* `n` must be a positive finite integer.
+* Each chunk is returned as an array in a new Stream.
+* The resulting Stream is chainable.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const data = [1, 2, 3, 4, 5];
+
+const result = Stream.of(data)
+  .divide(2)
+  .toArray();
+// [[1, 2, 3], [4, 5]]
+
+const result2 = Stream.of(data)
+  .divide(3)
+  .toArray();
+// [[1, 2], [3, 4], [5]]
 ```
 
 #### Intersection With
@@ -3650,6 +3850,33 @@ const input = [1, 2, 3, 2, 1];
 
 Stream.of(input)
   .isReversed();
+// false
+```
+
+##### Is Empty
+Returns true if iterable source is empty, otherwise false.
+
+```
+Stream<T>.isEmpty(): boolean
+```
+
+Returns true if iterable source is empty.
+
+Returns false if iterable source has one or more elements.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const emptyArray = [];
+
+Stream.of(emptyArray)
+  .isEmpty();
+// true
+
+const input = [1];
+
+Stream.of(isEmpty)
+  .isEmpty();
 // false
 ```
 

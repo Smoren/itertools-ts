@@ -3,6 +3,8 @@ import { InvalidArgumentError, LengthError} from '../../src/exceptions';
 import { AsyncStream } from '../../src/async-stream';
 
 
+const ROCK_PAPER_SCISSORS_VALUES = ['rock', 'paper', 'scissors'];
+
 describe.each([
   ...dataProviderForFiniteAsync(),
 ])(
@@ -94,8 +96,23 @@ describe.each([
 );
 
 describe.each([
+  ...dataProviderForStreamWrapperAsync(),
+])(
+  'AsyncStream.ofRockPaperScissors()',
+  (count) => {
+    it('', async () => {
+      const values = await AsyncStream.ofRockPaperScissors(count).toArray();
+      expect(values.length).toBe(count);
+      values.forEach((value) => {
+        expect(ROCK_PAPER_SCISSORS_VALUES).toContain(value);
+      });
+    });
+  }
+);
+
+describe.each([
   ...dataProviderForFiniteAsync(),
-])('AsyncStream Integration - choice() finite', (count) => {
+])('AsyncStream.choice() finite', (count) => {
   it(`generates exactly ${count} values`, async () => {
     const values: number[] = [];
     for await (const val of AsyncStream.of([1, 2, 3]).choice(count)) {
@@ -110,7 +127,7 @@ describe.each([
 
 describe.each([
   ...dataProviderForNegativeAsync(),
-])('AsyncStream Integration - choice() negative', (negativeCount) => {
+])('AsyncStream.choice() negative', (negativeCount) => {
   it(`throws InvalidArgumentError for ${negativeCount}`, async () => {
     const gen = AsyncStream.of([1, 2, 3]).choice(negativeCount);
     await expect((async () => {
@@ -119,7 +136,7 @@ describe.each([
   });
 });
 
-describe('AsyncStream Integration - choice() empty', () => {
+describe('AsyncStream.choice() empty', () => {
   it('throws LengthError when stream is empty', async () => {
     const gen = AsyncStream.of([]).choice(5);
     await expect((async () => {
@@ -127,6 +144,17 @@ describe('AsyncStream Integration - choice() empty', () => {
     })()).rejects.toThrow(LengthError);
   });
 });
+
+describe.each([
+  ...dataProviderForNegativeAsync(),
+])(
+  'AsyncStream.ofRockPaperScissors() negative',
+  (negativeCount) => {
+    it('', async () => {
+      await expect(AsyncStream.ofRockPaperScissors(negativeCount).toArray()).rejects.toThrow(InvalidArgumentError);
+    });
+  }
+);
 
 function dataProviderForFiniteAsync(): Array<[number]> {
   return [

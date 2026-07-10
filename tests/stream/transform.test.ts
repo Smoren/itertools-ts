@@ -46,6 +46,33 @@ describe.each([
   }
 );
 
+describe.each([
+  ...dataProviderForDivide(),
+])(
+  "Stream Transform Divide Test",
+  (input, count, expected) => {
+    it(`divides input into ${count} chunks`, () => {
+      // Given
+      const inputStream = Stream.of(input);
+      const result: any[] = [];
+
+      // When
+      const chunks = inputStream.divide(count); // returns Stream[]
+
+      for (const chunk of chunks) {
+        // Collect items manually from each Stream
+        result.push(Array.from(chunk));
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
+
+
+
 function dataProviderForArrays(): Array<[Array<any>, (data: Array<any>) => any, any]> {
   return [
     [
@@ -385,3 +412,46 @@ function dataProviderForTee(): Array<[Iterable<any>, number, Array<(stream: Stre
     ],
   ];
 }
+
+
+
+function dataProviderForDivide(): Array<[any, number, any[]]> {
+  return [
+    // Arrays
+    [[], 2, [[], []]],                       // divide empty array into 2 chunks
+    [[1], 2, [[1], []]],                     // single element into 2 chunks
+    [[1, 2], 2, [[1], [2]]],
+    [[1, 2, 3, 4], 2, [[1, 2], [3, 4]]],
+    [[1, 2, 3, 4, 5], 2, [[1, 2, 3], [4, 5]]],
+    [[1, 2, 3, 4], 3, [[1, 2], [3], [4]]],
+    [[1, 2, 3], 5, [[1], [2], [3], [], []]],
+
+    // Strings
+    ['', 2, [[], []]],
+    ['abcd', 2, [['a', 'b'], ['c', 'd']]],
+    ['abc', 3, [['a'], ['b'], ['c']]],
+    ['abc', 5, [['a'], ['b'], ['c'], [], []]],
+
+    // Sets
+    [new Set([]), 2, [[], []]],
+    [new Set([1, 2, 3, 4]), 2, [[1, 2], [3, 4]]],
+    [new Set(['a', 'b', 'c']), 3, [['a'], ['b'], ['c']]],
+
+    // Maps (divide on entries)
+    [new Map([]), 2, [[], []]],
+    [new Map([['a', 1], ['b', 2], ['c', 3], ['d', 4]]), 2,
+      [[['a', 1], ['b', 2]], [['c', 3], ['d', 4]]]],
+    [new Map([['a', 1], ['b', 2], ['c', 3]]), 3,
+      [[['a', 1]], [['b', 2]], [['c', 3]]]],
+
+    // Generators
+    [createGeneratorFixture([1, 2, 3, 4]), 2, [[1, 2], [3, 4]]],
+
+    // Iterables
+    [createIterableFixture([1, 2, 3]), 2, [[1, 2], [3]]],
+
+    // Iterators
+    [createIteratorFixture([1, 2, 3, 4, 5]), 3, [[1, 2], [3, 4], [5]]],
+  ];
+}
+

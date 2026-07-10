@@ -60,8 +60,15 @@ export function* repeat<T>(item: T): Iterable<T> {
   }
 }
 
+/**
+ * Generate a sequence of random booleans
+ *
+ * @param repetitions (optional) Number of values to generate
+ *
+ * @deprecated Use `random.booleans` instead
+ */
 export function* booleans(repetitions?: number): Iterable<boolean> {
-  let i = 0;  
+  let i = 0;
 
   while (repetitions === undefined || i < repetitions) {
     yield Math.random() > 0.5;
@@ -69,6 +76,13 @@ export function* booleans(repetitions?: number): Iterable<boolean> {
   }
 }
 
+/**
+ * Generate a sequence of random booleans
+ *
+ * @param repetitions (optional) Number of values to generate
+ *
+ * @deprecated Use `random.booleansAsync` instead
+ */
 export async function* booleansAsync(repetitions?: number): AsyncIterable<boolean> {
   let i = 0;
 

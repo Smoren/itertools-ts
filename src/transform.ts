@@ -289,3 +289,73 @@ export function teeAsync<T>(
     count
   ).getRelatedIterables();
 }
+
+/**
+ * Divides the elements of the iterable evenly into n smaller iterables while maintaining order.
+ *
+ * Example: ([1, 2, 3, 4], 2) => [1, 2], [3, 4]
+ *
+ * @param data
+ * @param n
+ */
+export function* divide<T>(
+  data: Iterable<T> | Iterator<T>,
+  n: number
+): Iterable<Array<T>> {
+  if (typeof n !== "number" || !Number.isFinite(n) || n <= 0 || !Number.isInteger(n)) {
+    throw new InvalidArgumentError("divide: n must be a positive finite integer");
+  }
+
+  const iterable = toIterable(data);
+  const arr = Array.isArray(iterable) ? iterable : Array.from(iterable);
+  const len = arr.length;
+
+  const baseSize = Math.floor(len / n);
+  let remainder = len % n;
+  let start = 0;
+
+  for (let i = 0; i < n; i++) {
+    const extra = remainder > 0 ? 1 : 0;
+    const end = start + baseSize + extra;
+    yield arr.slice(start, end);
+    start = end;
+    remainder -= extra;
+  }
+}
+
+/**
+ * Divides the elements of the async iterable evenly into n smaller iterables while maintaining order.
+ *
+ * Example: ([1, 2, 3, 4], 2) => [1, 2], [3, 4]
+ *
+ * @param data
+ * @param n
+ */
+export async function* divideAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  n: number
+): AsyncIterable<Array<T>> {
+  if (typeof n !== "number" || !Number.isFinite(n) || n <= 0 || !Number.isInteger(n)) {
+    throw new InvalidArgumentError("divide: n must be a positive finite integer");
+  }
+
+  const asynciterable = toAsyncIterable(data);
+  const buffer: T[] = [];
+  for await (const item of asynciterable) {
+    buffer.push(item);
+  }
+  const len = buffer.length;
+
+  const baseSize = Math.floor(len / n);
+  let remainder = len % n;
+  let start = 0;
+
+  for (let i = 0; i < n; i++) {
+    const extra = remainder > 0 ? 1 : 0;
+    const end = start + baseSize + extra;
+    yield buffer.slice(start, end);
+    start = end;
+    remainder -= extra;
+  }
+}
+
