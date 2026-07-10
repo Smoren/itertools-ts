@@ -10,8 +10,6 @@
   * `coinFlipAsync()`
   * `rockPaperScissors()`
   * `rockPaperScissorsAsync()`
-* random
-  * `choice()`
 * transform
   * `divide()`
   * `divideAsync()`
