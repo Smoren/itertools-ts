@@ -96,6 +96,14 @@
     {
       "name": "Assaf Megirov",
       "url": "https://github.com/Assaf-Megirov"
+    },
+    {
+      "name": "Pieter Gorsira",
+      "url": "https://github.com/pgorsira"
+    },
+    {
+      "name": "Akash chauhan",
+      "url": "https://github.com/Akashrana1001"
     }
   ],
   "jsnext:main": "./es/index.js",
