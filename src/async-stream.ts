@@ -731,7 +731,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @param callback
    */
-  peek(callback: (datum: unknown) => void): AsyncStream<T> {
+  peek(callback: (datum: T) => void): AsyncStream<T> {
     const [data, peekable] = transform.teeAsync(this.data, 2);
     this.data = data;
 

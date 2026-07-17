@@ -659,7 +659,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @param callback
    */
-  peek(callback: (datum: unknown) => void): Stream<T> {
+  peek(callback: (datum: T) => void): Stream<T> {
     const [data, peekable] = transform.tee(this.data, 2);
     this.data = data;
 
@@ -1031,9 +1031,9 @@ export class Stream<T> implements Iterable<T> {
 
   /**
    * Generates random elements from the given collection.
-   * 
+   *
    * If optional param `repetitions` is not given, iterates infinitely.
-   * 
+   *
    * @param repetitions - Number of values to generate
    * @throws InvalidArgumentError if repetitions is negative
    * @throws LengthError if stream is empty.
