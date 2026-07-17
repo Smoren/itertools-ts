@@ -61,14 +61,13 @@ export async function toValueAsync<TInput, TOutput>(
 export function toAverage(
   data: Iterable<number> | Iterator<number>
 ): number | undefined {
-  const [count, sum] = toValue(
-    data,
-    (carry, datum) => {
-      const [count, sum] = carry as [number, number];
-      return [count + 1, sum + Number(datum)];
-    },
-    [0, 0]
-  ) as [number, number];
+  let count = 0;
+  let sum = 0;
+
+  for (const datum of toIterable(data)) {
+    count++;
+    sum += Number(datum);
+  }
 
   return count ? sum / count : undefined;
 }
@@ -87,14 +86,13 @@ export async function toAverageAsync(
     | Iterable<number>
     | Iterator<number>
 ): Promise<number | undefined> {
-  const [count, sum] = (await toValueAsync(
-    data,
-    (carry, datum) => {
-      const [count, sum] = carry as [number, number];
-      return [count + 1, sum + Number(datum)];
-    },
-    [0, 0]
-  )) as [number, number];
+  let count = 0;
+  let sum = 0;
+
+  for await (const datum of toAsyncIterable(data)) {
+    count++;
+    sum += Number(datum);
+  }
 
   return count ? sum / count : undefined;
 }
@@ -114,18 +112,25 @@ export function toMax<TValue>(
   data: Iterable<TValue> | Iterator<TValue>,
   compareBy?: (datum: TValue) => Comparable
 ): TValue | undefined {
+  let result: TValue | undefined;
+
   if (compareBy !== undefined) {
-    return toValue(data, (carry: TValue | undefined, datum) =>
-      compareBy(datum) > compareBy(carry ?? datum) ? datum : carry ?? datum
-    );
+    let resultComparable: Comparable | undefined;
+    for (const datum of toIterable(data)) {
+      const comparable = compareBy(datum);
+      if (resultComparable === undefined || comparable > resultComparable) {
+        result = datum;
+        resultComparable = comparable;
+      }
+    }
+    return result;
   }
 
-  return toValue(data, (carry, datum) => {
-    const lhs = carry ?? datum;
-    const rhs = datum;
-
-    return lhs >= rhs ? lhs : rhs;
-  });
+  for (const datum of toIterable(data)) {
+    const lhs = result ?? datum;
+    result = lhs >= datum ? lhs : datum;
+  }
+  return result;
 }
 
 /**
@@ -147,20 +152,25 @@ export async function toMaxAsync<TValue>(
     | Iterator<TValue>,
   compareBy?: (datum: TValue) => Promise<Comparable> | Comparable
 ): Promise<TValue | undefined> {
+  let result: TValue | undefined;
+
   if (compareBy !== undefined) {
-    return await toValueAsync(data, async (carry: TValue | undefined, datum) =>
-      (await compareBy(datum)) > (await compareBy(carry ?? datum))
-        ? datum
-        : carry ?? datum
-    );
+    let resultComparable: Comparable | undefined;
+    for await (const datum of toAsyncIterable(data)) {
+      const comparable = await compareBy(datum);
+      if (resultComparable === undefined || comparable > resultComparable) {
+        result = datum;
+        resultComparable = comparable;
+      }
+    }
+    return result;
   }
 
-  return await toValueAsync(data, (carry, datum) => {
-    const lhs = carry ?? datum;
-    const rhs = datum;
-
-    return lhs >= rhs ? lhs : rhs;
-  });
+  for await (const datum of toAsyncIterable(data)) {
+    const lhs = result ?? datum;
+    result = lhs >= datum ? lhs : datum;
+  }
+  return result;
 }
 
 /**
@@ -178,18 +188,25 @@ export function toMin<TValue>(
   data: Iterable<TValue> | Iterator<TValue>,
   compareBy?: (datum: TValue) => Comparable
 ): TValue | undefined {
+  let result: TValue | undefined;
+
   if (compareBy !== undefined) {
-    return toValue(data, (carry: TValue | undefined, datum) =>
-      compareBy(datum) < compareBy(carry ?? datum) ? datum : carry ?? datum
-    );
+    let resultComparable: Comparable | undefined;
+    for (const datum of toIterable(data)) {
+      const comparable = compareBy(datum);
+      if (resultComparable === undefined || comparable < resultComparable) {
+        result = datum;
+        resultComparable = comparable;
+      }
+    }
+    return result;
   }
 
-  return toValue(data, (carry, datum) => {
-    const lhs = carry ?? datum;
-    const rhs = datum;
-
-    return lhs <= rhs ? lhs : rhs;
-  });
+  for (const datum of toIterable(data)) {
+    const lhs = result ?? datum;
+    result = lhs <= datum ? lhs : datum;
+  }
+  return result;
 }
 
 /**
@@ -211,20 +228,25 @@ export async function toMinAsync<TValue>(
     | Iterator<TValue>,
   compareBy?: (datum: TValue) => Promise<Comparable> | Comparable
 ): Promise<TValue | undefined> {
+  let result: TValue | undefined;
+
   if (compareBy !== undefined) {
-    return await toValueAsync(data, async (carry: TValue | undefined, datum) =>
-      (await compareBy(datum)) < (await compareBy(carry ?? datum))
-        ? datum
-        : carry ?? datum
-    );
+    let resultComparable: Comparable | undefined;
+    for await (const datum of toAsyncIterable(data)) {
+      const comparable = await compareBy(datum);
+      if (resultComparable === undefined || comparable < resultComparable) {
+        result = datum;
+        resultComparable = comparable;
+      }
+    }
+    return result;
   }
 
-  return await toValueAsync(data, (carry, datum) => {
-    const lhs = carry ?? datum;
-    const rhs = datum;
-
-    return lhs <= rhs ? lhs : rhs;
-  });
+  for await (const datum of toAsyncIterable(data)) {
+    const lhs = result ?? datum;
+    result = lhs <= datum ? lhs : datum;
+  }
+  return result;
 }
 
 /**
@@ -248,21 +270,24 @@ export function toMinMax<T>(
       ? (compareBy as (item: T) => Comparable)
       : (item: T) => item as Comparable;
 
-  return toValue(
-    data,
-    (carry, datum) => {
-      carry = carry as [T?, T?];
-      return [
-        comparableGetter(datum) <= comparableGetter(carry[0] ?? datum)
-          ? datum
-          : carry[0] ?? datum,
-        comparableGetter(datum) >= comparableGetter(carry[1] ?? datum)
-          ? datum
-          : carry[1] ?? datum,
-      ];
-    },
-    [undefined, undefined] as [T?, T?]
-  ) as [T?, T?];
+  let min: T | undefined;
+  let max: T | undefined;
+  let minComparable: Comparable | undefined;
+  let maxComparable: Comparable | undefined;
+
+  for (const datum of toIterable(data)) {
+    const comparable = comparableGetter(datum);
+    if (minComparable === undefined || comparable <= minComparable) {
+      min = datum;
+      minComparable = comparable;
+    }
+    if (maxComparable === undefined || comparable >= maxComparable) {
+      max = datum;
+      maxComparable = comparable;
+    }
+  }
+
+  return [min, max];
 }
 
 /**
@@ -286,23 +311,24 @@ export async function toMinMaxAsync<T>(
       ? (compareBy as (item: T) => Promise<Comparable> | Comparable)
       : (item: T) => item as Comparable;
 
-  return (await toValueAsync(
-    data,
-    async (carry, datum) => {
-      carry = carry as [T?, T?];
-      return [
-        (await comparableGetter(datum)) <=
-        (await comparableGetter(carry[0] ?? datum))
-          ? datum
-          : carry[0] ?? datum,
-        (await comparableGetter(datum)) >=
-        (await comparableGetter(carry[1] ?? datum))
-          ? datum
-          : carry[1] ?? datum,
-      ];
-    },
-    [undefined, undefined] as [T?, T?]
-  )) as [T?, T?];
+  let min: T | undefined;
+  let max: T | undefined;
+  let minComparable: Comparable | undefined;
+  let maxComparable: Comparable | undefined;
+
+  for await (const datum of toAsyncIterable(data)) {
+    const comparable = await comparableGetter(datum);
+    if (minComparable === undefined || comparable <= minComparable) {
+      min = datum;
+      minComparable = comparable;
+    }
+    if (maxComparable === undefined || comparable >= maxComparable) {
+      max = datum;
+      maxComparable = comparable;
+    }
+  }
+
+  return [min, max];
 }
 
 /**
@@ -343,11 +369,11 @@ export async function toRangeAsync(
  * @param data
  */
 export function toSum(data: Iterable<number> | Iterator<number>): number {
-  return toValue(
-    data,
-    (carry, datum) => (carry as number) + Number(datum),
-    0
-  ) as number;
+  let sum = 0;
+  for (const datum of toIterable(data)) {
+    sum += Number(datum);
+  }
+  return sum;
 }
 
 /**
@@ -362,11 +388,11 @@ export async function toSumAsync(
     | Iterable<number>
     | Iterator<number>
 ): Promise<number> {
-  return (await toValueAsync(
-    data,
-    (carry, datum) => (carry as number) + Number(datum),
-    0
-  )) as number;
+  let sum = 0;
+  for await (const datum of toAsyncIterable(data)) {
+    sum += Number(datum);
+  }
+  return sum;
 }
 
 /**
@@ -379,7 +405,13 @@ export async function toSumAsync(
 export function toProduct(
   data: Iterable<number> | Iterator<number>
 ): number | undefined {
-  return toValue(data, (carry, datum) => (carry ?? 1) * datum);
+  let result: number | undefined;
+
+  for (const datum of toIterable(data)) {
+    result = (result ?? 1) * datum;
+  }
+
+  return result;
 }
 
 /**
@@ -396,7 +428,13 @@ export async function toProductAsync(
     | Iterable<number>
     | Iterator<number>
 ): Promise<number | undefined> {
-  return await toValueAsync(data, (carry, datum) => (carry ?? 1) * datum);
+  let result: number | undefined;
+
+  for await (const datum of toAsyncIterable(data)) {
+    result = (result ?? 1) * datum;
+  }
+
+  return result;
 }
 
 /**
@@ -416,7 +454,11 @@ export function toCount(data: Iterable<unknown> | Iterator<unknown>): number {
       return (data as Map<unknown, unknown>).size;
   }
 
-  return toValue(data, (carry) => (carry as number) + 1, 0) as number;
+  let count = 0;
+  for (const _ of toIterable(data)) {
+    count++;
+  }
+  return count;
 }
 
 /**
@@ -439,11 +481,11 @@ export async function toCountAsync(
       return toCount(data as Iterable<unknown>);
   }
 
-  return (await toValueAsync(
-    data,
-    (carry) => (carry as number) + 1,
-    0
-  )) as number;
+  let count = 0;
+  for await (const _ of toAsyncIterable(data)) {
+    count++;
+  }
+  return count;
 }
 
 /**

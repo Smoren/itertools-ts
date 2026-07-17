@@ -196,11 +196,7 @@ export function toMap<TKey, TValue>(
     | Iterator<[TKey, TValue]>
     | Record<PropertyKey, unknown>
 ): Map<TKey, TValue> {
-  const result: Map<TKey, TValue> = new Map();
-  for (const [key, value] of toIterable(pairs)) {
-    result.set(key, value);
-  }
-  return result;
+  return new Map(toIterable(pairs) as Iterable<[TKey, TValue]>);
 }
 
 /**
@@ -229,11 +225,7 @@ export async function toMapAsync<TKey, TValue>(
  * @param collection
  */
 export function toSet<T>(collection: Iterable<T> | Iterator<T>): Set<T> {
-  const result: Set<T> = new Set();
-  for (const datum of toIterable(collection)) {
-    result.add(datum);
-  }
-  return result;
+  return new Set(toIterable(collection));
 }
 
 /**
