@@ -6,6 +6,10 @@ import { InvalidArgumentError } from "./exceptions";
 /**
  * Iterates cartesian product of given iterables.
  *
+ * Each input iterable is materialized into an array internally (as repeated
+ * iteration is required), but the product itself is generated lazily one
+ * tuple at a time.
+ *
  * @param iterables
  */
 export function* cartesianProduct<
@@ -22,20 +26,38 @@ export function* cartesianProduct<
     return;
   }
 
-  const arrays = toArray(map(iterables, (iterable) => toArray(iterable)));
-  const toIterate = arrays.reduce(
-    (acc, set) =>
-      acc.flatMap((x) => set.map((y) => [...(x as Array<unknown>), y])),
-    [[]]
-  );
+  const pools = toArray(map(iterables, (iterable) => toArray(iterable)));
 
-  for (const item of toIterate) {
-    yield item as ZipTuple<T, never>;
+  if (pools.some((pool) => pool.length === 0)) {
+    return;
+  }
+
+  const indices = new Array(pools.length).fill(0);
+
+  while (true) {
+    yield pools.map((pool, i) => pool[indices[i]]) as ZipTuple<T, never>;
+
+    let i = pools.length - 1;
+    while (i >= 0) {
+      indices[i]++;
+      if (indices[i] < pools[i].length) {
+        break;
+      }
+      indices[i] = 0;
+      i--;
+    }
+    if (i < 0) {
+      break;
+    }
   }
 }
 
 /**
  * Iterates cartesian product of given async iterables.
+ *
+ * Each input iterable is materialized into an array internally (as repeated
+ * iteration is required), but the product itself is generated lazily one
+ * tuple at a time.
  *
  * @param iterables
  */
@@ -58,18 +80,31 @@ export async function* cartesianProductAsync<
     return;
   }
 
-  const arrays = await toArrayAsync(
+  const pools = await toArrayAsync(
     mapAsync(iterables, async (iterable) => await toArrayAsync(iterable))
   );
 
-  const toIterate = arrays.reduce(
-    (acc, set) =>
-      acc.flatMap((x) => set.map((y) => [...(x as Array<unknown>), y])),
-    [[]]
-  );
+  if (pools.some((pool) => pool.length === 0)) {
+    return;
+  }
 
-  for (const item of toIterate) {
-    yield item as ZipTuple<T, never>;
+  const indices = new Array(pools.length).fill(0);
+
+  while (true) {
+    yield pools.map((pool, i) => pool[indices[i]]) as ZipTuple<T, never>;
+
+    let i = pools.length - 1;
+    while (i >= 0) {
+      indices[i]++;
+      if (indices[i] < pools[i].length) {
+        break;
+      }
+      indices[i] = 0;
+      i--;
+    }
+    if (i < 0) {
+      break;
+    }
   }
 }
 
