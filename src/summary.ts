@@ -422,6 +422,36 @@ export async function noneMatchAsync<T>(
 }
 
 /**
+ * Returns true if at least one element does not match the predicate function.
+ *
+ * Empty collections return false.
+ *
+ * @param data
+ * @param predicate
+ */
+export function notAllMatch<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): boolean {
+  return !allMatch(data, predicate);
+}
+
+/**
+ * Returns true if at least one element in async collection does not match the predicate function.
+ *
+ * Empty collections return false.
+ *
+ * @param data
+ * @param predicate
+ */
+export async function notAllMatchAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  predicate: (item: T) => Promise<boolean> | boolean
+): Promise<boolean> {
+  return !(await allMatchAsync(data, predicate));
+}
+
+/**
  * Returns true if all given collections are the same.
  *
  * For single collection or empty collections list returns true.

@@ -245,6 +245,7 @@ Quick Reference
 | [`isSorted`](#is-sorted)                | True if iterable sorted                                 | `summary.isSorted(data)`               | `summary.isSortedAsync(data)`               |
 | [`isString`](#is-string)                | True if given data is string                            | `summary.isString(data)`               | `summary.isStringAsync(data)`               |
 | [`noneMatch`](#none-match)              | True if none of items true according to predicate       | `summary.noneMatch(data, predicate)`   | `summary.noneMatchAsync(data, predicate)`   |
+| [`notAllMatch`](#not-all-match)          | True if at least one item is false according to predicate | `summary.notAllMatch(data, predicate)` | `summary.notAllMatchAsync(data, predicate)` |
 | [`same`](#same)                         | True if collections are the same                        | `summary.same(...collections)`         | `summary.sameAsync(...collections)`         |
 | [`sameCount`](#same-count)              | True if collections have the same lengths               | `summary.sameCount(...collections)`    | `summary.sameCountAsync(...collections)`    |
 
@@ -354,6 +355,7 @@ Quick Reference
 | [`isReversed`](#is-reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
 | [`isSorted`](#is-sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
 | [`noneMatch`](#none-match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
+| [`notAllMatch`](#not-all-match-1)    | Returns true if at least one item in stream does not match predicate   | `stream.notAllMatch(predicate)`        |
 | [`sameWith`](#same-with)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |
 | [`sameCountWith`](#same-count-with) | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)` |
 
@@ -2130,6 +2132,28 @@ const grades         = [45, 50, 61, 0];
 const isPassingGrade = (grade) => grade >= 70;
 
 const trueResult = summary.noneMatch(grades, isPassingGrade);
+// true
+```
+
+### Not All Match
+Returns true if at least one element does not match the predicate function.
+
+```
+function notAllMatch<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): boolean
+```
+
+Empty collections return false.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const grades         = [80, 75, 61];
+const isPassingGrade = (grade) => grade >= 70;
+
+const result = summary.notAllMatch(grades, isPassingGrade);
 // true
 ```
 
@@ -3954,6 +3978,26 @@ const isPassingGrade = (grade) => grade >= 70;
 
 const trueResult = Stream.of(grades)
   .noneMatch(isPassingGrade);
+// true
+```
+
+##### Not All Match
+Returns true if at least one element of stream does not match the predicate function.
+
+```
+Stream<T>.notAllMatch(predicate: (item: T) => boolean): boolean
+```
+
+For empty stream returns false.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const grades         = [80, 75, 61];
+const isPassingGrade = (grade) => grade >= 70;
+
+const result = Stream.of(grades)
+  .notAllMatch(isPassingGrade);
 // true
 ```
 

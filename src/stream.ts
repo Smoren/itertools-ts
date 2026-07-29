@@ -936,6 +936,19 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Returns true if at least one element of stream does not match the predicate function.
+   *
+   * For empty stream returns false.
+   *
+   * @param predicate
+   *
+   * @see summary.notAllMatch
+   */
+  notAllMatch(predicate: (item: T) => boolean): boolean {
+    return summary.notAllMatch(this, predicate);
+  }
+
+  /**
    * Returns true if stream collection and all given collections are the same.
    *
    * For empty collections list returns true.
