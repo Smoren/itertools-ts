@@ -117,6 +117,11 @@ function dataProviderForArraysTrue(): Array<[Array<any>, (iterable: Array<any>) 
         .isEmpty(),
     ],
     [
+      [2, 4, 1, 3],
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .isPartitioned((item) => item % 2 === 0),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
         .filter((item) => item > 0)
@@ -241,6 +246,11 @@ function dataProviderForStringsTrue(): Array<[string, (iterable: string) => Prom
       '',
       (iterable) => AsyncStream.of(iterable)
         .isEmpty(),
+    ],
+    [
+      '2413',
+      (iterable) => AsyncStream.of(iterable)
+        .isPartitioned((item) => Number(item) % 2 === 0),
     ],
     [
       '123',
@@ -371,6 +381,11 @@ function dataProviderForSetsTrue(): Array<[Set<any>, (iterable: Set<any>) => Pro
         .isEmpty(),
     ],
     [
+      new Set([2, 4, 1, 3]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .isPartitioned((item) => item % 2 === 0),
+    ],
+    [
       new Set([1, -1, 2, -2, 3, -3]),
       (iterable: Set<number>) => AsyncStream.of(iterable)
         .filter((item) => item > 0)
@@ -477,6 +492,11 @@ function dataProviderForMapsTrue(): Array<[Map<any, any>, (iterable: Map<any, an
       createMapFixture([]),
       (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .isEmpty(),
+    ],
+    [
+      createMapFixture([2, 4, 1, 3]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .isPartitioned((item) => item[1] % 2 === 0),
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
@@ -608,6 +628,14 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
         .isEmpty(),
     ],
     [
+      [2, 4, 1, 3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .isPartitioned(async (item) => {
+          await asyncTimeout(1);
+          return item % 2 === 0;
+        }),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .filter((item) => item > 0)
@@ -737,6 +765,11 @@ function dataProviderForArraysFalse(): Array<[Array<any>, (iterable: Array<any>)
         .isEmpty(),
     ],
     [
+      [2, 1, 4, 3],
+      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+        .isPartitioned((item) => item % 2 === 0),
+    ],
+    [
       [1, -1, 2, -2, 3, -3],
       (iterable: Iterable<number>) => AsyncStream.of(iterable)
         .runningTotal()
@@ -841,6 +874,11 @@ function dataProviderForStringsFalse(): Array<[string, (iterable: string) => Pro
         .isEmpty(),
     ],
     [
+      '2143',
+      (iterable) => AsyncStream.of(iterable)
+        .isPartitioned((item) => Number(item) % 2 === 0),
+    ],
+    [
       '131',
       (iterable) => AsyncStream.of(iterable)
         .isSorted(),
@@ -933,6 +971,11 @@ function dataProviderForSetsFalse(): Array<[Set<any>, (iterable: Set<any>) => Pr
         .isEmpty(),
     ],
     [
+      new Set([2, 1, 4, 3]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .isPartitioned((item) => item % 2 === 0),
+    ],
+    [
       new Set([1, -1, 2, -2, 3, -3]),
       (iterable: Set<number>) => AsyncStream.of(iterable)
         .runningTotal()
@@ -1010,6 +1053,11 @@ function dataProviderForMapsFalse(): Array<[Map<any, any>, (iterable: Map<any, a
       createMapFixture([1]),
       (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .isEmpty(),
+    ],
+    [
+      createMapFixture([2, 1, 4, 3]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .isPartitioned((item) => item[1] % 2 === 0),
     ],
     [
       createMapFixture([1, -1, 2, -2, 3, -3]),
@@ -1115,6 +1163,14 @@ function dataProviderForAsyncFalse(): Array<[Array<any>, (iterable: AsyncIterabl
       [1],
       (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .isEmpty(),
+    ],
+    [
+      [2, 1, 4, 3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .isPartitioned(async (item) => {
+          await asyncTimeout(1);
+          return item % 2 === 0;
+        }),
     ],
     [
       [1, -1, 2, -2, 3, -3],
