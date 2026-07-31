@@ -1000,6 +1000,10 @@ export class Stream<T> implements Iterable<T> {
     return new Stream(dividedIterable); // wrap into stream
   }
 
+  distribute(n: number): Stream<Array<T>> {
+    return new Stream(transform.distribute(this.data, n));
+  }
+
   /**
    * Converts stream to Array.
    *

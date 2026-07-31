@@ -252,6 +252,7 @@ Quick Reference
 | Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet                |
 |-----------------------------------------|-----------------------------------------|-----------------------------------|-----------------------------------|
 | [`divide`](#divide)                     | Divides iterable into n chunks          | `transform.divide(data, n)`       | `transform.divideAsync(data, n)`  |
+| [`distribute`](#distribute)             | Distributes iterable across n groups    | `transform.distribute(data, n)`   | `transform.distributeAsync(data, n)` |
 | [`tee`](#tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | `transform.teeAsync(data, count)` |
 | [`toArray`](#to-array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)`    |
 | [`toAsyncIterable`](#to-async-iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                                 |
@@ -287,6 +288,7 @@ Quick Reference
 | [`compress`](#compress-1)                               | Compress source by filtering out data not selected                                        | `stream.compress(selectors)`                                         |
 | [`distinct`](#distinct-1)                               | Filter out elements: iterate only unique items                                            | `stream.distinct()`                                                  |
 | [`divide`](#divide-1)                                   | Splits stream into n chunks                                                               | `stream.divide(n)`                                                   |
+| [`distribute`](#distribute-1)                           | Distributes stream across n groups                                                        | `stream.distribute(n)`                                               |
 | [`dropWhile`](#drop-while-1)                            | Drop elements from the iterable source while the predicate function is true               | `stream.dropWhile(predicate)`                                        |
 | [`enumerate`](#enumerate-1)                             | Enumerates elements of stream                                                             | `stream.enumerate()`                                                 |
 | [`filter`](#filter-1)                                   | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                                           |
@@ -2210,6 +2212,26 @@ const result2 = Array.from(transform.divide(data, 3));
 // [[1, 2], [3, 4], [5]]
 ```
 
+### Distribute
+Distributes the elements of an iterable evenly across n arrays in round-robin order.
+
+```
+function* distribute<T>(
+  data: Iterable<T> | Iterator<T>,
+  n: number
+): Iterable<Array<T>>
+```
+
+* `n` must be a positive finite integer.
+* Throws `InvalidArgumentError` if `n` is invalid.
+
+```typescript
+import { transform } from "itertools-ts";
+
+const result = Array.from(transform.distribute([1, 2, 3, 4, 5], 2));
+// [[1, 3, 5], [2, 4]]
+```
+
 ### Tee
 Return several independent (duplicated) iterators from a single iterable.
 
@@ -2904,6 +2926,22 @@ const result2 = Stream.of(data)
   .divide(3)
   .toArray();
 // [[1, 2], [3, 4], [5]]
+```
+
+#### Distribute
+Distributes the stream across n arrays in round-robin order.
+
+```
+Stream<T>.distribute(n: number): Stream<Array<T>>
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.of([1, 2, 3, 4, 5])
+  .distribute(2)
+  .toArray();
+// [[1, 3, 5], [2, 4]]
 ```
 
 #### Intersection With

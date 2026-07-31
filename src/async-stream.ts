@@ -1094,6 +1094,10 @@ export class AsyncStream<T> implements AsyncIterable<T> {
     return new AsyncStream(dividedIterable);
   }
 
+  distribute(n: number): AsyncStream<Array<T>> {
+    return new AsyncStream(transform.distributeAsync(this.data, n));
+  }
+
   /**
    * Converts stream to Array.
    *

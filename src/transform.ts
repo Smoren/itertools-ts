@@ -351,3 +351,56 @@ export async function* divideAsync<T>(
   }
 }
 
+export function* distribute<T>(
+  data: Iterable<T> | Iterator<T>,
+  n: number
+): Iterable<Array<T>> {
+  if (
+    typeof n !== "number" ||
+    !Number.isFinite(n) ||
+    n <= 0 ||
+    !Number.isInteger(n)
+  ) {
+    throw new InvalidArgumentError(
+      "distribute: n must be a positive finite integer"
+    );
+  }
+
+  const buckets: Array<Array<T>> = Array.from({ length: n }, () => []);
+  let index = 0;
+
+  for (const item of toIterable(data)) {
+    buckets[index % n].push(item);
+    index += 1;
+  }
+
+  yield* buckets;
+}
+
+export async function* distributeAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  n: number
+): AsyncIterable<Array<T>> {
+  if (
+    typeof n !== "number" ||
+    !Number.isFinite(n) ||
+    n <= 0 ||
+    !Number.isInteger(n)
+  ) {
+    throw new InvalidArgumentError(
+      "distribute: n must be a positive finite integer"
+    );
+  }
+
+  const buckets: Array<Array<T>> = Array.from({ length: n }, () => []);
+  let index = 0;
+
+  for await (const item of toAsyncIterable(data)) {
+    buckets[index % n].push(item);
+    index += 1;
+  }
+
+  for (const bucket of buckets) {
+    yield bucket;
+  }
+}
