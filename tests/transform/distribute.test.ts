@@ -17,7 +17,7 @@ describe.each(syncDataProvider())(
   }
 );
 
-describe.each(asyncDataProvider())(
+describe.each([...syncDataProvider(), ...asyncDataProvider()])(
   "transform.distributeAsync",
   (input, n, expected) => {
     it(`distributes input into ${n} groups`, async () => {
@@ -101,8 +101,6 @@ function asyncDataProvider(): Array<
   ]
 > {
   return [
-    [[], 2, [[], []]],
-    [[1, 2, 3, 4, 5], 3, [[1, 4], [2, 5], [3]]],
     [createAsyncGeneratorFixture([1, 2, 3, 4]), 2, [[1, 3], [2, 4]]],
     [createAsyncIterableFixture([1, 2, 3]), 2, [[1, 3], [2]]],
     [createAsyncIteratorFixture([1, 2, 3]), 2, [[1, 3], [2]]],
