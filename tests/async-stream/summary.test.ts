@@ -11,30 +11,6 @@ import {
   // @ts-ignore
 } from "../fixture";
 
-describe("AsyncStream Not All Match Test", () => {
-  it("returns false for an empty stream", async () => {
-    expect(
-      await AsyncStream.of<number>([]).notAllMatch(async () => false)
-    ).toBeFalsy();
-  });
-
-  it("returns false when all elements match", async () => {
-    expect(
-      await AsyncStream.of([2, 4, 6]).notAllMatch(
-        async (item) => item % 2 === 0
-      )
-    ).toBeFalsy();
-  });
-
-  it("returns true when at least one element does not match", async () => {
-    expect(
-      await AsyncStream.of(createAsyncGeneratorFixture([2, 3, 4])).notAllMatch(
-        async (item) => item % 2 === 0
-      )
-    ).toBeTruthy();
-  });
-});
-
 describe.each([
   ...dataProviderForAsyncGeneratorsTrue(),
   ...dataProviderForAsyncIterablesTrue(),
@@ -205,6 +181,41 @@ function dataProviderForArraysTrue(): Array<[Array<any>, (iterable: Array<any>) 
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
+    [
+      [1],
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .notAllMatch(() => false),
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x > 2),
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x < 3),
+    ],
+    [
+      ['a'],
+      (iterable: Iterable<unknown> | Iterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x !== 'a'),
+    ],
+    [
+      ['a', 'B', 'C'],
+      (iterable: Iterable<unknown> | Iterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toLowerCase() === x),
+    ],
+    [
+      ['a', 'B', 'C'],
+      (iterable: Iterable<unknown> | Iterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
+    [
+      ['OS', 'PHP', 'python'],
+      (iterable: Iterable<unknown> | Iterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
   ];
 }
 
@@ -339,6 +350,36 @@ function dataProviderForStringsTrue(): Array<[string, (iterable: string) => Prom
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
+    [
+      '1',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x !== '1'),
+    ],
+    [
+      '123',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => Number(x) > 2),
+    ],
+    [
+      '123',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => Number(x) < 3),
+    ],
+    [
+      'a',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x !== 'a'),
+    ],
+    [
+      'aBC',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x.toLowerCase() === x),
+    ],
+    [
+      'aBC',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x.toUpperCase() === x),
+    ],
   ];
 }
 
@@ -469,6 +510,41 @@ function dataProviderForSetsTrue(): Array<[Set<any>, (iterable: Set<any>) => Pro
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
+    [
+      new Set([1]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .notAllMatch(() => false),
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x > 2),
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x < 3),
+    ],
+    [
+      new Set(['a']),
+      (iterable: Set<string>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x !== 'a'),
+    ],
+    [
+      new Set(['a', 'B', 'C']),
+      (iterable: Set<string>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toLowerCase() === x),
+    ],
+    [
+      new Set(['a', 'B', 'C']),
+      (iterable: Set<string>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
+    [
+      new Set(['OS', 'PHP', 'python']),
+      (iterable: Set<string>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
   ];
 }
 
@@ -584,6 +660,41 @@ function dataProviderForMapsTrue(): Array<[Map<any, any>, (iterable: Map<any, an
       (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22, 33]),
+    ],
+    [
+      createMapFixture([1]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1] !== 1),
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1] > 2),
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1] < 3),
+    ],
+    [
+      createMapFixture(['a']),
+      (iterable: Map<unknown, string>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1] !== 'a'),
+    ],
+    [
+      createMapFixture(['a', 'B', 'C']),
+      (iterable: Map<unknown, string>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1].toLowerCase() === x[1]),
+    ],
+    [
+      createMapFixture(['a', 'B', 'C']),
+      (iterable: Map<unknown, string>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1].toUpperCase() === x[1]),
+    ],
+    [
+      createMapFixture(['OS', 'PHP', 'python']),
+      (iterable: Map<unknown, string>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1].toUpperCase() === x[1]),
     ],
   ];
 }
@@ -722,6 +833,44 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
         .runningTotal()
         .sameCountWith([11, 22, 33]),
     ],
+    [
+      [1],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .notAllMatch(() => false),
+    ],
+    [
+      [1, 2, 3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .notAllMatch(async (x) => {
+          await asyncTimeout(1);
+          return x > 2;
+        }),
+    ],
+    [
+      [1, 2, 3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x < 3),
+    ],
+    [
+      ['a'],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x !== 'a'),
+    ],
+    [
+      ['a', 'B', 'C'],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toLowerCase() === x),
+    ],
+    [
+      ['a', 'B', 'C'],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
+    [
+      ['OS', 'PHP', 'python'],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
   ];
 }
 
@@ -841,6 +990,51 @@ function dataProviderForArraysFalse(): Array<[Array<any>, (iterable: Array<any>)
         .runningTotal()
         .sameCountWith([11, 22]),
     ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch(() => true),
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch(() => false),
+    ],
+    [
+      [1],
+      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x === 1),
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x >= 1),
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x < 4),
+    ],
+    [
+      ['a'],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x === 'a'),
+    ],
+    [
+      ['A', 'B', 'C'],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
+    [
+      ['a', 'b', 'c'],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toLowerCase() === x),
+    ],
+    [
+      ['OS', 'PHP', 'COBOL'],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
   ];
 }
 
@@ -954,6 +1148,46 @@ function dataProviderForStringsFalse(): Array<[string, (iterable: string) => Pro
         .runningTotal()
         .sameCountWith([11, 22]),
     ],
+    [
+      '',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch(() => true),
+    ],
+    [
+      '',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch(() => false),
+    ],
+    [
+      '1',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x === '1'),
+    ],
+    [
+      '123',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => Number(x) >= 1),
+    ],
+    [
+      '123',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => Number(x) < 4),
+    ],
+    [
+      'a',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x === 'a'),
+    ],
+    [
+      'ABC',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x.toUpperCase() === x),
+    ],
+    [
+      'abc',
+      (iterable) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x.toLowerCase() === x),
+    ],
   ];
 }
 
@@ -1047,6 +1281,51 @@ function dataProviderForSetsFalse(): Array<[Set<any>, (iterable: Set<any>) => Pr
         .runningTotal()
         .sameCountWith([11, 22]),
     ],
+    [
+      new Set([]),
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch(() => true),
+    ],
+    [
+      new Set([]),
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch(() => false),
+    ],
+    [
+      new Set([1]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x === 1),
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x >= 1),
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x < 4),
+    ],
+    [
+      new Set(['a']),
+      (iterable: Set<string>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x === 'a'),
+    ],
+    [
+      new Set(['A', 'B', 'C']),
+      (iterable: Set<string>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
+    [
+      new Set(['a', 'b', 'c']),
+      (iterable: Set<string>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toLowerCase() === x),
+    ],
+    [
+      new Set(['OS', 'PHP', 'COBOL']),
+      (iterable: Set<string>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
   ];
 }
 
@@ -1136,6 +1415,51 @@ function dataProviderForMapsFalse(): Array<[Map<any, any>, (iterable: Map<any, a
       (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .notAllMatch(() => true),
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .notAllMatch(() => false),
+    ],
+    [
+      createMapFixture([1]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1] === 1),
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1] >= 1),
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1] < 4),
+    ],
+    [
+      createMapFixture(['a']),
+      (iterable: Map<unknown, string>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1] === 'a'),
+    ],
+    [
+      createMapFixture(['A', 'B', 'C']),
+      (iterable: Map<unknown, string>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1].toUpperCase() === x[1]),
+    ],
+    [
+      createMapFixture(['a', 'b', 'c']),
+      (iterable: Map<unknown, string>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1].toLowerCase() === x[1]),
+    ],
+    [
+      createMapFixture(['OS', 'PHP', 'COBOL']),
+      (iterable: Map<unknown, string>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x[1].toUpperCase() === x[1]),
     ],
   ];
 }
@@ -1246,6 +1570,54 @@ function dataProviderForAsyncFalse(): Array<[Array<any>, (iterable: AsyncIterabl
       (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
+    ],
+    [
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch(async () => {
+          await asyncTimeout(1);
+          return true;
+        }),
+    ],
+    [
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch(() => false),
+    ],
+    [
+      [1],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x === 1),
+    ],
+    [
+      [1, 2, 3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x >= 1),
+    ],
+    [
+      [1, 2, 3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .notAllMatch((x) => x < 4),
+    ],
+    [
+      ['a'],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x === 'a'),
+    ],
+    [
+      ['A', 'B', 'C'],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
+    ],
+    [
+      ['a', 'b', 'c'],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toLowerCase() === x),
+    ],
+    [
+      ['OS', 'PHP', 'COBOL'],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .notAllMatch((x: any) => x.toUpperCase() === x),
     ],
   ];
 }

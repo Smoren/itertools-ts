@@ -78,6 +78,27 @@ describe.each(dataProviderForDivide())(
   }
 );
 
+describe.each(dataProviderForDistribute())(
+  "AsyncStream Transform Distribute Test",
+  (input, count, expected) => {
+    it(`distributes input into ${count} groups`, async () => {
+      // Given
+      const inputStream = AsyncStream.of(input);
+
+      // When
+      const groups = inputStream.distribute(count); // returns AsyncStream<unknown[]>
+
+      const result: any[] = [];
+      for await (const group of groups) {
+        result.push(group); // each group is already an array
+      }
+
+      // Then
+      expect(result).toEqual(expected);
+    });
+  }
+);
+
 
 
 function dataProviderForArrays(): Array<[Array<any>, (data: Array<any>) => any, any]> {
@@ -540,6 +561,44 @@ function dataProviderForDivide(): Array<[any, number, any[]]> {
 
     // Async Iterators
     [createAsyncIteratorFixture([1, 2, 3, 4, 5]), 3, [[1, 2], [3, 4], [5]]],
+  ];
+}
+
+function dataProviderForDistribute(): Array<[any, number, any[]]> {
+  return [
+    // Arrays
+    [[], 2, [[], []]],
+    [[1, 2, 3, 4], 2, [[1, 3], [2, 4]]],
+    [[1, 2, 3, 4, 5], 3, [[1, 4], [2, 5], [3]]],
+    [[1, 2], 4, [[1], [2], [], []]],
+
+    // Strings
+    ['abcde', 2, [['a', 'c', 'e'], ['b', 'd']]],
+
+    // Sets
+    [new Set([1, 2, 3, 4]), 2, [[1, 3], [2, 4]]],
+
+    // Maps (distribute on entries)
+    [new Map([['a', 1], ['b', 2], ['c', 3]]), 2,
+      [[['a', 1], ['c', 3]], [['b', 2]]]],
+
+    // Generators
+    [createGeneratorFixture([1, 2, 3]), 2, [[1, 3], [2]]],
+
+    // Iterables
+    [createIterableFixture([1, 2, 3]), 2, [[1, 3], [2]]],
+
+    // Iterators
+    [createIteratorFixture([1, 2, 3]), 2, [[1, 3], [2]]],
+
+    // Async Generators
+    [createAsyncGeneratorFixture([1, 2, 3, 4]), 2, [[1, 3], [2, 4]]],
+
+    // Async Iterables
+    [createAsyncIterableFixture([1, 2, 3]), 2, [[1, 3], [2]]],
+
+    // Async Iterators
+    [createAsyncIteratorFixture([1, 2, 3]), 2, [[1, 3], [2]]],
   ];
 }
 
