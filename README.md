@@ -241,6 +241,7 @@ Quick Reference
 | [`isEmpty`](#is-empty)                  | True if iterable is empty                               | `summary.isEmpty(data)`                | `summary.isEmptyAsync(data)`                |
 | [`isIterable`](#is-iterable)            | True if given data is iterable                          | `summary.isIterable(data)`             | —                                           |
 | [`isIterator`](#is-iterator)            | True if given data is iterator                          | `summary.isIterator(data)`             | —                                           |
+| [`isPartitioned`](#is-partitioned)      | True if iterable is partitioned according to predicate | `summary.isPartitioned(data, predicate)` | `summary.isPartitionedAsync(data, predicate)` |
 | [`isReversed`](#is-reversed)            | True if iterable reverse sorted                         | `summary.isReversed(data)`             | `summary.isReversedAsync(data)`             |
 | [`isSorted`](#is-sorted)                | True if iterable sorted                                 | `summary.isSorted(data)`               | `summary.isSortedAsync(data)`               |
 | [`isString`](#is-string)                | True if given data is string                            | `summary.isString(data)`               | `summary.isStringAsync(data)`               |
@@ -351,6 +352,7 @@ Quick Reference
 | [`anyMatch`](#any-match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
 | [`exactlyN`](#exactly-n-1)          | Returns true if exactly n items are true according to predicate        | `stream.exactlyN(n, predicate)`        |
 | [`isEmpty`](#is-empty-1)            | Returns true if stream is empty                                        | `stream.isEmpty()`                     |
+| [`isPartitioned`](#is-partitioned-1) | Returns true if stream is partitioned according to predicate          | `stream.isPartitioned(predicate)`      |
 | [`isReversed`](#is-reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
 | [`isSorted`](#is-sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
 | [`noneMatch`](#none-match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
@@ -2021,6 +2023,30 @@ const input = [1, 2, 3, 4, 5];
 summary.isIterator(input[Symbol.iterator]()) // true
 summary.isIterator(input); // false
 summary.isIterator(1); // false
+```
+
+### Is Partitioned
+Returns true if all elements that satisfy the predicate appear before all
+elements that don't.
+
+```
+function isPartitioned<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate?: (item: T) => boolean
+): boolean
+```
+
+- The default predicate is the boolean value of each item.
+- Returns true if empty or has only one element.
+
+```typescript
+import { summary } from "itertools-ts";
+
+summary.isPartitioned([2, 4, 1, 3], (item) => item % 2 === 0);
+// true
+
+summary.isPartitioned([2, 1, 4, 3], (item) => item % 2 === 0);
+// false
 ```
 
 ### Is Reversed
@@ -3907,6 +3933,30 @@ const input = [1];
 
 Stream.of(isEmpty)
   .isEmpty();
+// false
+```
+
+##### Is Partitioned
+Returns true if all elements that satisfy the predicate appear before all
+elements that don't.
+
+```
+Stream<T>.isPartitioned(predicate?: (item: T) => boolean): boolean
+```
+
+The default predicate is the boolean value of each item.
+
+Returns true if iterable source is empty or has only one element.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+Stream.of([2, 4, 1, 3])
+  .isPartitioned((item) => item % 2 === 0);
+// true
+
+Stream.of([2, 1, 4, 3])
+  .isPartitioned((item) => item % 2 === 0);
 // false
 ```
 

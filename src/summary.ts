@@ -285,6 +285,74 @@ export function isIterator(input: unknown): boolean {
 }
 
 /**
+ * Returns true if all elements of given collection that satisfy the predicate
+ * appear before all elements that don't.
+ *
+ * Returns true if given collection is empty or has only one element.
+ *
+ * Default predicate if not provided is the boolean value of each data item.
+ *
+ * @param data
+ * @param predicate
+ */
+export function isPartitioned<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate?: (item: T) => boolean
+): boolean {
+  if (predicate === undefined) {
+    predicate = (datum) => Boolean(datum);
+  }
+
+  let falseItemFound = false;
+  for (const datum of toIterable(data)) {
+    const matches = predicate(datum);
+
+    if (falseItemFound && matches) {
+      return false;
+    }
+
+    if (!matches) {
+      falseItemFound = true;
+    }
+  }
+  return true;
+}
+
+/**
+ * Returns true if all elements of given async collection that satisfy the
+ * predicate appear before all elements that don't.
+ *
+ * Returns true if given collection is empty or has only one element.
+ *
+ * Default predicate if not provided is the boolean value of each data item.
+ *
+ * @param data
+ * @param predicate
+ */
+export async function isPartitionedAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  predicate?: (item: T) => Promise<boolean> | boolean
+): Promise<boolean> {
+  if (predicate === undefined) {
+    predicate = (datum) => Boolean(datum);
+  }
+
+  let falseItemFound = false;
+  for await (const datum of toAsyncIterable(data)) {
+    const matches = await predicate(datum);
+
+    if (falseItemFound && matches) {
+      return false;
+    }
+
+    if (!matches) {
+      falseItemFound = true;
+    }
+  }
+  return true;
+}
+
+/**
  * Returns true if given collection is sorted in descending order; otherwise false.
  *
  * Items of given collection must be comparable.

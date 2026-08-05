@@ -973,6 +973,24 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Returns true if all elements of stream that satisfy the predicate appear
+   * before all elements that don't.
+   *
+   * Returns true if stream is empty or has only one element.
+   *
+   * Default predicate if not provided is the boolean value of each data item.
+   *
+   * @param predicate
+   *
+   * @see summary.isPartitionedAsync
+   */
+  async isPartitioned(
+    predicate?: (item: T) => Promise<boolean> | boolean
+  ): Promise<boolean> {
+    return await summary.isPartitionedAsync(this, predicate);
+  }
+
+  /**
    * Returns true if stream is sorted in ascending order; otherwise false.
    *
    * Items of stream source must be comparable.
