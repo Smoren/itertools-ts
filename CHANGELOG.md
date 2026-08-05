@@ -1,5 +1,41 @@
 # IterTools Typescript Change Log
 
+## v2.7.0 - 2026-08-06
+
+### New features
+* summary
+  * `isPartitioned()`
+  * `isPartitionedAsync()`
+  * `notAllMatch()`
+  * `notAllMatchAsync()`
+* transform
+  * `distribute()`
+  * `distributeAsync()`
+* Stream
+  * `isPartitioned()`
+  * `notAllMatch()`
+  * `distribute()`
+* AsyncStream
+  * `isPartitioned()`
+  * `notAllMatch()`
+  * `distribute()`
+
+### Improvements
+* `reduce.toAverage()` / `toAverageAsync()` optimized (removed `toValue` overhead)
+* `reduce.toMax()` / `toMaxAsync()` optimized (single-pass, cached comparison)
+* `reduce.toMin()` / `toMinAsync()` optimized (single-pass, cached comparison)
+* `reduce.toMinMax()` / `toMinMaxAsync()` optimized (single-pass, cached comparison)
+* `reduce.toSum()` / `toSumAsync()` optimized (removed `toValue` overhead)
+* `reduce.toProduct()` / `toProductAsync()` optimized (removed `toValue` overhead)
+* `reduce.toCount()` / `toCountAsync()` optimized (removed `toValue` overhead)
+* `combinatorics.cartesianProduct()` / `cartesianProductAsync()` optimized (lazy generation, memory-efficient)
+* `transform.toMap()` / `toMapAsync()` optimized (direct Map constructor)
+* `transform.toSet()` optimized (direct Set constructor)
+* `single.flatten()` / `flattenAsync()` optimized (Map check cached)
+
+### Typing fixes
+* `peek()` callback parameter type fixed from `unknown` to `T` in Stream and AsyncStream
+
 ## v2.6.0 - 2026-07-10
 
 ### New features
