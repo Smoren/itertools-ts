@@ -196,11 +196,7 @@ export function toMap<TKey, TValue>(
     | Iterator<[TKey, TValue]>
     | Record<PropertyKey, unknown>
 ): Map<TKey, TValue> {
-  const result: Map<TKey, TValue> = new Map();
-  for (const [key, value] of toIterable(pairs)) {
-    result.set(key, value);
-  }
-  return result;
+  return new Map(toIterable(pairs) as Iterable<[TKey, TValue]>);
 }
 
 /**
@@ -229,11 +225,7 @@ export async function toMapAsync<TKey, TValue>(
  * @param collection
  */
 export function toSet<T>(collection: Iterable<T> | Iterator<T>): Set<T> {
-  const result: Set<T> = new Set();
-  for (const datum of toIterable(collection)) {
-    result.add(datum);
-  }
-  return result;
+  return new Set(toIterable(collection));
 }
 
 /**
@@ -359,3 +351,72 @@ export async function* divideAsync<T>(
   }
 }
 
+/**
+ * Distributes the elements of the iterable across n arrays in round-robin order.
+ *
+ * Example: ([1, 2, 3, 4, 5], 2) => [1, 3, 5], [2, 4]
+ *
+ * @param data
+ * @param n
+ */
+export function* distribute<T>(
+  data: Iterable<T> | Iterator<T>,
+  n: number
+): Iterable<Array<T>> {
+  if (
+    typeof n !== "number" ||
+    !Number.isFinite(n) ||
+    n <= 0 ||
+    !Number.isInteger(n)
+  ) {
+    throw new InvalidArgumentError(
+      "distribute: n must be a positive finite integer"
+    );
+  }
+
+  const buckets: Array<Array<T>> = Array.from({ length: n }, () => []);
+  let index = 0;
+
+  for (const item of toIterable(data)) {
+    buckets[index % n].push(item);
+    index += 1;
+  }
+
+  yield* buckets;
+}
+
+/**
+ * Distributes the elements of the async iterable across n arrays in round-robin order.
+ *
+ * Example: ([1, 2, 3, 4, 5], 2) => [1, 3, 5], [2, 4]
+ *
+ * @param data
+ * @param n
+ */
+export async function* distributeAsync<T>(
+  data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
+  n: number
+): AsyncIterable<Array<T>> {
+  if (
+    typeof n !== "number" ||
+    !Number.isFinite(n) ||
+    n <= 0 ||
+    !Number.isInteger(n)
+  ) {
+    throw new InvalidArgumentError(
+      "distribute: n must be a positive finite integer"
+    );
+  }
+
+  const buckets: Array<Array<T>> = Array.from({ length: n }, () => []);
+  let index = 0;
+
+  for await (const item of toAsyncIterable(data)) {
+    buckets[index % n].push(item);
+    index += 1;
+  }
+
+  for (const bucket of buckets) {
+    yield bucket;
+  }
+}

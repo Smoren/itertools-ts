@@ -731,7 +731,7 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @param callback
    */
-  peek(callback: (datum: unknown) => void): AsyncStream<T> {
+  peek(callback: (datum: T) => void): AsyncStream<T> {
     const [data, peekable] = transform.teeAsync(this.data, 2);
     this.data = data;
 
@@ -973,6 +973,24 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Returns true if all elements of stream that satisfy the predicate appear
+   * before all elements that don't.
+   *
+   * Returns true if stream is empty or has only one element.
+   *
+   * Default predicate if not provided is the boolean value of each data item.
+   *
+   * @param predicate
+   *
+   * @see summary.isPartitionedAsync
+   */
+  async isPartitioned(
+    predicate?: (item: T) => Promise<boolean> | boolean
+  ): Promise<boolean> {
+    return await summary.isPartitionedAsync(this, predicate);
+  }
+
+  /**
    * Returns true if stream is sorted in ascending order; otherwise false.
    *
    * Items of stream source must be comparable.
@@ -1011,6 +1029,21 @@ export class AsyncStream<T> implements AsyncIterable<T> {
     predicate: (item: T) => Promise<boolean> | boolean
   ): Promise<boolean> {
     return await summary.noneMatchAsync(this, predicate);
+  }
+
+  /**
+   * Returns true if at least one element of stream does not match the predicate function.
+   *
+   * For empty stream returns false.
+   *
+   * @param predicate
+   *
+   * @see summary.notAllMatchAsync
+   */
+  async notAllMatch(
+    predicate: (item: T) => Promise<boolean> | boolean
+  ): Promise<boolean> {
+    return await summary.notAllMatchAsync(this, predicate);
   }
 
   /**
@@ -1092,6 +1125,23 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   divide(n: number): AsyncStream<Array<T>> {
     const dividedIterable = transform.divideAsync(this.data,n);
     return new AsyncStream(dividedIterable);
+  }
+
+  /**
+   * Distributes the async stream across n arrays in round-robin order.
+   *
+   * Example:
+   * const s = new AsyncStream([1, 2, 3, 4, 5]);
+   * // Output:
+   * // [1, 3, 5]
+   * // [2, 4]
+   *
+   * @param n The number of groups to distribute the stream into
+   *
+   * @see transform.distributeAsync
+   */
+  distribute(n: number): AsyncStream<Array<T>> {
+    return new AsyncStream(transform.distributeAsync(this.data, n));
   }
 
   /**

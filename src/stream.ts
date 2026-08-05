@@ -659,7 +659,7 @@ export class Stream<T> implements Iterable<T> {
    *
    * @param callback
    */
-  peek(callback: (datum: unknown) => void): Stream<T> {
+  peek(callback: (datum: T) => void): Stream<T> {
     const [data, peekable] = transform.tee(this.data, 2);
     this.data = data;
 
@@ -897,6 +897,22 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Returns true if all elements of stream that satisfy the predicate appear
+   * before all elements that don't.
+   *
+   * Returns true if stream is empty or has only one element.
+   *
+   * Default predicate if not provided is the boolean value of each data item.
+   *
+   * @param predicate
+   *
+   * @see summary.isPartitioned
+   */
+  isPartitioned(predicate?: (item: T) => boolean): boolean {
+    return summary.isPartitioned(this, predicate);
+  }
+
+  /**
    * Returns true if stream is sorted in ascending order; otherwise false.
    *
    * Items of stream source must be comparable.
@@ -933,6 +949,19 @@ export class Stream<T> implements Iterable<T> {
    */
   noneMatch(predicate: (item: T) => boolean): boolean {
     return summary.noneMatch(this, predicate);
+  }
+
+  /**
+   * Returns true if at least one element of stream does not match the predicate function.
+   *
+   * For empty stream returns false.
+   *
+   * @param predicate
+   *
+   * @see summary.notAllMatch
+   */
+  notAllMatch(predicate: (item: T) => boolean): boolean {
+    return summary.notAllMatch(this, predicate);
   }
 
   /**
@@ -1001,6 +1030,23 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Distributes the stream across n arrays in round-robin order.
+   *
+   * Example:
+   * const s = new Stream([1, 2, 3, 4, 5]);
+   * // Output:
+   * // [1, 3, 5]
+   * // [2, 4]
+   *
+   * @param n The number of groups to distribute the stream into
+   *
+   * @see transform.distribute
+   */
+  distribute(n: number): Stream<Array<T>> {
+    return new Stream(transform.distribute(this.data, n));
+  }
+
+  /**
    * Converts stream to Array.
    *
    * @see transform.toArray
@@ -1031,9 +1077,9 @@ export class Stream<T> implements Iterable<T> {
 
   /**
    * Generates random elements from the given collection.
-   * 
+   *
    * If optional param `repetitions` is not given, iterates infinitely.
-   * 
+   *
    * @param repetitions - Number of values to generate
    * @throws InvalidArgumentError if repetitions is negative
    * @throws LengthError if stream is empty.

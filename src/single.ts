@@ -302,9 +302,11 @@ export function* flatten(
   data: Iterable<unknown> | Iterator<unknown>,
   dimensions = Infinity
 ): Iterable<unknown> {
+  const isMap = data instanceof Map;
+
   if (dimensions < 1) {
     for (let datum of toIterable(data)) {
-      if (data instanceof Map) {
+      if (isMap) {
         datum = (datum as [unknown, unknown])[1];
       }
 
@@ -314,7 +316,7 @@ export function* flatten(
   }
 
   for (let datum of toIterable(data)) {
-    if (data instanceof Map) {
+    if (isMap) {
       datum = (datum as [unknown, unknown])[1];
     }
 
@@ -347,9 +349,11 @@ export async function* flattenAsync(
     | Iterator<unknown>,
   dimensions = Infinity
 ): AsyncIterable<unknown> {
+  const isMap = data instanceof Map;
+
   if (dimensions < 1) {
     for await (let datum of toAsyncIterable(data)) {
-      if (data instanceof Map) {
+      if (isMap) {
         datum = (datum as [unknown, unknown])[1];
       }
 
@@ -359,7 +363,7 @@ export async function* flattenAsync(
   }
 
   for await (let datum of toAsyncIterable(data)) {
-    if (data instanceof Map) {
+    if (isMap) {
       datum = (datum as [unknown, unknown])[1];
     }
 

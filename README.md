@@ -241,10 +241,12 @@ Quick Reference
 | [`isEmpty`](#is-empty)                  | True if iterable is empty                               | `summary.isEmpty(data)`                | `summary.isEmptyAsync(data)`                |
 | [`isIterable`](#is-iterable)            | True if given data is iterable                          | `summary.isIterable(data)`             | —                                           |
 | [`isIterator`](#is-iterator)            | True if given data is iterator                          | `summary.isIterator(data)`             | —                                           |
+| [`isPartitioned`](#is-partitioned)      | True if iterable is partitioned according to predicate | `summary.isPartitioned(data, predicate)` | `summary.isPartitionedAsync(data, predicate)` |
 | [`isReversed`](#is-reversed)            | True if iterable reverse sorted                         | `summary.isReversed(data)`             | `summary.isReversedAsync(data)`             |
 | [`isSorted`](#is-sorted)                | True if iterable sorted                                 | `summary.isSorted(data)`               | `summary.isSortedAsync(data)`               |
 | [`isString`](#is-string)                | True if given data is string                            | `summary.isString(data)`               | `summary.isStringAsync(data)`               |
 | [`noneMatch`](#none-match)              | True if none of items true according to predicate       | `summary.noneMatch(data, predicate)`   | `summary.noneMatchAsync(data, predicate)`   |
+| [`notAllMatch`](#not-all-match)          | True if at least one item is false according to predicate | `summary.notAllMatch(data, predicate)` | `summary.notAllMatchAsync(data, predicate)` |
 | [`same`](#same)                         | True if collections are the same                        | `summary.same(...collections)`         | `summary.sameAsync(...collections)`         |
 | [`sameCount`](#same-count)              | True if collections have the same lengths               | `summary.sameCount(...collections)`    | `summary.sameCountAsync(...collections)`    |
 
@@ -252,6 +254,7 @@ Quick Reference
 | Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet                |
 |-----------------------------------------|-----------------------------------------|-----------------------------------|-----------------------------------|
 | [`divide`](#divide)                     | Divides iterable into n chunks          | `transform.divide(data, n)`       | `transform.divideAsync(data, n)`  |
+| [`distribute`](#distribute)             | Distributes iterable across n groups    | `transform.distribute(data, n)`   | `transform.distributeAsync(data, n)` |
 | [`tee`](#tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | `transform.teeAsync(data, count)` |
 | [`toArray`](#to-array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)`    |
 | [`toAsyncIterable`](#to-async-iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                                 |
@@ -287,6 +290,7 @@ Quick Reference
 | [`compress`](#compress-1)                               | Compress source by filtering out data not selected                                        | `stream.compress(selectors)`                                         |
 | [`distinct`](#distinct-1)                               | Filter out elements: iterate only unique items                                            | `stream.distinct()`                                                  |
 | [`divide`](#divide-1)                                   | Splits stream into n chunks                                                               | `stream.divide(n)`                                                   |
+| [`distribute`](#distribute-1)                           | Distributes stream across n groups                                                        | `stream.distribute(n)`                                               |
 | [`dropWhile`](#drop-while-1)                            | Drop elements from the iterable source while the predicate function is true               | `stream.dropWhile(predicate)`                                        |
 | [`enumerate`](#enumerate-1)                             | Enumerates elements of stream                                                             | `stream.enumerate()`                                                 |
 | [`filter`](#filter-1)                                   | Filter for only elements where the predicate function is true                             | `stream.filter(predicate)`                                           |
@@ -351,9 +355,11 @@ Quick Reference
 | [`anyMatch`](#any-match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
 | [`exactlyN`](#exactly-n-1)          | Returns true if exactly n items are true according to predicate        | `stream.exactlyN(n, predicate)`        |
 | [`isEmpty`](#is-empty-1)            | Returns true if stream is empty                                        | `stream.isEmpty()`                     |
+| [`isPartitioned`](#is-partitioned-1) | Returns true if stream is partitioned according to predicate          | `stream.isPartitioned(predicate)`      |
 | [`isReversed`](#is-reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
 | [`isSorted`](#is-sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
 | [`noneMatch`](#none-match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
+| [`notAllMatch`](#not-all-match-1)    | Returns true if at least one item in stream does not match predicate   | `stream.notAllMatch(predicate)`        |
 | [`sameWith`](#same-with)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |
 | [`sameCountWith`](#same-count-with) | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)` |
 
@@ -2023,6 +2029,30 @@ summary.isIterator(input); // false
 summary.isIterator(1); // false
 ```
 
+### Is Partitioned
+Returns true if all elements that satisfy the predicate appear before all
+elements that don't.
+
+```
+function isPartitioned<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate?: (item: T) => boolean
+): boolean
+```
+
+- The default predicate is the boolean value of each item.
+- Returns true if empty or has only one element.
+
+```typescript
+import { summary } from "itertools-ts";
+
+summary.isPartitioned([2, 4, 1, 3], (item) => item % 2 === 0);
+// true
+
+summary.isPartitioned([2, 1, 4, 3], (item) => item % 2 === 0);
+// false
+```
+
 ### Is Reversed
 Returns true if elements are reverse sorted, otherwise false.
 
@@ -2133,6 +2163,28 @@ const trueResult = summary.noneMatch(grades, isPassingGrade);
 // true
 ```
 
+### Not All Match
+Returns true if at least one element does not match the predicate function.
+
+```
+function notAllMatch<T>(
+  data: Iterable<T> | Iterator<T>,
+  predicate: (item: T) => boolean
+): boolean
+```
+
+Empty collections return false.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const grades         = [80, 75, 61];
+const isPassingGrade = (grade) => grade >= 70;
+
+const result = summary.notAllMatch(grades, isPassingGrade);
+// true
+```
+
 ### Same
 Returns true if all given collections are the same.
 
@@ -2208,6 +2260,26 @@ const result = Array.from(transform.divide(data, 2));
 
 const result2 = Array.from(transform.divide(data, 3));
 // [[1, 2], [3, 4], [5]]
+```
+
+### Distribute
+Distributes the elements of an iterable evenly across n arrays in round-robin order.
+
+```
+function* distribute<T>(
+  data: Iterable<T> | Iterator<T>,
+  n: number
+): Iterable<Array<T>>
+```
+
+* `n` must be a positive finite integer.
+* Throws `InvalidArgumentError` if `n` is invalid.
+
+```typescript
+import { transform } from "itertools-ts";
+
+const result = Array.from(transform.distribute([1, 2, 3, 4, 5], 2));
+// [[1, 3, 5], [2, 4]]
 ```
 
 ### Tee
@@ -2904,6 +2976,22 @@ const result2 = Stream.of(data)
   .divide(3)
   .toArray();
 // [[1, 2], [3, 4], [5]]
+```
+
+#### Distribute
+Distributes the stream across n arrays in round-robin order.
+
+```
+Stream<T>.distribute(n: number): Stream<Array<T>>
+```
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const result = Stream.of([1, 2, 3, 4, 5])
+  .distribute(2)
+  .toArray();
+// [[1, 3, 5], [2, 4]]
 ```
 
 #### Intersection With
@@ -3910,6 +3998,30 @@ Stream.of(isEmpty)
 // false
 ```
 
+##### Is Partitioned
+Returns true if all elements that satisfy the predicate appear before all
+elements that don't.
+
+```
+Stream<T>.isPartitioned(predicate?: (item: T) => boolean): boolean
+```
+
+The default predicate is the boolean value of each item.
+
+Returns true if iterable source is empty or has only one element.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+Stream.of([2, 4, 1, 3])
+  .isPartitioned((item) => item % 2 === 0);
+// true
+
+Stream.of([2, 1, 4, 3])
+  .isPartitioned((item) => item % 2 === 0);
+// false
+```
+
 ##### Is Sorted
 Returns true if iterable source is sorted in ascending order; otherwise false.
 
@@ -3954,6 +4066,26 @@ const isPassingGrade = (grade) => grade >= 70;
 
 const trueResult = Stream.of(grades)
   .noneMatch(isPassingGrade);
+// true
+```
+
+##### Not All Match
+Returns true if at least one element of stream does not match the predicate function.
+
+```
+Stream<T>.notAllMatch(predicate: (item: T) => boolean): boolean
+```
+
+For empty stream returns false.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const grades         = [80, 75, 61];
+const isPassingGrade = (grade) => grade >= 70;
+
+const result = Stream.of(grades)
+  .notAllMatch(isPassingGrade);
 // true
 ```
 
