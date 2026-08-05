@@ -104,6 +104,14 @@
     {
       "name": "Akash chauhan",
       "url": "https://github.com/Akashrana1001"
+    },
+    {
+      "name": "Mirko Mei",
+      "url": "https://github.com/Ulbrec87"
+    },
+    {
+      "name": "Guflly",
+      "url": "https://github.com/Guflly"
     }
   ],
   "jsnext:main": "./es/index.js",
