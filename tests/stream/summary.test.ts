@@ -2,6 +2,24 @@
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
 import { Numeric, Stream } from "../../src";
 
+describe("Stream Not All Match Test", () => {
+  it("returns false for an empty stream", () => {
+    expect(Stream.of<number>([]).notAllMatch(() => false)).toBeFalsy();
+  });
+
+  it("returns false when all elements match", () => {
+    expect(
+      Stream.of([2, 4, 6]).notAllMatch((item) => item % 2 === 0)
+    ).toBeFalsy();
+  });
+
+  it("returns true when at least one element does not match", () => {
+    expect(
+      Stream.of([2, 3, 4]).notAllMatch((item) => item % 2 === 0)
+    ).toBeTruthy();
+  });
+});
+
 describe.each([
   ...dataProviderForArraysTrue(),
   ...dataProviderForGeneratorsTrue(),

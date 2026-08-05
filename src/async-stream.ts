@@ -1032,6 +1032,21 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Returns true if at least one element of stream does not match the predicate function.
+   *
+   * For empty stream returns false.
+   *
+   * @param predicate
+   *
+   * @see summary.notAllMatchAsync
+   */
+  async notAllMatch(
+    predicate: (item: T) => Promise<boolean> | boolean
+  ): Promise<boolean> {
+    return await summary.notAllMatchAsync(this, predicate);
+  }
+
+  /**
    * Returns true if stream collection and all given collections are the same.
    *
    * For empty collections list returns true.

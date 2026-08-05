@@ -11,6 +11,30 @@ import {
   // @ts-ignore
 } from "../fixture";
 
+describe("AsyncStream Not All Match Test", () => {
+  it("returns false for an empty stream", async () => {
+    expect(
+      await AsyncStream.of<number>([]).notAllMatch(async () => false)
+    ).toBeFalsy();
+  });
+
+  it("returns false when all elements match", async () => {
+    expect(
+      await AsyncStream.of([2, 4, 6]).notAllMatch(
+        async (item) => item % 2 === 0
+      )
+    ).toBeFalsy();
+  });
+
+  it("returns true when at least one element does not match", async () => {
+    expect(
+      await AsyncStream.of(createAsyncGeneratorFixture([2, 3, 4])).notAllMatch(
+        async (item) => item % 2 === 0
+      )
+    ).toBeTruthy();
+  });
+});
+
 describe.each([
   ...dataProviderForAsyncGeneratorsTrue(),
   ...dataProviderForAsyncIterablesTrue(),
