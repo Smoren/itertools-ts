@@ -1127,6 +1127,19 @@ export class AsyncStream<T> implements AsyncIterable<T> {
     return new AsyncStream(dividedIterable);
   }
 
+  /**
+   * Distributes the async stream across n arrays in round-robin order.
+   *
+   * Example:
+   * const s = new AsyncStream([1, 2, 3, 4, 5]);
+   * // Output:
+   * // [1, 3, 5]
+   * // [2, 4]
+   *
+   * @param n The number of groups to distribute the stream into
+   *
+   * @see transform.distributeAsync
+   */
   distribute(n: number): AsyncStream<Array<T>> {
     return new AsyncStream(transform.distributeAsync(this.data, n));
   }

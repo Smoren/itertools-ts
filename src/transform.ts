@@ -351,6 +351,14 @@ export async function* divideAsync<T>(
   }
 }
 
+/**
+ * Distributes the elements of the iterable across n arrays in round-robin order.
+ *
+ * Example: ([1, 2, 3, 4, 5], 2) => [1, 3, 5], [2, 4]
+ *
+ * @param data
+ * @param n
+ */
 export function* distribute<T>(
   data: Iterable<T> | Iterator<T>,
   n: number
@@ -377,6 +385,14 @@ export function* distribute<T>(
   yield* buckets;
 }
 
+/**
+ * Distributes the elements of the async iterable across n arrays in round-robin order.
+ *
+ * Example: ([1, 2, 3, 4, 5], 2) => [1, 3, 5], [2, 4]
+ *
+ * @param data
+ * @param n
+ */
 export async function* distributeAsync<T>(
   data: AsyncIterable<T> | AsyncIterator<T> | Iterable<T> | Iterator<T>,
   n: number

@@ -1029,6 +1029,19 @@ export class Stream<T> implements Iterable<T> {
     return new Stream(dividedIterable); // wrap into stream
   }
 
+  /**
+   * Distributes the stream across n arrays in round-robin order.
+   *
+   * Example:
+   * const s = new Stream([1, 2, 3, 4, 5]);
+   * // Output:
+   * // [1, 3, 5]
+   * // [2, 4]
+   *
+   * @param n The number of groups to distribute the stream into
+   *
+   * @see transform.distribute
+   */
   distribute(n: number): Stream<Array<T>> {
     return new Stream(transform.distribute(this.data, n));
   }
