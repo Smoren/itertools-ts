@@ -874,6 +874,21 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Returns true if stream collection and all given collections are permutations of each other.
+   *
+   * For empty collections list returns true.
+   *
+   * Considers different instances of data containers to be different, even if they have the same content.
+   *
+   * @param collections
+   *
+   * @see summary.arePermutations
+   */
+  arePermutationsWith(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+    return summary.arePermutations(this.data, ...collections);
+  }
+
+  /**
    * Returns true if exactly n items in the iterable are true where the predicate function is true.
    *
    * Default predicate if not provided is the boolean value of each data item.

@@ -950,6 +950,28 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Returns true if stream collection and all given collections are permutations of each other.
+   *
+   * For empty collections list returns true.
+   *
+   * Considers different instances of data containers to be different, even if they have the same content.
+   *
+   * @param collections
+   *
+   * @see summary.arePermutationsAsync
+   */
+  async arePermutationsWith(
+    ...collections: Array<
+      | AsyncIterable<unknown>
+      | AsyncIterator<unknown>
+      | Iterable<unknown>
+      | Iterator<unknown>
+    >
+  ): Promise<boolean> {
+    return await summary.arePermutationsAsync(this.data, ...collections);
+  }
+
+  /**
    * Returns true if exactly n items in the async iterable are true where the predicate function is true.
    *
    * Default predicate if not provided is the boolean value of each data item.
