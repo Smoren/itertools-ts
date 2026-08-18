@@ -1,4 +1,25 @@
-# IterTools Typescript Change Log
+# IterTools TypeScript Change Log
+
+## v2.8.0 - 2026-08-18
+
+### New features
+* summary
+  * `arePermutations()`
+  * `arePermutationsAsync()`
+* Stream
+  * `arePermutationsWith()`
+* AsyncStream
+  * `arePermutationsWith()`
+
+### Improvements
+* `Stream.keys()` / `values()` and `AsyncStream.keys()` / `values()` type signatures rewritten without unused `infer _` placeholders (semantics unchanged)
+
+### Build and toolchain
+* CommonJS build (`lib/`) now targets ES6 instead of ES5. This only affects consumers on ES5-only environments (e.g. IE11) that used the CommonJS entry point without transpilation — Node.js, bundlers, and TypeScript consumers are unaffected.
+* Migrated toolchain to TypeScript 6 and ESLint 9 (flat config)
+* Added `typecheck` script (`tsc -p tests/tsconfig.json`) and enabled `lint`/`typecheck` in CI
+* Added `tests/tsconfig.json` to fix IDE type-checking of async iterables in tests
+* Added project docs: `CODE_OF_CONDUCT.md`, `CONTRIBUTING.md`, `SECURITY.md`
 
 ## v2.7.0 - 2026-08-06
 
