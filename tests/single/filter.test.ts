@@ -6,10 +6,10 @@ import {
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
-  createMapFixture
-  // @ts-ignore
+  createMapFixture,
 } from "../fixture";
 import { single } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -125,12 +125,12 @@ function dataProviderForArrays(): Array<[Array<any>, (x: any) => boolean, Array<
     ],
     [
       [0, 1, 2, 3, 4, 5],
-      (x: number) => true,
+      () => true,
       [0, 1, 2, 3, 4, 5],
     ],
     [
       [0, 1, 2, 3, 4, 5],
-      (x: number) => false,
+      () => false,
       [],
     ],
     [
@@ -210,12 +210,12 @@ function dataProviderForGenerators(): Array<[Generator<any>, (x: any) => boolean
     ],
     [
       createGeneratorFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => true,
+      () => true,
       [0, 1, 2, 3, 4, 5],
     ],
     [
       createGeneratorFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => false,
+      () => false,
       [],
     ],
     [
@@ -295,12 +295,12 @@ function dataProviderForIterables(): Array<[Iterable<any>, (x: any) => boolean, 
     ],
     [
       createIterableFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => true,
+      () => true,
       [0, 1, 2, 3, 4, 5],
     ],
     [
       createIterableFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => false,
+      () => false,
       [],
     ],
     [
@@ -380,12 +380,12 @@ function dataProviderForIterators(): Array<[Iterator<any>, (x: any) => boolean, 
     ],
     [
       createIteratorFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => true,
+      () => true,
       [0, 1, 2, 3, 4, 5],
     ],
     [
       createIteratorFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => false,
+      () => false,
       [],
     ],
     [
@@ -465,12 +465,12 @@ function dataProviderForStrings(): Array<[string, (x: any) => boolean, Array<any
     ],
     [
       '012345',
-      (x: number) => true,
+      () => true,
       ['0', '1', '2', '3', '4', '5'],
     ],
     [
       '012345',
-      (x: number) => false,
+      () => false,
       [],
     ],
     [
@@ -540,12 +540,12 @@ function dataProviderForSets(): Array<[Set<any>, (x: any) => boolean, Array<any>
     ],
     [
       new Set([0, 1, 2, 3, 4, 5]),
-      (x: number) => true,
+      () => true,
       [0, 1, 2, 3, 4, 5],
     ],
     [
       new Set([0, 1, 2, 3, 4, 5]),
-      (x: number) => false,
+      () => false,
       [],
     ],
     [
@@ -620,12 +620,12 @@ function dataProviderForMaps(): Array<[Map<any, any>, (x: any) => boolean, Array
     ],
     [
       createMapFixture([0, 1, 2, 3, 4, 5]),
-      (x: [number, number]) => true,
+      () => true,
       [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4], [5, 5]],
     ],
     [
       createMapFixture([0, 1, 2, 3, 4, 5]),
-      (x: [number, number]) => false,
+      () => false,
       [],
     ],
     [
@@ -705,12 +705,12 @@ function dataProviderForAsyncGenerators(): Array<[AsyncGenerator<any>, (x: any) 
     ],
     [
       createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => true,
+      () => true,
       [0, 1, 2, 3, 4, 5],
     ],
     [
       createAsyncGeneratorFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => false,
+      () => false,
       [],
     ],
     [
@@ -798,12 +798,12 @@ function dataProviderForAsyncIterables(): Array<[AsyncIterable<any>, (x: any) =>
     ],
     [
       createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => true,
+      () => true,
       [0, 1, 2, 3, 4, 5],
     ],
     [
       createAsyncIterableFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => false,
+      () => false,
       [],
     ],
     [
@@ -891,12 +891,12 @@ function dataProviderForAsyncIterators(): Array<[AsyncIterator<any>, (x: any) =>
     ],
     [
       createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => true,
+      () => true,
       [0, 1, 2, 3, 4, 5],
     ],
     [
       createAsyncIteratorFixture([0, 1, 2, 3, 4, 5]),
-      (x: number) => false,
+      () => false,
       [],
     ],
     [

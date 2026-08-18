@@ -3,10 +3,11 @@ import {
   createAsyncIterableFixture,
   createAsyncIteratorFixture,
   createGeneratorFixture,
-  createIterableFixture, createIteratorFixture
-  // @ts-ignore
+  createIterableFixture,
+  createIteratorFixture,
 } from '../fixture';
 import { transform } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each(dataProvider())(
   "Transform To Array Test",

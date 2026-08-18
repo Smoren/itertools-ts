@@ -1,6 +1,6 @@
-// @ts-ignore
 import { expectToBeCloseToArray } from "../fixture";
 import { AsyncStream } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForOfCount(),

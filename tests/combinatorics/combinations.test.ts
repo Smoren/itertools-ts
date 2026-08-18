@@ -6,9 +6,9 @@ import {
   createIterableFixture,
   createIteratorFixture,
   createMapFixture
-  // @ts-ignore
 } from "../fixture";
 import { InvalidArgumentError, combinatorics } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -72,7 +72,10 @@ describe.each([
   (input, len) => {
     it("", () => {
       expect(() => {
-        for (const _ of combinatorics.combinations(input, len)) {}
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for (const _ of combinatorics.combinations(input, len)) {
+          // noop
+        }
       }).toThrow(InvalidArgumentError);
     });
   }
@@ -87,7 +90,10 @@ describe.each([
     it("", async () => {
       try {
         // When
-        for await (const _ of combinatorics.combinationsAsync(input, len)) {}
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for await (const _ of combinatorics.combinationsAsync(input, len)) {
+          // noop
+        }
         expect(false).toBeTruthy();
       } catch (e) {
         expect(e).toBeInstanceOf(InvalidArgumentError);

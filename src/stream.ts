@@ -310,9 +310,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.keys
    */
-  keys(): Stream<T extends [infer TKey, infer _] ? TKey : never> {
+  keys(): Stream<T extends [infer TKey, unknown] ? TKey : never> {
     this.data = single.keys(this.data as Iterable<[unknown, unknown]>) as Iterable<T>;
-    return this as unknown as Stream<T extends [infer TKey, infer _] ? TKey : never>;
+    return this as unknown as Stream<T extends [infer TKey, unknown] ? TKey : never>;
   }
 
   /**
@@ -521,9 +521,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.values
    */
-  values(): Stream<T extends [infer _, infer TValue] ? TValue : never> {
+  values(): Stream<T extends [unknown, infer TValue] ? TValue : never> {
     this.data = single.values(this.data as Iterable<[unknown, unknown]>) as Iterable<T>;
-    return this as unknown as Stream<T extends [infer _, infer TValue] ? TValue : never>;
+    return this as unknown as Stream<T extends [unknown, infer TValue] ? TValue : never>;
   }
 
   /**

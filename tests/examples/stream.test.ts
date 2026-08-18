@@ -4,9 +4,9 @@ import {
   createIteratorFixture,
   createMapFixture,
   expectToBeCloseToArray,
-  // @ts-ignore
 } from "../fixture";
-import { Comparable, multi, single, Stream } from "../../src";
+import { multi, single, Stream } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForOfCount(),

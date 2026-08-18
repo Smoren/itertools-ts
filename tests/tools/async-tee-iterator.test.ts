@@ -3,10 +3,10 @@ import {
   createAsyncIterableFixture,
   createAsyncIteratorFixture,
   createGeneratorFixture,
-  // @ts-ignore
 } from '../fixture';
 import { AsyncTeeIterator } from '../../src/tools';
 import { toAsyncIterator } from "../../src/transform";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each(dataProvider())(
   "Tools Async Tee Iterator Test",

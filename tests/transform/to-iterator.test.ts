@@ -1,6 +1,6 @@
-// @ts-ignore
 import { createGeneratorFixture, createIterableFixture } from '../fixture';
 import { transform, summary, InvalidArgumentError } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each(dataProviderForSuccess())(
   "Transform To Iterator Test Success",

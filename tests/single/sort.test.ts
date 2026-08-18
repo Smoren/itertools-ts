@@ -5,7 +5,6 @@ import {
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
-  // @ts-ignore
 } from "../fixture";
 import { Comparator, single } from "../../src";
 

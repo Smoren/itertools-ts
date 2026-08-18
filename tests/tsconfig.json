@@ -3,19 +3,16 @@
     "target": "ES6",
     "module": "Node16",
     "lib": ["es6", "es2018", "es2018.asynciterable"],
-    "rootDir": ".",
     "allowJs": false,
-    "outDir": "./dist",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
     "ignoreDeprecations": "6.0",
-    "sourceMap": true,
-    "inlineSources": true,
-    "declaration": true,
     "isolatedModules": true,
+    "types": ["jest", "node"],
+    "noEmit": true
   },
-  "include": ["src"],
-  "exclude": ["tests"]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules"]
 }

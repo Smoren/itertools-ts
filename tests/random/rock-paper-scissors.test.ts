@@ -1,5 +1,6 @@
 import { rockPaperScissors, rockPaperScissorsAsync } from '../../src/random';
-import { InvalidArgumentError } from '../../src/exceptions';
+import { InvalidArgumentError } from '../../src';
+import { afterEach, describe, expect, it, jest } from '@jest/globals';
 
 const ROCK_PAPER_SCISSORS_VALUES = ['rock', 'paper', 'scissors'];
 
@@ -113,7 +114,10 @@ describe.each([
     it('', async () => {
       const gen = rockPaperScissorsAsync(negativeCount);
       await expect((async () => {
-        for await (const _ of gen) {}
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for await (const _ of gen) {
+          // noop
+        }
       })()).rejects.toThrow(InvalidArgumentError);
     });
   }

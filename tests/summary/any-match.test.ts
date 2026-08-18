@@ -7,9 +7,9 @@ import {
   createIterableFixture,
   createIteratorFixture,
   createMapFixture,
-  // @ts-ignore
 } from '../fixture';
 import { summary } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArraysTrue(),

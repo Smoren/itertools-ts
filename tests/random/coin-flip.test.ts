@@ -1,6 +1,6 @@
 import { coinFlip, coinFlipAsync } from '../../src/random';
-import { Stream, AsyncStream } from '../../src';
-import { InvalidArgumentError } from '../../src/exceptions';
+import { Stream, AsyncStream, InvalidArgumentError } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForFiniteSync(),
@@ -94,7 +94,10 @@ describe.each([
     it('', async () => {
       const gen = coinFlipAsync(negativeCount);
       await expect((async () => {
-        for await (const _ of gen) {}
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for await (const _ of gen) {
+          // noop
+        }
       })()).rejects.toThrow(InvalidArgumentError);
     });
   }

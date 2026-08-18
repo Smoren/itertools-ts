@@ -165,7 +165,7 @@ export function arePermutations(
         usages[i]++;
       });
     }
-  } catch (e) {
+  } catch {
     return false;
   }
 
@@ -206,7 +206,7 @@ export async function arePermutationsAsync(
         usages[i]++;
       });
     }
-  } catch (e) {
+  } catch {
     return false;
   }
 
@@ -287,7 +287,6 @@ export async function exactlyNAsync<T>(
  * @param data
  */
 export function isEmpty(data: Iterable<unknown> | Iterator<unknown>): boolean {
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   for (const _ of toIterable(data)) {
     return false;
   }
@@ -306,7 +305,6 @@ export async function isEmptyAsync(
     | Iterable<unknown>
     | Iterator<unknown>
 ): Promise<boolean> {
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   for await (const _ of toAsyncIterable(data)) {
     return false;
   }
@@ -614,7 +612,7 @@ export function same(
         }
       }
     }
-  } catch (e) {
+  } catch {
     return false;
   }
 
@@ -644,7 +642,7 @@ export async function sameAsync(
         }
       }
     }
-  } catch (e) {
+  } catch {
     return false;
   }
 

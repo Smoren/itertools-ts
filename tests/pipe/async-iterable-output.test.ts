@@ -8,8 +8,8 @@ import {
   createIterableFixture,
   createIteratorFixture,
   createMapFixture,
-  // @ts-ignore
 } from "../fixture";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -1005,6 +1005,7 @@ function dataProviderForMaps(): Array<[Pipe<any[]> | Pipe<[any, any]>, Map<any, 
         Map<string, number>,
         AsyncIterable<number>,
       ]>(
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         (input) => single.mapAsync(input, ([_, x]) => x**2),
       ),
       createMapFixture([1, 2, 3, 4, 5]),

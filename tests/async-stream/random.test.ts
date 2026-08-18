@@ -1,6 +1,7 @@
 import { percentageAsync } from '../../src/random';
 import { InvalidArgumentError, LengthError} from '../../src/exceptions';
 import { AsyncStream } from '../../src/async-stream';
+import { describe, expect, it } from '@jest/globals';
 
 
 const ROCK_PAPER_SCISSORS_VALUES = ['rock', 'paper', 'scissors'];
@@ -32,7 +33,10 @@ describe.each([
     it('', async () => {
       const gen = percentageAsync(negativeCount);
       await expect((async () => {
-        for await (const _ of gen) {}
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for await (const _ of gen) {
+          // noop
+        }
       })()).rejects.toThrow(InvalidArgumentError);
     });
   }
@@ -131,7 +135,10 @@ describe.each([
   it(`throws InvalidArgumentError for ${negativeCount}`, async () => {
     const gen = AsyncStream.of([1, 2, 3]).choice(negativeCount);
     await expect((async () => {
-      for await (const _ of gen) {}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      for await (const _ of gen) {
+          // noop
+        }
     })()).rejects.toThrow(InvalidArgumentError);
   });
 });
@@ -140,7 +147,10 @@ describe('AsyncStream.choice() empty', () => {
   it('throws LengthError when stream is empty', async () => {
     const gen = AsyncStream.of([]).choice(5);
     await expect((async () => {
-      for await (const _ of gen) {}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      for await (const _ of gen) {
+          // noop
+        }
     })()).rejects.toThrow(LengthError);
   });
 });

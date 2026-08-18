@@ -8,8 +8,8 @@ import {
   createAsyncIteratorFixture,
   createAsyncGeneratorFixture,
   createIterableFixture,
-  // @ts-ignore
 } from "../fixture";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),

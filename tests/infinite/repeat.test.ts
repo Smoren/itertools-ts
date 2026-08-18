@@ -1,5 +1,5 @@
 import { infinite } from "../../src";
-// @ts-ignore
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProvider(),

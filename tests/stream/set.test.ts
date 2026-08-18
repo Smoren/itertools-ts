@@ -1,6 +1,6 @@
-// @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
-import { Stream, Comparable, Numeric } from "../../src";
+import { Stream, Numeric } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),

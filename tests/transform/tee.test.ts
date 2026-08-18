@@ -4,9 +4,9 @@ import {
   createIterableFixture,
   createIteratorFixture,
   createMapFixture
-  // @ts-ignore
 } from '../fixture';
 import { transform, multi, reduce } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 test("Transform Tee Test Example Usage Transform To Array", () => {
   // Given

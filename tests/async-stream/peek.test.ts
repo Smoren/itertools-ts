@@ -6,9 +6,9 @@ import {
   createIterableFixture,
   createIteratorFixture,
   createMapFixture,
-  // @ts-ignore
 } from "../fixture";
 import { AsyncStream } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForAsyncGenerators(),

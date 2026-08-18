@@ -6,9 +6,9 @@ import {
   createIterableFixture,
   createIteratorFixture,
   createMapFixture,
-  // @ts-ignore
 } from "../fixture";
 import { combinatorics } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),

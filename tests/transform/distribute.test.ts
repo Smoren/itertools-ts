@@ -5,9 +5,9 @@ import {
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
-  // @ts-ignore
 } from '../fixture';
 import { InvalidArgumentError, transform } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each(dataProvider())(
   'transform.distribute',
@@ -50,6 +50,7 @@ describe.each(dataProviderForAsyncError())(
   (input, n) => {
     it(`throws error when distributing into ${n} groups`, async () => {
       await expect(async () => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for await (const _ of transform.distributeAsync(input as any, n as any)) {
           // noop
         }

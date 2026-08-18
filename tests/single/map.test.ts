@@ -1,12 +1,14 @@
 import {
   asyncTimeout,
-  createAsyncGeneratorFixture, createAsyncIterableFixture, createAsyncIteratorFixture,
+  createAsyncGeneratorFixture,
+  createAsyncIterableFixture,
+  createAsyncIteratorFixture,
   createGeneratorFixture,
   createIterableFixture,
-  createIteratorFixture
-  // @ts-ignore
+  createIteratorFixture,
 } from "../fixture";
 import { single } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),

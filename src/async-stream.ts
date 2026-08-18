@@ -351,9 +351,9 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @see single.keysAsync
    */
-  keys(): AsyncStream<T extends [infer TKey, infer _] ? TKey : never> {
+  keys(): AsyncStream<T extends [infer TKey, unknown] ? TKey : never> {
     this.data = single.keysAsync(this.data as AsyncIterable<[unknown, unknown]>) as AsyncIterable<T>;
-    return this as AsyncStream<T extends [infer TKey, infer _] ? TKey : never>;
+    return this as AsyncStream<T extends [infer TKey, unknown] ? TKey : never>;
   }
 
   /**
@@ -564,9 +564,9 @@ export class AsyncStream<T> implements AsyncIterable<T> {
    *
    * @see single.valuesAsync
    */
-  values(): AsyncStream<T extends [infer _, infer TValue] ? TValue : never> {
+  values(): AsyncStream<T extends [unknown, infer TValue] ? TValue : never> {
     this.data = single.valuesAsync(this.data as AsyncIterable<[unknown, unknown]>) as AsyncIterable<T>;
-    return this as AsyncStream<T extends [infer _, infer TValue] ? TValue : never>;
+    return this as AsyncStream<T extends [unknown, infer TValue] ? TValue : never>;
   }
 
   /**

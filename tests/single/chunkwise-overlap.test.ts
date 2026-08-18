@@ -5,10 +5,10 @@ import {
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
-  createMapFixture
-  // @ts-ignore
+  createMapFixture,
 } from "../fixture";
 import { InvalidArgumentError, single } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -91,6 +91,7 @@ describe.each([
           includeIncompleteTail,
         );
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const _ of chunks) {
           break;
         }
@@ -114,6 +115,7 @@ describe.each([
           includeIncompleteTail,
         );
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for await (const _ of chunks) {
           break;
         }

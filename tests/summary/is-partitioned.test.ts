@@ -6,9 +6,9 @@ import {
   createIterableFixture,
   createIteratorFixture,
   createMapFixture,
-  // @ts-ignore
 } from '../fixture';
 import { summary } from '../../src';
+import { describe, expect, it, jest } from '@jest/globals';
 
 describe.each(dataProviderForTrue())(
   "Summary Is Partitioned Test True",
