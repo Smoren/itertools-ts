@@ -118,6 +118,10 @@
     {
       "name": "Guflly",
       "url": "https://github.com/Guflly"
+    },
+    {
+      "name": "池上航平",
+      "url": "https://github.com/Gami19"
     }
   ],
   "jsnext:main": "./es/index.js",
