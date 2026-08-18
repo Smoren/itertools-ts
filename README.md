@@ -231,39 +231,39 @@ Quick Reference
 | [`permutations`](#permutations)          | Permutations of iterables              | `combinations.permutations(data, length)`     | `combinations.permutationsAsync(data, length)`     |
 
 #### Summary
-| Summary                                 | Description                                             | Sync Code Snippet                      | Async Code Snippet                          |
-|-----------------------------------------|---------------------------------------------------------|----------------------------------------|---------------------------------------------|
-| [`allMatch`](#all-match)                | True if all items are true according to predicate       | `summary.allMatch(data, predicate)`    | `summary.allMatchAsync(data, predicate)`    |
-| [`allUnique`](#all-unique)              | True if all elements in collection are unique           | `summary.allUnique(data)`              | `summary.allUniqueAsync(data)`              |
-| [`anyMatch`](#any-match)                | True if any item is true according to predicate         | `summary.anyMatch(data, predicate)`    | `summary.anyMatchAsync(data, predicate)`    |
-| [`arePermutations`](#are-permutations)  | True if collections are permutations of each other      | `summary.arePermutations(...collections)` | `summary.arePermutationsAsync(...collections)` |
-| [`exactlyN`](#exactly-n)                | True if exactly n items are true according to predicate | `summary.exactlyN(data, n, predicate)` | `summary.exactlyNAsync(data, n, predicate)` |
-| [`isAsyncIterable`](#is-async-iterable) | True if given data is async iterable                    | `summary.isAsyncIterable(data)`        | —                                           |
-| [`isEmpty`](#is-empty)                  | True if iterable is empty                               | `summary.isEmpty(data)`                | `summary.isEmptyAsync(data)`                |
-| [`isIterable`](#is-iterable)            | True if given data is iterable                          | `summary.isIterable(data)`             | —                                           |
-| [`isIterator`](#is-iterator)            | True if given data is iterator                          | `summary.isIterator(data)`             | —                                           |
-| [`isPartitioned`](#is-partitioned)      | True if iterable is partitioned according to predicate | `summary.isPartitioned(data, predicate)` | `summary.isPartitionedAsync(data, predicate)` |
-| [`isReversed`](#is-reversed)            | True if iterable reverse sorted                         | `summary.isReversed(data)`             | `summary.isReversedAsync(data)`             |
-| [`isSorted`](#is-sorted)                | True if iterable sorted                                 | `summary.isSorted(data)`               | `summary.isSortedAsync(data)`               |
-| [`isString`](#is-string)                | True if given data is string                            | `summary.isString(data)`               | `summary.isStringAsync(data)`               |
-| [`noneMatch`](#none-match)              | True if none of items true according to predicate       | `summary.noneMatch(data, predicate)`   | `summary.noneMatchAsync(data, predicate)`   |
-| [`notAllMatch`](#not-all-match)          | True if at least one item is false according to predicate | `summary.notAllMatch(data, predicate)` | `summary.notAllMatchAsync(data, predicate)` |
-| [`same`](#same)                         | True if collections are the same                        | `summary.same(...collections)`         | `summary.sameAsync(...collections)`         |
-| [`sameCount`](#same-count)              | True if collections have the same lengths               | `summary.sameCount(...collections)`    | `summary.sameCountAsync(...collections)`    |
+| Summary                                 | Description                                               | Sync Code Snippet                         | Async Code Snippet                             |
+|-----------------------------------------|-----------------------------------------------------------|-------------------------------------------|------------------------------------------------|
+| [`allMatch`](#all-match)                | True if all items are true according to predicate         | `summary.allMatch(data, predicate)`       | `summary.allMatchAsync(data, predicate)`       |
+| [`allUnique`](#all-unique)              | True if all elements in collection are unique             | `summary.allUnique(data)`                 | `summary.allUniqueAsync(data)`                 |
+| [`anyMatch`](#any-match)                | True if any item is true according to predicate           | `summary.anyMatch(data, predicate)`       | `summary.anyMatchAsync(data, predicate)`       |
+| [`arePermutations`](#are-permutations)  | True if collections are permutations of each other        | `summary.arePermutations(...collections)` | `summary.arePermutationsAsync(...collections)` |
+| [`exactlyN`](#exactly-n)                | True if exactly n items are true according to predicate   | `summary.exactlyN(data, n, predicate)`    | `summary.exactlyNAsync(data, n, predicate)`    |
+| [`isAsyncIterable`](#is-async-iterable) | True if given data is async iterable                      | `summary.isAsyncIterable(data)`           | —                                              |
+| [`isEmpty`](#is-empty)                  | True if iterable is empty                                 | `summary.isEmpty(data)`                   | `summary.isEmptyAsync(data)`                   |
+| [`isIterable`](#is-iterable)            | True if given data is iterable                            | `summary.isIterable(data)`                | —                                              |
+| [`isIterator`](#is-iterator)            | True if given data is iterator                            | `summary.isIterator(data)`                | —                                              |
+| [`isPartitioned`](#is-partitioned)      | True if iterable is partitioned according to predicate    | `summary.isPartitioned(data, predicate)`  | `summary.isPartitionedAsync(data, predicate)`  |
+| [`isReversed`](#is-reversed)            | True if iterable reverse sorted                           | `summary.isReversed(data)`                | `summary.isReversedAsync(data)`                |
+| [`isSorted`](#is-sorted)                | True if iterable sorted                                   | `summary.isSorted(data)`                  | `summary.isSortedAsync(data)`                  |
+| [`isString`](#is-string)                | True if given data is string                              | `summary.isString(data)`                  | `summary.isStringAsync(data)`                  |
+| [`noneMatch`](#none-match)              | True if none of items true according to predicate         | `summary.noneMatch(data, predicate)`      | `summary.noneMatchAsync(data, predicate)`      |
+| [`notAllMatch`](#not-all-match)         | True if at least one item is false according to predicate | `summary.notAllMatch(data, predicate)`    | `summary.notAllMatchAsync(data, predicate)`    |
+| [`same`](#same)                         | True if collections are the same                          | `summary.same(...collections)`            | `summary.sameAsync(...collections)`            |
+| [`sameCount`](#same-count)              | True if collections have the same lengths                 | `summary.sameCount(...collections)`       | `summary.sameCountAsync(...collections)`       |
 
 #### Transform
-| Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet                |
-|-----------------------------------------|-----------------------------------------|-----------------------------------|-----------------------------------|
-| [`divide`](#divide)                     | Divides iterable into n chunks          | `transform.divide(data, n)`       | `transform.divideAsync(data, n)`  |
+| Iterator                                | Description                             | Sync Code Snippet                 | Async Code Snippet                   |
+|-----------------------------------------|-----------------------------------------|-----------------------------------|--------------------------------------|
+| [`divide`](#divide)                     | Divides iterable into n chunks          | `transform.divide(data, n)`       | `transform.divideAsync(data, n)`     |
 | [`distribute`](#distribute)             | Distributes iterable across n groups    | `transform.distribute(data, n)`   | `transform.distributeAsync(data, n)` |
-| [`tee`](#tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | `transform.teeAsync(data, count)` |
-| [`toArray`](#to-array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)`    |
-| [`toAsyncIterable`](#to-async-iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                                 |
-| [`toAsyncIterator`](#to-async-iterator) | Transforms collection to async iterator | `transform.toAsyncIterator(data)` | —                                 |
-| [`toIterable`](#to-iterable)            | Transforms collection to iterable       | `transform.toIterable(data)`      | —                                 |
-| [`toIterator`](#to-iterator)            | Transforms collection to iterator       | `transform.toIterator(data)`      | —                                 |
-| [`toMap`](#to-map)                      | Transforms collection to map            | `transform.toMap(pairs)`          | `transform.toMapAsync(pairs)`     |
-| [`toSet`](#to-set)                      | Transforms collection to set            | `transform.toSet(data)`           | `transform.toSetAsync(data)`      |
+| [`tee`](#tee)                           | Iterate duplicate iterables             | `transform.tee(data, count)`      | `transform.teeAsync(data, count)`    |
+| [`toArray`](#to-array)                  | Transforms collection to array          | `transform.toArray(data)`         | `transform.toArrayAsync(data)`       |
+| [`toAsyncIterable`](#to-async-iterable) | Transforms collection to async iterable | `transform.toAsyncIterable(data)` | —                                    |
+| [`toAsyncIterator`](#to-async-iterator) | Transforms collection to async iterator | `transform.toAsyncIterator(data)` | —                                    |
+| [`toIterable`](#to-iterable)            | Transforms collection to iterable       | `transform.toIterable(data)`      | —                                    |
+| [`toIterator`](#to-iterator)            | Transforms collection to iterator       | `transform.toIterator(data)`      | —                                    |
+| [`toMap`](#to-map)                      | Transforms collection to map            | `transform.toMap(pairs)`          | `transform.toMapAsync(pairs)`        |
+| [`toSet`](#to-set)                      | Transforms collection to set            | `transform.toSet(data)`           | `transform.toSetAsync(data)`         |
 
 ### Stream and AsyncStream Iteration Tools
 #### Stream Sources
@@ -349,21 +349,21 @@ Quick Reference
 | [`toValue`](#to-value-1)                 | Reduces stream like array.reduce() function        | `stream.toValue(reducer, initialValue)` |
 
 ##### Summary Terminal Operations
-| Terminal Operation                  | Description                                                            | Code Snippet                           |
-|-------------------------------------|------------------------------------------------------------------------|----------------------------------------|
-| [`allMatch`](#all-match-1)          | Returns true if all items in stream match predicate                    | `stream.allMatch(predicate)`           |
-| [`allUnique`](#all-unique-1)        | Returns true if all elements of stream are unique                      | `stream.allUnique(predicate)`          |
-| [`anyMatch`](#any-match-1)          | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`           |
-| [`arePermutationsWith`](#are-permutations-with) | Returns true if stream and all given collections are permutations | `stream.arePermutationsWith(...collections)` |
-| [`exactlyN`](#exactly-n-1)          | Returns true if exactly n items are true according to predicate        | `stream.exactlyN(n, predicate)`        |
-| [`isEmpty`](#is-empty-1)            | Returns true if stream is empty                                        | `stream.isEmpty()`                     |
-| [`isPartitioned`](#is-partitioned-1) | Returns true if stream is partitioned according to predicate          | `stream.isPartitioned(predicate)`      |
-| [`isReversed`](#is-reversed-1)      | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                  |
-| [`isSorted`](#is-sorted-1)          | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                    |
-| [`noneMatch`](#none-match-1)        | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`          |
-| [`notAllMatch`](#not-all-match-1)    | Returns true if at least one item in stream does not match predicate   | `stream.notAllMatch(predicate)`        |
-| [`sameWith`](#same-with)            | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`      |
-| [`sameCountWith`](#same-count-with) | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)` |
+| Terminal Operation                              | Description                                                            | Code Snippet                                 |
+|-------------------------------------------------|------------------------------------------------------------------------|----------------------------------------------|
+| [`allMatch`](#all-match-1)                      | Returns true if all items in stream match predicate                    | `stream.allMatch(predicate)`                 |
+| [`allUnique`](#all-unique-1)                    | Returns true if all elements of stream are unique                      | `stream.allUnique(predicate)`                |
+| [`anyMatch`](#any-match-1)                      | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`                 |
+| [`arePermutationsWith`](#are-permutations-with) | Returns true if stream and all given collections are permutations      | `stream.arePermutationsWith(...collections)` |
+| [`exactlyN`](#exactly-n-1)                      | Returns true if exactly n items are true according to predicate        | `stream.exactlyN(n, predicate)`              |
+| [`isEmpty`](#is-empty-1)                        | Returns true if stream is empty                                        | `stream.isEmpty()`                           |
+| [`isPartitioned`](#is-partitioned-1)            | Returns true if stream is partitioned according to predicate           | `stream.isPartitioned(predicate)`            |
+| [`isReversed`](#is-reversed-1)                  | Returns true if stream is sorted in reverse descending order           | `stream.isReversed()`                        |
+| [`isSorted`](#is-sorted-1)                      | Returns true if stream is sorted in ascending order                    | `stream.isSorted()`                          |
+| [`noneMatch`](#none-match-1)                    | Returns true if none of the items in stream match predicate            | `stream.noneMatch(predicate)`                |
+| [`notAllMatch`](#not-all-match-1)               | Returns true if at least one item in stream does not match predicate   | `stream.notAllMatch(predicate)`              |
+| [`sameWith`](#same-with)                        | Returns true if stream and all given collections are the same          | `stream.sameWith(...collections)`            |
+| [`sameCountWith`](#same-count-with)             | Returns true if stream and all given collections have the same lengths | `stream.sameCountWith(...collections)`       |
 
 #### Stream Debug Operations
 | Debug Operation              | Description                                    | Code Snippet                  |
