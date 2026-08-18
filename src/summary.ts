@@ -137,6 +137,83 @@ export async function anyMatchAsync<T>(
 }
 
 /**
+ * Returns true if all given collections are permutations of each other.
+ *
+ * For single collection or empty collections list returns true.
+ *
+ * Considers different instances of data containers to be different, even if they have the same content.
+ *
+ * @param collections
+ */
+export function arePermutations(
+  ...collections: Array<Iterable<unknown> | Iterator<unknown>>
+): boolean {
+  if (collections.length <= 1) {
+    return true;
+  }
+
+  const counts = new Map<unknown, Array<number>>();
+
+  try {
+    for (const values of zipEqual(...collections)) {
+      (values as Array<unknown>).forEach((value, i) => {
+        let usages = counts.get(value);
+        if (usages === undefined) {
+          usages = new Array(collections.length).fill(0);
+          counts.set(value, usages);
+        }
+        usages[i]++;
+      });
+    }
+  } catch {
+    return false;
+  }
+
+  return haveSameFrequencies(counts);
+}
+
+/**
+ * Returns true if all given async collections are permutations of each other.
+ *
+ * For single collection or empty collections list returns true.
+ *
+ * Considers different instances of data containers to be different, even if they have the same content.
+ *
+ * @param collections
+ */
+export async function arePermutationsAsync(
+  ...collections: Array<
+    | AsyncIterable<unknown>
+    | AsyncIterator<unknown>
+    | Iterable<unknown>
+    | Iterator<unknown>
+  >
+): Promise<boolean> {
+  if (collections.length <= 1) {
+    return true;
+  }
+
+  const counts = new Map<unknown, Array<number>>();
+
+  try {
+    for await (const values of zipEqualAsync(...collections)) {
+      (values as Array<unknown>).forEach((value, i) => {
+        let usages = counts.get(value);
+        if (usages === undefined) {
+          usages = new Array(collections.length).fill(0);
+          counts.set(value, usages);
+        }
+        usages[i]++;
+      });
+    }
+  } catch {
+    return false;
+  }
+
+  return haveSameFrequencies(counts);
+}
+
+/**
  * Returns true if exactly n items in the iterable are true where the predicate function is true.
  *
  * Default predicate if not provided is the boolean value of each data item.
@@ -210,7 +287,6 @@ export async function exactlyNAsync<T>(
  * @param data
  */
 export function isEmpty(data: Iterable<unknown> | Iterator<unknown>): boolean {
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   for (const _ of toIterable(data)) {
     return false;
   }
@@ -229,7 +305,6 @@ export async function isEmptyAsync(
     | Iterable<unknown>
     | Iterator<unknown>
 ): Promise<boolean> {
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   for await (const _ of toAsyncIterable(data)) {
     return false;
   }
@@ -537,7 +612,7 @@ export function same(
         }
       }
     }
-  } catch (e) {
+  } catch {
     return false;
   }
 
@@ -567,7 +642,7 @@ export async function sameAsync(
         }
       }
     }
-  } catch (e) {
+  } catch {
     return false;
   }
 
@@ -618,4 +693,22 @@ export async function sameCountAsync(
   );
 
   return new Set(await toArrayAsync(counts)).size === 1;
+}
+
+/**
+ * Returns true if each recorded value has the same usage count in every collection.
+ *
+ * @param counts
+ */
+function haveSameFrequencies(counts: Map<unknown, Array<number>>): boolean {
+  for (const usages of counts.values()) {
+    const first = usages[0];
+    for (let i = 1; i < usages.length; i++) {
+      if (usages[i] !== first) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 }

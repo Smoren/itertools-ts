@@ -1,6 +1,6 @@
 import { infinite } from "../../src";
-// @ts-ignore
 import { expectToBeCloseToArray } from '../fixture';
+import { describe, it } from '@jest/globals';
 
 describe.each([
   ...dataProvider(),

@@ -455,6 +455,7 @@ export function toCount(data: Iterable<unknown> | Iterator<unknown>): number {
   }
 
   let count = 0;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for (const _ of toIterable(data)) {
     count++;
   }
@@ -482,6 +483,7 @@ export async function toCountAsync(
   }
 
   let count = 0;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   for await (const _ of toAsyncIterable(data)) {
     count++;
   }

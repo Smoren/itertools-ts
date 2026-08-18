@@ -6,9 +6,9 @@ import {
   createIterableFixture,
   createIteratorFixture,
   createMapFixture,
-  // @ts-ignore
 } from "../fixture";
 import { InvalidArgumentError, single } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -74,6 +74,7 @@ describe.each([
       expect(() => {
         const result = single.slice([1, 2, 3], ...config);
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const _ of result) {
           break;
         }
@@ -91,6 +92,7 @@ describe.each([
       try {
         const result = single.sliceAsync(createAsyncIterableFixture([1, 2, 3]), ...config);
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for await (const _ of result) {
           break;
         }

@@ -1,4 +1,5 @@
 import { multi, Stream, AsyncStream } from "../../src";
+import { expect, it } from '@jest/globals';
 
 it("Loop example", () => {
   // When

@@ -1,5 +1,6 @@
 import { choice, choiceAsync } from '../../src/random';
 import { InvalidArgumentError, LengthError } from '../../src/exceptions';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForFiniteSync(),
@@ -99,7 +100,10 @@ describe.each([
     it(`throws InvalidArgumentError when repetitions = ${negativeCount}`, async () => {
       const gen = choiceAsync([1, 2, 3], negativeCount);
       await expect((async () => {
-        for await (const _ of gen) {}
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for await (const _ of gen) {
+          // noop
+        }
       })()).rejects.toThrow(InvalidArgumentError);
     });
   }
@@ -109,7 +113,10 @@ describe('Random Choice Empty (async)', () => {
   it('throws LengthError when input is empty', async () => {
     const gen = choiceAsync([], 5);
     await expect((async () => {
-      for await (const _ of gen) {}
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      for await (const _ of gen) {
+          // noop
+        }
     })()).rejects.toThrow(LengthError);
   });
 });

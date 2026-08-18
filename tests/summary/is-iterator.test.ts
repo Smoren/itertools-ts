@@ -1,6 +1,6 @@
-// @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture } from '../fixture';
 import { summary } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each(dataProviderForTrue())(
   "Summary Is Iterator Test True",

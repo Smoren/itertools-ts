@@ -6,9 +6,9 @@ import {
   createIterableFixture,
   createIteratorFixture,
   roundEpsilon,
-  // @ts-ignore
 } from "../fixture";
 import { Numeric, reduce } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),

@@ -1,4 +1,5 @@
 import { infinite } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForBooleans(),

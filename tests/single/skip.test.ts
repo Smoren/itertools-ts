@@ -5,11 +5,11 @@ import {
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
-  createMapFixture
-  // @ts-ignore
+  createMapFixture,
 } from "../fixture";
 import { single } from "../../src";
 import { InvalidArgumentError } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),
@@ -74,6 +74,7 @@ describe.each([
     it("", () => {
       expect(() => {
         // When
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const _ of single.skip([1, 2, 3], ...(config as [number, number]))) {
           break;
         }
@@ -90,6 +91,7 @@ describe.each([
     it("", async () => {
       try {
         // When
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for await (const _ of single.skipAsync([1, 2, 3], ...(config as [number, number]))) {
           break;
         }

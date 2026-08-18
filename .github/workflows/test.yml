@@ -1,4 +1,4 @@
-name: CI
+name: Build and test
 
 on:
   push:
@@ -29,6 +29,8 @@ jobs:
         run: |
           npm install
           npm run build
+          npm run lint
+          npm run typecheck
           npm run test
         env:
           CI: true

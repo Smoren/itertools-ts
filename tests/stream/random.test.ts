@@ -1,6 +1,5 @@
-import { percentage, choice } from '../../src/random';
-import { InvalidArgumentError, LengthError } from '../../src/exceptions';
-import { Stream } from '../../src/stream';
+import { Stream, InvalidArgumentError, LengthError, random } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 const ROCK_PAPER_SCISSORS_VALUES = ['rock', 'paper', 'scissors'];
 
@@ -10,7 +9,7 @@ describe.each([
   'Stream Integration - percentage() finite',
   (count) => {
     it('', () => {
-      const values = Array.from(percentage(count));
+      const values = Array.from(random.percentage(count));
       expect(values.length).toBe(count);
       values.forEach((num) => {
         expect(num).toBeGreaterThanOrEqual(0);
@@ -26,7 +25,7 @@ describe.each([
   'Stream Integration - percentage() negative',
   (negativeCount) => {
     it('', () => {
-      expect(() => Array.from(percentage(negativeCount))).toThrow(InvalidArgumentError);
+      expect(() => Array.from(random.percentage(negativeCount))).toThrow(InvalidArgumentError);
     });
   }
 );
@@ -37,7 +36,7 @@ describe.each([
   'Stream Integration - percentage() aggregations',
   (count) => {
     it('', () => {
-      const sum = Array.from(percentage(count)).reduce((acc, num) => acc + num, 0);
+      const sum = Array.from(random.percentage(count)).reduce((acc, num) => acc + num, 0);
       expect(sum).toBeGreaterThanOrEqual(0);
       expect(sum).toBeLessThan(count);
     });
@@ -50,7 +49,7 @@ describe.each([
   'Stream Integration - percentage() transformations',
   (count) => {
     it('', () => {
-      const transformed = Array.from(percentage(count)).map((num) => num * 100);
+      const transformed = Array.from(random.percentage(count)).map((num) => num * 100);
       expect(transformed.length).toBe(count);
       transformed.forEach((num) => {
         expect(num).toBeGreaterThanOrEqual(0);

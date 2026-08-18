@@ -4,10 +4,10 @@ import {
   createAsyncIteratorFixture,
   createGeneratorFixture,
   createIterableFixture,
-  createIteratorFixture
-  // @ts-ignore
+  createIteratorFixture,
 } from '../fixture';
 import { summary } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each(dataProviderForTrue())(
   "Summary Is Async Iterable Test True",

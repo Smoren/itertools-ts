@@ -1,6 +1,6 @@
 import { createPipe, reduce, set, single, transform } from "../../src";
-// @ts-ignore
 import { createAsyncIterableFixture } from "../fixture";
+import { expect, it } from '@jest/globals';
 
 it("Pipe Usage Example Test", () => {
   const pipe = createPipe<[

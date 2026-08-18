@@ -8,8 +8,8 @@ import {
   createIterableFixture,
   createIteratorFixture,
   createMapFixture,
-  // @ts-ignore
 } from "../fixture";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForAsyncGeneratorsTrue(),
@@ -182,6 +182,32 @@ function dataProviderForArraysTrue(): Array<[Array<any>, (iterable: Array<any>) 
         .sameCountWith([11, 22, 33]),
     ],
     [
+      [],
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
+        .arePermutationsWith([]),
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
+        .arePermutationsWith(),
+    ],
+    [
+      [1, 2, 3],
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
+        .arePermutationsWith(),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
+        .arePermutationsWith([5, 1, 3]),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown | Iterator<unknown>>) => AsyncStream.of(iterable)
+        .runningTotal()
+        .arePermutationsWith([9, 1, 4]),
+    ],
+    [
       [1],
       (iterable: Iterable<number> | Iterator<number>) => AsyncStream.of(iterable)
         .notAllMatch(() => false),
@@ -351,6 +377,32 @@ function dataProviderForStringsTrue(): Array<[string, (iterable: string) => Prom
         .sameCountWith([11, 22, 33]),
     ],
     [
+      '',
+      (iterable) => AsyncStream.of(iterable)
+        .arePermutationsWith([]),
+    ],
+    [
+      '',
+      (iterable) => AsyncStream.of(iterable)
+        .arePermutationsWith(),
+    ],
+    [
+      '123',
+      (iterable) => AsyncStream.of(iterable)
+        .arePermutationsWith(),
+    ],
+    [
+      '135',
+      (iterable) => AsyncStream.of(iterable)
+        .arePermutationsWith(['5', '1', '3']),
+    ],
+    [
+      '135',
+      (iterable) => AsyncStream.of(iterable)
+        .runningTotal()
+        .arePermutationsWith([9, 1, 4]),
+    ],
+    [
       '1',
       (iterable) => AsyncStream.of(iterable)
         .notAllMatch((x) => x !== '1'),
@@ -511,6 +563,32 @@ function dataProviderForSetsTrue(): Array<[Set<any>, (iterable: Set<any>) => Pro
         .sameCountWith([11, 22, 33]),
     ],
     [
+      new Set([]),
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith([]),
+    ],
+    [
+      new Set([]),
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith(),
+    ],
+    [
+      new Set([1, 2, 3]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .arePermutationsWith(),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .arePermutationsWith([5, 1, 3]),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .runningTotal()
+        .arePermutationsWith([9, 1, 4]),
+    ],
+    [
       new Set([1]),
       (iterable: Set<number>) => AsyncStream.of(iterable)
         .notAllMatch(() => false),
@@ -660,6 +738,34 @@ function dataProviderForMapsTrue(): Array<[Map<any, any>, (iterable: Map<any, an
       (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22, 33]),
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .arePermutationsWith([]),
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .arePermutationsWith(),
+    ],
+    [
+      createMapFixture([1, 2, 3]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .arePermutationsWith(),
+    ],
+    [
+      createMapFixture([1, 3, 5]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
+        .arePermutationsWith([5, 1, 3]),
+    ],
+    [
+      createMapFixture([1, 3, 5]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
+        .runningTotal()
+        .arePermutationsWith([9, 1, 4]),
     ],
     [
       createMapFixture([1]),
@@ -834,6 +940,32 @@ function dataProviderForAsyncTrue(): Array<[Array<any>, (iterable: AsyncIterable
         .sameCountWith([11, 22, 33]),
     ],
     [
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith([]),
+    ],
+    [
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith(),
+    ],
+    [
+      [1, 2, 3],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .arePermutationsWith(),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .arePermutationsWith([5, 1, 3]),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
+        .runningTotal()
+        .arePermutationsWith([9, 1, 4]),
+    ],
+    [
       [1],
       (iterable: AsyncIterable<number> | AsyncIterator<number>) => AsyncStream.of(iterable)
         .notAllMatch(() => false),
@@ -989,6 +1121,32 @@ function dataProviderForArraysFalse(): Array<[Array<any>, (iterable: Array<any>)
       (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
+    ],
+    [
+      [],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith([1]),
+    ],
+    [
+      [1],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith([]),
+    ],
+    [
+      [1],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith(['1']),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith([1, 3, 4]),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: Iterable<unknown>) => AsyncStream.of(iterable)
+        .runningTotal()
+        .arePermutationsWith([1, 4, 10]),
     ],
     [
       [],
@@ -1151,6 +1309,32 @@ function dataProviderForStringsFalse(): Array<[string, (iterable: string) => Pro
     [
       '',
       (iterable) => AsyncStream.of(iterable)
+        .arePermutationsWith([1]),
+    ],
+    [
+      '1',
+      (iterable) => AsyncStream.of(iterable)
+        .arePermutationsWith([]),
+    ],
+    [
+      '1',
+      (iterable) => AsyncStream.of(iterable)
+        .arePermutationsWith([1]),
+    ],
+    [
+      '135',
+      (iterable) => AsyncStream.of(iterable)
+        .arePermutationsWith(['1', '3', '4']),
+    ],
+    [
+      '135',
+      (iterable) => AsyncStream.of(iterable)
+        .runningTotal()
+        .arePermutationsWith([1, 4, 10]),
+    ],
+    [
+      '',
+      (iterable) => AsyncStream.of(iterable)
         .notAllMatch(() => true),
     ],
     [
@@ -1280,6 +1464,32 @@ function dataProviderForSetsFalse(): Array<[Set<any>, (iterable: Set<any>) => Pr
       (iterable: Set<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
+    ],
+    [
+      new Set([]),
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith([1]),
+    ],
+    [
+      new Set([1]),
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith([]),
+    ],
+    [
+      new Set([1]),
+      (iterable: Set<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith(['1']),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .arePermutationsWith([1, 3, 4]),
+    ],
+    [
+      new Set([1, 3, 5]),
+      (iterable: Set<number>) => AsyncStream.of(iterable)
+        .runningTotal()
+        .arePermutationsWith([1, 4, 10]),
     ],
     [
       new Set([]),
@@ -1415,6 +1625,37 @@ function dataProviderForMapsFalse(): Array<[Map<any, any>, (iterable: Map<any, a
       (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
+    ],
+    [
+      createMapFixture([]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
+        .arePermutationsWith([1]),
+    ],
+    [
+      createMapFixture([1]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
+        .arePermutationsWith([]),
+    ],
+    [
+      createMapFixture([1]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
+        .arePermutationsWith(['1']),
+    ],
+    [
+      createMapFixture([1, 3, 5]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
+        .arePermutationsWith([1, 3, 4]),
+    ],
+    [
+      createMapFixture([1, 3, 5]),
+      (iterable: Map<unknown, number>) => AsyncStream.of(iterable)
+        .map((item) => item[1])
+        .runningTotal()
+        .arePermutationsWith([1, 4, 10]),
     ],
     [
       createMapFixture([]),
@@ -1570,6 +1811,32 @@ function dataProviderForAsyncFalse(): Array<[Array<any>, (iterable: AsyncIterabl
       (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
         .runningTotal()
         .sameCountWith([11, 22]),
+    ],
+    [
+      [],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith([1]),
+    ],
+    [
+      [1],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith([]),
+    ],
+    [
+      [1],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith(['1']),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .arePermutationsWith([1, 3, 4]),
+    ],
+    [
+      [1, 3, 5],
+      (iterable: AsyncIterable<unknown> | AsyncIterator<unknown>) => AsyncStream.of(iterable)
+        .runningTotal()
+        .arePermutationsWith([1, 4, 10]),
     ],
     [
       [],

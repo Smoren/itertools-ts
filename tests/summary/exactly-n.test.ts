@@ -6,10 +6,10 @@ import {
   createIterableFixture,
   createIteratorFixture,
   createMapFixture
-  // @ts-ignore
 } from '../fixture';
 import { summary } from '../../src';
 import { toAsyncIterable } from "../../src/transform";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArraysExactlyNWithDefaultPredicateZeroTrue(),
@@ -20,6 +20,7 @@ describe.each([
   ...dataProviderForSetsExactlyNWithDefaultPredicateZeroTrue(),
 ])(
   "Summary Exactly N Test With Default Predicate When N is Zero",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (input, _) => {
     it("", () => {
       expect(summary.exactlyN(input, 0)).toBeTruthy();
@@ -36,6 +37,7 @@ describe.each([
   ...dataProviderForSetsExactlyNWithDefaultPredicateNegativeFalse(),
 ])(
   "Summary Exactly N Test With Default Predicate When N is Negative",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (input, _) => {
     it("", () => {
       expect(summary.exactlyN(input, -1)).toBeFalsy();
@@ -52,6 +54,7 @@ describe.each([
   ...dataProviderForSetsExactlyNWithDefaultPredicateNegativeFalse(),
 ])(
   "Summary Exactly N Test With Default Predicate When N is Negative (false)",
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   (input, _) => {
     it("", async () => {
       expect(await summary.exactlyNAsync(input, -1)).toBeFalsy();

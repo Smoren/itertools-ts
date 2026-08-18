@@ -5,10 +5,10 @@ import {
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
-  createMapFixture
-  // @ts-ignore
+  createMapFixture,
 } from "../fixture";
 import { single } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),

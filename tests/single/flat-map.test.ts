@@ -7,9 +7,9 @@ import {
   asyncTimeout,
   createAsyncIterableFixture,
   createAsyncIteratorFixture,
-  // @ts-ignore
 } from "../fixture";
 import { single, summary, FlatMapper, AsyncFlatMapper } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),

@@ -8,9 +8,9 @@ import {
   createIteratorFixture,
   createMapFixture,
   expectToBeCloseToArray,
-  // @ts-ignore
 } from "../fixture";
-import { AsyncStream, Comparable, multi, single, } from "../../src";
+import { AsyncStream, multi, single, } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForOfCount(),

@@ -5,9 +5,9 @@ import {
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
-  // @ts-ignore
 } from '../fixture';
 import { transform, single } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each(dataProvider())(
   "Transform To Map Test",

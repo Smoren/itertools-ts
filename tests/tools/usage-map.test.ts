@@ -1,4 +1,5 @@
 import { UsageMap } from '../../src/tools';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each(dataProvider())(
   "Tools Usage Map Test",

@@ -310,9 +310,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.keys
    */
-  keys(): Stream<T extends [infer TKey, infer _] ? TKey : never> {
+  keys(): Stream<T extends [infer TKey, unknown] ? TKey : never> {
     this.data = single.keys(this.data as Iterable<[unknown, unknown]>) as Iterable<T>;
-    return this as unknown as Stream<T extends [infer TKey, infer _] ? TKey : never>;
+    return this as unknown as Stream<T extends [infer TKey, unknown] ? TKey : never>;
   }
 
   /**
@@ -521,9 +521,9 @@ export class Stream<T> implements Iterable<T> {
    *
    * @see single.values
    */
-  values(): Stream<T extends [infer _, infer TValue] ? TValue : never> {
+  values(): Stream<T extends [unknown, infer TValue] ? TValue : never> {
     this.data = single.values(this.data as Iterable<[unknown, unknown]>) as Iterable<T>;
-    return this as unknown as Stream<T extends [infer _, infer TValue] ? TValue : never>;
+    return this as unknown as Stream<T extends [unknown, infer TValue] ? TValue : never>;
   }
 
   /**
@@ -871,6 +871,21 @@ export class Stream<T> implements Iterable<T> {
    */
   anyMatch(predicate: (item: T) => boolean): boolean {
     return summary.anyMatch(this, predicate);
+  }
+
+  /**
+   * Returns true if stream collection and all given collections are permutations of each other.
+   *
+   * For empty collections list returns true.
+   *
+   * Considers different instances of data containers to be different, even if they have the same content.
+   *
+   * @param collections
+   *
+   * @see summary.arePermutations
+   */
+  arePermutationsWith(...collections: Array<Iterable<unknown> | Iterator<unknown>>): boolean {
+    return summary.arePermutations(this.data, ...collections);
   }
 
   /**

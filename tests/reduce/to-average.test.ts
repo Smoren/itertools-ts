@@ -3,9 +3,9 @@ import {
   createGeneratorFixture,
   createIterableFixture,
   createIteratorFixture,
-  // @ts-ignore
 } from "../fixture";
 import { reduce } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),

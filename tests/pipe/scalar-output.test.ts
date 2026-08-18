@@ -1,7 +1,7 @@
 import type { Pipe } from "../../src";
 import { createPipe, infinite, reduce, set, single } from "../../src";
-// @ts-ignore
 import { createGeneratorFixture, createIterableFixture, createIteratorFixture, createMapFixture } from "../fixture";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForArrays(),

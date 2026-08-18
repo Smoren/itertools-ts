@@ -1,6 +1,5 @@
-// @ts-ignore
-import { createGeneratorFixture, createIteratorFixture } from "../fixture";
 import { single, InvalidArgumentError } from "../../src";
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForIntegers(),
@@ -66,6 +65,7 @@ describe.each([
       expect(() => {
         const repetitions = single.repeat(input, -1);
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for (const _ of repetitions) {
           break;
         }
@@ -83,6 +83,7 @@ describe.each([
       try {
         const repetitions = single.repeatAsync(input, -1);
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         for await (const _ of repetitions) {
           break;
         }

@@ -1,5 +1,6 @@
 import { percentage, percentageAsync } from '../../src/random';
-import { InvalidArgumentError } from '../../src/exceptions';
+import { InvalidArgumentError } from '../../src';
+import { describe, expect, it } from '@jest/globals';
 
 describe.each([
   ...dataProviderForFiniteSync(),
@@ -97,7 +98,10 @@ describe.each([
     it('', async () => {
       const gen = percentageAsync(negativeCount);
       await expect((async () => {
-        for await (const _ of gen) {}
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for await (const _ of gen) {
+          // noop
+        }
       })()).rejects.toThrow(InvalidArgumentError);
     });
   }
