@@ -68,6 +68,16 @@ function dataProviderForArraysTrue(): Array<[Array<any>, (iterable: Array<any>) 
         .allUnique(),
     ],
     [
+      [],
+      (iterable: Iterable<unknown | Iterator<unknown>>) => Stream.of(iterable)
+        .allEqual(),
+    ],
+    [
+      [1, 1, 1],
+      (iterable: Iterable<number> | Iterator<number>) => Stream.of(iterable)
+        .allEqual(),
+    ],
+    [
       [1, '1', true, [1], [1]],
       (iterable: Iterable<unknown | Iterator<unknown>>) => Stream.of(iterable)
         .allUnique(),
@@ -802,6 +812,11 @@ function dataProviderForArraysFalse(): Array<[Array<any>, (iterable: Array<any>)
       [1, 2, 1, 3],
       (iterable: Iterable<number>) => Stream.of(iterable)
         .allUnique(),
+    ],
+    [
+      [1, 1, 2],
+      (iterable: Iterable<number>) => Stream.of(iterable)
+        .allEqual(),
     ],
     [
       [],
