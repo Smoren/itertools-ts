@@ -835,6 +835,19 @@ export class Stream<T> implements Iterable<T> {
   }
 
   /**
+   * Returns true if all elements of stream are equal.
+   *
+   * For empty stream returns true.
+   *
+   * Considers different instances of data containers to be different, even if they have the same content.
+   *
+   * @see summary.allEqual
+   */
+  allEqual(): boolean {
+    return summary.allEqual(this);
+  }
+
+  /**
    * Returns true if all elements of stream match the predicate function.
    *
    * For empty stream returns true.

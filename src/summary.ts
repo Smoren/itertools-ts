@@ -5,6 +5,72 @@ import { toArrayAsync, toAsyncIterable, toIterable } from "./transform";
 import { Comparable } from "./types";
 
 /**
+ * Returns true if all elements of the collection are equal.
+ *
+ * Empty collections return true.
+ *
+ * Elements are compared using strict equality, so NaN is never equal to itself.
+ *
+ * Considers different instances of data containers to be different, even if they have the same content.
+ *
+ * @param data
+ */
+export function allEqual(data: Iterable<unknown> | Iterator<unknown>): boolean {
+  let isFirst = true;
+  let first: unknown;
+
+  for (const datum of toIterable(data)) {
+    if (isFirst) {
+      first = datum;
+      isFirst = false;
+      continue;
+    }
+
+    if (datum !== first) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Returns true if all elements of the given async collection are equal.
+ *
+ * Empty collections return true.
+ *
+ * Elements are compared using strict equality, so NaN is never equal to itself.
+ *
+ * Considers different instances of data containers to be different, even if they have the same content.
+ *
+ * @param data
+ */
+export async function allEqualAsync(
+  data:
+    | AsyncIterable<unknown>
+    | AsyncIterator<unknown>
+    | Iterable<unknown>
+    | Iterator<unknown>
+): Promise<boolean> {
+  let isFirst = true;
+  let first: unknown;
+
+  for await (const datum of toAsyncIterable(data)) {
+    if (isFirst) {
+      first = datum;
+      isFirst = false;
+      continue;
+    }
+
+    if (datum !== first) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
  * Returns true if all elements match the predicate function.
  *
  * Empty collections return true.

@@ -911,6 +911,19 @@ export class AsyncStream<T> implements AsyncIterable<T> {
   }
 
   /**
+   * Returns true if all elements of stream are equal.
+   *
+   * For empty stream returns true.
+   *
+   * Considers different instances of data containers to be different, even if they have the same content.
+   *
+   * @see summary.allEqualAsync
+   */
+  async allEqual(): Promise<boolean> {
+    return await summary.allEqualAsync(this);
+  }
+
+  /**
    * Returns true if all elements of stream match the predicate function.
    *
    * For empty stream returns true.

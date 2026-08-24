@@ -233,6 +233,7 @@ Quick Reference
 #### Summary
 | Summary                                 | Description                                               | Sync Code Snippet                         | Async Code Snippet                             |
 |-----------------------------------------|-----------------------------------------------------------|-------------------------------------------|------------------------------------------------|
+| [`allEqual`](#all-equal)                | True if all elements in collection are equal              | `summary.allEqual(data)`                  | `summary.allEqualAsync(data)`                  |
 | [`allMatch`](#all-match)                | True if all items are true according to predicate         | `summary.allMatch(data, predicate)`       | `summary.allMatchAsync(data, predicate)`       |
 | [`allUnique`](#all-unique)              | True if all elements in collection are unique             | `summary.allUnique(data)`                 | `summary.allUniqueAsync(data)`                 |
 | [`anyMatch`](#any-match)                | True if any item is true according to predicate           | `summary.anyMatch(data, predicate)`       | `summary.anyMatchAsync(data, predicate)`       |
@@ -351,6 +352,7 @@ Quick Reference
 ##### Summary Terminal Operations
 | Terminal Operation                              | Description                                                            | Code Snippet                                 |
 |-------------------------------------------------|------------------------------------------------------------------------|----------------------------------------------|
+| [`allEqual`](#all-equal-1)                      | Returns true if all elements of stream are equal                       | `stream.allEqual()`                          |
 | [`allMatch`](#all-match-1)                      | Returns true if all items in stream match predicate                    | `stream.allMatch(predicate)`                 |
 | [`allUnique`](#all-unique-1)                    | Returns true if all elements of stream are unique                      | `stream.allUnique(predicate)`                |
 | [`anyMatch`](#any-match-1)                      | Returns true if any item in stream matches predicate                   | `stream.anyMatch(predicate)`                 |
@@ -1901,6 +1903,31 @@ const trueResult = summary.allMatch(finalFantasyNumbers, isOnSuperNintendo);
 const isOnPlaystation = (ff) => ff >= 7 && ff <= 9;
 
 const falseResult = summary.allMatch(finalFantasyNumbers, isOnPlaystation);
+// false
+```
+
+### All Equal
+Returns true if all elements of the collection are equal.
+
+```
+function allEqual(data: Iterable<unknown> | Iterator<unknown>): boolean
+```
+
+Empty collections return true.
+
+Elements are compared using strict equality, so NaN is never equal to itself.
+
+Considers different instances of data containers to be different, even if they have the same content.
+
+```typescript
+import { summary } from "itertools-ts";
+
+const equalNumbers = [1, 1, 1, 1];
+summary.allEqual(equalNumbers);
+// true
+
+const mixedNumbers = [1, 1, 2, 1];
+summary.allEqual(mixedNumbers);
 // false
 ```
 
@@ -3905,6 +3932,33 @@ const isOnSuperNintendo   = (ff) => ff >= 4 && ff <= 6;
 const trueResult = Stream.of(finalFantasyNumbers)
   .allMatch(isOnSuperNintendo);
 // true
+```
+
+##### All Equal
+Returns true if all elements of stream are equal.
+
+```
+Stream<T>.allEqual(): boolean
+```
+
+Empty collections return true.
+
+Elements are compared using strict equality, so NaN is never equal to itself.
+
+Considers different instances of data containers to be different, even if they have the same content.
+
+```typescript
+import { Stream } from "itertools-ts";
+
+const equalNumbers = [1, 1, 1, 1];
+Stream.of(equalNumbers)
+  .allEqual();
+// true
+
+const mixedNumbers = [1, 1, 2, 1];
+Stream.of(mixedNumbers)
+  .allEqual();
+// false
 ```
 
 ##### All Unique
